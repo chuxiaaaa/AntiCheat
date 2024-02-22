@@ -1,2 +1,62 @@
 # AntiCheat
-A Lethal Company AntiCheat Mod
+
+一个致命公司反作弊模组
+
+### 简介
+
+模组交流QQ群：263868521
+
+该模组用于解决外挂炸房问题，确保路人房玩家的游戏体验
+
+在使用模组时你可能会遇到"误检测"问题，但这并不一定是 反作弊 模组的问题，请尝试删除 除了(BepInExPack，汉化，反作弊，多人联机）以外的所有模组复现问题（如不再误测，则是模组的兼容性问题）
+
+### 使用说明
+
+1. 安装 [BepInExPack](https://thunderstore.io/c/lethal-company/p/BepInEx/BepInExPack/) 模组
+2. 将 AntiCheat.dll 放置于 Lethal Company\BepInEx\plugins\ 目录下
+3. 启动游戏
+
+### 功能
+* 强制拉杆检测
+* 飞船物品位置异常检测
+* 物品使用冷却异常检测
+* 灯关秀检测
+* 终端噪音检测
+* 销毁物品检测
+* 发言伪造检测
+* 刷假人检测
+* 刷礼物盒检测
+* 刷蜘蛛网检测
+* 激怒机枪检测
+* 隐身检测
+* 喷气背包爆炸检测
+* 引爆地雷检测
+* 怪物异常检测
+* 小地图检测
+* 击杀敌人检测
+* 隔空取物检测
+* 铲子伤害异常检测
+* 玩家名字检测(Nameless或Unknown)
+* 零元购检测（购买物品/解锁飞船装饰）
+
+### 反馈
+如果你遇到误检测并确定不是模组导致，你可以提交issue来说明如何复现问题帮我们修复他！
+
+### 贡献
+<a href="https://github.com/chuxiaaaa/AntiCheat/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=chuxiaaaa/AntiCheat" />
+</a>
+
+欢迎各位有能力的开发者为本模组提交贡献~
+
+### 模组测试人员
+超级骇人鲸 
+Alan Backer
+沈阳最速傳說疾走の猛虎！貴物刀一郎
+柒小鸭yz
+喜欢睡觉の极茶龙 
+东南枝
+Melissa
+我不吃牛肉
+
+
