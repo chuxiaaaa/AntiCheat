@@ -97,7 +97,7 @@ namespace AntiCheat
             AntiCheatPlugin.ManualLog.LogInfo("damageAmount:" + damageAmount);
             try
             {
-                if (AntiCheatPlugin.ShovelConfig.Value)
+                if (AntiCheatPlugin.Shovel.Value)
                 {
                     var distance = Vector3.Distance(p.transform.position, p2.transform.position);
                     var obj = p.ItemSlots[p.currentItemSlot];
@@ -108,7 +108,7 @@ namespace AntiCheat
                         {
                             ShowMessage("检测到玩家 " + playerUsername + " 对玩家 " + p2.playerUsername + " 造成异常铲子伤害(" + damageAmount + ")！");
                             jcs.Add(p.playerSteamId);
-                            if (AntiCheatPlugin.ShovelConfig2.Value)
+                            if (AntiCheatPlugin.Shovel2.Value)
                             {
                                 KickPlayer(p);
                             }
@@ -121,7 +121,7 @@ namespace AntiCheat
                         {
                             ShowMessage("检测到玩家 " + playerUsername + " 对玩家 " + p2.playerUsername + " 铲子范围异常，造成伤害(" + damageAmount + ")！");
                             jcs.Add(p.playerSteamId);
-                            if (AntiCheatPlugin.ShovelConfig2.Value)
+                            if (AntiCheatPlugin.Shovel2.Value)
                             {
                                 KickPlayer(p);
                             }
@@ -137,7 +137,7 @@ namespace AntiCheat
 
                                 ShowMessage("检测到玩家 " + playerUsername + " 对玩家 " + p2.playerUsername + " 造成异常伤害(" + damageAmount + ")！");
                                 jcs.Add(p.playerSteamId);
-                                if (AntiCheatPlugin.ShovelConfig2.Value)
+                                if (AntiCheatPlugin.Shovel2.Value)
                                 {
                                     KickPlayer(p);
                                 }
@@ -221,10 +221,10 @@ namespace AntiCheat
                 AntiCheatPlugin.ManualLog.LogInfo(playerName);
                 if (Regex.IsMatch(playerName, "Nameless\\d*") || Regex.IsMatch(playerName, "Unknown\\d*") || Regex.IsMatch(playerName, "Player #\\d*"))
                 {
-                    if (AntiCheatPlugin.NamelessConfig.Value)
+                    if (AntiCheatPlugin.Nameless.Value)
                     {
                         ShowMessage("检测到玩家名称异常！");
-                        if (AntiCheatPlugin.NamelessConfig2.Value)
+                        if (AntiCheatPlugin.Nameless2.Value)
                         {
                             KickPlayer(item, true);
                         }
@@ -244,9 +244,11 @@ namespace AntiCheat
                     return;
                 }
                 bypass = true;
-                string data = $"<color=green>欢迎 <color=yellow>{p2.playerUsername}</color> 加入飞船</color>";
-                AntiCheatPlugin.ManualLog.LogInfo(data);
-                HUDManager.Instance.AddTextToChatOnServer(data, -1);
+                string msg = LocalizationManager.GetString("msg_wlc_player", new Dictionary<string, string>() {
+                    { "{player}",p2.playerUsername }
+                });
+                AntiCheatPlugin.ManualLog.LogInfo(msg);
+                HUDManager.Instance.AddTextToChatOnServer(msg, -1);
                 lastClientId = p2.actualClientId;
                 bypass = false;
             }
@@ -290,7 +292,7 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                if (AntiCheatPlugin.FreeBuyConfig.Value)
+                if (AntiCheatPlugin.FreeBuy.Value)
                 {
                     int unlockableID;
                     ByteUnpacker.ReadValueBitPacked(reader, out unlockableID);
@@ -303,7 +305,7 @@ namespace AntiCheat
                         var pl = GetPlayer(rpcParams);
                         AntiCheatPlugin.ManualLog.LogInfo($"Money:{Money}|newGroupCreditsAmount:{newGroupCreditsAmount}");
                         ShowMessage($"检测到玩家 {pl.playerUsername} 强制解锁飞船装饰！");
-                        if (AntiCheatPlugin.FreeBuyConfig2.Value)
+                        if (AntiCheatPlugin.FreeBuy2.Value)
                         {
                             KickPlayer(pl);
                         }
@@ -312,7 +314,7 @@ namespace AntiCheat
                     else if (newGroupCreditsAmount > Money)
                     {
                         ShowMessage($"检测到玩家 {p.playerUsername} 刷钱！");
-                        if (AntiCheatPlugin.FreeBuyConfig2.Value)
+                        if (AntiCheatPlugin.FreeBuy2.Value)
                         {
                             KickPlayer(p);
                         }
@@ -349,7 +351,7 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                if (AntiCheatPlugin.FreeBuyConfig.Value)
+                if (AntiCheatPlugin.FreeBuy.Value)
                 {
                     reader.ReadValueSafe(out bool flag, default);
                     int[] boughtItems = null;
@@ -363,7 +365,7 @@ namespace AntiCheat
                     if (Money == newGroupCredits || Money == 0)
                     {
                         ShowMessage($"检测到玩家 {p.playerUsername} 强制购买物品！");
-                        if (AntiCheatPlugin.FreeBuyConfig2.Value)
+                        if (AntiCheatPlugin.FreeBuy2.Value)
                         {
                             KickPlayer(p);
                         }
@@ -372,7 +374,7 @@ namespace AntiCheat
                     else if (newGroupCredits > Money)
                     {
                         ShowMessage($"检测到玩家 {p.playerUsername} 刷钱！");
-                        if (AntiCheatPlugin.FreeBuyConfig2.Value)
+                        if (AntiCheatPlugin.FreeBuy2.Value)
                         {
                             KickPlayer(p);
                         }
@@ -677,7 +679,7 @@ namespace AntiCheat
                     AntiCheatPlugin.ManualLog.LogDebug("return false;");
                     return false;
                 }
-                if (AntiCheatPlugin.ShovelConfig.Value)
+                if (AntiCheatPlugin.Shovel.Value)
                 {
                     var obj = p.ItemSlots[p.currentItemSlot];
                     string playerUsername = p.playerUsername;
@@ -688,7 +690,7 @@ namespace AntiCheat
                             var e = (EnemyAI)target;
                             ShowMessage("检测到玩家 " + playerUsername + " 对敌人 " + e.enemyType + " 造成异常铲子伤害(" + force + ")！");
                             jcs.Add(p.playerSteamId);
-                            if (AntiCheatPlugin.ShovelConfig2.Value)
+                            if (AntiCheatPlugin.Shovel2.Value)
                             {
                                 KickPlayer(p);
                             }
@@ -702,7 +704,7 @@ namespace AntiCheat
                             var e = (EnemyAI)target;
                             ShowMessage("检测到玩家 " + playerUsername + " 对敌人 " + e.enemyType + " 造成异常伤害(" + force + ")！");
                             jcs.Add(p.playerSteamId);
-                            if (AntiCheatPlugin.ShovelConfig2.Value)
+                            if (AntiCheatPlugin.Shovel2.Value)
                             {
                                 KickPlayer(p);
                             }
