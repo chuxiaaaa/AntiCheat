@@ -1,7 +1,5 @@
 # AntiCheat
 
-[**Русский**](../README-ru.md) | [**中文简体**](../../README.md)
-
 A Lethal Company anti-cheat mod (host-only)
 
 ### Introduction
