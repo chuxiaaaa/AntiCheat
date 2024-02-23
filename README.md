@@ -1,5 +1,7 @@
 # AntiCheat
 
+[**English**](./docs/README-en.md) | [**Русский**](./docs/README-ru.md)
+
 一个致命公司反作弊模组(仅限主机使用)
 
 ### 简介
