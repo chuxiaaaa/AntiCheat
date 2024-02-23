@@ -28,9 +28,38 @@ namespace AntiCheat
         public static List<long> dgcd = new List<long>();
         public static Dictionary<ulong, List<string>> czcd = new Dictionary<ulong, List<string>>();
         public static Dictionary<ulong, List<string>> sdqcd = new Dictionary<ulong, List<string>>();
+
+        public static Dictionary<int, Dictionary<ulong, List<DateTime>>> chcs = new Dictionary<int, Dictionary<ulong, List<DateTime>>>();
+
         public static List<long> mjs { get; set; } = new List<long>();
         public static List<long> lhs { get; set; } = new List<long>();
 
+        [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_1346025125")]
+        [HarmonyPrefix]
+        public static bool __rpc_handler_1346025125(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (Check(rpcParams, out var p))
+            {
+                ByteUnpacker.ReadValueBitPacked(reader, out int playerId);
+                reader.ReadValueSafe(out bool spawnBody, default);
+                reader.ReadValueSafe(out Vector3 bodyVelocity);
+                ByteUnpacker.ReadValueBitPacked(reader, out int num);
+                reader.Seek(0);
+                if((CauseOfDeath)num == CauseOfDeath.Abandoned)
+                {
+                    bypass = true;
+                    string data = $"<color=yellow>[{StartOfRound.Instance.allPlayerScripts[playerId].playerUsername}] <color=red>还没上船呢...</color></color>";
+                    AntiCheatPlugin.ManualLog.LogInfo(data);
+                    HUDManager.Instance.AddTextToChatOnServer(data, -1);
+                    bypass = false;
+                }
+            }
+            else if (p == null)
+            {
+                return false;
+            }
+            return true;
+        }
 
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_638895557")]
         [HarmonyPrefix]
@@ -215,8 +244,9 @@ namespace AntiCheat
                     return;
                 }
                 bypass = true;
-                AntiCheatPlugin.ManualLog.LogInfo($"<color=green>欢迎 <color=yellow>{p2.playerUsername}</color> 加入飞船</color>");
-                HUDManager.Instance.AddTextToChatOnServer($"<color=green>欢迎 <color=yellow>{p2.playerUsername}</color> 加入飞船</color>", -1);
+                string data = $"<color=green>欢迎 <color=yellow>{p2.playerUsername}</color> 加入飞船</color>";
+                AntiCheatPlugin.ManualLog.LogInfo(data);
+                HUDManager.Instance.AddTextToChatOnServer(data, -1);
                 lastClientId = p2.actualClientId;
                 bypass = false;
             }
@@ -249,6 +279,7 @@ namespace AntiCheat
             AntiCheatPlugin.ManualLog.LogInfo($"SetMoney:{Money}");
             Money = UnityEngine.Object.FindObjectOfType<Terminal>().groupCredits;
             jcs = new List<ulong>();
+            chcs = new Dictionary<int, Dictionary<ulong, List<DateTime>>>();
         }
 
         public static int Money = -1;
@@ -425,7 +456,7 @@ namespace AntiCheat
                     {
                         return true;
                     }
-                    if (Vector3.Distance(p.transform.position, e.transform.position) > 50)
+                    if (Vector3.Distance(p.transform.position, e.transform.position) > 50f)
                     {
                         ShowMessage($"检测到玩家 {p.playerUsername} 秒杀怪物( {e.enemyType.enemyName} ,剩余HP:{e.enemyHP})！");
                         if (AntiCheatPlugin.KillEnemy2.Value)
@@ -487,13 +518,24 @@ namespace AntiCheat
                     var enemy = target.GetComponent<EnemyAI>();
                     float v = Vector3.Distance(p.transform.position, enemy.transform.position);
                     AntiCheatPlugin.ManualLog.LogInfo($"Distance:{v}");
-                    AntiCheatPlugin.ManualLog.LogInfo($"{p.playerUsername} called ChangeOwnershipOfEnemy|enemy:{enemy.enemyType.enemyName}|clientId:{clientId}");
-                    if (enemy.OwnerClientId == (ulong)clientId)
+                    AntiCheatPlugin.ManualLog.LogInfo($"{p.playerUsername}|{p.actualClientId} called ChangeOwnershipOfEnemy|enemy:{enemy.enemyType.enemyName}|clientId:{clientId}");
+                    AntiCheatPlugin.ManualLog.LogInfo($"OwnerClientId:{enemy.OwnerClientId}");
+                    int key = enemy.GetInstanceID();
+                    if (!chcs.ContainsKey(key))
+                    {
+                        chcs.Add(key, new Dictionary<ulong, List<DateTime>>());
+                    }
+                    if (!chcs[key].ContainsKey(p.actualClientId))
+                    {
+                        chcs[key].Add(p.actualClientId, new List<DateTime>());
+                    }
+                    if (chcs[key][p.actualClientId].Count(x => x.AddSeconds(1) > DateTime.Now) > 5)
                     {
                         ShowMessage($"检测到玩家 {p.playerUsername} 强制改变怪物仇恨！");
-                        KickPlayer(p);
+                        //KickPlayer(p);
                         return false;
                     }
+                    chcs[key][p.actualClientId].Add(DateTime.Now);
                     if (enemy.isEnemyDead)
                     {
                         return false;
@@ -622,11 +664,18 @@ namespace AntiCheat
                 ByteUnpacker.ReadValueBitPacked(reader, out int playerWhoHit);
                 reader.ReadValueSafe(out bool playHitSFX, default);
                 reader.Seek(0);
-                AntiCheatPlugin.ManualLog.LogInfo("force:" + force);
-                AntiCheatPlugin.ManualLog.LogInfo("playerWhoHit:" + playerWhoHit);
+                AntiCheatPlugin.ManualLog.LogDebug("force:" + force);
+                AntiCheatPlugin.ManualLog.LogDebug("playerWhoHit:" + playerWhoHit);
                 if (p.isHostPlayerObject)
                 {
                     return true;
+                }
+                AntiCheatPlugin.ManualLog.LogDebug("playerWhoHit != -1 "+(playerWhoHit != -1));
+                AntiCheatPlugin.ManualLog.LogDebug("StartOfRound.Instance.allPlayerScripts[playerWhoHit] != p " + (StartOfRound.Instance.allPlayerScripts[playerWhoHit] != p));
+                if (playerWhoHit != -1 && StartOfRound.Instance.allPlayerScripts[playerWhoHit] != p)
+                {
+                    AntiCheatPlugin.ManualLog.LogDebug("return false;");
+                    return false;
                 }
                 if (AntiCheatPlugin.ShovelConfig.Value)
                 {
@@ -646,7 +695,7 @@ namespace AntiCheat
                             return false;
                         }
                     }
-                    else if (!p.isPlayerDead && obj == null)
+                    else if (!p.isPlayerDead && obj == null && force != 1)
                     {
                         if (!jcs.Contains(p.playerSteamId))
                         {
@@ -732,6 +781,8 @@ namespace AntiCheat
                     else
                     {
                         lhs.Add(target.GetInstanceID());
+                        var item = (GiftBoxItem)target;
+                        item.OnNetworkDespawn();
                     }
                 }
             }
@@ -949,7 +1000,7 @@ namespace AntiCheat
                     reader.ReadValueSafe(out chatMessage, false);
                 }
                 reader.Seek(0);
-                AntiCheatPlugin.ManualLog.LogInfo("__rpc_handler_2787681914:" + chatMessage);
+                AntiCheatPlugin.ManualLog.LogInfo($"__rpc_handler_2787681914|{p.playerUsername}{chatMessage}");
                 if (chatMessage.Contains("<color") || chatMessage.Contains("<size"))
                 {
                     AntiCheatPlugin.ManualLog.LogInfo("playerId = -1");
@@ -1039,7 +1090,7 @@ namespace AntiCheat
                         }
                         ByteUnpacker.ReadValueBitPacked(reader, out int playerId);
                         reader.Seek(0);
-                        AntiCheatPlugin.ManualLog.LogInfo(chatMessage);
+                        AntiCheatPlugin.ManualLog.LogInfo($"__rpc_handler_2930587515|{p.playerUsername}|{chatMessage}");
                         if (playerId == -1)
                         {
                             AntiCheatPlugin.ManualLog.LogInfo("playerId = -1");
