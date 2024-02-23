@@ -1,6 +1,6 @@
 # Античит
 
-[**English**](./docs/README-en.md) | [**中文简体**](./README.md)
+[**English**](docs/README-en.md) | [**中文简体**](README.md)
 
 Античит-мод для Lethal Company (только для хоста)
 
