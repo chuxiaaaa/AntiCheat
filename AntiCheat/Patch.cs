@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEngine.GraphicsBuffer;
 
 namespace AntiCheat
 {
@@ -45,7 +46,7 @@ namespace AntiCheat
                 reader.ReadValueSafe(out Vector3 bodyVelocity);
                 ByteUnpacker.ReadValueBitPacked(reader, out int num);
                 reader.Seek(0);
-                if((CauseOfDeath)num == CauseOfDeath.Abandoned)
+                if ((CauseOfDeath)num == CauseOfDeath.Abandoned)
                 {
                     bypass = true;
                     string data = $"<color=yellow>[{StartOfRound.Instance.allPlayerScripts[playerId].playerUsername}] <color=red>还没上船呢...</color></color>";
@@ -194,6 +195,7 @@ namespace AntiCheat
 
         public static ulong lastClientId { get; set; }
 
+
         [HarmonyPatch(typeof(StartOfRound), "StartTrackingAllPlayerVoices")]
         [HarmonyPostfix]
         public static void StartTrackingAllPlayerVoices()
@@ -260,8 +262,11 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                AntiCheatPlugin.ManualLog.LogInfo($"<color=yellow>[{p.playerUsername}] <color=green>新生物数据发送到终端！</color></color>");
-                HUDManager.Instance.AddTextToChatOnServer($"<color=yellow>[{p.playerUsername}] <color=green>新生物数据发送到终端！</color></color>", -1);
+                string msg = LocalizationManager.GetString("msg_snc_player", new Dictionary<string, string>() {
+                    { "{player}",p.playerUsername }
+                });
+                AntiCheatPlugin.ManualLog.LogInfo(msg);
+                HUDManager.Instance.AddTextToChatOnServer(msg, -1);
             }
             else if (p == null)
             {
@@ -672,7 +677,7 @@ namespace AntiCheat
                 {
                     return true;
                 }
-                AntiCheatPlugin.ManualLog.LogDebug("playerWhoHit != -1 "+(playerWhoHit != -1));
+                AntiCheatPlugin.ManualLog.LogDebug("playerWhoHit != -1 " + (playerWhoHit != -1));
                 AntiCheatPlugin.ManualLog.LogDebug("StartOfRound.Instance.allPlayerScripts[playerWhoHit] != p " + (StartOfRound.Instance.allPlayerScripts[playerWhoHit] != p));
                 if (playerWhoHit != -1 && StartOfRound.Instance.allPlayerScripts[playerWhoHit] != p)
                 {
@@ -1239,12 +1244,35 @@ namespace AntiCheat
             return null;//??
         }
 
+
         [HarmonyPatch(typeof(ShotgunItem), "__rpc_handler_1329927282")]
         [HarmonyPrefix]
         public static bool __rpc_handler_1329927282(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p) || true)
             {
+                if (AntiCheatPlugin.InfiniteAmmo.Value)
+                {
+                    var s = (ShotgunItem)target;
+                    var localClientSendingShootGunRPC = (bool)typeof(ShotgunItem).GetField("localClientSendingShootGunRPC", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(s);
+                    if (localClientSendingShootGunRPC)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        if(s.shellsLoaded == 0)
+                        {
+                            ShowMessage($"检测到玩家 {p.playerUsername} 启用无限子弹！");
+                            if (AntiCheatPlugin.InfiniteAmmo2.Value)
+                            {
+                                KickPlayer(p);
+                            }
+                            return false;
+                        }
+                        AntiCheatPlugin.ManualLog.LogInfo($"__rpc_handler_1329927282|{s.shellsLoaded}");
+                    }
+                }
                 var id = p.playerSteamId;
                 var m = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 if (!sdqcd.ContainsKey(id))

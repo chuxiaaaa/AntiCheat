@@ -124,6 +124,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 无限子弹检测 的本地化字符串。
+        /// </summary>
+        internal static string config_InfiniteAmmo {
+            get {
+                return ResourceManager.GetString("config_InfiniteAmmo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 隐身检测 的本地化字符串。
         /// </summary>
         internal static string config_Invisibility {
@@ -309,6 +318,15 @@ namespace AntiCheat.Lang {
         internal static string config_Turret {
             get {
                 return ResourceManager.GetString("config_Turret", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 &lt;color=yellow&gt;[{player}] &lt;color=green&gt;新生物数据发送到终端！&lt;/color&gt;&lt;/color&gt; 的本地化字符串。
+        /// </summary>
+        internal static string msg_snc_player {
+            get {
+                return ResourceManager.GetString("msg_snc_player", resourceCulture);
             }
         }
         

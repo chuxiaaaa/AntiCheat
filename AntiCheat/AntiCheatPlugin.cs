@@ -15,7 +15,7 @@ namespace AntiCheat
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheatPlugin : BaseUnityPlugin
     {
-        public const string Version = "0.3.2";
+        public const string Version = "0.3.3";
         public static ManualLogSource ManualLog = null;
 
         public static ConfigEntry<string> LangugeConfig;
@@ -81,6 +81,9 @@ namespace AntiCheat
         public static ConfigEntry<bool> ItemCooldown;
         public static ConfigEntry<bool> ItemCooldown2;
 
+        public static ConfigEntry<bool> InfiniteAmmo;
+        public static ConfigEntry<bool> InfiniteAmmo2;
+
         public static ConfigEntry<bool> FreeBuy;
         public static ConfigEntry<bool> FreeBuy2;
 
@@ -126,6 +129,9 @@ namespace AntiCheat
 
             Turret = Config.Bind("TurretSettings", "Enable", true, LocalizationManager.GetString("config_Turret"));
             Turret2 = Config.Bind("TurretSettings", "Kick", false, LocalizationManager.GetString("config_Kick"));
+
+            InfiniteAmmo = Config.Bind("InfiniteAmmoSettings", "Enable", true, LocalizationManager.GetString("config_InfiniteAmmo"));
+            InfiniteAmmo2 = Config.Bind("InfiniteAmmoSettings", "Kick", false, LocalizationManager.GetString("config_Kick"));
 
             Invisibility = Config.Bind("InvisibilitySettings", "Enable", true, LocalizationManager.GetString("config_Invisibility"));
             Invisibility2 = Config.Bind("InvisibilitySettings", "Kick", false, LocalizationManager.GetString("config_Kick"));

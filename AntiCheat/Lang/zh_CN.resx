@@ -138,6 +138,9 @@
   <data name="config_GrabObject" xml:space="preserve">
     <value>隔空取物检测</value>
   </data>
+  <data name="config_InfiniteAmmo" xml:space="preserve">
+    <value>无限子弹检测</value>
+  </data>
   <data name="config_Invisibility" xml:space="preserve">
     <value>隐身检测</value>
   </data>
@@ -200,6 +203,9 @@
   </data>
   <data name="config_Turret" xml:space="preserve">
     <value>激怒机枪检测</value>
+  </data>
+  <data name="msg_snc_player" xml:space="preserve">
+    <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;新生物数据发送到终端！&lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_wlc_player" xml:space="preserve">
     <value>&lt;color=green&gt;欢迎 &lt;color=yellow&gt;{player}&lt;/color&gt; 加入飞船&lt;/color&gt;</value>
