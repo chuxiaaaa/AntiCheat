@@ -698,5 +698,14 @@ namespace AntiCheat.Lang {
                 return ResourceManager.GetString("Prefix", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   查找类似 \r\n{text}\r\n建议您在房间名标注 [AC] 字样，向其他玩家标识这是一个启用反作弊的房间！ 的本地化字符串。
+        /// </summary>
+        internal static string tip_servername {
+            get {
+                return ResourceManager.GetString("tip_servername", resourceCulture);
+            }
+        }
     }
 }

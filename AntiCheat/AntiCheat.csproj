@@ -51,6 +51,10 @@
     <Reference Include="Unity.Netcode.Runtime">
       <HintPath>D:\致命公司\lib\Unity.Netcode.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\致命公司\lib\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>D:\致命公司\lib\UnityEngine.dll</HintPath>
     </Reference>
