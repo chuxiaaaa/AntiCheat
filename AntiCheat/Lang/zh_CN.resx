@@ -204,10 +204,130 @@
   <data name="config_Turret" xml:space="preserve">
     <value>激怒机枪检测</value>
   </data>
+  <data name="Item_Shotgun" xml:space="preserve">
+    <value>霰弹枪</value>
+  </data>
+  <data name="Item_Shovel" xml:space="preserve">
+    <value>铲子</value>
+  </data>
+  <data name="log_refuse_connect" xml:space="preserve">
+    <value>{steamId} 尝试重连游戏被拒绝(因为他已被踢出)！</value>
+  </data>
+  <data name="MessageFormat" xml:space="preserve">
+    <value>&lt;color=red&gt;{Prefix} {msg}&lt;/color&gt;</value>
+  </data>
+  <data name="msg_behind_plaer" xml:space="preserve">
+    <value>&lt;color=yellow&gt;[{player}] &lt;color=red&gt;还没上船呢...&lt;/color&gt;&lt;/color&gt;</value>
+  </data>
+  <data name="msg_Boss" xml:space="preserve">
+    <value>检测到玩家 {player} 召唤老板！</value>
+  </data>
+  <data name="msg_ChatReal" xml:space="preserve">
+    <value>检测到玩家 {player} 尝试伪装成 {player2} 发言！</value>
+  </data>
+  <data name="msg_DespawnItem" xml:space="preserve">
+    <value>检测到玩家 {player} 销毁物品！</value>
+  </data>
+  <data name="msg_Enemy_ChangeOwnershipOfEnemy" xml:space="preserve">
+    <value>检测到玩家 {player} 强制改变怪物仇恨！</value>
+  </data>
+  <data name="msg_FreeBuy_GiveMoney" xml:space="preserve">
+    <value>检测到玩家 {player} 刷取金钱！</value>
+  </data>
+  <data name="msg_FreeBuy_Item" xml:space="preserve">
+    <value>检测到玩家 {player} 强制购买物品！</value>
+  </data>
+  <data name="msg_FreeBuy_unlockable" xml:space="preserve">
+    <value>检测到玩家 {player} 强制解锁飞船装饰！</value>
+  </data>
+  <data name="msg_game_start" xml:space="preserve">
+    <value>&lt;color=green&gt;本房间启用反作弊(v{ver})&lt;/color&gt;</value>
+  </data>
+  <data name="msg_Gift" xml:space="preserve">
+    <value>检测到玩家 {player} 刷礼物盒！</value>
+  </data>
+  <data name="msg_GrabObject" xml:space="preserve">
+    <value>检测到玩家 {player} 隔空取物！(玩家坐标：{player_postion}|物品坐标：{object_postion})</value>
+  </data>
+  <data name="msg_InfiniteAmmo" xml:space="preserve">
+    <value>检测到玩家 {player} 启用无限子弹！</value>
+  </data>
+  <data name="msg_Invisibility" xml:space="preserve">
+    <value>检测到玩家 {player} 坐标异常！(玩家坐标：{player_postion})</value>
+  </data>
+  <data name="msg_ItemCooldown" xml:space="preserve">
+    <value>检测到玩家 {player} 使用 {item} 频率异常！</value>
+  </data>
+  <data name="msg_Jetpack" xml:space="preserve">
+    <value>检测到玩家 {player} 引爆喷气背包！</value>
+  </data>
+  <data name="msg_Kick" xml:space="preserve">
+    <value>{player} 被踢出游戏！</value>
+  </data>
+  <data name="msg_KillEnemy" xml:space="preserve">
+    <value>检测到玩家 {player} 秒杀怪物！( {enemyName} ,剩余血量:{HP})</value>
+  </data>
+  <data name="msg_Landmine" xml:space="preserve">
+    <value>检测到玩家 {player} 强制引爆地雷！</value>
+  </data>
+  <data name="msg_Map" xml:space="preserve">
+    <value>检测到玩家 {player} 使用小地图！</value>
+  </data>
+  <data name="msg_Mask" xml:space="preserve">
+    <value>检测到玩家 {player} 刷假人！</value>
+  </data>
+  <data name="msg_Nameless" xml:space="preserve">
+    <value>检测到玩家名称异常！</value>
+  </data>
+  <data name="msg_ShipBuild" xml:space="preserve">
+    <value>检测到玩家 {player} 将飞船物品摆放到异常位置({postion})！</value>
+  </data>
+  <data name="msg_ShipConfig2" xml:space="preserve">
+    <value>{player} 请等待飞船人数达到 {cfg} 以上再拉杆！</value>
+  </data>
+  <data name="msg_ShipConfig4" xml:space="preserve">
+    <value>{player} 请等待飞船人数达到 {player_count}({cfg4}%) 并且 游戏时间在 {cfg3} 之后起飞(当前时间:{game_time})</value>
+  </data>
+  <data name="msg_ShipConfig5" xml:space="preserve">
+    <value>检测到玩家 {player} 强制拉杆！</value>
+  </data>
+  <data name="msg_ShipLight" xml:space="preserve">
+    <value>检测到玩家 {player} 频繁使用灯光！</value>
+  </data>
+  <data name="msg_ShipTerminal" xml:space="preserve">
+    <value>检测到玩家 {player} 频繁制造噪音！</value>
+  </data>
+  <data name="msg_Shovel" xml:space="preserve">
+    <value>检测到玩家 {player} 使用铲子对玩家 {player2} 造成异常伤害！({damageAmount})</value>
+  </data>
+  <data name="msg_Shovel2" xml:space="preserve">
+    <value>检测到玩家 {player} 铲子范围异常，对玩家 {player2} 造成伤害！({damageAmount})</value>
+  </data>
+  <data name="msg_Shovel3" xml:space="preserve">
+    <value>检测到玩家 {player} 空手对玩家 {player2} 造成伤害！({damageAmount})</value>
+  </data>
+  <data name="msg_Shovel4" xml:space="preserve">
+    <value>检测到玩家 {player} 使用铲子对敌人 {enemyName} 造成异常伤害！({damageAmount})</value>
+  </data>
+  <data name="msg_Shovel5" xml:space="preserve">
+    <value>检测到玩家 {player} 铲子范围异常，对敌人 {enemyName} 造成伤害！({damageAmount})</value>
+  </data>
+  <data name="msg_Shovel6" xml:space="preserve">
+    <value>检测到玩家 {player} 空手对敌人 {enemyName} 造成伤害！({damageAmount})</value>
+  </data>
   <data name="msg_snc_player" xml:space="preserve">
     <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;新生物数据发送到终端！&lt;/color&gt;&lt;/color&gt;</value>
   </data>
+  <data name="msg_Turret" xml:space="preserve">
+    <value>检测玩家 {player} 强制激怒机枪！(距离：{Distance})</value>
+  </data>
+  <data name="msg_Turret2" xml:space="preserve">
+    <value>检测玩家 {player} 强制激怒机枪(空手)！</value>
+  </data>
   <data name="msg_wlc_player" xml:space="preserve">
     <value>&lt;color=green&gt;欢迎 &lt;color=yellow&gt;{player}&lt;/color&gt; 加入飞船&lt;/color&gt;</value>
+  </data>
+  <data name="Prefix" xml:space="preserve">
+    <value>[反作弊]</value>
   </data>
 </root>

@@ -322,6 +322,339 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 霰弹枪 的本地化字符串。
+        /// </summary>
+        internal static string Item_Shotgun {
+            get {
+                return ResourceManager.GetString("Item_Shotgun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 铲子 的本地化字符串。
+        /// </summary>
+        internal static string Item_Shovel {
+            get {
+                return ResourceManager.GetString("Item_Shovel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {steamId} 尝试重连游戏被拒绝(因为他已被踢出)！ 的本地化字符串。
+        /// </summary>
+        internal static string log_refuse_connect {
+            get {
+                return ResourceManager.GetString("log_refuse_connect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 &lt;color=red&gt;{Prefix} {msg}&lt;/color&gt; 的本地化字符串。
+        /// </summary>
+        internal static string MessageFormat {
+            get {
+                return ResourceManager.GetString("MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 &lt;color=yellow&gt;[{player}] &lt;color=red&gt;还没上船呢...&lt;/color&gt;&lt;/color&gt; 的本地化字符串。
+        /// </summary>
+        internal static string msg_behind_plaer {
+            get {
+                return ResourceManager.GetString("msg_behind_plaer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 召唤老板！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_Boss {
+            get {
+                return ResourceManager.GetString("msg_Boss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 尝试伪装成 {player2} 发言！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_ChatReal {
+            get {
+                return ResourceManager.GetString("msg_ChatReal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 销毁物品！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_DespawnItem {
+            get {
+                return ResourceManager.GetString("msg_DespawnItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 强制改变怪物仇恨！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_Enemy_ChangeOwnershipOfEnemy {
+            get {
+                return ResourceManager.GetString("msg_Enemy_ChangeOwnershipOfEnemy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 刷取金钱！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_FreeBuy_GiveMoney {
+            get {
+                return ResourceManager.GetString("msg_FreeBuy_GiveMoney", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 强制购买物品！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_FreeBuy_Item {
+            get {
+                return ResourceManager.GetString("msg_FreeBuy_Item", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 强制解锁飞船装饰！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_FreeBuy_unlockable {
+            get {
+                return ResourceManager.GetString("msg_FreeBuy_unlockable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 &lt;color=green&gt;本房间启用反作弊(v{ver})&lt;/color&gt; 的本地化字符串。
+        /// </summary>
+        internal static string msg_game_start {
+            get {
+                return ResourceManager.GetString("msg_game_start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 刷礼物盒！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_Gift {
+            get {
+                return ResourceManager.GetString("msg_Gift", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 隔空取物！(玩家坐标：{player_postion}|物品坐标：{object_postion}) 的本地化字符串。
+        /// </summary>
+        internal static string msg_GrabObject {
+            get {
+                return ResourceManager.GetString("msg_GrabObject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 启用无限子弹！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_InfiniteAmmo {
+            get {
+                return ResourceManager.GetString("msg_InfiniteAmmo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 坐标异常！(玩家坐标：{player_postion}) 的本地化字符串。
+        /// </summary>
+        internal static string msg_Invisibility {
+            get {
+                return ResourceManager.GetString("msg_Invisibility", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 使用 {item} 频率异常！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_ItemCooldown {
+            get {
+                return ResourceManager.GetString("msg_ItemCooldown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 引爆喷气背包！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_Jetpack {
+            get {
+                return ResourceManager.GetString("msg_Jetpack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {player} 被踢出游戏！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_Kick {
+            get {
+                return ResourceManager.GetString("msg_Kick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 秒杀怪物！( {enemyName} ,剩余血量:{HP}) 的本地化字符串。
+        /// </summary>
+        internal static string msg_KillEnemy {
+            get {
+                return ResourceManager.GetString("msg_KillEnemy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 强制引爆地雷！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_Landmine {
+            get {
+                return ResourceManager.GetString("msg_Landmine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 使用小地图！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_Map {
+            get {
+                return ResourceManager.GetString("msg_Map", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 刷假人！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_Mask {
+            get {
+                return ResourceManager.GetString("msg_Mask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家名称异常！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_Nameless {
+            get {
+                return ResourceManager.GetString("msg_Nameless", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 将飞船物品摆放到异常位置({postion})！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_ShipBuild {
+            get {
+                return ResourceManager.GetString("msg_ShipBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {player} 请等待飞船人数达到 {cfg} 以上再拉杆！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_ShipConfig2 {
+            get {
+                return ResourceManager.GetString("msg_ShipConfig2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {player} 请等待飞船人数达到 {player_count}({cfg4}%) 并且 游戏时间在 {cfg3} 之后起飞(当前时间:{game_time}) 的本地化字符串。
+        /// </summary>
+        internal static string msg_ShipConfig4 {
+            get {
+                return ResourceManager.GetString("msg_ShipConfig4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 强制拉杆！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_ShipConfig5 {
+            get {
+                return ResourceManager.GetString("msg_ShipConfig5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 频繁使用灯光！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_ShipLight {
+            get {
+                return ResourceManager.GetString("msg_ShipLight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 频繁制造噪音！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_ShipTerminal {
+            get {
+                return ResourceManager.GetString("msg_ShipTerminal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 使用铲子对玩家 {player2} 造成异常伤害！({damageAmount}) 的本地化字符串。
+        /// </summary>
+        internal static string msg_Shovel {
+            get {
+                return ResourceManager.GetString("msg_Shovel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 铲子范围异常，对玩家 {player2} 造成伤害！({damageAmount}) 的本地化字符串。
+        /// </summary>
+        internal static string msg_Shovel2 {
+            get {
+                return ResourceManager.GetString("msg_Shovel2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 空手对玩家 {player2} 造成伤害！({damageAmount}) 的本地化字符串。
+        /// </summary>
+        internal static string msg_Shovel3 {
+            get {
+                return ResourceManager.GetString("msg_Shovel3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 使用铲子对敌人 {enemyName} 造成异常伤害！({damageAmount}) 的本地化字符串。
+        /// </summary>
+        internal static string msg_Shovel4 {
+            get {
+                return ResourceManager.GetString("msg_Shovel4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 铲子范围异常，对敌人 {enemyName} 造成伤害！({damageAmount}) 的本地化字符串。
+        /// </summary>
+        internal static string msg_Shovel5 {
+            get {
+                return ResourceManager.GetString("msg_Shovel5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 空手对敌人 {enemyName} 造成伤害！({damageAmount}) 的本地化字符串。
+        /// </summary>
+        internal static string msg_Shovel6 {
+            get {
+                return ResourceManager.GetString("msg_Shovel6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 &lt;color=yellow&gt;[{player}] &lt;color=green&gt;新生物数据发送到终端！&lt;/color&gt;&lt;/color&gt; 的本地化字符串。
         /// </summary>
         internal static string msg_snc_player {
@@ -331,11 +664,38 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 检测玩家 {player} 强制激怒机枪！(距离：{Distance}) 的本地化字符串。
+        /// </summary>
+        internal static string msg_Turret {
+            get {
+                return ResourceManager.GetString("msg_Turret", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测玩家 {player} 强制激怒机枪(空手)！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_Turret2 {
+            get {
+                return ResourceManager.GetString("msg_Turret2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 &lt;color=green&gt;欢迎 &lt;color=yellow&gt;{player}&lt;/color&gt; 加入飞船&lt;/color&gt; 的本地化字符串。
         /// </summary>
         internal static string msg_wlc_player {
             get {
                 return ResourceManager.GetString("msg_wlc_player", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 [反作弊] 的本地化字符串。
+        /// </summary>
+        internal static string Prefix {
+            get {
+                return ResourceManager.GetString("Prefix", resourceCulture);
             }
         }
     }

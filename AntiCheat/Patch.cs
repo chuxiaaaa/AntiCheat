@@ -49,9 +49,11 @@ namespace AntiCheat
                 if ((CauseOfDeath)num == CauseOfDeath.Abandoned)
                 {
                     bypass = true;
-                    string data = $"<color=yellow>[{StartOfRound.Instance.allPlayerScripts[playerId].playerUsername}] <color=red>还没上船呢...</color></color>";
-                    AntiCheatPlugin.ManualLog.LogInfo(data);
-                    HUDManager.Instance.AddTextToChatOnServer(data, -1);
+                    string msg = LocalizationManager.GetString("msg_behind_plaer", new Dictionary<string, string>() {
+                        { "{player}",p.playerUsername }
+                    });
+                    AntiCheatPlugin.ManualLog.LogInfo(msg);
+                    HUDManager.Instance.AddTextToChatOnServer(msg, -1);
                     bypass = false;
                 }
             }
@@ -107,7 +109,11 @@ namespace AntiCheat
                     {
                         if (!jcs.Contains(p.playerSteamId))
                         {
-                            ShowMessage("检测到玩家 " + playerUsername + " 对玩家 " + p2.playerUsername + " 造成异常铲子伤害(" + damageAmount + ")！");
+                            ShowMessage(LocalizationManager.GetString("msg_Shovel", new Dictionary<string, string>() {
+                                { "{player}",p.playerUsername },
+                                { "{player2}",p2.playerUsername },
+                                { "{damageAmount}",damageAmount.ToString() }
+                            }));
                             jcs.Add(p.playerSteamId);
                             if (AntiCheatPlugin.Shovel2.Value)
                             {
@@ -120,7 +126,11 @@ namespace AntiCheat
                     {
                         if (!jcs.Contains(p.playerSteamId))
                         {
-                            ShowMessage("检测到玩家 " + playerUsername + " 对玩家 " + p2.playerUsername + " 铲子范围异常，造成伤害(" + damageAmount + ")！");
+                            ShowMessage(LocalizationManager.GetString("msg_Shovel2", new Dictionary<string, string>() {
+                                { "{player}",p.playerUsername },
+                                { "{player2}",p2.playerUsername },
+                                { "{damageAmount}",damageAmount.ToString() }
+                            }));
                             jcs.Add(p.playerSteamId);
                             if (AntiCheatPlugin.Shovel2.Value)
                             {
@@ -135,8 +145,11 @@ namespace AntiCheat
                         {
                             if (!jcs.Contains(p.playerSteamId))
                             {
-
-                                ShowMessage("检测到玩家 " + playerUsername + " 对玩家 " + p2.playerUsername + " 造成异常伤害(" + damageAmount + ")！");
+                                ShowMessage(LocalizationManager.GetString("msg_Shovel3", new Dictionary<string, string>() {
+                                    { "{player}",p.playerUsername },
+                                    { "{player2}",p2.playerUsername },
+                                    { "{damageAmount}",damageAmount.ToString() }
+                                }));
                                 jcs.Add(p.playerSteamId);
                                 if (AntiCheatPlugin.Shovel2.Value)
                                 {
@@ -225,7 +238,7 @@ namespace AntiCheat
                 {
                     if (AntiCheatPlugin.Nameless.Value)
                     {
-                        ShowMessage("检测到玩家名称异常！");
+                        ShowMessage(LocalizationManager.GetString("msg_Nameless"));
                         if (AntiCheatPlugin.Nameless2.Value)
                         {
                             KickPlayer(item, true);
@@ -307,18 +320,21 @@ namespace AntiCheat
                     AntiCheatPlugin.ManualLog.LogInfo($"__rpc_handler_3953483456|newGroupCreditsAmount:{newGroupCreditsAmount}");
                     if (Money == newGroupCreditsAmount || Money == 0)
                     {
-                        var pl = GetPlayer(rpcParams);
                         AntiCheatPlugin.ManualLog.LogInfo($"Money:{Money}|newGroupCreditsAmount:{newGroupCreditsAmount}");
-                        ShowMessage($"检测到玩家 {pl.playerUsername} 强制解锁飞船装饰！");
+                        ShowMessage(LocalizationManager.GetString("msg_FreeBuy_unlockable", new Dictionary<string, string>() {
+                            { "{player}",p.playerUsername }
+                        }));
                         if (AntiCheatPlugin.FreeBuy2.Value)
                         {
-                            KickPlayer(pl);
+                            KickPlayer(p);
                         }
                         return false;
                     }
                     else if (newGroupCreditsAmount > Money)
                     {
-                        ShowMessage($"检测到玩家 {p.playerUsername} 刷钱！");
+                        ShowMessage(LocalizationManager.GetString("msg_FreeBuy_GiveMoney", new Dictionary<string, string>() {
+                            { "{player}",p.playerUsername }
+                        }));
                         if (AntiCheatPlugin.FreeBuy2.Value)
                         {
                             KickPlayer(p);
@@ -369,7 +385,9 @@ namespace AntiCheat
                     AntiCheatPlugin.ManualLog.LogInfo("__rpc_handler_4003509079|boughtItems:" + string.Join(",", boughtItems) + "|newGroupCredits:" + newGroupCredits + "|Money:" + Money);
                     if (Money == newGroupCredits || Money == 0)
                     {
-                        ShowMessage($"检测到玩家 {p.playerUsername} 强制购买物品！");
+                        ShowMessage(LocalizationManager.GetString("msg_FreeBuy_Item", new Dictionary<string, string>() {
+                            { "{player}",p.playerUsername }
+                        }));
                         if (AntiCheatPlugin.FreeBuy2.Value)
                         {
                             KickPlayer(p);
@@ -378,7 +396,9 @@ namespace AntiCheat
                     }
                     else if (newGroupCredits > Money)
                     {
-                        ShowMessage($"检测到玩家 {p.playerUsername} 刷钱！");
+                        ShowMessage(LocalizationManager.GetString("msg_FreeBuy_GiveMoney", new Dictionary<string, string>() {
+                            { "{player}",p.playerUsername }
+                        }));
                         if (AntiCheatPlugin.FreeBuy2.Value)
                         {
                             KickPlayer(p);
@@ -465,7 +485,11 @@ namespace AntiCheat
                     }
                     if (Vector3.Distance(p.transform.position, e.transform.position) > 50f)
                     {
-                        ShowMessage($"检测到玩家 {p.playerUsername} 秒杀怪物( {e.enemyType.enemyName} ,剩余HP:{e.enemyHP})！");
+                        ShowMessage(LocalizationManager.GetString("msg_Enemy_ChangeOwnershipOfEnemy", new Dictionary<string, string>() {
+                            { "{player}",p.playerUsername },
+                            { "{enemyName}",e.enemyType.enemyName },
+                            { "{HP}",e.enemyHP.ToString() }
+                        }));
                         if (AntiCheatPlugin.KillEnemy2.Value)
                         {
                             KickPlayer(p);
@@ -538,8 +562,10 @@ namespace AntiCheat
                     }
                     if (chcs[key][p.actualClientId].Count(x => x.AddSeconds(1) > DateTime.Now) > 5)
                     {
-                        ShowMessage($"检测到玩家 {p.playerUsername} 强制改变怪物仇恨！");
-                        //KickPlayer(p);
+                        ShowMessage(LocalizationManager.GetString("msg_Enemy_ChangeOwnershipOfEnemy", new Dictionary<string, string>() {
+                            { "{player}",p.playerUsername }
+                        }));
+                        //KickPlayer(p); 
                         return false;
                     }
                     chcs[key][p.actualClientId].Add(DateTime.Now);
@@ -628,7 +654,9 @@ namespace AntiCheat
                     var jp = (JetpackItem)target;
                     if (jp.playerHeldBy != null && jp.playerHeldBy.actualClientId != p.actualClientId)
                     {
-                        ShowMessage($"检测到 {p.playerUsername} 引爆喷气背包！");
+                        ShowMessage(LocalizationManager.GetString("msg_Jetpack", new Dictionary<string, string>() {
+                             { "{player}",p.playerUsername }
+                        }));
                         if (AntiCheatPlugin.Jetpack2.Value)
                         {
                             KickPlayer(p);
@@ -637,7 +665,9 @@ namespace AntiCheat
                     }
                     else if (jp.playerHeldBy == null)
                     {
-                        ShowMessage($"检测到 {p.playerUsername} 引爆喷气背包！");
+                        ShowMessage(LocalizationManager.GetString("msg_Jetpack", new Dictionary<string, string>() {
+                             { "{player}",p.playerUsername }
+                        }));
                         if (AntiCheatPlugin.Jetpack2.Value)
                         {
                             KickPlayer(p);
@@ -693,7 +723,11 @@ namespace AntiCheat
                         if (!jcs.Contains(p.playerSteamId))
                         {
                             var e = (EnemyAI)target;
-                            ShowMessage("检测到玩家 " + playerUsername + " 对敌人 " + e.enemyType + " 造成异常铲子伤害(" + force + ")！");
+                            ShowMessage(LocalizationManager.GetString("msg_Shovel4", new Dictionary<string, string>() {
+                                { "{player}",p.playerUsername },
+                                { "{enemyName}",e.enemyType.enemyName },
+                                { "{damageAmount}",force.ToString() }
+                            }));
                             jcs.Add(p.playerSteamId);
                             if (AntiCheatPlugin.Shovel2.Value)
                             {
@@ -707,7 +741,11 @@ namespace AntiCheat
                         if (!jcs.Contains(p.playerSteamId))
                         {
                             var e = (EnemyAI)target;
-                            ShowMessage("检测到玩家 " + playerUsername + " 对敌人 " + e.enemyType + " 造成异常伤害(" + force + ")！");
+                            ShowMessage(LocalizationManager.GetString("msg_Shovel6", new Dictionary<string, string>() {
+                                { "{player}",p.playerUsername },
+                                { "{enemyName}",e.enemyType.enemyName },
+                                { "{damageAmount}",force.ToString() }
+                            }));
                             jcs.Add(p.playerSteamId);
                             if (AntiCheatPlugin.Shovel2.Value)
                             {
@@ -761,8 +799,12 @@ namespace AntiCheat
                 lastMessage = msg;
             }
             bypass = true;
-            AntiCheatPlugin.ManualLog.LogInfo($"<color=red>[反作弊] {msg}</color>");
-            HUDManager.Instance.AddTextToChatOnServer($"<color=red>[反作弊] {msg}</color>", -1);
+            string showmsg = LocalizationManager.GetString("MessageFormat", new Dictionary<string, string>() {
+                { "{Prefix}",LocalizationManager.GetString("Prefix") },
+                { "{msg}",msg }
+            });
+            AntiCheatPlugin.ManualLog.LogInfo(showmsg);
+            HUDManager.Instance.AddTextToChatOnServer(showmsg, -1);
             bypass = false;
         }
 
@@ -778,7 +820,9 @@ namespace AntiCheat
                 {
                     if (lhs.Contains(target.GetInstanceID()))
                     {
-                        ShowMessage($"检测到玩家 {p.playerUsername} 刷礼物盒");
+                        ShowMessage(LocalizationManager.GetString("msg_Gift", new Dictionary<string, string>() {
+                            { "{player}",p.playerUsername }
+                        }));
                         if (AntiCheatPlugin.Gift2.Value)
                         {
                             KickPlayer(p);
@@ -810,7 +854,9 @@ namespace AntiCheat
                 {
                     if (mjs.Contains(target.GetInstanceID()))
                     {
-                        ShowMessage($"检测到玩家 {p.playerUsername} 刷假人");
+                        ShowMessage(LocalizationManager.GetString("msg_Mask", new Dictionary<string, string>() {
+                            { "{player}",p.playerUsername }
+                        }));
                         if (AntiCheatPlugin.Mask2.Value)
                         {
                             KickPlayer(p);
@@ -869,7 +915,9 @@ namespace AntiCheat
             {
                 return true;
             }
-            HUDManager.Instance.AddTextToChatOnServer("<color=green>本房间启用反作弊(v" + AntiCheatPlugin.Version + ")</color>", -1);
+            HUDManager.Instance.AddTextToChatOnServer(LocalizationManager.GetString("msg_game_start", new Dictionary<string, string>() {
+                { "{ver}",AntiCheatPlugin.Version }
+            }), -1);
             return true;
         }
 
@@ -912,7 +960,11 @@ namespace AntiCheat
                                 {
                                     return true;
                                 }
-                                ShowMessage($"检测到玩家 {p.playerUsername} 隔空取物{g.transform.position}|{p.serverPlayerPosition}！");
+                                ShowMessage(LocalizationManager.GetString("msg_GrabObject", new Dictionary<string, string>() {
+                                    { "{player}",p.playerUsername },
+                                    { "{object_postion}",g.transform.position.ToString() },
+                                    { "{player_postion}",p.serverPlayerPosition.ToString() }
+                                }));
                                 g = default;
                                 grabbedObject = default;
                                 if (AntiCheatPlugin.GrabObject2.Value)
@@ -956,7 +1008,10 @@ namespace AntiCheat
                     }
                     if (Vector3.Distance(oldpos, newPos) > 100 && Vector3.Distance(newPos, new Vector3(0, 0, 0)) > 10)
                     {
-                        ShowMessage($"检测到玩家 {p.playerUsername} 坐标异常{newPos.ToString()}！");
+                        ShowMessage(LocalizationManager.GetString("msg_Invisibility", new Dictionary<string, string>() {
+                            { "{player}",p.playerUsername },
+                            { "{player_postion}",newPos.ToString() }
+                        }));
                         if (AntiCheatPlugin.Invisibility2.Value)
                         {
                             KickPlayer(p);
@@ -986,21 +1041,25 @@ namespace AntiCheat
             reader.Seek(0);
             if (StartOfRound.Instance.KickedClientIds.Contains(newPlayerSteamId))
             {
-                AntiCheatPlugin.ManualLog.LogInfo($"{newPlayerSteamId} 尝试重连游戏被拒绝(因为他已被踢出)！");
+                AntiCheatPlugin.ManualLog.LogInfo(LocalizationManager.GetString("log_refuse_connect", new Dictionary<string, string>() {
+                    { "{steamId}",newPlayerSteamId.ToString() }
+                }));
                 return false;
             }
             return true;
         }
 
 
+        /// <summary>
+        /// Prefix HUDManager.AddTextMessageServerRpc
+        /// </summary>
         [HarmonyPatch(typeof(HUDManager), "__rpc_handler_2787681914")]
         [HarmonyPrefix]
         public static bool __rpc_handler_2787681914(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
             {
-                bool flag;
-                reader.ReadValueSafe<bool>(out flag, default(FastBufferWriter.ForPrimitives));
+                reader.ReadValueSafe(out bool flag, default);
                 string chatMessage = null;
                 if (flag)
                 {
@@ -1011,18 +1070,23 @@ namespace AntiCheat
                 if (chatMessage.Contains("<color") || chatMessage.Contains("<size"))
                 {
                     AntiCheatPlugin.ManualLog.LogInfo("playerId = -1");
-                    if (chatMessage.Contains("<size=0>Tyzeron.Minimap"))
+                    if (AntiCheatPlugin.Map.Value)
                     {
-                        ShowMessage($"检测到玩家 {p.playerUsername} 使用小地图");
-                        if (AntiCheatPlugin.Map2.Value)
+                        if (chatMessage.Contains("<size=0>Tyzeron.Minimap"))
                         {
-                            KickPlayer(p);
+                            ShowMessage(LocalizationManager.GetString("msg_Map", new Dictionary<string, string>() {
+                                { "{player}",p.playerUsername }
+                            }));
+                            if (AntiCheatPlugin.Map2.Value)
+                            {
+                                KickPlayer(p);
+                            }
+                            return false;
                         }
                     }
-                    else if (bypass)
+                    if (bypass)
                     {
                         AntiCheatPlugin.ManualLog.LogInfo("bypass");
-
                         return true;
                     }
                     return false;
@@ -1058,7 +1122,9 @@ namespace AntiCheat
                 {
                     if (p.currentlyHeldObjectServer != null && !(p.currentlyHeldObjectServer is GiftBoxItem) && !(p.currentlyHeldObjectServer is KeyItem))
                     {
-                        ShowMessage($"检测到玩家 {p.playerUsername} 销毁物品！");
+                        ShowMessage(LocalizationManager.GetString("msg_DespawnItem", new Dictionary<string, string>() {
+                                { "{player}",p.playerUsername }
+                        }));
                         if (AntiCheatPlugin.DespawnItem2.Value)
                         {
                             KickPlayer(p);
@@ -1120,7 +1186,10 @@ namespace AntiCheat
                         {
                             if (StartOfRound.Instance.allPlayerScripts[(int)playerId].playerSteamId != p.playerSteamId)
                             {
-                                ShowMessage($"{p.playerUsername} 尝试伪装成 {StartOfRound.Instance.allPlayerScripts[playerId].playerUsername} 发言！");
+                                ShowMessage(LocalizationManager.GetString("msg_ChatReal", new Dictionary<string, string>() {
+                                    { "{player}",p.playerUsername },
+                                    { "{player2}",StartOfRound.Instance.allPlayerScripts[playerId].playerUsername },
+                                }));
                                 if (AntiCheatPlugin.ChatReal2.Value)
                                 {
                                     KickPlayer(p);
@@ -1164,7 +1233,9 @@ namespace AntiCheat
                     else if (zdcd.Any(x => x + 200 > m))
                     {
                         zdcd.Add(m);
-                        ShowMessage($"{p.playerUsername} 频繁制造噪音！");
+                        ShowMessage(LocalizationManager.GetString("msg_ShipTerminal", new Dictionary<string, string>() {
+                            { "{player}",p.playerUsername }
+                        }));
                         if (AntiCheatPlugin.ShipTerminal2.Value)
                         {
                             KickPlayer(p);
@@ -1192,7 +1263,6 @@ namespace AntiCheat
             {
                 if (AntiCheatPlugin.ShipLight.Value)
                 {
-
                     DateTime dt = DateTime.Now;
                     var m = dt.Ticks / 10000;
                     if (dgcd.Count > 200)
@@ -1211,7 +1281,9 @@ namespace AntiCheat
                     else if (dgcd.Any(x => x + 1000 > m))
                     {
                         dgcd.Add(m);
-                        ShowMessage($"{p.playerUsername} 请勿频繁使用灯光！", "请勿频繁使用灯光");
+                        ShowMessage(LocalizationManager.GetString("msg_ShipLight", new Dictionary<string, string>() {
+                            { "{player}",p.playerUsername }
+                        }), "msg_ShipLight");
                         ShipLights shipLights = UnityEngine.Object.FindAnyObjectByType<ShipLights>();
                         if (!shipLights.areLightsOn)
                         {
@@ -1244,7 +1316,9 @@ namespace AntiCheat
             return null;//??
         }
 
-
+        /// <summary>
+        /// Prefix ShotgunItem.ShootGunServerRpc
+        /// </summary>
         [HarmonyPatch(typeof(ShotgunItem), "__rpc_handler_1329927282")]
         [HarmonyPrefix]
         public static bool __rpc_handler_1329927282(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -1261,9 +1335,11 @@ namespace AntiCheat
                     }
                     else
                     {
-                        if(s.shellsLoaded == 0)
+                        if (s.shellsLoaded == 0)
                         {
-                            ShowMessage($"检测到玩家 {p.playerUsername} 启用无限子弹！");
+                            ShowMessage(LocalizationManager.GetString("msg_InfiniteAmmo", new Dictionary<string, string>() {
+                                { "{player}",p.playerUsername }
+                            }));
                             if (AntiCheatPlugin.InfiniteAmmo2.Value)
                             {
                                 KickPlayer(p);
@@ -1273,28 +1349,34 @@ namespace AntiCheat
                         AntiCheatPlugin.ManualLog.LogInfo($"__rpc_handler_1329927282|{s.shellsLoaded}");
                     }
                 }
-                var id = p.playerSteamId;
-                var m = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                if (!sdqcd.ContainsKey(id))
+                else if (AntiCheatPlugin.ItemCooldown.Value)
                 {
-                    sdqcd.Add(id, new List<string>());
-                }
-                if (sdqcd[id].Count > 200)
-                {
-                    sdqcd[id].RemoveRange(0, sdqcd[id].Count - 1);
-                }
-                if (sdqcd[id].Count(x => x == m) >= 2)
-                {
-                    ShowMessage($"玩家 {p.playerUsername} 使用霰弹枪频率异常！");
-                    if (AntiCheatPlugin.ItemCooldown2.Value)
+                    var id = p.playerSteamId;
+                    var m = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    if (!sdqcd.ContainsKey(id))
                     {
-                        KickPlayer(p);
+                        sdqcd.Add(id, new List<string>());
                     }
-                    return false;
-                }
-                else
-                {
-                    sdqcd[id].Add(m);
+                    if (sdqcd[id].Count > 200)
+                    {
+                        sdqcd[id].RemoveRange(0, sdqcd[id].Count - 1);
+                    }
+                    if (sdqcd[id].Count(x => x == m) >= 2)
+                    {
+                        ShowMessage(LocalizationManager.GetString("msg_ItemCooldown", new Dictionary<string, string>() {
+                            { "{player}",p.playerUsername },
+                            { "{item}",LocalizationManager.GetString("Item_Shotgun") }
+                        }));
+                        if (AntiCheatPlugin.ItemCooldown2.Value)
+                        {
+                            KickPlayer(p);
+                        }
+                        return false;
+                    }
+                    else
+                    {
+                        sdqcd[id].Add(m);
+                    }
                 }
             }
             else if (p == null)
@@ -1304,34 +1386,43 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// Prefix Shovel.HitShovelServerRpc
+        /// </summary>
         [HarmonyPatch(typeof(Shovel), "__rpc_handler_2096026133")]
         [HarmonyPrefix]
         public static bool __rpc_handler_2096026133(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p) || true)
             {
-                var id = p.playerSteamId;
-                var m = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                if (!czcd.ContainsKey(id))
+                if (AntiCheatPlugin.ItemCooldown.Value)
                 {
-                    czcd.Add(id, new List<string>());
-                }
-                if (czcd[id].Count > 200)
-                {
-                    czcd[id].RemoveRange(0, czcd[id].Count - 1);
-                }
-                if (czcd[id].Count(x => x == m) >= 3)
-                {
-                    ShowMessage($"玩家 {p.playerUsername} 使用铲子频率异常！");
-                    if (AntiCheatPlugin.ItemCooldown2.Value)
+                    var id = p.playerSteamId;
+                    var m = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    if (!czcd.ContainsKey(id))
                     {
-                        KickPlayer(p);
+                        czcd.Add(id, new List<string>());
                     }
-                    return false;
-                }
-                else
-                {
-                    czcd[id].Add(m);
+                    if (czcd[id].Count > 200)
+                    {
+                        czcd[id].RemoveRange(0, czcd[id].Count - 1);
+                    }
+                    if (czcd[id].Count(x => x == m) >= 3)
+                    {
+                        ShowMessage(LocalizationManager.GetString("msg_ItemCooldown", new Dictionary<string, string>() {
+                            { "{player}",p.playerUsername },
+                            { "{item}",LocalizationManager.GetString("Item_Shovel") }
+                        }));
+                        if (AntiCheatPlugin.ItemCooldown2.Value)
+                        {
+                            KickPlayer(p);
+                        }
+                        return false;
+                    }
+                    else
+                    {
+                        czcd[id].Add(m);
+                    }
                 }
             }
             else if (p == null)
@@ -1349,7 +1440,9 @@ namespace AntiCheat
             {
                 if (AntiCheatPlugin.ShipConfig.Value && !GameNetworkManager.Instance.gameHasStarted)
                 {
-                    ShowMessage($"检测到玩家 {p.playerUsername} 强制拉杆");
+                    ShowMessage(LocalizationManager.GetString("msg_ShipConfig5", new Dictionary<string, string>() {
+                        { "{player}",p.playerUsername }
+                    }));
                     if (AntiCheatPlugin.ShipConfig5.Value)
                     {
                         KickPlayer(p);
@@ -1363,8 +1456,10 @@ namespace AntiCheat
                 }
                 else
                 {
-                    ShowMessage($"请等待飞船人数达到 {AntiCheatPlugin.ShipConfig2.Value} 以上再拉杆！");
-
+                    ShowMessage(LocalizationManager.GetString("msg_ShipConfig2", new Dictionary<string, string>() {
+                        { "{player}",p.playerUsername },
+                        { "{cfg}",AntiCheatPlugin.ShipConfig2.Value.ToString() }
+                    }));
                     return false;
                 }
             }
@@ -1419,7 +1514,9 @@ namespace AntiCheat
                 terminal.SetTerminalInUseServerRpc(false);
                 terminal.terminalInUse = false;
             }
-            ShowMessage($"{kick.playerUsername} 被踢出游戏");
+            ShowMessage(LocalizationManager.GetString("msg_Kick", new Dictionary<string, string>() {
+                { "{player}",kick.playerUsername }
+            }));
         }
 
         [HarmonyPatch(typeof(HUDManager), "SetPlayerLevel")]
@@ -1436,68 +1533,13 @@ namespace AntiCheat
             return true;
         }
 
-
-        //[HarmonyPatch(typeof(Shovel), "HitShovelServerRpc")]
-        //[HarmonyPrefix]
-        //public static bool HitShovelServerRpc(Shovel __instance)
-        //{
-        //    if (!StartOfRound.Instance.localPlayerController.IsHost)
-        //    {
-        //        return true;
-        //    }
-        //    else if (AntiCheatPlugin.ItemCooldown.Value)
-        //    {
-        //        if (__instance.playerHeldBy == null)
-        //        {
-        //            return false;
-        //        }
-        //        PlayerControllerB playerHeldBy = __instance.playerHeldBy;
-        //        var id = playerHeldBy.playerSteamId;
-        //        DateTime dt = DateTime.Now;
-        //        var m = dt.Ticks / 10000;
-        //        AntiCheatPlugin.ManualLog.LogInfo(m);
-        //        if (!czcd.ContainsKey(id))
-        //        {
-        //            czcd.Add(id, new List<long>());
-        //        }
-        //        if (czcd[id].Count > 200)
-        //        {
-        //            czcd[id].RemoveRange(0, czcd[id].Count - 1);
-        //        }
-        //        if (czcd[id].Contains(m))
-        //        {
-        //            ShowMessage($"玩家{playerHeldBy.playerUsername}使用铲子频率异常！");
-        //            if (AntiCheatPlugin.ItemCooldown2.Value)
-        //            {
-        //                var index = StartOfRound.Instance.allPlayerScripts.ToList().IndexOf(playerHeldBy);
-        //                StartOfRound.Instance.KickPlayer(index);
-        //            }
-        //            return false;
-        //        }
-        //        else if (czcd[id].Count(x => x + 100 > m) > 3)
-        //        {
-        //            czcd[id].Add(m);
-        //            //ShowMessage($"玩家{playerHeldBy.playerUsername}使用铲子频率异常！");
-        //            //if (AntiCheatPlugin.ItemCooldown2.Value)
-        //            //{
-        //            //    var index = StartOfRound.Instance.allPlayerScripts.ToList().IndexOf(playerHeldBy);
-        //            //    StartOfRound.Instance.KickPlayer(index);
-        //            //}
-        //            return false;
-        //        }
-        //        else
-        //        {
-        //            czcd[id].Add(m);
-        //        }
-        //    }
-        //    return true;
-        //}
-
+        /// <summary>
+        /// Prefix StartMatchLever.PlayLeverPullEffectsServerRpc
+        /// </summary>
         [HarmonyPatch(typeof(StartMatchLever), "__rpc_handler_2406447821")]
         [HarmonyPrefix]
         public static bool __rpc_handler_2406447821(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-
             if (Check(rpcParams, out var p))
             {
                 if (UnityEngine.Object.FindAnyObjectByType<StartMatchLever>().leverHasBeenPulled && !StartOfRound.Instance.shipHasLanded)
@@ -1513,7 +1555,6 @@ namespace AntiCheat
             {
                 return false;
             }
-
             return true;
         }
 
@@ -1530,6 +1571,9 @@ namespace AntiCheat
             AntiCheatPlugin.ManualLog.LogInfo($"SetMoney:{Money}");
         }
 
+        /// <summary>
+        /// Prefix Turret.EnterBerserkModeServerRpc
+        /// </summary>
         [HarmonyPatch(typeof(Turret), "__rpc_handler_4195711963")]
         [HarmonyPrefix]
         public static bool __rpc_handler_4195711963(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -1539,14 +1583,16 @@ namespace AntiCheat
                 if (AntiCheatPlugin.Turret.Value)
                 {
                     var obj = p.ItemSlots[p.currentItemSlot];
-                    AntiCheatPlugin.ManualLog.LogInfo("itemName:" + obj.GetType().ToString());
                     if (obj != null && isShovel(obj))
                     {
                         var t = (Turret)target;
                         float v = Vector3.Distance(t.transform.position, p.transform.position);
                         if (v > 10)
                         {
-                            ShowMessage($"检测玩家 {p.playerUsername} 强制激怒机枪！(距离：{v})");
+                            ShowMessage(LocalizationManager.GetString("msg_Turret", new Dictionary<string, string>() {
+                                { "{player}",p.playerUsername },
+                                { "{Distance}",v.ToString() }
+                            }));
                             if (AntiCheatPlugin.Turret2.Value)
                             {
                                 KickPlayer(p);
@@ -1556,7 +1602,9 @@ namespace AntiCheat
                     }
                     else
                     {
-                        ShowMessage($"检测玩家 {p.playerUsername} 强制激怒机枪(空手)！");
+                        ShowMessage(LocalizationManager.GetString("msg_Turret2", new Dictionary<string, string>() {
+                             { "{player}",p.playerUsername }
+                        }));
                         if (AntiCheatPlugin.Turret2.Value)
                         {
                             KickPlayer(p);
@@ -1572,6 +1620,9 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// Prefix TimeOfDay.SetShipLeaveEarlyServerRpc
+        /// </summary>
         [HarmonyPatch(typeof(TimeOfDay), "__rpc_handler_543987598")]
         [HarmonyPrefix]
         public static bool __rpc_handler_543987598(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -1592,6 +1643,9 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// Prefix StartOfRound.EndGameServerRpc
+        /// </summary>
         [HarmonyPatch(typeof(StartOfRound), "__rpc_handler_2028434619")]
         [HarmonyPrefix]
         public static bool EndGameServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -1600,7 +1654,6 @@ namespace AntiCheat
             {
                 var hour = int.Parse(AntiCheatPlugin.ShipConfig3.Value.Split(':')[0]);
                 var min = int.Parse(AntiCheatPlugin.ShipConfig3.Value.Split(':')[1]);
-                //AntiCheatPlugin.ManualLog.LogInfo($"cfg{hour}:{min}");
                 var time = (int)(TimeOfDay.Instance.normalizedTimeOfDay * (60f * TimeOfDay.Instance.numberOfHours)) + 360;
                 int time2 = (int)Mathf.Floor((float)(time / 60));
                 bool pm = false;
@@ -1614,14 +1667,12 @@ namespace AntiCheat
                 {
                     time2 += 12;
                 }
-                //AntiCheatPlugin.ManualLog.LogInfo($"time {time}:{time2}");
                 var live = (decimal)StartOfRound.Instance.allPlayerScripts.Count(x => x.isPlayerControlled && !x.isPlayerDead);
 
                 if (live == 1)
                 {
                     return true;
                 }
-                //AntiCheatPlugin.ManualLog.LogInfo($"live {live}");
                 decimal p1 = Math.Round(live * (decimal)(AntiCheatPlugin.ShipConfig4.Value / 100m), 2);
                 decimal p2 = StartOfRound.Instance.allPlayerScripts.Count(x => x.isPlayerControlled && x.isInHangarShipRoom); // 
                 if (StartOfRound.Instance.currentLevel.PlanetName.Contains("Gordion"))
@@ -1629,15 +1680,19 @@ namespace AntiCheat
                     time2 = hour;
                     time = min;
                 }
-                //decimal p3 = StartOfRound.Instance.allPlayerScripts.Count(x => x.isPlayerControlled && x.isPlayerDead) * (decimal)(AntiCheatPlugin.ShipConfig5.Value / 100);
                 if (hour <= time2 && min <= time && p2 >= p1)
                 {
                     return true;
                 }
                 else
                 {
-                    ShowMessage($"请等待飞船人数达到 {p1}({AntiCheatPlugin.ShipConfig4.Value}%) 并且 游戏时间在 {hour.ToString("00")}:{min.ToString("00")} 之后起飞(当前时间:{time2.ToString("00")}:{time.ToString("00")})", "现在还不能起飞！");
-
+                    ShowMessage(LocalizationManager.GetString("msg_ShipConfig4", new Dictionary<string, string>() {
+                        { "{player}",p.playerUsername },
+                        { "{player_count}",p1.ToString() },
+                        { "{cfg4}",AntiCheatPlugin.ShipConfig4.Value.ToString() },
+                        { "{cfg3}",$"{hour.ToString("00")}:{min.ToString("00")}" },
+                        { "{game_time}",$"{time2.ToString("00")}:{time.ToString("00")}" }
+                    }));
                     return false;
                 }
             }
@@ -1648,6 +1703,13 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// Prefix ShipBuildModeManager.PlaceShipObjectServerRpc
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="reader"></param>
+        /// <param name="rpcParams"></param>
+        /// <returns></returns>
         [HarmonyPatch(typeof(ShipBuildModeManager), "__rpc_handler_861494715")]
         [HarmonyPrefix]
         public static bool __rpc_handler_861494715(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -1656,26 +1718,32 @@ namespace AntiCheat
             {
                 try
                 {
-                    NetworkManager networkManager = target.NetworkManager;
-                    if (networkManager == null || !networkManager.IsListening)
+                    if (AntiCheatPlugin.ShipBuild.Value)
                     {
-                        return true;
-                    }
-                    Vector3 newPosition;
-                    reader.ReadValueSafe(out newPosition);
-                    Vector3 newRotation;
-                    reader.ReadValueSafe(out newRotation);
-                    reader.Seek(0);
-                    var pl = GetPlayer(rpcParams);
-                    AntiCheatPlugin.ManualLog.LogInfo($"newPosition:{newPosition.ToString()}|newRotation:{newRotation.ToString()}|playerWhoMoved:{pl.playerUsername}");
-                    if (newRotation.x == 0 || newPosition.x > 11.2 || newPosition.x < -5 || newPosition.y > 5 || newPosition.y < 0 || newPosition.z > -10 || newPosition.z < -18)
-                    {
-                        ShowMessage($"检测到玩家 {pl.playerUsername} 将飞船物品摆放到异常位置({newPosition.ToString()})！");
-                        if (AntiCheatPlugin.ShipBuild2.Value)
+                        NetworkManager networkManager = target.NetworkManager;
+                        if (networkManager == null || !networkManager.IsListening)
                         {
-                            KickPlayer(pl);
+                            return true;
                         }
-                        return false;
+                        Vector3 newPosition;
+                        reader.ReadValueSafe(out newPosition);
+                        Vector3 newRotation;
+                        reader.ReadValueSafe(out newRotation);
+                        reader.Seek(0);
+                        var pl = GetPlayer(rpcParams);
+                        AntiCheatPlugin.ManualLog.LogInfo($"newPosition:{newPosition.ToString()}|newRotation:{newRotation.ToString()}|playerWhoMoved:{pl.playerUsername}");
+                        if (newRotation.x == 0 || newPosition.x > 11.2 || newPosition.x < -5 || newPosition.y > 5 || newPosition.y < 0 || newPosition.z > -10 || newPosition.z < -18)
+                        {
+                            ShowMessage(LocalizationManager.GetString("msg_ShipBuild", new Dictionary<string, string>() {
+                                { "{player}",p.playerUsername },
+                                { "{postion}",newPosition.ToString() }
+                            }));
+                            if (AntiCheatPlugin.ShipBuild2.Value)
+                            {
+                                KickPlayer(pl);
+                            }
+                            return false;
+                        }
                     }
                     return true;
                 }
@@ -1704,9 +1772,7 @@ namespace AntiCheat
                     if (p.isPlayerDead)
                     {
                         ps = p.deadBody.transform.position;
-                        AntiCheatPlugin.ManualLog.LogInfo($"玩家 {p.deadBody.transform.position}");
                     }
-                    AntiCheatPlugin.ManualLog.LogInfo($"玩家 {ps}");
                     if (Vector3.Distance(ps, lm.transform.position) > 15)
                     {
                         if (lm.transform.position.y > 0 && p.isInsideFactory)
@@ -1717,7 +1783,9 @@ namespace AntiCheat
                         {
                             return true;
                         }
-                        ShowMessage($"检测到玩家 {p.playerUsername} 强制引爆地雷！");
+                        ShowMessage(LocalizationManager.GetString("msg_Landmine", new Dictionary<string, string>() {
+                             { "{player}",p.playerUsername }
+                        }));
                         if (AntiCheatPlugin.Landmine2.Value)
                         {
                             KickPlayer(p);
@@ -1741,7 +1809,9 @@ namespace AntiCheat
             {
                 if (AntiCheatPlugin.Boss.Value)
                 {
-                    ShowMessage($"检测到玩家 {p.playerUsername} 召唤老板！");
+                    ShowMessage(LocalizationManager.GetString("msg_Boss", new Dictionary<string, string>() {
+                         { "{player}",p.playerUsername }
+                    }));
                     if (AntiCheatPlugin.Boss2.Value)
                     {
                         KickPlayer(p);
