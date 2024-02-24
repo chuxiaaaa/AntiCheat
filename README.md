@@ -20,6 +20,11 @@ This mod does not support English at the moment. If you are able to provide Engl
 2. 将 AntiCheat.dll 放置于 Lethal Company\BepInEx\plugins\ 目录下
 3. 启动游戏
 
+### 创建房间
+
+使用反作弊时，建议您在房间名标注 [AC] 字样，向其他玩家标识这是一个启用反作弊的房间！
+例如：[v49/AC] 战斗爽！
+
 ### 功能
 * 强制拉杆检测
 * 飞船物品位置异常检测
