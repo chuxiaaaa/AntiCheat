@@ -42,6 +42,7 @@ When using the mod, you may encounter "false positives," but this may not necess
 
 ### Create Room
 Suggest adding the "[AC]" label to the room name to indicate to other players that this is a room with anti-cheating enabled!
+For example: [v49/AC] The battle is thrilling!
 
 ### Feedback
 If you encounter false positives and are sure it is not caused by the mod, you can submit an issue to explain how to reproduce the problem to help us fix it!
