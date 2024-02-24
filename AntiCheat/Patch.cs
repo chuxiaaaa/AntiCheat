@@ -1829,12 +1829,13 @@ namespace AntiCheat
 
         [HarmonyPatch(typeof(MenuManager), "HostSetLobbyPublic")]
         [HarmonyPostfix]
-        public static void Start(MenuManager __instance,bool setPublic)
+        public static void Start(MenuManager __instance, bool setPublic)
         {
             if (setPublic)
             {
                 __instance.privatePublicDescription.text = LocalizationManager.GetString("tip_servername", new Dictionary<string, string>() {
-                    { "{text}",__instance.privatePublicDescription.text }
+                    { "{text}",__instance.privatePublicDescription.text },
+                    { "\\r\\n",Environment.NewLine }
                 });
             }
         }
