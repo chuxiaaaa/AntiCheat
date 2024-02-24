@@ -22,7 +22,7 @@ namespace AntiCheat
             zn_ch,
             en_us,
         }
-        public static ConfigEntry<string> LanguageConfig;
+        public static ConfigEntry<Language> LanguageConfig;
 
         public static ConfigEntry<bool> Shovel;
         public static ConfigEntry<bool> Shovel2;
