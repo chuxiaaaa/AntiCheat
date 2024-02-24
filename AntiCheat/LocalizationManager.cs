@@ -14,8 +14,8 @@ namespace AntiCheat
 
         public static Dictionary<string, Type> Languages = new Dictionary<string, Type>
         {
-            { "zh_cn", typeof(zh_CN) }
-            //{ "en_us", typeof(en_US) },
+            { "zh_cn", typeof(zh_CN) },
+            { "en_us", typeof(en_US) }
         };
 
         public static void SetLanguage(string language)

@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="config_Boss" xml:space="preserve">
+    <value>Summon Boss Detection</value>
+  </data>
+  <data name="config_ChatReal" xml:space="preserve">
+    <value>Speech forgery detection</value>
+  </data>
+  <data name="config_DespawnItem" xml:space="preserve">
+    <value>Destroyed item detection</value>
+  </data>
+  <data name="config_Enemy" xml:space="preserve">
+    <value>Monster anomaly detection</value>
+  </data>
+  <data name="config_FreeBuy" xml:space="preserve">
+    <value>Free purchases</value>
+  </data>
+  <data name="config_Gift" xml:space="preserve">
+    <value>Gift box detection</value>
+  </data>
+  <data name="config_GrabObject" xml:space="preserve">
+    <value>Grabbed object detection</value>
+  </data>
+  <data name="config_InfiniteAmmo" xml:space="preserve">
+    <value>Infinite bullet detection</value>
+  </data>
+  <data name="config_Invisibility" xml:space="preserve">
+    <value>Stealth detection</value>
+  </data>
+  <data name="config_ItemCooldown" xml:space="preserve">
+    <value>Item usage cooldown detection</value>
+  </data>
+  <data name="config_Jetpack" xml:space="preserve">
+    <value>Jetpack explosion detection</value>
+  </data>
+  <data name="config_Kick" xml:space="preserve">
+    <value>Kick player when this behavior is detected</value>
+  </data>
+  <data name="config_KillEnemy" xml:space="preserve">
+    <value>Kill enemy detection</value>
+  </data>
+  <data name="config_Landmine" xml:space="preserve">
+    <value>Explosive mine detection</value>
+  </data>
+  <data name="config_Map" xml:space="preserve">
+    <value>Minimap detection</value>
+  </data>
+  <data name="config_Mask" xml:space="preserve">
+    <value>Masked enemy detection</value>
+  </data>
+  <data name="config_Nameless" xml:space="preserve">
+    <value>Player name detection (Nameless or Unknown)</value>
+  </data>
+  <data name="config_ShipBuild" xml:space="preserve">
+    <value>Spacecraft item location anomaly detection</value>
+  </data>
+  <data name="config_ShipConfig2" xml:space="preserve">
+    <value>Non-hosts can only log in if more than the specified number of people (host permissions need to be turned off)</value>
+  </data>
+  <data name="config_ShipConfig3" xml:space="preserve">
+    <value>Non-homeowners can only take off after this time</value>
+  </data>
+  <data name="config_ShipConfig4" xml:space="preserve">
+    <value>Non-homeowners can only take off when the number of people in the spaceship (survival) exceeds the above ratio (0-100%)</value>
+  </data>
+  <data name="config_ShipConfig5" xml:space="preserve">
+    <value>Detect force lever behavior (kick player when this behavior is detected)</value>
+  </data>
+  <data name="config_ShipConfig6" xml:space="preserve">
+    <value>Votes must exceed the above ratio to take off (0-100%)</value>
+  </data>
+  <data name="config_ShipLight" xml:space="preserve">
+    <value>Lights off show detection</value>
+  </data>
+  <data name="config_ShipSetting" xml:space="preserve">
+    <value>Only the host has landing rights</value>
+  </data>
+  <data name="config_ShipTerminal" xml:space="preserve">
+    <value>Terminal noise detection</value>
+  </data>
+  <data name="config_Shovel" xml:space="preserve">
+    <value>Shovel damage detection</value>
+  </data>
+  <data name="config_SpawnWebTrap" xml:space="preserve">
+    <value>Spider web detection</value>
+  </data>
+  <data name="config_Turret" xml:space="preserve">
+    <value>Enraged machine gun detection</value>
+  </data>
+  <data name="Item_Shotgun" xml:space="preserve">
+    <value>shotgun</value>
+  </data>
+  <data name="Item_Shovel" xml:space="preserve">
+    <value>shovel</value>
+  </data>
+  <data name="log_refuse_connect" xml:space="preserve">
+    <value>{steamId}'s attempt to reconnect to the game was rejected (because he has been kicked out)!</value>
+  </data>
+  <data name="MessageFormat" xml:space="preserve">
+    <value>&lt;color=red&gt;{Prefix} {msg}&lt;/color&gt;</value>
+  </data>
+  <data name="msg_behind_plaer" xml:space="preserve">
+    <value>&lt;color=yellow&gt;[{player}] &lt;color=red&gt;I haven’t boarded the ship yet...&lt;/color&gt;&lt;/color&gt;</value>
+  </data>
+  <data name="msg_Boss" xml:space="preserve">
+    <value>Player {player} detected summoning boss!</value>
+  </data>
+  <data name="msg_ChatReal" xml:space="preserve">
+    <value>Detected player {player} trying to speak as {player2}!</value>
+  </data>
+  <data name="msg_DespawnItem" xml:space="preserve">
+    <value>Player {player} destroying item detected!</value>
+  </data>
+  <data name="msg_Enemy_ChangeOwnershipOfEnemy" xml:space="preserve">
+    <value>Player {player} detected to force change of monster hatred!</value>
+  </data>
+  <data name="msg_FreeBuy_GiveMoney" xml:space="preserve">
+    <value>Player {player} detected for grinding money!</value>
+  </data>
+  <data name="msg_FreeBuy_Item" xml:space="preserve">
+    <value>Force purchase of item detected by player {player}!</value>
+  </data>
+  <data name="msg_FreeBuy_unlockable" xml:space="preserve">
+    <value>Player {player} detected to force ship decoration to be unlocked!</value>
+  </data>
+  <data name="msg_game_start" xml:space="preserve">
+    <value>&lt;color=green&gt;Anti-cheating (v{ver}) is enabled in this room&lt;/color&gt;</value>
+  </data>
+  <data name="msg_Gift" xml:space="preserve">
+    <value>Player {player} detected gift box farming!</value>
+  </data>
+  <data name="msg_GrabObject" xml:space="preserve">
+    <value>Player {player} detected taking objects from the air! (Player coordinates: {player_postion}|Item coordinates: {object_postion})</value>
+  </data>
+  <data name="msg_InfiniteAmmo" xml:space="preserve">
+    <value>Player {player} detected Enable unlimited bullets!</value>
+  </data>
+  <data name="msg_Invisibility" xml:space="preserve">
+    <value>Abnormal coordinates of player {player} detected! (Player coordinates: {player_postion})</value>
+  </data>
+  <data name="msg_ItemCooldown" xml:space="preserve">
+    <value>An abnormal frequency of usage of {item} by player {player} was detected!</value>
+  </data>
+  <data name="msg_Jetpack" xml:space="preserve">
+    <value>Player {player} detonated jetpack detected!</value>
+  </data>
+  <data name="msg_Kick" xml:space="preserve">
+    <value>{player} was kicked out of the game!</value>
+  </data>
+  <data name="msg_KillEnemy" xml:space="preserve">
+    <value>Player {player} is detected and instantly kills the monster! ({enemyName}, remaining blood volume: {HP})</value>
+  </data>
+  <data name="msg_Landmine" xml:space="preserve">
+    <value>Player {player} detected and forced to detonate a mine!</value>
+  </data>
+  <data name="msg_Map" xml:space="preserve">
+    <value>Player {player} detected using minimap!</value>
+  </data>
+  <data name="msg_Mask" xml:space="preserve">
+    <value>Player {player} detected as a fake!</value>
+  </data>
+  <data name="msg_Nameless" xml:space="preserve">
+    <value>An abnormality in player name has been detected!</value>
+  </data>
+  <data name="msg_ShipBuild" xml:space="preserve">
+    <value>It was detected that player {player} placed the ship items in an abnormal position ({postion})!</value>
+  </data>
+  <data name="msg_ShipConfig2" xml:space="preserve">
+    <value>{player} Please wait until the number of people in the spaceship reaches {cfg} or more before pulling the lever!</value>
+  </data>
+  <data name="msg_ShipConfig4" xml:space="preserve">
+    <value>{player} Please wait until the number of people in the spaceship reaches {player_count}({cfg4}%) and the game time takes off after {cfg3} (current time: {game_time})</value>
+  </data>
+  <data name="msg_ShipConfig5" xml:space="preserve">
+    <value>Player {player} forced lever detected!</value>
+  </data>
+  <data name="msg_ShipLight" xml:space="preserve">
+    <value>Frequent use of lights by player {player} detected!</value>
+  </data>
+  <data name="msg_ShipTerminal" xml:space="preserve">
+    <value>Detected that player {player} is making frequent noise!</value>
+  </data>
+  <data name="msg_Shovel" xml:space="preserve">
+    <value>Detected player {player} using a shovel to cause abnormal damage to player {player2}! ({damageAmount})</value>
+  </data>
+  <data name="msg_Shovel2" xml:space="preserve">
+    <value>An abnormality in the shovel range of player {player} was detected, causing damage to player {player2}! ({damageAmount})</value>
+  </data>
+  <data name="msg_Shovel3" xml:space="preserve">
+    <value>Detected player {player} using his bare hands to cause damage to player {player2}! ({damageAmount})</value>
+  </data>
+  <data name="msg_Shovel4" xml:space="preserve">
+    <value>Detected player {player} using a shovel to cause abnormal damage to enemy {enemyName}! ({damageAmount})</value>
+  </data>
+  <data name="msg_Shovel5" xml:space="preserve">
+    <value>An abnormality in the range of player {player}'s shovel was detected, causing damage to enemy {enemyName}! ({damageAmount})</value>
+  </data>
+  <data name="msg_Shovel6" xml:space="preserve">
+    <value>Player {player} was detected causing damage to enemy {enemyName} with his bare hands! ({damageAmount})</value>
+  </data>
+  <data name="msg_snc_player" xml:space="preserve">
+    <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;New biological data is sent to the terminal! &lt;/color&gt;&lt;/color&gt;</value>
+  </data>
+  <data name="msg_Turret" xml:space="preserve">
+    <value>Detect player {player} to force provoking machine gun! (distance: {Distance})</value>
+  </data>
+  <data name="msg_Turret2" xml:space="preserve">
+    <value>Detect player {player} to force provoking machine gun (empty hand)!</value>
+  </data>
+  <data name="msg_wlc_player" xml:space="preserve">
+    <value>&lt;color=green&gt;Welcome &lt;color=yellow&gt;{player}&lt;/color&gt; to join the spaceship&lt;/color&gt;</value>
+  </data>
+  <data name="Prefix" xml:space="preserve">
+    <value>[Anti-cheating]</value>
+  </data>
+</root>
