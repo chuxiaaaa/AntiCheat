@@ -210,6 +210,9 @@
   <data name="Item_Shovel" xml:space="preserve">
     <value>shovel</value>
   </data>
+  <data name="log_load" xml:space="preserve">
+    <value>mod Loaded!</value>
+  </data>
   <data name="log_refuse_connect" xml:space="preserve">
     <value>{steamId}'s attempt to reconnect to the game was rejected (because he has been kicked out)!</value>
   </data>
@@ -329,5 +332,8 @@
   </data>
   <data name="Prefix" xml:space="preserve">
     <value>[Anti-cheating]</value>
+  </data>
+  <data name="tip_servername" xml:space="preserve">
+    <value>\r\n{text}\r\nSuggest adding the "[AC]" label to the room name to indicate to other players that this is a room with anti-cheating enabled!</value>
   </data>
 </root>

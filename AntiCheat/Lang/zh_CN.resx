@@ -210,6 +210,9 @@
   <data name="Item_Shovel" xml:space="preserve">
     <value>铲子</value>
   </data>
+  <data name="log_load" xml:space="preserve">
+    <value>模组已加载完毕！</value>
+  </data>
   <data name="log_refuse_connect" xml:space="preserve">
     <value>{steamId} 尝试重连游戏被拒绝(因为他已被踢出)！</value>
   </data>

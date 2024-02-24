@@ -15,7 +15,7 @@ namespace AntiCheat
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheatPlugin : BaseUnityPlugin
     {
-        public const string Version = "0.3.5";
+        public const string Version = "0.3.6";
         public static ManualLogSource ManualLog = null;
 
         public static ConfigEntry<string> LangugeConfig;
@@ -173,7 +173,7 @@ namespace AntiCheat
 
             Harmony.CreateAndPatchAll(typeof(Patch));
 
-            ManualLog.LogInfo($"模组加载完毕!");
+            ManualLog.LogInfo($"{LocalizationManager.GetString("log_load")}");
         }
 
 

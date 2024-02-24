@@ -340,6 +340,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 模组已加载完毕！ 的本地化字符串。
+        /// </summary>
+        internal static string log_load {
+            get {
+                return ResourceManager.GetString("log_load", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 {steamId} 尝试重连游戏被拒绝(因为他已被踢出)！ 的本地化字符串。
         /// </summary>
         internal static string log_refuse_connect {
