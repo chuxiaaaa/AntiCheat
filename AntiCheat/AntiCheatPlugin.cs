@@ -17,8 +17,12 @@ namespace AntiCheat
     {
         public const string Version = "0.3.6";
         public static ManualLogSource ManualLog = null;
-
-        public static ConfigEntry<string> LangugeConfig;
+        public enum Language
+        {
+            zn_ch,
+            en_us,
+        }
+        public static ConfigEntry<Language> LanguageConfig;
 
         public static ConfigEntry<bool> Shovel;
         public static ConfigEntry<bool> Shovel2;
@@ -95,8 +99,8 @@ namespace AntiCheat
         {
             ManualLog = Logger;
 
-            LangugeConfig = Config.Bind("LangugeSetting", "Language", "zh_CN", string.Join(",", LocalizationManager.Languages.Select(x => x.Key)));
-            LocalizationManager.SetLanguage(LangugeConfig.Value);
+            LanguageConfig = Config.Bind("LangugeSetting", "Language", Language.zn_ch, string.Join(",", LocalizationManager.Languages.Select(x => x.Key)));
+            LocalizationManager.SetLanguage(LanguageConfig.Value.ToString());
             ShipConfig = Config.Bind("ShipSetting", "StartGameOnlyHost", true, LocalizationManager.GetString("config_ShipSetting"));
             ShipConfig5 = Config.Bind("ShipSetting", "Kick", false, LocalizationManager.GetString("config_ShipConfig5"));
             ShipConfig2 = Config.Bind("ShipSetting", "StartGamePlayerCount", 8, LocalizationManager.GetString("config_ShipConfig2"));
