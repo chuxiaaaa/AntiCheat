@@ -1629,9 +1629,8 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                TimeOfDay.Instance.votesForShipToLeaveEarly++;
                 int num = StartOfRound.Instance.connectedPlayersAmount + 1 - StartOfRound.Instance.livingPlayers;
-                if (TimeOfDay.Instance.votesForShipToLeaveEarly >= num)
+                if (TimeOfDay.Instance.votesForShipToLeaveEarly + 1 >= num)
                 {
                     return EndGameServerRpc(target, reader, rpcParams);
                 }
