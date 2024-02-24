@@ -4,6 +4,8 @@
 
 一个致命公司反作弊模组(仅限主机使用)
 
+This mod does not support English at the moment. If you are able to provide English translation, you can submit a PR on GitHub.
+
 ### 简介
 
 模组交流QQ群：263868521
@@ -40,6 +42,7 @@
 * 铲子伤害异常检测
 * 玩家名字检测(Nameless或Unknown)
 * 零元购检测（购买物品/解锁飞船装饰）
+* 无限子弹检测
 
 ### 反馈
 如果你遇到误检测并确定不是模组导致，你可以提交issue来说明如何复现问题帮我们修复他！
@@ -60,5 +63,3 @@
 * 东南枝
 * Melissa
 * 我不吃牛肉
-
-
