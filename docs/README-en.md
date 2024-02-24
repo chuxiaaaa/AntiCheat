@@ -2,6 +2,8 @@
 
 A Lethal Company anti-cheat mod (host-only)
 
+The default language is Chinese, and you can enable English by changing the Language to "en_us" in the configuration file.
+
 ### Introduction
 
 This mod is used to solve the problem of cheating on public servers, ensuring the gaming experience of casual players.
@@ -36,6 +38,10 @@ When using the mod, you may encounter "false positives," but this may not necess
 * Abnormal shovel damage detection
 * Player name detection (Nameless or Unknown)
 * Zero-dollar purchase detection (item purchase/unlock ship decorations)
+* Infinite ammunition detection
+
+### Create Room
+Suggest adding the "[AC]" label to the room name to indicate to other players that this is a room with anti-cheating enabled!
 
 ### Feedback
 If you encounter false positives and are sure it is not caused by the mod, you can submit an issue to explain how to reproduce the problem to help us fix it!
