@@ -16,6 +16,11 @@ When using the mod, you may encounter "false positives," but this may not necess
 2. Place AntiCheat.dll in the directory Lethal Company\BepInEx\plugins.
 3. Launch the game.
 
+### Create Room
+Suggest adding the "[AC]" label to the room name to indicate to other players that this is a room with anti-cheating enabled!
+
+For example: [v49/AC] The battle is thrilling!
+
 ### Features
 * Forced lever pull detection
 * Abnormal ship item location detection
@@ -39,11 +44,6 @@ When using the mod, you may encounter "false positives," but this may not necess
 * Player name detection (Nameless or Unknown)
 * Zero-dollar purchase detection (item purchase/unlock ship decorations)
 * Infinite ammunition detection
-
-### Create Room
-Suggest adding the "[AC]" label to the room name to indicate to other players that this is a room with anti-cheating enabled!
-
-For example: [v49/AC] The battle is thrilling!
 
 ### Feedback
 If you encounter false positives and are sure it is not caused by the mod, you can submit an issue to explain how to reproduce the problem to help us fix it!
