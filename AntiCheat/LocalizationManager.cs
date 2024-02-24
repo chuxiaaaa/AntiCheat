@@ -27,7 +27,6 @@ namespace AntiCheat
             else
             {
                 resourceManager = new ResourceManager(typeof(zh_CN));
-                resourceManager = new ResourceManager(typeof(en_US));
             }
         }
 
