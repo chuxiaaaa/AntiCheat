@@ -469,6 +469,157 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// Prefix EnemyAI.SwitchToBehaviourServerRpc
+        /// </summary>
+        [HarmonyPatch(typeof(EnemyAI), "__rpc_handler_2081148948")]
+        [HarmonyPrefix]
+        public static bool __rpc_handler_2081148948(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (Check(rpcParams, out var p))
+            {
+                ByteUnpacker.ReadValueBitPacked(reader, out int stateIndex);
+                AntiCheatPlugin.ManualLog.LogInfo($"{p.playerUsername} call EnemyAI.SwitchToBehaviourServerRpc|stateIndex:{stateIndex}");
+                var e = (EnemyAI)target;
+                if (stateIndex != e.currentBehaviourStateIndex + 1)
+                {
+                    ShowMessage($"检测到玩家 {p.playerUsername} 强制改变怪物状态！");
+                    return false;
+                }
+            }
+            else if(p == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        #region Enemy Kill Player(Only Player Self)
+
+        /// <summary>
+        /// Prefix JesterAI.KillPlayerServerRpc
+        /// </summary>
+        [HarmonyPatch(typeof(JesterAI), "__rpc_handler_3446243450")]
+        [HarmonyPrefix]
+        public static bool __rpc_handler_3446243450(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            return KillPlayerServerRpc(target, reader, rpcParams);
+        }
+
+        /// <summary>
+        /// Prefix MouthDogAI.KillPlayerServerRpc
+        /// </summary>
+        [HarmonyPatch(typeof(MouthDogAI), "__rpc_handler_998670557")]
+        [HarmonyPrefix]
+        public static bool __rpc_handler_998670557(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            return KillPlayerServerRpc(target, reader, rpcParams);
+        }
+
+        /// <summary>
+        /// Prefix ForestGiantAI.GrabPlayerServerRpc
+        /// </summary>
+        [HarmonyPatch(typeof(ForestGiantAI), "__rpc_handler_2965927486")]
+        [HarmonyPrefix]
+        public static bool __rpc_handler_2965927486(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            return KillPlayerServerRpc(target, reader, rpcParams);
+        }
+
+        /// <summary>
+        /// Prefix RedLocustBees.BeeKillPlayerServerRpc
+        /// </summary>
+        [HarmonyPatch(typeof(RedLocustBees), "__rpc_handler_3246315153")]
+        [HarmonyPrefix]
+        public static bool __rpc_handler_3246315153(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            return KillPlayerServerRpc(target, reader, rpcParams);
+        }
+
+        /// <summary>
+        /// Prefix MaskedPlayerEnemy.KillPlayerAnimationServerRpc
+        /// </summary>
+        [HarmonyPatch(typeof(MaskedPlayerEnemy), "__rpc_handler_3192502457")]
+        [HarmonyPrefix]
+        public static bool __rpc_handler_3192502457(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            return KillPlayerServerRpc(target, reader, rpcParams);
+        }
+
+        /// <summary>
+        /// Prefix NutcrackerEnemyAI.LegKickPlayerServerRpc
+        /// </summary>
+        [HarmonyPatch(typeof(NutcrackerEnemyAI), "__rpc_handler_3881699224")]
+        [HarmonyPrefix]
+        public static bool __rpc_handler_3881699224(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            return KillPlayerServerRpc(target, reader, rpcParams);
+        }
+
+        /// <summary>
+        /// Prefix BlobAI.SlimeKillPlayerEffectServerRpc
+        /// </summary>
+        [HarmonyPatch(typeof(BlobAI), "__rpc_handler_3848306567")]
+        [HarmonyPrefix]
+        public static bool __rpc_handler_3848306567(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            return KillPlayerServerRpc(target, reader, rpcParams);
+        }
+
+        /// <summary>
+        /// Prefix CentipedeAI.ClingToPlayerServerRpc
+        /// </summary>
+        [HarmonyPatch(typeof(CentipedeAI), "__rpc_handler_2791977891")]
+        [HarmonyPrefix]
+        public static bool __rpc_handler_2791977891(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            return KillPlayerServerRpc(target, reader, rpcParams);
+        }
+
+        private static bool KillPlayerServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (Check(rpcParams, out var p))
+            {
+                var e = (EnemyAI)target;
+                ByteUnpacker.ReadValueBitPacked(reader, out int playerId);
+                reader.Seek(0);
+                AntiCheatPlugin.ManualLog.LogInfo($"{p.playerUsername} call {e.GetType()}.KillPlayerServerRpc|playerId:{playerId}");
+                if (playerId <= StartOfRound.Instance.allPlayerScripts.Length && !StartOfRound.Instance.allPlayerScripts[playerId] != p)
+                {
+                    AntiCheatPlugin.ManualLog.LogInfo($"{p.playerUsername} call {e.GetType()}.KillPlayerServerRpc|playerUsername:{StartOfRound.Instance.allPlayerScripts[playerId].playerUsername}");
+                    return false;
+                }
+            }
+            else if (p == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Prefix EnemyAI.UpdateEnemyPositionServerRpc
+        /// </summary>
+        [HarmonyPatch(typeof(EnemyAI), "__rpc_handler_255411420")]
+        [HarmonyPrefix]
+        public static bool __rpc_handler_255411420(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (Check(rpcParams, out var p))
+            {
+                reader.ReadValueSafe(out Vector3 newPos);
+                reader.Seek(0);
+                AntiCheatPlugin.ManualLog.LogInfo($"{p.playerUsername} call EnemyAI.UpdateEnemyPositionServerRpc|newPos:{newPos}");
+            }
+            else if (p == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+
         [HarmonyPatch(typeof(EnemyAI), "__rpc_handler_1810146992")]
         [HarmonyPrefix]
         public static bool __rpc_handler_1810146992(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -516,24 +667,24 @@ namespace AntiCheat
             return true;
         }
 
-        [HarmonyPatch(typeof(EnemyAI), "__rpc_handler_255411420")]
-        [HarmonyPrefix]
-        public static bool __rpc_handler_255411420(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        {
-            if (Check(rpcParams, out var p))
-            {
-                if (AntiCheatPlugin.Enemy.Value)
-                {
-                    AntiCheatPlugin.ManualLog.LogInfo($"{p.playerUsername} call EnemyAI.UpdateEnemyPositionServerRpc");
-                    return true;
-                }
-            }
-            else if (p == null)
-            {
-                return false;
-            }
-            return true;
-        }
+        //[HarmonyPatch(typeof(EnemyAI), "__rpc_handler_255411420")]
+        //[HarmonyPrefix]
+        //public static bool __rpc_handler_255411420(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        //{
+        //    if (Check(rpcParams, out var p))
+        //    {
+        //        if (AntiCheatPlugin.Enemy.Value)
+        //        {
+        //            AntiCheatPlugin.ManualLog.LogInfo($"{p.playerUsername} call EnemyAI.UpdateEnemyPositionServerRpc");
+        //            return true;
+        //        }
+        //    }
+        //    else if (p == null)
+        //    {
+        //        return false;
+        //    }
+        //    return true;
+        //}
 
         [HarmonyPatch(typeof(EnemyAI), "__rpc_handler_3587030867")]
         [HarmonyPrefix]
