@@ -480,11 +480,14 @@ namespace AntiCheat
             {
                 ByteUnpacker.ReadValueBitPacked(reader, out int stateIndex);
                 AntiCheatPlugin.ManualLog.LogInfo($"{p.playerUsername} call EnemyAI.SwitchToBehaviourServerRpc|stateIndex:{stateIndex}");
-                var e = (EnemyAI)target;
-                if (stateIndex != e.currentBehaviourStateIndex + 1)
+                if (AntiCheatPlugin.Enemy.Value)
                 {
-                    ShowMessage($"检测到玩家 {p.playerUsername} 强制改变怪物状态！");
-                    return false;
+                    var e = (EnemyAI)target;
+                    if (stateIndex != e.currentBehaviourStateIndex + 1 && stateIndex != 0)
+                    {
+                        ShowMessage($"检测到玩家 {p.playerUsername} 强制改变怪物状态！");
+                        return false;
+                    }
                 }
             }
             else if(p == null)
