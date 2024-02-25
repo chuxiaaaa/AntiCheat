@@ -328,10 +328,10 @@
     <value>Detect player {player} to force provoking machine gun (empty hand)!</value>
   </data>
   <data name="msg_wlc_player" xml:space="preserve">
-    <value>&lt;color=green&gt;Welcome &lt;color=yellow&gt;{player}&lt;/color&gt; to join the spaceship&lt;/color&gt;</value>
+    <value>&lt;color=green&gt;&lt;color=yellow&gt;[{player}]&lt;/color&gt; joined the ship.&lt;/color&gt;</value>
   </data>
   <data name="Prefix" xml:space="preserve">
-    <value>[Anti-cheating]</value>
+    <value>[AntiCheat]</value>
   </data>
   <data name="tip_servername" xml:space="preserve">
     <value>\r\n{text}\r\nSuggest adding the "[AC]" label to the room name to indicate to other players that this is a room with anti-cheating enabled!</value>

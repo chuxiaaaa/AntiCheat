@@ -479,14 +479,33 @@ namespace AntiCheat
             if (Check(rpcParams, out var p))
             {
                 ByteUnpacker.ReadValueBitPacked(reader, out int stateIndex);
+                reader.Seek(0);
                 AntiCheatPlugin.ManualLog.LogInfo($"{p.playerUsername} call EnemyAI.SwitchToBehaviourServerRpc|stateIndex:{stateIndex}");
                 if (AntiCheatPlugin.Enemy.Value)
                 {
                     var e = (EnemyAI)target;
-                    if (stateIndex != e.currentBehaviourStateIndex + 1 && stateIndex != 0)
+                    if(e is JesterAI j)
                     {
-                        ShowMessage($"检测到玩家 {p.playerUsername} 强制改变怪物状态！");
-                        return false;
+                        if (j.currentBehaviourStateIndex == 0 && stateIndex == 1)
+                        {
+                            if (j.targetPlayer != null && j.beginCrankingTimer <= 0f)
+                            {
+                                return true;
+                            }
+                        }
+                        else if (j.currentBehaviourStateIndex == 1 && stateIndex == 2 && j.stunNormalizedTimer <= 0f && j.popUpTimer <= 0)
+                        {
+                            return true;
+                        }
+                        else if(j.currentBehaviourStateIndex == 2 && stateIndex == 0)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            ShowMessage($"检测到玩家 {p.playerUsername} 强制改变怪物状态！");
+                            return false;
+                        }
                     }
                 }
             }

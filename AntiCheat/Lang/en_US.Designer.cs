@@ -691,7 +691,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 &lt;color=green&gt;Welcome &lt;color=yellow&gt;{player}&lt;/color&gt; to join the spaceship&lt;/color&gt; 的本地化字符串。
+        ///   查找类似 &lt;color=green&gt;&lt;color=yellow&gt;[{player}]&lt;/color&gt; joined the ship.&lt;/color&gt; 的本地化字符串。
         /// </summary>
         internal static string msg_wlc_player {
             get {
@@ -700,7 +700,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 [Anti-cheating] 的本地化字符串。
+        ///   查找类似 [AntiCheat] 的本地化字符串。
         /// </summary>
         internal static string Prefix {
             get {

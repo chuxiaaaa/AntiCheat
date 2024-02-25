@@ -4,6 +4,7 @@ using BepInEx.Logging;
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -15,12 +16,12 @@ namespace AntiCheat
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheatPlugin : BaseUnityPlugin
     {
-        public const string Version = "0.3.9";
+        public const string Version = "0.4.0";
         public static ManualLogSource ManualLog = null;
         public enum Language
         {
-            zn_ch,
-            en_us,
+            简体中文,
+            English,
         }
         public static ConfigEntry<Language> LanguageConfig;
 
@@ -99,7 +100,7 @@ namespace AntiCheat
         {
             ManualLog = Logger;
 
-            LanguageConfig = Config.Bind("LangugeSetting", "Language", Language.zn_ch, string.Join(",", LocalizationManager.Languages.Select(x => x.Key)));
+            LanguageConfig = Config.Bind("LangugeSetting", "Language", Language.简体中文, string.Join(",", LocalizationManager.Languages.Select(x => x.Key)));
             LocalizationManager.SetLanguage(LanguageConfig.Value.ToString());
             ShipConfig = Config.Bind("ShipSetting", "StartGameOnlyHost", true, LocalizationManager.GetString("config_ShipSetting"));
             ShipConfig5 = Config.Bind("ShipSetting", "Kick", false, LocalizationManager.GetString("config_ShipConfig5"));
