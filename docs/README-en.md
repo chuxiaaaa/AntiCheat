@@ -44,6 +44,7 @@ For example: [v49/AC] The battle is thrilling!
 * Player name detection (Nameless or Unknown)
 * Zero-dollar purchase detection (item purchase/unlock ship decorations)
 * Infinite ammunition detection
+* Prohibit client from calling monster to kill other players RPC (anti-kill)
 
 ### Feedback
 If you encounter false positives and are sure it is not caused by the mod, you can submit an issue to explain how to reproduce the problem to help us fix it!
