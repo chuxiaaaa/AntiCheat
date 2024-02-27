@@ -229,7 +229,7 @@
     <value>检测到玩家 {player} 尝试伪装成 {player2} 发言！</value>
   </data>
   <data name="msg_DespawnItem" xml:space="preserve">
-    <value>检测到玩家 {player} 销毁物品！</value>
+    <value>检测到玩家 {player} 销毁物品 {item}！</value>
   </data>
   <data name="msg_Enemy_ChangeOwnershipOfEnemy" xml:space="preserve">
     <value>检测到玩家 {player} 强制改变怪物仇恨！</value>

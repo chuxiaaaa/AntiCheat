@@ -3,6 +3,7 @@ using GameNetcodeStuff;
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -34,6 +35,8 @@ namespace AntiCheat
 
         public static List<long> mjs { get; set; } = new List<long>();
         public static List<long> lhs { get; set; } = new List<long>();
+
+        public static List<int> landMines { get; set; }
 
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_1346025125")]
         [HarmonyPrefix]
@@ -484,7 +487,7 @@ namespace AntiCheat
                 if (AntiCheatPlugin.Enemy.Value)
                 {
                     var e = (EnemyAI)target;
-                    if(e is JesterAI j)
+                    if (e is JesterAI j)
                     {
                         if (j.currentBehaviourStateIndex == 0 && stateIndex == 1)
                         {
@@ -497,7 +500,7 @@ namespace AntiCheat
                         {
                             return true;
                         }
-                        else if(j.currentBehaviourStateIndex == 2 && stateIndex == 0)
+                        else if (j.currentBehaviourStateIndex == 2 && stateIndex == 0)
                         {
                             return true;
                         }
@@ -509,7 +512,7 @@ namespace AntiCheat
                     }
                 }
             }
-            else if(p == null)
+            else if (p == null)
             {
                 return false;
             }
@@ -606,7 +609,7 @@ namespace AntiCheat
                 ByteUnpacker.ReadValueBitPacked(reader, out int playerId);
                 reader.Seek(0);
                 AntiCheatPlugin.ManualLog.LogInfo($"{p.playerUsername} call {e.GetType()}.KillPlayerServerRpc|playerId:{playerId}");
-                if (playerId <= StartOfRound.Instance.allPlayerScripts.Length && !StartOfRound.Instance.allPlayerScripts[playerId] != p)
+                if (playerId <= StartOfRound.Instance.allPlayerScripts.Length && StartOfRound.Instance.allPlayerScripts[playerId] != p)
                 {
                     AntiCheatPlugin.ManualLog.LogInfo($"{p.playerUsername} call {e.GetType()}.KillPlayerServerRpc|playerUsername:{StartOfRound.Instance.allPlayerScripts[playerId].playerUsername}");
                     return false;
@@ -1088,6 +1091,7 @@ namespace AntiCheat
             {
                 return true;
             }
+            landMines = new List<int>();
             HUDManager.Instance.AddTextToChatOnServer(LocalizationManager.GetString("msg_game_start", new Dictionary<string, string>() {
                 { "{ver}",AntiCheatPlugin.Version }
             }), -1);
@@ -1296,7 +1300,8 @@ namespace AntiCheat
                     if (p.currentlyHeldObjectServer != null && !(p.currentlyHeldObjectServer is GiftBoxItem) && !(p.currentlyHeldObjectServer is KeyItem))
                     {
                         ShowMessage(LocalizationManager.GetString("msg_DespawnItem", new Dictionary<string, string>() {
-                                { "{player}",p.playerUsername }
+                            { "{player}",p.playerUsername },
+                            { "{item}",p.currentlyHeldObjectServer.itemProperties.itemName }
                         }));
                         if (AntiCheatPlugin.DespawnItem2.Value)
                         {
@@ -1760,7 +1765,7 @@ namespace AntiCheat
                     {
                         var t = (Turret)target;
                         float v = Vector3.Distance(t.transform.position, p.transform.position);
-                        if (v > 10)
+                        if (v > 12)
                         {
                             ShowMessage(LocalizationManager.GetString("msg_Turret", new Dictionary<string, string>() {
                                 { "{player}",p.playerUsername },
@@ -1800,11 +1805,18 @@ namespace AntiCheat
         [HarmonyPrefix]
         public static bool __rpc_handler_543987598(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Check(rpcParams, out var p))
+            if (Check(rpcParams, out var p) || true)
             {
                 int num = StartOfRound.Instance.connectedPlayersAmount + 1 - StartOfRound.Instance.livingPlayers;
+                if (p.isHostPlayerObject)
+                {
+                    StartOfRound.Instance.EndGameServerRpc(0);
+                    return true;
+                }
+                ShowMessage($"{p.playerUsername} 投票让飞船提前离开({(TimeOfDay.Instance.votesForShipToLeaveEarly + 1)}/{num})");
                 if (TimeOfDay.Instance.votesForShipToLeaveEarly + 1 >= num)
                 {
+                    AntiCheatPlugin.ManualLog.LogInfo("Vote EndGame");
                     return EndGameServerRpc(target, reader, rpcParams);
                 }
             }
@@ -1839,13 +1851,13 @@ namespace AntiCheat
                 {
                     time2 += 12;
                 }
-                var live = (decimal)StartOfRound.Instance.allPlayerScripts.Count(x => x.isPlayerControlled && !x.isPlayerDead);
+                var live = StartOfRound.Instance.allPlayerScripts.Where(x => x.isPlayerControlled && !x.isPlayerDead);
 
-                if (live == 1)
+                if (live.Count() == 1 && live.FirstOrDefault().isInHangarShipRoom)
                 {
                     return true;
                 }
-                decimal p1 = Math.Round(live * (decimal)(AntiCheatPlugin.ShipConfig4.Value / 100m), 2);
+                decimal p1 = Math.Round((decimal)live.Count() * (decimal)(AntiCheatPlugin.ShipConfig4.Value / 100m), 2);
                 decimal p2 = StartOfRound.Instance.allPlayerScripts.Count(x => x.isPlayerControlled && x.isInHangarShipRoom); // 
                 if (StartOfRound.Instance.currentLevel.PlanetName.Contains("Gordion"))
                 {
@@ -1931,6 +1943,28 @@ namespace AntiCheat
             return true;
         }
 
+        [HarmonyPatch(typeof(Landmine), "OnTriggerExit")]
+        [HarmonyPrefix]
+        public static bool OnTriggerExit(Landmine __instance, Collider other)
+        {
+            if (__instance.hasExploded)
+            {
+                return true;
+            }
+            bool mineActivated = (bool)typeof(Landmine).GetField("mineActivated", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(__instance);
+            if (!mineActivated)
+            {
+                return true;
+            }
+            int id = __instance.GetInstanceID();
+            if (!landMines.Contains(id))
+            {
+                landMines.Add(id);
+            }
+            AntiCheatPlugin.ManualLog.LogInfo($"Landmine.OnTriggerExit({id})");
+            return true;
+        }
+
         [HarmonyPatch(typeof(Landmine), "__rpc_handler_3032666565")]
         [HarmonyPrefix]
         public static bool __rpc_handler_3032666565(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -1940,21 +1974,9 @@ namespace AntiCheat
                 if (AntiCheatPlugin.Landmine.Value)
                 {
                     var lm = (Landmine)target;
-                    var ps = p.transform.position;
-                    if (p.isPlayerDead)
+                    int id = lm.GetInstanceID();
+                    if (!landMines.Contains(id))
                     {
-                        ps = p.deadBody.transform.position;
-                    }
-                    if (Vector3.Distance(ps, lm.transform.position) > 15)
-                    {
-                        if (lm.transform.position.y > 0 && p.isInsideFactory)
-                        {
-                            return true;
-                        }
-                        else if (lm.transform.position.y < 0 && !p.isInsideFactory)
-                        {
-                            return true;
-                        }
                         ShowMessage(LocalizationManager.GetString("msg_Landmine", new Dictionary<string, string>() {
                              { "{player}",p.playerUsername }
                         }));

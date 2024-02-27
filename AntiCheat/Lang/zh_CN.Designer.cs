@@ -394,7 +394,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 检测到玩家 {player} 销毁物品！ 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 销毁物品 {item}！ 的本地化字符串。
         /// </summary>
         internal static string msg_DespawnItem {
             get {

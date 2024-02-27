@@ -16,7 +16,7 @@ namespace AntiCheat
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheatPlugin : BaseUnityPlugin
     {
-        public const string Version = "0.4.0";
+        public const string Version = "0.4.2";
         public static ManualLogSource ManualLog = null;
         public enum Language
         {
@@ -33,7 +33,6 @@ namespace AntiCheat
         public static ConfigEntry<string> ShipConfig3;
         public static ConfigEntry<int> ShipConfig4;
         public static ConfigEntry<bool> ShipConfig5;
-        public static ConfigEntry<int> ShipConfig6;
 
         public static ConfigEntry<bool> ShipBuild;
         public static ConfigEntry<bool> ShipBuild2;
@@ -107,7 +106,6 @@ namespace AntiCheat
             ShipConfig2 = Config.Bind("ShipSetting", "StartGamePlayerCount", 8, LocalizationManager.GetString("config_ShipConfig2"));
             ShipConfig3 = Config.Bind("ShipSetting", "EndGamePlayerTime", "18:00", LocalizationManager.GetString("config_ShipConfig3"));
             ShipConfig4 = Config.Bind("ShipSetting", "EndGamePlayerCount", 50, LocalizationManager.GetString("config_ShipConfig4"));
-            ShipConfig6 = Config.Bind("ShipSetting", "EndGameVoteCount", 50, LocalizationManager.GetString("config_ShipConfig6"));
 
             ShipBuild = Config.Bind("ShipBuildSetting", "Enable", true, LocalizationManager.GetString("config_ShipBuild"));
             ShipBuild2 = Config.Bind("ShipBuildSetting", "Kick", false, LocalizationManager.GetString("config_Kick"));
@@ -159,7 +157,6 @@ namespace AntiCheat
 
             KillEnemy = Config.Bind("KillEnemySetting", "Enable", true, LocalizationManager.GetString("config_KillEnemy"));
             KillEnemy2 = Config.Bind("KillEnemySetting", "Kick", false, LocalizationManager.GetString("config_Kick"));
-
 
             Map = Config.Bind("MapSetting", "Enable", true, LocalizationManager.GetString("config_Map"));
             Map2 = Config.Bind("MapSetting", "Kick", false, LocalizationManager.GetString("config_Kick"));
