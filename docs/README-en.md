@@ -6,6 +6,8 @@ The default language is Chinese, and you can enable English by changing the Lang
 
 ### Introduction
 
+Discord: https://discord.gg/ZdWr2rKR
+
 This mod is used to solve the problem of cheating on public servers, ensuring the gaming experience of casual players.
 
 When using the mod, you may encounter "false positives," but this may not necessarily be a problem with the anti-cheat mod. Please try deleting all mods except for (BepInExPack and anti-cheat) to reproduce the issue. If the false positives no longer occur, it is likely a compatibility issue with the mod.
