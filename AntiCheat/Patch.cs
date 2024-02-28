@@ -66,7 +66,7 @@ namespace AntiCheat
                     string msg = LocalizationManager.GetString("msg_behind_plaer", new Dictionary<string, string>() {
                         { "{player}",p.playerUsername }
                     });
-                    AntiCheatPlugin.ManualLog.LogInfo(msg);
+                    LogInfo(msg);
                     HUDManager.Instance.AddTextToChatOnServer(msg, -1);
                     bypass = false;
                 }
@@ -86,7 +86,7 @@ namespace AntiCheat
             {
                 try
                 {
-                    AntiCheatPlugin.ManualLog.LogInfo("__rpc_handler_638895557");
+                    LogInfo("__rpc_handler_638895557");
                     int damageAmount;
                     ByteUnpacker.ReadValueBitPacked(reader, out damageAmount);
                     reader.Seek(0);
@@ -111,7 +111,7 @@ namespace AntiCheat
             {
                 return true;
             }
-            AntiCheatPlugin.ManualLog.LogInfo("damageAmount:" + damageAmount);
+            LogInfo("damageAmount:" + damageAmount);
             try
             {
                 if (AntiCheatPlugin.Shovel.Value)
@@ -179,7 +179,7 @@ namespace AntiCheat
                     }
                     if (damageAmount == 0)
                     {
-                        AntiCheatPlugin.ManualLog.LogInfo("115");
+                        LogInfo("115");
                         return false;
                     }
                     else
@@ -190,7 +190,7 @@ namespace AntiCheat
             }
             catch (Exception ex)
             {
-                AntiCheatPlugin.ManualLog.LogInfo($"{ex.ToString()}");
+                LogInfo($"{ex.ToString()}");
             }
             return true;
         }
@@ -247,7 +247,7 @@ namespace AntiCheat
                     KickPlayer(item);
                     return;
                 }
-                AntiCheatPlugin.ManualLog.LogInfo(playerName);
+                LogInfo(playerName);
                 if (Regex.IsMatch(playerName, "Nameless\\d*") || Regex.IsMatch(playerName, "Unknown\\d*") || Regex.IsMatch(playerName, "Player #\\d*"))
                 {
                     if (AntiCheatPlugin.Nameless.Value)
@@ -276,7 +276,7 @@ namespace AntiCheat
                 string msg = LocalizationManager.GetString("msg_wlc_player", new Dictionary<string, string>() {
                     { "{player}",p2.playerUsername }
                 });
-                AntiCheatPlugin.ManualLog.LogInfo(msg);
+                LogInfo(msg);
                 HUDManager.Instance.AddTextToChatOnServer(msg, -1);
                 lastClientId = p2.actualClientId;
                 bypass = false;
@@ -292,7 +292,7 @@ namespace AntiCheat
                 string msg = LocalizationManager.GetString("msg_snc_player", new Dictionary<string, string>() {
                     { "{player}",p.playerUsername }
                 });
-                AntiCheatPlugin.ManualLog.LogInfo(msg);
+                LogInfo(msg);
                 HUDManager.Instance.AddTextToChatOnServer(msg, -1);
             }
             else if (p == null)
@@ -310,7 +310,7 @@ namespace AntiCheat
             {
                 return;
             }
-            AntiCheatPlugin.ManualLog.LogInfo($"SetMoney:{Money}");
+            LogInfo($"SetMoney:{Money}");
             Money = UnityEngine.Object.FindObjectOfType<Terminal>().groupCredits;
             jcs = new List<ulong>();
             chcs = new Dictionary<int, Dictionary<ulong, List<DateTime>>>();
@@ -331,10 +331,10 @@ namespace AntiCheat
                     int newGroupCreditsAmount;
                     ByteUnpacker.ReadValueBitPacked(reader, out newGroupCreditsAmount);
                     reader.Seek(0);
-                    AntiCheatPlugin.ManualLog.LogInfo($"__rpc_handler_3953483456|newGroupCreditsAmount:{newGroupCreditsAmount}");
+                    LogInfo($"__rpc_handler_3953483456|newGroupCreditsAmount:{newGroupCreditsAmount}");
                     if (Money == newGroupCreditsAmount || Money == 0)
                     {
-                        AntiCheatPlugin.ManualLog.LogInfo($"Money:{Money}|newGroupCreditsAmount:{newGroupCreditsAmount}");
+                        LogInfo($"Money:{Money}|newGroupCreditsAmount:{newGroupCreditsAmount}");
                         ShowMessage(LocalizationManager.GetString("msg_FreeBuy_unlockable", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername }
                         }));
@@ -396,7 +396,7 @@ namespace AntiCheat
                     }
                     ByteUnpacker.ReadValueBitPacked(reader, out int newGroupCredits);
                     reader.Seek(0);
-                    AntiCheatPlugin.ManualLog.LogInfo("__rpc_handler_4003509079|boughtItems:" + string.Join(",", boughtItems) + "|newGroupCredits:" + newGroupCredits + "|Money:" + Money);
+                    LogInfo("__rpc_handler_4003509079|boughtItems:" + string.Join(",", boughtItems) + "|newGroupCredits:" + newGroupCredits + "|Money:" + Money);
                     if (Money == newGroupCredits || Money == 0)
                     {
                         ShowMessage(LocalizationManager.GetString("msg_FreeBuy_Item", new Dictionary<string, string>() {
@@ -458,7 +458,7 @@ namespace AntiCheat
         public static bool BeginUsingTerminal(Terminal __instance)
         {
             Money = __instance.groupCredits;
-            AntiCheatPlugin.ManualLog.LogInfo($"SetMoney:{Money}");
+            LogInfo($"SetMoney:{Money}");
             return true;
         }
 
@@ -494,7 +494,7 @@ namespace AntiCheat
             {
                 ByteUnpacker.ReadValueBitPacked(reader, out int stateIndex);
                 reader.Seek(0);
-                AntiCheatPlugin.ManualLog.LogInfo($"{p.playerUsername} call EnemyAI.SwitchToBehaviourServerRpc|stateIndex:{stateIndex}");
+                LogInfo($"{p.playerUsername} call EnemyAI.SwitchToBehaviourServerRpc|stateIndex:{stateIndex}");
                 if (AntiCheatPlugin.Enemy.Value)
                 {
                     var e = (EnemyAI)target;
@@ -619,10 +619,10 @@ namespace AntiCheat
                 var e = (EnemyAI)target;
                 ByteUnpacker.ReadValueBitPacked(reader, out int playerId);
                 reader.Seek(0);
-                AntiCheatPlugin.ManualLog.LogInfo($"{p.playerUsername} call {e.GetType()}.KillPlayerServerRpc|playerId:{playerId}");
+                LogInfo($"{p.playerUsername} call {e.GetType()}.KillPlayerServerRpc|playerId:{playerId}");
                 if (playerId <= StartOfRound.Instance.allPlayerScripts.Length && StartOfRound.Instance.allPlayerScripts[playerId] != p)
                 {
-                    AntiCheatPlugin.ManualLog.LogInfo($"{p.playerUsername} call {e.GetType()}.KillPlayerServerRpc|playerUsername:{StartOfRound.Instance.allPlayerScripts[playerId].playerUsername}");
+                    LogInfo($"{p.playerUsername} call {e.GetType()}.KillPlayerServerRpc|playerUsername:{StartOfRound.Instance.allPlayerScripts[playerId].playerUsername}");
                     return false;
                 }
             }
@@ -646,7 +646,7 @@ namespace AntiCheat
             {
                 reader.ReadValueSafe(out Vector3 newPos);
                 reader.Seek(0);
-                AntiCheatPlugin.ManualLog.LogInfo($"{p.playerUsername} call EnemyAI.UpdateEnemyPositionServerRpc|newPos:{newPos}");
+                LogInfo($"{p.playerUsername} call EnemyAI.UpdateEnemyPositionServerRpc|newPos:{newPos}");
             }
             else if (p == null)
             {
@@ -662,7 +662,7 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                AntiCheatPlugin.ManualLog.LogInfo($"{p.playerUsername} call EnemyAI.KillEnemyServerRpc");
+                LogInfo($"{p.playerUsername} call EnemyAI.KillEnemyServerRpc");
                 if (AntiCheatPlugin.KillEnemy.Value)
                 {
                     var e = (EnemyAI)target;
@@ -696,7 +696,7 @@ namespace AntiCheat
             {
                 if (AntiCheatPlugin.Enemy.Value)
                 {
-                    AntiCheatPlugin.ManualLog.LogInfo($"{p.playerUsername} call EnemyAI.UpdateEnemyRotationServerRpc");
+                    LogInfo($"{p.playerUsername} call EnemyAI.UpdateEnemyRotationServerRpc");
                     return true;
                 }
             }
@@ -711,7 +711,7 @@ namespace AntiCheat
         //    {
         //        if (AntiCheatPlugin.Enemy.Value)
         //        {
-        //            AntiCheatPlugin.ManualLog.LogInfo($"{p.playerUsername} call EnemyAI.UpdateEnemyPositionServerRpc");
+        //            LogInfo($"{p.playerUsername} call EnemyAI.UpdateEnemyPositionServerRpc");
         //            return true;
         //        }
         //    }
@@ -726,7 +726,7 @@ namespace AntiCheat
         [HarmonyPrefix]
         public static bool __rpc_handler_3587030867(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            AntiCheatPlugin.ManualLog.LogInfo("__rpc_handler_3587030867");
+            LogInfo("__rpc_handler_3587030867");
             if (Check(rpcParams, out var p))
             {
                 if (AntiCheatPlugin.Enemy.Value)
@@ -735,9 +735,9 @@ namespace AntiCheat
                     reader.Seek(0);
                     var enemy = target.GetComponent<EnemyAI>();
                     float v = Vector3.Distance(p.transform.position, enemy.transform.position);
-                    AntiCheatPlugin.ManualLog.LogInfo($"Distance:{v}");
-                    AntiCheatPlugin.ManualLog.LogInfo($"{p.playerUsername}|{p.actualClientId} called ChangeOwnershipOfEnemy|enemy:{enemy.enemyType.enemyName}|clientId:{clientId}");
-                    AntiCheatPlugin.ManualLog.LogInfo($"OwnerClientId:{enemy.OwnerClientId}");
+                    LogInfo($"Distance:{v}");
+                    LogInfo($"{p.playerUsername}|{p.actualClientId} called ChangeOwnershipOfEnemy|enemy:{enemy.enemyType.enemyName}|clientId:{clientId}");
+                    LogInfo($"OwnerClientId:{enemy.OwnerClientId}");
                     int key = enemy.GetInstanceID();
                     if (!chcs.ContainsKey(key))
                     {
@@ -783,7 +783,7 @@ namespace AntiCheat
                     {
                         if (j.currentBehaviourStateIndex != 2)
                         {
-                            AntiCheatPlugin.ManualLog.LogInfo("client ChangeOwnershipOfEnemy:" + clientId);
+                            LogInfo("client ChangeOwnershipOfEnemy:" + clientId);
                             return p.isHostPlayerObject;
                         }
                         else
@@ -799,7 +799,7 @@ namespace AntiCheat
                     {
                         if (f.currentBehaviourStateIndex != 2)
                         {
-                            AntiCheatPlugin.ManualLog.LogInfo("client ChangeOwnershipOfEnemy:" + clientId);
+                            LogInfo("client ChangeOwnershipOfEnemy:" + clientId);
                             return p.isHostPlayerObject;
                         }
                         else
@@ -882,7 +882,7 @@ namespace AntiCheat
                 {
                     return false;
                 }
-                AntiCheatPlugin.ManualLog.LogInfo("__rpc_handler_2814283679");
+                LogInfo("__rpc_handler_2814283679");
                 int force;
                 ByteUnpacker.ReadValueBitPacked(reader, out force);
                 ByteUnpacker.ReadValueBitPacked(reader, out int playerWhoHit);
@@ -990,7 +990,7 @@ namespace AntiCheat
                 { "{Prefix}",LocalizationManager.GetString("Prefix") },
                 { "{msg}",msg }
             });
-            AntiCheatPlugin.ManualLog.LogInfo(showmsg);
+            LogInfo(showmsg);
             HUDManager.Instance.AddTextToChatOnServer(showmsg, -1);
             bypass = false;
         }
@@ -1237,7 +1237,7 @@ namespace AntiCheat
             reader.Seek(0);
             if (StartOfRound.Instance.KickedClientIds.Contains(newPlayerSteamId))
             {
-                AntiCheatPlugin.ManualLog.LogInfo(LocalizationManager.GetString("log_refuse_connect", new Dictionary<string, string>() {
+                LogInfo(LocalizationManager.GetString("log_refuse_connect", new Dictionary<string, string>() {
                     { "{steamId}",newPlayerSteamId.ToString() }
                 }));
                 return false;
@@ -1262,10 +1262,10 @@ namespace AntiCheat
                     reader.ReadValueSafe(out chatMessage, false);
                 }
                 reader.Seek(0);
-                AntiCheatPlugin.ManualLog.LogInfo($"__rpc_handler_2787681914|{p.playerUsername}{chatMessage}");
+                LogInfo($"__rpc_handler_2787681914|{p.playerUsername}{chatMessage}");
                 if (chatMessage.Contains("<color") || chatMessage.Contains("<size"))
                 {
-                    AntiCheatPlugin.ManualLog.LogInfo("playerId = -1");
+                    LogInfo("playerId = -1");
                     if (AntiCheatPlugin.Map.Value)
                     {
                         if (chatMessage.Contains("<size=0>Tyzeron.Minimap"))
@@ -1282,7 +1282,7 @@ namespace AntiCheat
                     }
                     if (bypass)
                     {
-                        AntiCheatPlugin.ManualLog.LogInfo("bypass");
+                        LogInfo("bypass");
                         return true;
                     }
                     return false;
@@ -1304,7 +1304,7 @@ namespace AntiCheat
         [HarmonyPrefix]
         public static bool __rpc_handler_168728662(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            AntiCheatPlugin.ManualLog.LogInfo("__rpc_handler_168728662");
+            LogInfo("__rpc_handler_168728662");
             return __rpc_handler_2930587515(target, reader, rpcParams);
         }
 
@@ -1343,7 +1343,7 @@ namespace AntiCheat
         [HarmonyPrefix]
         public static bool __rpc_handler_2930587515(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            AntiCheatPlugin.ManualLog.LogInfo("__rpc_handler_2930587515");
+            LogInfo("__rpc_handler_2930587515");
             if (Check(rpcParams, out var p) || true)
             {
                 if (!StartOfRound.Instance.localPlayerController.IsHost)//非主机
@@ -1362,13 +1362,13 @@ namespace AntiCheat
                         }
                         ByteUnpacker.ReadValueBitPacked(reader, out int playerId);
                         reader.Seek(0);
-                        AntiCheatPlugin.ManualLog.LogInfo($"__rpc_handler_2930587515|{p.playerUsername}|{chatMessage}");
+                        LogInfo($"__rpc_handler_2930587515|{p.playerUsername}|{chatMessage}");
                         if (playerId == -1)
                         {
-                            AntiCheatPlugin.ManualLog.LogInfo("playerId = -1");
+                            LogInfo("playerId = -1");
                             if (chatMessage.StartsWith("<color=red>[反作弊]") && bypass)
                             {
-                                AntiCheatPlugin.ManualLog.LogInfo("bypass");
+                                LogInfo("bypass");
                                 return true;
                             }
                             if (p == StartOfRound.Instance.localPlayerController)
@@ -1399,7 +1399,7 @@ namespace AntiCheat
                     }
                     catch (Exception ex)
                     {
-                        AntiCheatPlugin.ManualLog.LogInfo(ex.ToString());
+                        LogInfo(ex.ToString());
                         return false;
                     }
                 }
@@ -1545,7 +1545,7 @@ namespace AntiCheat
                             }
                             return false;
                         }
-                        AntiCheatPlugin.ManualLog.LogInfo($"__rpc_handler_1329927282|{s.shellsLoaded}");
+                        LogInfo($"__rpc_handler_1329927282|{s.shellsLoaded}");
                     }
                 }
                 else if (AntiCheatPlugin.ItemCooldown.Value)
@@ -1714,12 +1714,12 @@ namespace AntiCheat
                 s.KickedClientIds.Add(playerSteamId);
             }
             var terminal = UnityEngine.Object.FindAnyObjectByType<Terminal>();
-            AntiCheatPlugin.ManualLog.LogInfo("terminalInUse" + terminal.placeableObject.inUse);
-            AntiCheatPlugin.ManualLog.LogInfo("whoUseTerminal:" + whoUseTerminal?.playerUsername);
-            AntiCheatPlugin.ManualLog.LogInfo("playerUsername:" + kick?.playerUsername);
+            LogInfo("terminalInUse" + terminal.placeableObject.inUse);
+            LogInfo("whoUseTerminal:" + whoUseTerminal?.playerUsername);
+            LogInfo("playerUsername:" + kick?.playerUsername);
             if (whoUseTerminal == kick && terminal.placeableObject.inUse)
             {
-                AntiCheatPlugin.ManualLog.LogInfo("SetTerminalInUseServerRpc");
+                LogInfo("SetTerminalInUseServerRpc");
                 terminal.SetTerminalInUseServerRpc(false);
                 terminal.terminalInUse = false;
             }
@@ -1777,7 +1777,7 @@ namespace AntiCheat
                 return;
             }
             Money = newGroupCredits;
-            AntiCheatPlugin.ManualLog.LogInfo($"SetMoney:{Money}");
+            LogInfo($"SetMoney:{Money}");
         }
 
         /// <summary>
@@ -1847,7 +1847,7 @@ namespace AntiCheat
                 ShowMessage($"{p.playerUsername} 投票让飞船提前离开({(TimeOfDay.Instance.votesForShipToLeaveEarly + 1)}/{num})");
                 if (TimeOfDay.Instance.votesForShipToLeaveEarly + 1 >= num)
                 {
-                    AntiCheatPlugin.ManualLog.LogInfo("Vote EndGame");
+                    LogInfo("Vote EndGame");
                     return EndGameServerRpc(target, reader, rpcParams);
                 }
             }
@@ -1946,7 +1946,7 @@ namespace AntiCheat
                         reader.ReadValueSafe(out newRotation);
                         reader.Seek(0);
                         var pl = GetPlayer(rpcParams);
-                        AntiCheatPlugin.ManualLog.LogInfo($"newPosition:{newPosition.ToString()}|newRotation:{newRotation.ToString()}|playerWhoMoved:{pl.playerUsername}");
+                        LogInfo($"newPosition:{newPosition.ToString()}|newRotation:{newRotation.ToString()}|playerWhoMoved:{pl.playerUsername}");
                         if (newRotation.x == 0 || newPosition.x > 11.2 || newPosition.x < -5 || newPosition.y > 5 || newPosition.y < 0 || newPosition.z > -10 || newPosition.z < -18)
                         {
                             ShowMessage(LocalizationManager.GetString("msg_ShipBuild", new Dictionary<string, string>() {
@@ -1992,7 +1992,7 @@ namespace AntiCheat
             {
                 landMines.Add(id);
             }
-            AntiCheatPlugin.ManualLog.LogInfo($"Landmine.OnTriggerExit({id})");
+            LogInfo($"Landmine.OnTriggerExit({id})");
             return true;
         }
 
