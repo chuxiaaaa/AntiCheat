@@ -6,6 +6,8 @@ The default language is Chinese, and you can enable English by changing the Lang
 
 ### Introduction
 
+Discord: https://discord.gg/ZdWr2rKR
+
 This mod is used to solve the problem of cheating on public servers, ensuring the gaming experience of casual players.
 
 When using the mod, you may encounter "false positives," but this may not necessarily be a problem with the anti-cheat mod. Please try deleting all mods except for (BepInExPack and anti-cheat) to reproduce the issue. If the false positives no longer occur, it is likely a compatibility issue with the mod.
@@ -44,6 +46,7 @@ For example: [v49/AC] The battle is thrilling!
 * Player name detection (Nameless or Unknown)
 * Zero-dollar purchase detection (item purchase/unlock ship decorations)
 * Infinite ammunition detection
+* Prohibit client from calling monster to kill other players RPC (anti-kill)
 
 ### Feedback
 If you encounter false positives and are sure it is not caused by the mod, you can submit an issue to explain how to reproduce the problem to help us fix it!
