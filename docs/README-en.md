@@ -24,6 +24,7 @@ Suggest adding the "[AC]" label to the room name to indicate to other players th
 For example: [v49/AC] The battle is thrilling!
 
 ### Features
+* Anti-kick detection
 * Forced lever pull detection
 * Abnormal ship item location detection
 * Abnormal item usage cooldown detection
