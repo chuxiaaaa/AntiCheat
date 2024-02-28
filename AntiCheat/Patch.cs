@@ -1978,6 +1978,10 @@ namespace AntiCheat
         [HarmonyPrefix]
         public static bool OnTriggerExit(Landmine __instance, Collider other)
         {
+            if (!StartOfRound.Instance.IsHost)
+            {
+                return true;
+            }
             if (__instance.hasExploded)
             {
                 return true;
