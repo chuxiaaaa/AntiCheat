@@ -16,7 +16,7 @@ namespace AntiCheat
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheatPlugin : BaseUnityPlugin
     {
-        public const string Version = "0.4.2";
+        public const string Version = "0.4.3";
         public static ManualLogSource ManualLog = null;
         public enum Language
         {
@@ -25,8 +25,11 @@ namespace AntiCheat
         }
         public static ConfigEntry<Language> LanguageConfig;
 
+        public static ConfigEntry<bool> Log;
+
         public static ConfigEntry<bool> Shovel;
         public static ConfigEntry<bool> Shovel2;
+
 
         public static ConfigEntry<bool> ShipConfig;
         public static ConfigEntry<int> ShipConfig2;
@@ -102,6 +105,7 @@ namespace AntiCheat
             LanguageConfig = Config.Bind("LangugeSetting", "Language", Language.简体中文, string.Join(",", LocalizationManager.Languages.Select(x => x.Key)));
             LocalizationManager.SetLanguage(LanguageConfig.Value.ToString());
             ShipConfig = Config.Bind("ShipSetting", "StartGameOnlyHost", true, LocalizationManager.GetString("config_ShipSetting"));
+            Log = Config.Bind("LogSetting", "Log", true, LocalizationManager.GetString("config_Log"));
             ShipConfig5 = Config.Bind("ShipSetting", "Kick", false, LocalizationManager.GetString("config_ShipConfig5"));
             ShipConfig2 = Config.Bind("ShipSetting", "StartGamePlayerCount", 8, LocalizationManager.GetString("config_ShipConfig2"));
             ShipConfig3 = Config.Bind("ShipSetting", "EndGamePlayerTime", "18:00", LocalizationManager.GetString("config_ShipConfig3"));

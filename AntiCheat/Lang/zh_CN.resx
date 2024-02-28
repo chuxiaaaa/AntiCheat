@@ -159,6 +159,9 @@
   <data name="config_Landmine" xml:space="preserve">
     <value>引爆地雷检测</value>
   </data>
+  <data name="config_Log" xml:space="preserve">
+    <value>显示控制台日志</value>
+  </data>
   <data name="config_Map" xml:space="preserve">
     <value>小地图检测</value>
   </data>

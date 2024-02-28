@@ -2,6 +2,7 @@
 using GameNetcodeStuff;
 using HarmonyLib;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Eventing.Reader;
@@ -12,9 +13,11 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
+using System.Security.Permissions;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
@@ -37,6 +40,14 @@ namespace AntiCheat
         public static List<long> lhs { get; set; } = new List<long>();
 
         public static List<int> landMines { get; set; }
+
+        public static void LogInfo(string info)
+        {
+            if (AntiCheatPlugin.Log.Value)
+            {
+                AntiCheatPlugin.ManualLog.LogInfo(info);
+            }
+        }
 
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_1346025125")]
         [HarmonyPrefix]
@@ -1064,7 +1075,8 @@ namespace AntiCheat
                 p = StartOfRound.Instance.localPlayerController;
                 return false;
             }
-            p = GetPlayer(rpcParams);
+            var tmp = GetPlayer(rpcParams);
+            p = tmp;
             if (p == null)//没玩家
             {
                 NetworkManager.Singleton.DisconnectClient(rpcParams.Server.Receive.SenderClientId);
@@ -1075,7 +1087,12 @@ namespace AntiCheat
                 p = StartOfRound.Instance.localPlayerController;
                 return false;
             }
-            if (StartOfRound.Instance.KickedClientIds.Contains(p.playerSteamId))//如果被踢
+            else if (StartOfRound.Instance.KickedClientIds.Contains(p.playerSteamId))//如果被踢
+            {
+                NetworkManager.Singleton.DisconnectClient(rpcParams.Server.Receive.SenderClientId);
+                return false;
+            }
+            else if (p.playerSteamId == 0)
             {
                 NetworkManager.Singleton.DisconnectClient(rpcParams.Server.Receive.SenderClientId);
                 return false;
@@ -1167,17 +1184,19 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// PlayerControllerB.UpdatePlayerPositionServerRpc
+        /// </summary>
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_2013428264")]
         [HarmonyPrefix]
         public static bool __rpc_handler_2013428264(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
+            reader.ReadValueSafe(out Vector3 newPos);
+            reader.Seek(0);
             if (Check(rpcParams, out var p))
             {
                 if (AntiCheatPlugin.Invisibility.Value)
                 {
-                    Vector3 newPos;
-                    reader.ReadValueSafe(out newPos);
-                    reader.Seek(0);
                     var oldpos = p.serverPlayerPosition;
                     if (p.teleportedLastFrame)
                     {
@@ -1317,6 +1336,8 @@ namespace AntiCheat
             }
             return true;
         }
+
+
 
         [HarmonyPatch(typeof(HUDManager), "__rpc_handler_2930587515")]
         [HarmonyPrefix]
@@ -1647,6 +1668,16 @@ namespace AntiCheat
             }
             return true;
         }
+
+        [HarmonyPatch(typeof(StartOfRound), "OnPlayerDC")]
+        [HarmonyPostfix]
+        public static void OnPlayerDC(int playerObjectNumber, ulong clientId)
+        {
+            PlayerControllerB component = StartOfRound.Instance.allPlayerObjects[playerObjectNumber].GetComponent<PlayerControllerB>();
+            component.playerSteamId = 0;
+            return;
+        }
+
 
         public static PlayerControllerB whoUseTerminal { get; set; }
 
