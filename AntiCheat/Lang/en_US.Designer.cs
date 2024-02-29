@@ -187,6 +187,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 show log 的本地化字符串。
+        /// </summary>
+        internal static string config_Log {
+            get {
+                return ResourceManager.GetString("config_Log", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Minimap detection 的本地化字符串。
         /// </summary>
         internal static string config_Map {

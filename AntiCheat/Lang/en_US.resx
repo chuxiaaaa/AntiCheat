@@ -159,6 +159,9 @@
   <data name="config_Landmine" xml:space="preserve">
     <value>Explosive mine detection</value>
   </data>
+  <data name="config_Log" xml:space="preserve">
+    <value>show log</value>
+  </data>
   <data name="config_Map" xml:space="preserve">
     <value>Minimap detection</value>
   </data>
