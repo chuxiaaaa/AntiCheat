@@ -223,6 +223,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 Set the room name prefix, use an empty value to indicate that the prefix is not enabled. 的本地化字符串。
+        /// </summary>
+        internal static string config_Prefix {
+            get {
+                return ResourceManager.GetString("config_Prefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Spacecraft item location anomaly detection 的本地化字符串。
         /// </summary>
         internal static string config_ShipBuild {
@@ -700,6 +709,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 You are the homeowner, and voting can immediately make the spaceship take off. 的本地化字符串。
+        /// </summary>
+        internal static string msg_vote {
+            get {
+                return ResourceManager.GetString("msg_vote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 &lt;color=green&gt;&lt;color=yellow&gt;[{player}]&lt;/color&gt; joined the ship.&lt;/color&gt; 的本地化字符串。
         /// </summary>
         internal static string msg_wlc_player {
@@ -714,15 +732,6 @@ namespace AntiCheat.Lang {
         internal static string Prefix {
             get {
                 return ResourceManager.GetString("Prefix", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 \r\n{text}\r\nSuggest adding the &quot;[AC]&quot; label to the room name to indicate to other players that this is a room with anti-cheating enabled! 的本地化字符串。
-        /// </summary>
-        internal static string tip_servername {
-            get {
-                return ResourceManager.GetString("tip_servername", resourceCulture);
             }
         }
     }

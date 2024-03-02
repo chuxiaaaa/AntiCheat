@@ -171,6 +171,9 @@
   <data name="config_Nameless" xml:space="preserve">
     <value>玩家名字检测(Nameless或Unknown)</value>
   </data>
+  <data name="config_Prefix" xml:space="preserve">
+    <value>设置房间名前缀，使用空值代表不启用前缀</value>
+  </data>
   <data name="config_ShipBuild" xml:space="preserve">
     <value>飞船物品位置异常检测</value>
   </data>
@@ -232,7 +235,7 @@
     <value>检测到玩家 {player} 尝试伪装成 {player2} 发言！</value>
   </data>
   <data name="msg_DespawnItem" xml:space="preserve">
-    <value>检测到玩家 {player} 销毁物品 {item}！</value>
+    <value>检测到玩家 {player} 销毁物品 ({item})！</value>
   </data>
   <data name="msg_Enemy_ChangeOwnershipOfEnemy" xml:space="preserve">
     <value>检测到玩家 {player} 强制改变怪物仇恨！</value>
@@ -307,7 +310,7 @@
     <value>检测到玩家 {player} 使用铲子对玩家 {player2} 造成异常伤害！({damageAmount})</value>
   </data>
   <data name="msg_Shovel2" xml:space="preserve">
-    <value>检测到玩家 {player} 铲子范围异常，对玩家 {player2} 造成伤害！({damageAmount})</value>
+    <value>检测到玩家 {player} 铲子范围异常，对玩家 {player2} 造成伤害！({distance},{damageAmount})</value>
   </data>
   <data name="msg_Shovel3" xml:space="preserve">
     <value>检测到玩家 {player} 空手对玩家 {player2} 造成伤害！({damageAmount})</value>
@@ -329,6 +332,9 @@
   </data>
   <data name="msg_Turret2" xml:space="preserve">
     <value>检测玩家 {player} 强制激怒机枪(空手)！</value>
+  </data>
+  <data name="msg_vote" xml:space="preserve">
+    <value>你是房主，投票直接起飞！</value>
   </data>
   <data name="msg_wlc_player" xml:space="preserve">
     <value>&lt;color=green&gt;欢迎 &lt;color=yellow&gt;{player}&lt;/color&gt; 加入飞船&lt;/color&gt;</value>

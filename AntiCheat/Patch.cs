@@ -1,4 +1,5 @@
-﻿using BepInEx.Configuration;
+﻿using BepInEx;
+using BepInEx.Configuration;
 using GameNetcodeStuff;
 using HarmonyLib;
 using System;
@@ -136,13 +137,18 @@ namespace AntiCheat
                         }
                         damageAmount = 0;
                     }
-                    else if (distance > 6 && obj != null && isShovel(obj))
+                    else if (distance > 11 && obj != null && isShovel(obj))
                     {
+                        if (p2.isPlayerDead)
+                        {
+                            return true;
+                        }
                         if (!jcs.Contains(p.playerSteamId))
                         {
                             ShowMessage(LocalizationManager.GetString("msg_Shovel2", new Dictionary<string, string>() {
                                 { "{player}",p.playerUsername },
                                 { "{player2}",p2.playerUsername },
+                                { "{distance}",distance.ToString() },
                                 { "{damageAmount}",damageAmount.ToString() }
                             }));
                             jcs.Add(p.playerSteamId);
@@ -1829,6 +1835,37 @@ namespace AntiCheat
             return true;
         }
 
+
+        [HarmonyPatch(typeof(HUDManager), "Update")]
+        [HarmonyPostfix]
+        public static void Update()
+        {
+            if (!StartOfRound.Instance.IsHost)
+            {
+                return;
+            }
+            if (GameNetworkManager.Instance == null || GameNetworkManager.Instance.localPlayerController == null)
+            {
+                return;
+            }
+            if (GameNetworkManager.Instance.localPlayerController == null)
+            {
+                return;
+            }
+            if (StartOfRound.Instance.shipIsLeaving || !StartOfRound.Instance.currentLevel.planetHasTime)
+            {
+                return;
+            }
+            if (TimeOfDay.Instance.votesForShipToLeaveEarly <= 0)
+            {
+                return;
+            }
+            if (GameNetworkManager.Instance.localPlayerController.isPlayerDead && !string.IsNullOrEmpty(HUDManager.Instance.holdButtonToEndGameEarlyVotesText.text))
+            {
+                HUDManager.Instance.holdButtonToEndGameEarlyVotesText.text += Environment.NewLine + LocalizationManager.GetString("msg_vote");
+            }
+        }
+
         /// <summary>
         /// Prefix TimeOfDay.SetShipLeaveEarlyServerRpc
         /// </summary>
@@ -1844,7 +1881,7 @@ namespace AntiCheat
                     StartOfRound.Instance.EndGameServerRpc(0);
                     return true;
                 }
-                ShowMessage($"{p.playerUsername} 投票让飞船提前离开({(TimeOfDay.Instance.votesForShipToLeaveEarly + 1)}/{num})");
+                typeof(HUDManager).GetMethod("AddChatMessage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(HUDManager.Instance, new object[] { $"{p.playerUsername} 投票让飞船提前离开({(TimeOfDay.Instance.votesForShipToLeaveEarly + 1)}/{num})", "" });
                 if (TimeOfDay.Instance.votesForShipToLeaveEarly + 1 >= num)
                 {
                     LogInfo("Vote EndGame");
@@ -2056,16 +2093,33 @@ namespace AntiCheat
         }
 
 
-        [HarmonyPatch(typeof(MenuManager), "HostSetLobbyPublic")]
-        [HarmonyPostfix]
-        public static void Start(MenuManager __instance, bool setPublic)
+        [HarmonyPatch(typeof(GameNetworkManager), "StartHost")]
+        [HarmonyPrefix]
+        public static void StartHost()
         {
-            if (setPublic)
+            if (AntiCheatPlugin.Prefix.Value.IsNullOrWhiteSpace())
             {
-                __instance.privatePublicDescription.text = LocalizationManager.GetString("tip_servername", new Dictionary<string, string>() {
-                    { "{text}",__instance.privatePublicDescription.text },
-                    { "\\r\\n",Environment.NewLine }
-                });
+                return;
+            }
+            var setting = GameNetworkManager.Instance.lobbyHostSettings;
+            string rawText = setting.lobbyName;
+            rawText = rawText.Replace("【", "[").Replace("】", "]");
+            List<string> labels = new List<string>();
+            var match = Regex.Match(rawText, "^\\[(.*?)\\]");
+            if (match.Success)
+            {
+                var txt = match.Groups[1].Value;
+                labels.AddRange(txt.Split('/'));
+                rawText = rawText.Remove(0, match.Groups[0].Value.Length).TrimStart();
+            }
+            if (!labels.Any(x => x == AntiCheatPlugin.Prefix.Value))
+            {
+                labels.Add(AntiCheatPlugin.Prefix.Value);
+            }
+            setting.lobbyName = "[" + string.Join("/", labels) + "]" + " " + rawText;
+            if (string.IsNullOrEmpty(setting.serverTag))
+            {
+                setting.serverTag = AntiCheatPlugin.Prefix.Value;
             }
         }
     }

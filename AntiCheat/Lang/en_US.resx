@@ -171,6 +171,9 @@
   <data name="config_Nameless" xml:space="preserve">
     <value>Player name detection (Nameless or Unknown)</value>
   </data>
+  <data name="config_Prefix" xml:space="preserve">
+    <value>Set the room name prefix, use an empty value to indicate that the prefix is not enabled.</value>
+  </data>
   <data name="config_ShipBuild" xml:space="preserve">
     <value>Spacecraft item location anomaly detection</value>
   </data>
@@ -330,13 +333,13 @@
   <data name="msg_Turret2" xml:space="preserve">
     <value>Detect player {player} to force provoking machine gun (empty hand)!</value>
   </data>
+  <data name="msg_vote" xml:space="preserve">
+    <value>You are the homeowner, and voting can immediately make the spaceship take off.</value>
+  </data>
   <data name="msg_wlc_player" xml:space="preserve">
     <value>&lt;color=green&gt;&lt;color=yellow&gt;[{player}]&lt;/color&gt; joined the ship.&lt;/color&gt;</value>
   </data>
   <data name="Prefix" xml:space="preserve">
     <value>[AntiCheat]</value>
-  </data>
-  <data name="tip_servername" xml:space="preserve">
-    <value>\r\n{text}\r\nSuggest adding the "[AC]" label to the room name to indicate to other players that this is a room with anti-cheating enabled!</value>
   </data>
 </root>

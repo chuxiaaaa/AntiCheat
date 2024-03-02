@@ -65,7 +65,7 @@ namespace AntiCheat
             try
             {
                 string value = resourceManager.GetString(key);
-                return value == null ? string.Empty : null;
+                return value == null ? string.Empty : value;
             }
             catch (Exception)
             {

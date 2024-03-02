@@ -223,6 +223,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 设置房间名前缀，使用空值代表不启用前缀 的本地化字符串。
+        /// </summary>
+        internal static string config_Prefix {
+            get {
+                return ResourceManager.GetString("config_Prefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 飞船物品位置异常检测 的本地化字符串。
         /// </summary>
         internal static string config_ShipBuild {
@@ -403,7 +412,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 检测到玩家 {player} 销毁物品 {item}！ 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 销毁物品 ({item})！ 的本地化字符串。
         /// </summary>
         internal static string msg_DespawnItem {
             get {
@@ -628,7 +637,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 检测到玩家 {player} 铲子范围异常，对玩家 {player2} 造成伤害！({damageAmount}) 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 铲子范围异常，对玩家 {player2} 造成伤害！({distance},{damageAmount}) 的本地化字符串。
         /// </summary>
         internal static string msg_Shovel2 {
             get {
@@ -696,6 +705,15 @@ namespace AntiCheat.Lang {
         internal static string msg_Turret2 {
             get {
                 return ResourceManager.GetString("msg_Turret2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 你是房主，投票直接起飞！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_vote {
+            get {
+                return ResourceManager.GetString("msg_vote", resourceCulture);
             }
         }
         
