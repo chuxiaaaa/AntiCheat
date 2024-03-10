@@ -50,7 +50,7 @@ For example:
 * Free purchases detection (item purchase/unlock ship decorations)
 * Infinite ammo detection
 * Prevent the client killing other players by calling monster killing RPC (prevent Instant-Kill)
-* Anger the Boss Detection
+* Provoking Boss Detection
 
 ### Feedback
 If you encounter the false report and you can confirm this is not caused by other mod, you can report the issue on my GitHub to explain how you can reproduce the issue and help us to fix it!
