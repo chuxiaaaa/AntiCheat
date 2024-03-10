@@ -118,97 +118,97 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="config_Boss" xml:space="preserve">
-    <value>Summon Boss Detection</value>
+    <value>Provoking Boss Detection</value>
   </data>
   <data name="config_ChatReal" xml:space="preserve">
-    <value>Speech forgery detection</value>
+    <value>Fake chat message detection</value>
   </data>
   <data name="config_DespawnItem" xml:space="preserve">
-    <value>Destroyed item detection</value>
+    <value>Destory items detection</value>
   </data>
   <data name="config_Enemy" xml:space="preserve">
-    <value>Monster anomaly detection</value>
+    <value>Abnormal monster behavior detection</value>
   </data>
   <data name="config_FreeBuy" xml:space="preserve">
     <value>Free purchases</value>
   </data>
   <data name="config_Gift" xml:space="preserve">
-    <value>Gift box detection</value>
+    <value>Abnormal gift box interact detection</value>
   </data>
   <data name="config_GrabObject" xml:space="preserve">
-    <value>Grabbed object detection</value>
+    <value>Item pickup distance detection</value>
   </data>
   <data name="config_InfiniteAmmo" xml:space="preserve">
-    <value>Infinite bullet detection</value>
+    <value>Infinite ammo detection</value>
   </data>
   <data name="config_Invisibility" xml:space="preserve">
-    <value>Stealth detection</value>
+    <value>Invisible player detection</value>
   </data>
   <data name="config_ItemCooldown" xml:space="preserve">
-    <value>Item usage cooldown detection</value>
+    <value>Abnormal item interact cooldown detection</value>
   </data>
   <data name="config_Jetpack" xml:space="preserve">
-    <value>Jetpack explosion detection</value>
+    <value>Jetpack explode detection</value>
   </data>
   <data name="config_Kick" xml:space="preserve">
     <value>Kick player when this behavior is detected</value>
   </data>
   <data name="config_KillEnemy" xml:space="preserve">
-    <value>Kill enemy detection</value>
+    <value>Abnormal Enemy killed detection</value>
   </data>
   <data name="config_Landmine" xml:space="preserve">
-    <value>Explosive mine detection</value>
+    <value>Landmine detonate detection</value>
   </data>
   <data name="config_Log" xml:space="preserve">
     <value>show log</value>
   </data>
   <data name="config_Map" xml:space="preserve">
-    <value>Minimap detection</value>
+    <value>Mini-map mod detection</value>
   </data>
   <data name="config_Mask" xml:space="preserve">
-    <value>Masked enemy detection</value>
+    <value>Abnormal masked enemy detection</value>
   </data>
   <data name="config_Nameless" xml:space="preserve">
     <value>Player name detection (Nameless or Unknown)</value>
   </data>
   <data name="config_Prefix" xml:space="preserve">
-    <value>Set the room name prefix, use an empty value to indicate that the prefix is not enabled.</value>
+    <value>Set the lobby name prefix, Empty to disable.</value>
   </data>
   <data name="config_ShipBuild" xml:space="preserve">
-    <value>Spacecraft item location anomaly detection</value>
+    <value>Abnormal ship items location detection</value>
   </data>
   <data name="config_ShipConfig2" xml:space="preserve">
-    <value>Non-hosts can only log in if more than the specified number of people (host permissions need to be turned off)</value>
+    <value>Client-side player can pull the lever only if more than the specified player number are reached (host permissions need to be turned off)</value>
   </data>
   <data name="config_ShipConfig3" xml:space="preserve">
-    <value>Non-homeowners can only take off after this time</value>
+    <value>Allow client-side player to take off when after this time (based on game world)</value>
   </data>
   <data name="config_ShipConfig4" xml:space="preserve">
-    <value>Non-homeowners can only take off when the number of people in the spaceship (survival) exceeds the above ratio (0-100%)</value>
+    <value>Allow client-side player to take off when the number of alive players in the ship are exceed the specified ratio of total (alive?) players number (0-100%)</value>
   </data>
   <data name="config_ShipConfig5" xml:space="preserve">
-    <value>Detect force lever behavior (kick player when this behavior is detected)</value>
+    <value>Detect malicious lever pull behavior (kick player when this behavior is detected)</value>
   </data>
   <data name="config_ShipConfig6" xml:space="preserve">
-    <value>You are the homeowner, and voting can immediately make the spaceship take off.</value>
+    <value>You are the host, your vote can call the autopilot.</value>
   </data>
   <data name="config_ShipLight" xml:space="preserve">
-    <value>Lights off show detection</value>
+    <value>Light switch detection</value>
   </data>
   <data name="config_ShipSetting" xml:space="preserve">
-    <value>Only the host has landing rights</value>
+    <value>Only the host can land the ship</value>
   </data>
   <data name="config_ShipTerminal" xml:space="preserve">
-    <value>Terminal noise detection</value>
+    <value>Terminal noise spaming detection</value>
   </data>
   <data name="config_Shovel" xml:space="preserve">
-    <value>Shovel damage detection</value>
+    <value>Abnormal shovel damage detection</value>
   </data>
   <data name="config_SpawnWebTrap" xml:space="preserve">
-    <value>Spider web detection</value>
+    <value>Spawn spiderweb detection</value>
   </data>
   <data name="config_Turret" xml:space="preserve">
-    <value>Enraged machine gun detection</value>
+    <value>Malicious attacking turret detection</value>
   </data>
   <data name="Item_Shotgun" xml:space="preserve">
     <value>shotgun</value>
@@ -217,124 +217,124 @@
     <value>shovel</value>
   </data>
   <data name="log_load" xml:space="preserve">
-    <value>mod Loaded!</value>
+    <value>AntiCheat mod are Loaded!</value>
   </data>
   <data name="log_refuse_connect" xml:space="preserve">
-    <value>{steamId}'s attempt to reconnect to the game was rejected (because he has been kicked out)!</value>
+    <value>{steamId}'s attempt to reconnect to the game but was rejected (alreay kicked before)!</value>
   </data>
   <data name="MessageFormat" xml:space="preserve">
     <value>&lt;color=red&gt;{Prefix} {msg}&lt;/color&gt;</value>
   </data>
   <data name="msg_behind_player" xml:space="preserve">
-    <value>&lt;color=yellow&gt;[{player}] &lt;color=red&gt;I haven’t boarded the ship yet...&lt;/color&gt;&lt;/color&gt;</value>
+    <value>&lt;color=yellow&gt;[{player}] &lt;color=red&gt;was left behind.&lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Boss" xml:space="preserve">
-    <value>Player {player} detected summoning boss!</value>
+    <value>Detected player {player} attempt to provoking Boss!</value>
   </data>
   <data name="msg_ChatReal" xml:space="preserve">
-    <value>Detected player {player} trying to speak as {player2}!</value>
+    <value>Detected player {player} try to fake as {player2} in chat!</value>
   </data>
   <data name="msg_DespawnItem" xml:space="preserve">
-    <value>Player {player} destroying item detected!</value>
+    <value>Detected player {player} destroying item!</value>
   </data>
   <data name="msg_Enemy_ChangeOwnershipOfEnemy" xml:space="preserve">
-    <value>Player {player} detected to force change of monster hatred!</value>
+    <value>Detected player {player} try to change monster behavior!</value>
   </data>
   <data name="msg_FreeBuy_GiveMoney" xml:space="preserve">
-    <value>Player {player} detected for grinding money!</value>
+    <value>Detected player {player} are generating credits!</value>
   </data>
   <data name="msg_FreeBuy_Item" xml:space="preserve">
-    <value>Force purchase of item detected by player {player}!</value>
+    <value>Detected player {player} buying items for free!</value>
   </data>
   <data name="msg_FreeBuy_unlockable" xml:space="preserve">
-    <value>Player {player} detected to force ship decoration to be unlocked!</value>
+    <value>Detected player {player} buying unlockable for free!</value>
   </data>
   <data name="msg_game_start" xml:space="preserve">
-    <value>&lt;color=green&gt;Anti-cheating (v{ver}) is enabled in this room&lt;/color&gt;</value>
+    <value>&lt;color=green&gt;Anti-cheating (v{ver}) is enabled in this lobby&lt;/color&gt;</value>
   </data>
   <data name="msg_Gift" xml:space="preserve">
-    <value>Player {player} detected gift box farming!</value>
+    <value>Detected player {player} interact gift box abnormally!</value>
   </data>
   <data name="msg_GrabObject" xml:space="preserve">
-    <value>Player {player} detected taking objects from the air! (Player coordinates: {player_position}|Item coordinates: {object_position})</value>
+    <value>Detected player {player} taking objects from too far away! (Player coordinates: {player_position}|Item coordinates: {object_position})</value>
   </data>
   <data name="msg_InfiniteAmmo" xml:space="preserve">
-    <value>Player {player} detected Enable unlimited bullets!</value>
+    <value>Detected player {player} have infinite ammo!</value>
   </data>
   <data name="msg_Invisibility" xml:space="preserve">
-    <value>Abnormal coordinates of player {player} detected! (Player coordinates: {player_position})</value>
+    <value>Detected player {player} are invisible! (Player coordinates: {player_position})</value>
   </data>
   <data name="msg_ItemCooldown" xml:space="preserve">
-    <value>An abnormal frequency of usage of {item} by player {player} was detected!</value>
+    <value>Detected player {player} using {item} without respect the cooldown!</value>
   </data>
   <data name="msg_Jetpack" xml:space="preserve">
-    <value>Player {player} detonated jetpack detected!</value>
+    <value>Detected player {player} explode the jetpack!</value>
   </data>
   <data name="msg_Kick" xml:space="preserve">
-    <value>{player} was kicked out of the game!</value>
+    <value>{player} are now kicked!</value>
   </data>
   <data name="msg_KillEnemy" xml:space="preserve">
-    <value>Player {player} is detected and instantly kills the monster! ({enemyName}, remaining blood volume: {HP})</value>
+    <value>Detected player {player} killing monster abnormally! ({enemyName}, remain HP before: {HP})</value>
   </data>
   <data name="msg_Landmine" xml:space="preserve">
-    <value>Player {player} detected and forced to detonate a mine!</value>
+    <value>Detected player {player} detonate the landmine abnormally!</value>
   </data>
   <data name="msg_Map" xml:space="preserve">
-    <value>Player {player} detected using minimap!</value>
+    <value>Detected player {player} using minimap mod, that can make find the loot more easier!</value>
   </data>
   <data name="msg_Mask" xml:space="preserve">
-    <value>Player {player} detected as a fake!</value>
+    <value>Detected player {player} spawn masked enemy abnormally, which mean that player catched by a masker but that player should already dead right now!</value>
   </data>
   <data name="msg_Nameless" xml:space="preserve">
-    <value>An abnormality in player name has been detected!</value>
+    <value>Detected player name abnormally, try to re-join? but if name are all numbers, your name will always be Nameless.</value>
   </data>
   <data name="msg_ShipBuild" xml:space="preserve">
-    <value>It was detected that player {player} placed the ship items in an abnormal position ({position})!</value>
+    <value>Detected player {player} placing furniture in abnormal position ({position})!</value>
   </data>
   <data name="msg_ShipConfig2" xml:space="preserve">
-    <value>{player} Please wait until the number of people in the spaceship reaches {cfg} or more before pulling the lever!</value>
+    <value>{player} Please wait until the number of people in the ship are reached {cfg} or more before pulling the lever, thx!</value>
   </data>
   <data name="msg_ShipConfig4" xml:space="preserve">
-    <value>{player} Please wait until the number of people in the spaceship reaches {player_count}({cfg4}%) and the game time takes off after {cfg3} (current time: {game_time})</value>
+    <value>{player} Please wait until the number of people in the ship are reached {player_count}({cfg4}%) and the time are reached {cfg3} to depart. (current time: {game_time})</value>
   </data>
   <data name="msg_ShipConfig5" xml:space="preserve">
-    <value>Player {player} forced lever detected!</value>
+    <value>Detected player {player} malicious use the ship lever!</value>
   </data>
   <data name="msg_ShipLight" xml:space="preserve">
-    <value>Frequent use of lights by player {player} detected!</value>
+    <value>Detected player {player} switching light are too often!</value>
   </data>
   <data name="msg_ShipTerminal" xml:space="preserve">
-    <value>Detected that player {player} is making frequent noise!</value>
+    <value>Detected player {player} making too many terminal noise!</value>
   </data>
   <data name="msg_Shovel" xml:space="preserve">
-    <value>Detected player {player} using a shovel to cause abnormal damage to player {player2}! ({damageAmount})</value>
+    <value>Detected player {player} using a shovel and cause abnormal damage to player {player2}! ({damageAmount})</value>
   </data>
   <data name="msg_Shovel2" xml:space="preserve">
-    <value>An abnormality in the shovel range of player {player} was detected, causing damage to player {player2}! ({damageAmount})</value>
+    <value>Detected player {player} abnormal shovel range, and damage to player {player2}! ({damageAmount})</value>
   </data>
   <data name="msg_Shovel3" xml:space="preserve">
-    <value>Detected player {player} using his bare hands to cause damage to player {player2}! ({damageAmount})</value>
+    <value>Detected player {player} damage to player {player2} without any weapon! ({damageAmount})</value>
   </data>
   <data name="msg_Shovel4" xml:space="preserve">
-    <value>Detected player {player} using a shovel to cause abnormal damage to enemy {enemyName}! ({damageAmount})</value>
+    <value>Detected player {player} using a shovel and cause abnormal damage to target {enemyName}! ({damageAmount})</value>
   </data>
   <data name="msg_Shovel5" xml:space="preserve">
-    <value>An abnormality in the range of player {player}'s shovel was detected, causing damage to enemy {enemyName}! ({damageAmount})</value>
+    <value>Detected player {player} abnormal shovel range, and damage to target {enemyName}! ({damageAmount})</value>
   </data>
   <data name="msg_Shovel6" xml:space="preserve">
-    <value>Player {player} was detected causing damage to enemy {enemyName} with his bare hands! ({damageAmount})</value>
+    <value>Detected player {player} damage to target {enemyName} without any weapon! ({damageAmount})</value>
   </data>
   <data name="msg_snc_player" xml:space="preserve">
-    <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;New biological data is sent to the terminal! &lt;/color&gt;&lt;/color&gt;</value>
+    <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;New biological data are sent to the terminal! &lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Turret" xml:space="preserve">
-    <value>Detect player {player} to force provoking machine gun! (distance: {Distance})</value>
+    <value>Detect player {player} malicious attacking the turret! (distance: {Distance})</value>
   </data>
   <data name="msg_Turret2" xml:space="preserve">
-    <value>Detect player {player} to force provoking machine gun (empty hand)!</value>
+    <value>Detect player {player} malicious attacking the turret! (NO WEAPON)!</value>
   </data>
   <data name="msg_vote" xml:space="preserve">
-    <value>You are the homeowner, and voting can immediately make the spaceship take off.</value>
+    <value>You are the host, your vote can call the autopilot.</value>
   </data>
   <data name="msg_wlc_player" xml:space="preserve">
     <value>&lt;color=green&gt;&lt;color=yellow&gt;[{player}]&lt;/color&gt; joined the ship.&lt;/color&gt;</value>
