@@ -28,7 +28,7 @@ For example:
 ### Features
 * Anti-kick detection
 * Malicious lever pull detection
-* Abnormal ship item location detection
+* Abnormal ship items location detection
 * Abnormal item interact cooldown detection
 * Light switch detection
 * Terminal noise spaming detection
@@ -37,7 +37,7 @@ For example:
 * Abnormal masked enemy detection
 * Abnormal gift box interact detection
 * Spawn spiderweb detection
-* Player attacking turret detection
+* Malicious attacking turret detection
 * Invisible player detection
 * Jetpack explode detection
 * Landmine detonate detection
