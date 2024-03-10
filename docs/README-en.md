@@ -40,7 +40,7 @@ For example:
 * Malicious attacking turret detection
 * Invisible player detection
 * Jetpack explode detection
-* Landmine detonate detection
+* Abnormal Landmine detonate detection
 * Abnormal monster behavior detection
 * Mini-map mod detection
 * Abnormal Enemy killed detection
