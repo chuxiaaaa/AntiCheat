@@ -28,7 +28,7 @@ For example:
 ### Features
 * Anti-kick detection
 * Malicious lever pull detection
-* Abnormal ship items location detection
+* Abnormal furniture position detection
 * Abnormal item interact cooldown detection
 * Light switch detection
 * Terminal noise spaming detection
