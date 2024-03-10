@@ -118,61 +118,61 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="config_Boss" xml:space="preserve">
-    <value>Summon Boss Detection</value>
+    <value>Anger the Boss Detection</value>
   </data>
   <data name="config_ChatReal" xml:space="preserve">
-    <value>Speech forgery detection</value>
+    <value>Fake chat message detection</value>
   </data>
   <data name="config_DespawnItem" xml:space="preserve">
-    <value>Destroyed item detection</value>
+    <value>Destory items detection</value>
   </data>
   <data name="config_Enemy" xml:space="preserve">
-    <value>Monster anomaly detection</value>
+    <value>Abnormal monster behavior detection</value>
   </data>
   <data name="config_FreeBuy" xml:space="preserve">
     <value>Free purchases</value>
   </data>
   <data name="config_Gift" xml:space="preserve">
-    <value>Gift box detection</value>
+    <value>Abnormal gift box interact detection</value>
   </data>
   <data name="config_GrabObject" xml:space="preserve">
-    <value>Grabbed object detection</value>
+    <value>Item pickup distance detection</value>
   </data>
   <data name="config_InfiniteAmmo" xml:space="preserve">
-    <value>Infinite bullet detection</value>
+    <value>Infinite ammo detection</value>
   </data>
   <data name="config_Invisibility" xml:space="preserve">
-    <value>Stealth detection</value>
+    <value>Invisible player detection</value>
   </data>
   <data name="config_ItemCooldown" xml:space="preserve">
-    <value>Item usage cooldown detection</value>
+    <value>Abnormal item interact cooldown detection</value>
   </data>
   <data name="config_Jetpack" xml:space="preserve">
-    <value>Jetpack explosion detection</value>
+    <value>Jetpack explode detection</value>
   </data>
   <data name="config_Kick" xml:space="preserve">
     <value>Kick player when this behavior is detected</value>
   </data>
   <data name="config_KillEnemy" xml:space="preserve">
-    <value>Kill enemy detection</value>
+    <value>Abnormal Enemy killed detection</value>
   </data>
   <data name="config_Landmine" xml:space="preserve">
-    <value>Explosive mine detection</value>
+    <value>Landmine detonate detection</value>
   </data>
   <data name="config_Log" xml:space="preserve">
     <value>show log</value>
   </data>
   <data name="config_Map" xml:space="preserve">
-    <value>Minimap detection</value>
+    <value>Mini-map mod detection</value>
   </data>
   <data name="config_Mask" xml:space="preserve">
-    <value>Masked enemy detection</value>
+    <value>Abnormal masked enemy detection</value>
   </data>
   <data name="config_Nameless" xml:space="preserve">
     <value>Player name detection (Nameless or Unknown)</value>
   </data>
   <data name="config_Prefix" xml:space="preserve">
-    <value>Set the room name prefix, use an empty value to indicate that the prefix is not enabled.</value>
+    <value>Set the lobby name prefix, Empty to disable.</value>
   </data>
   <data name="config_ShipBuild" xml:space="preserve">
     <value>Spacecraft item location anomaly detection</value>
