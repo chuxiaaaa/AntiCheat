@@ -175,7 +175,7 @@
     <value>Set the lobby name prefix, Empty to disable.</value>
   </data>
   <data name="config_ShipBuild" xml:space="preserve">
-    <value>Abnormal ship items location detection</value>
+    <value>Abnormal furniture position detection</value>
   </data>
   <data name="config_ShipConfig2" xml:space="preserve">
     <value>Client-side player can pull the lever only if more than the specified player number are reached (host permissions need to be turned off)</value>
@@ -184,7 +184,7 @@
     <value>Allow client-side player to take off when after this time (based on game world)</value>
   </data>
   <data name="config_ShipConfig4" xml:space="preserve">
-    <value>Allow client-side player to take off when the number of alive players in the ship are exceed the specified ratio of total (alive?) players number (0-100%)</value>
+    <value>Allow client-side player to take off when the number of alive players in the ship are exceed the specified ratio of total alive players number (0-100%)</value>
   </data>
   <data name="config_ShipConfig5" xml:space="preserve">
     <value>Detect malicious lever pull behavior (kick player when this behavior is detected)</value>
@@ -229,13 +229,13 @@
     <value>&lt;color=yellow&gt;[{player}] &lt;color=red&gt;was left behind.&lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Boss" xml:space="preserve">
-    <value>Detected player {player} attempt to provoking Boss!</value>
+    <value>Detected player {player} attempt to provoking the Boss!</value>
   </data>
   <data name="msg_ChatReal" xml:space="preserve">
     <value>Detected player {player} try to fake as {player2} in chat!</value>
   </data>
   <data name="msg_DespawnItem" xml:space="preserve">
-    <value>Detected player {player} destroying item!</value>
+    <value>Detected player {player} destroying items!</value>
   </data>
   <data name="msg_Enemy_ChangeOwnershipOfEnemy" xml:space="preserve">
     <value>Detected player {player} try to change monster behavior!</value>
