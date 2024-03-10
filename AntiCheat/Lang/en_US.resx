@@ -328,13 +328,13 @@
     <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;New biological data are sent to the terminal! &lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Turret" xml:space="preserve">
-    <value>Detect player {player} to force provoking machine gun! (distance: {Distance})</value>
+    <value>Detect player {player} malicious attacking the turret! (distance: {Distance})</value>
   </data>
   <data name="msg_Turret2" xml:space="preserve">
-    <value>Detect player {player} to force provoking machine gun (empty hand)!</value>
+    <value>Detect player {player} malicious attacking the turret! (NO WEAPON)!</value>
   </data>
   <data name="msg_vote" xml:space="preserve">
-    <value>You are the homeowner, and voting can immediately make the spaceship take off.</value>
+    <value>You are the host, your vote can call the autopilot.</value>
   </data>
   <data name="msg_wlc_player" xml:space="preserve">
     <value>&lt;color=green&gt;&lt;color=yellow&gt;[{player}]&lt;/color&gt; joined the ship.&lt;/color&gt;</value>
