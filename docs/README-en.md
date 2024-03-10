@@ -14,9 +14,9 @@ While using this mod, you might encounter the false report but that may not the 
 
 ### Instructions
 
-1. Install [BepInExPack](https://thunderstore.io/c/lethal-company/p/BepInEx/BepInExPack/) mod.
-2. Place AntiCheat.dll in the directory Lethal Company\BepInEx\plugins.
-3. Launch the game.
+1. Install [BepInExPack](https://thunderstore.io/c/lethal-company/p/BepInEx/BepInExPack);
+2. Place AntiCheat.dll into the directory Lethal Company\BepInEx\plugins;
+3. Launch the game, once the game launched you can see the configuration file call AntiCheat.cfg in the directory Lethal Company\BepInEx\config.
 
 ### Create Room
 Default will add "[AC]" prefix to the lobby name that can indicate to other players the anti-cheat in this lobby is ON!
