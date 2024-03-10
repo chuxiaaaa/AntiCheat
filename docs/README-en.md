@@ -2,15 +2,15 @@
 
 A Lethal Company anti-cheat mod (host-only)
 
-The default language is Chinese, and you can enable English by changing the Language to "en_us" in the configuration file.
+Default language is Simplified Chinese, you can switch to English by changing the Language via the configuration file.
 
 ### Introduction
 
 Discord: https://discord.gg/ZdWr2rKR
 
-This mod is used to solve the problem of cheating on public servers, ensuring the gaming experience of casual players.
+This mod is used to prevent cheating when hosting the public lobby, to protect the game experience.
 
-When using the mod, you may encounter "false positives," but this may not necessarily be a problem with the anti-cheat mod. Please try deleting all mods except for (BepInExPack and anti-cheat) to reproduce the issue. If the false positives no longer occur, it is likely a compatibility issue with the mod.
+While using this mod, you might encounter the false report but that may not the issue on my end. Please try to uninstall all the mods except for BepInEx and this mod to reproduce the issue you are encounter. If the issue is no longer occur, it's likely a compatibility issue with the mod.
 
 ### Instructions
 
@@ -19,38 +19,40 @@ When using the mod, you may encounter "false positives," but this may not necess
 3. Launch the game.
 
 ### Create Room
-Suggest adding the "[AC]" label to the room name to indicate to other players that this is a room with anti-cheating enabled!
+Default will add "[AC]" prefix to the lobby name that can indicate to other players the anti-cheat in this lobby is ON!
 
-For example: [v49/AC] The battle is thrilling!
+For example:
+[v49/AC] The battle is thrilling!
+[AC] The battle is thrilling!
 
 ### Features
 * Anti-kick detection
-* Forced lever pull detection
+* Malicious lever pull detection
 * Abnormal ship item location detection
-* Abnormal item usage cooldown detection
+* Abnormal item interact cooldown detection
 * Light switch detection
-* Terminal noise detection
-* Item destruction detection
-* Fake speech detection
-* Fake player detection
-* Fake gift box detection
-* Fake spiderweb detection
-* Berserk turret detection
-* Invisibility detection
-* Jetpack explosion detection
-* Landmine detonation detection
-* Abnormal enemy detection
-* Mini-map detection
-* Enemy kill detection
-* Remote item pickup detection
+* Terminal noise spaming detection
+* Destory items detection
+* Fake chat message detection
+* Abnormal masked enemy detection
+* Abnormal gift box interact detection
+* Spawn spiderweb detection
+* Player attack turret detection
+* Invisible player detection
+* Jetpack explode detection
+* Landmine detonate detection
+* Abnormal enemy behavior detection
+* Mini-map mod detection
+* Abnormal Enemy kill detection
+* Item pickup distance detection
 * Abnormal shovel damage detection
 * Player name detection (Nameless or Unknown)
-* Zero-dollar purchase detection (item purchase/unlock ship decorations)
-* Infinite ammunition detection
-* Prohibit client from calling monster to kill other players RPC (anti-kill)
+* 100 Free purchase detection (item purchase/unlock ship decorations)
+* Infinite ammo detection
+* Prevent the client killing other players by calling monster killing RPC (prevent Instant-Kill)
 
 ### Feedback
-If you encounter false positives and are sure it is not caused by the mod, you can submit an issue to explain how to reproduce the problem to help us fix it!
+If you encounter the false report and you can confirm this is not caused by other mod, you can report the issue on my GitHub to explain how you can reproduce the issue and help us to fix it!
 
 ### Contribution
 <a href="https://github.com/chuxiaaaa/AntiCheat/graphs/contributors">
