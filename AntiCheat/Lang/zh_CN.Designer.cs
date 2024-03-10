@@ -277,7 +277,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 投票超过以上比例才能起飞(0-100%) 的本地化字符串。
+        ///   查找类似 作为房主，你可以一票起飞 的本地化字符串。
         /// </summary>
         internal static string config_ShipConfig6 {
             get {
@@ -387,9 +387,9 @@ namespace AntiCheat.Lang {
         /// <summary>
         ///   查找类似 &lt;color=yellow&gt;[{player}] &lt;color=red&gt;还没上船呢...&lt;/color&gt;&lt;/color&gt; 的本地化字符串。
         /// </summary>
-        internal static string msg_behind_plaer {
+        internal static string msg_behind_player {
             get {
-                return ResourceManager.GetString("msg_behind_plaer", resourceCulture);
+                return ResourceManager.GetString("msg_behind_player", resourceCulture);
             }
         }
         
@@ -475,7 +475,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 检测到玩家 {player} 隔空取物！(玩家坐标：{player_postion}|物品坐标：{object_postion}) 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 隔空取物！(玩家坐标：{player_position}|物品坐标：{object_position}) 的本地化字符串。
         /// </summary>
         internal static string msg_GrabObject {
             get {
@@ -493,7 +493,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 检测到玩家 {player} 坐标异常！(玩家坐标：{player_postion}) 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 坐标异常！(玩家坐标：{player_position}) 的本地化字符串。
         /// </summary>
         internal static string msg_Invisibility {
             get {
@@ -574,7 +574,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 检测到玩家 {player} 将飞船物品摆放到异常位置({postion})！ 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 将飞船物品摆放到异常位置({position})！ 的本地化字符串。
         /// </summary>
         internal static string msg_ShipBuild {
             get {
@@ -732,15 +732,6 @@ namespace AntiCheat.Lang {
         internal static string Prefix {
             get {
                 return ResourceManager.GetString("Prefix", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 \r\n{text}\r\n建议您在房间名标注 [AC] 字样，向其他玩家标识这是一个启用反作弊的房间！ 的本地化字符串。
-        /// </summary>
-        internal static string tip_servername {
-            get {
-                return ResourceManager.GetString("tip_servername", resourceCulture);
             }
         }
     }

@@ -190,7 +190,7 @@
     <value>Detect force lever behavior (kick player when this behavior is detected)</value>
   </data>
   <data name="config_ShipConfig6" xml:space="preserve">
-    <value>Votes must exceed the above ratio to take off (0-100%)</value>
+    <value>You are the homeowner, and voting can immediately make the spaceship take off.</value>
   </data>
   <data name="config_ShipLight" xml:space="preserve">
     <value>Lights off show detection</value>
@@ -225,7 +225,7 @@
   <data name="MessageFormat" xml:space="preserve">
     <value>&lt;color=red&gt;{Prefix} {msg}&lt;/color&gt;</value>
   </data>
-  <data name="msg_behind_plaer" xml:space="preserve">
+  <data name="msg_behind_player" xml:space="preserve">
     <value>&lt;color=yellow&gt;[{player}] &lt;color=red&gt;I haven’t boarded the ship yet...&lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Boss" xml:space="preserve">
@@ -256,13 +256,13 @@
     <value>Player {player} detected gift box farming!</value>
   </data>
   <data name="msg_GrabObject" xml:space="preserve">
-    <value>Player {player} detected taking objects from the air! (Player coordinates: {player_postion}|Item coordinates: {object_postion})</value>
+    <value>Player {player} detected taking objects from the air! (Player coordinates: {player_position}|Item coordinates: {object_position})</value>
   </data>
   <data name="msg_InfiniteAmmo" xml:space="preserve">
     <value>Player {player} detected Enable unlimited bullets!</value>
   </data>
   <data name="msg_Invisibility" xml:space="preserve">
-    <value>Abnormal coordinates of player {player} detected! (Player coordinates: {player_postion})</value>
+    <value>Abnormal coordinates of player {player} detected! (Player coordinates: {player_position})</value>
   </data>
   <data name="msg_ItemCooldown" xml:space="preserve">
     <value>An abnormal frequency of usage of {item} by player {player} was detected!</value>
@@ -289,7 +289,7 @@
     <value>An abnormality in player name has been detected!</value>
   </data>
   <data name="msg_ShipBuild" xml:space="preserve">
-    <value>It was detected that player {player} placed the ship items in an abnormal position ({postion})!</value>
+    <value>It was detected that player {player} placed the ship items in an abnormal position ({position})!</value>
   </data>
   <data name="msg_ShipConfig2" xml:space="preserve">
     <value>{player} Please wait until the number of people in the spaceship reaches {cfg} or more before pulling the lever!</value>

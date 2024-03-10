@@ -1,7 +1,15 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
+
 using GameNetcodeStuff;
+
 using HarmonyLib;
+
+using Netcode.Transports.Facepunch;
+
+using Steamworks;
+using Steamworks.Data;
+
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
@@ -18,10 +26,14 @@ using System.Security.Permissions;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
 using TMPro;
+
 using Unity.Netcode;
+
 using UnityEngine;
 using UnityEngine.Events;
+
 using static UnityEngine.GraphicsBuffer;
 
 namespace AntiCheat
@@ -34,12 +46,13 @@ namespace AntiCheat
         public static List<long> dgcd = new List<long>();
         public static Dictionary<ulong, List<string>> czcd = new Dictionary<ulong, List<string>>();
         public static Dictionary<ulong, List<string>> sdqcd = new Dictionary<ulong, List<string>>();
+        public static Dictionary<uint, ulong> ConnectionIdtoSteamIdMap { get; set; } = new Dictionary<uint, ulong>();
+
 
         public static Dictionary<int, Dictionary<ulong, List<DateTime>>> chcs = new Dictionary<int, Dictionary<ulong, List<DateTime>>>();
 
         public static List<long> mjs { get; set; } = new List<long>();
         public static int count { get; set; } = 0;
-        public static List<int> AllowDespawn { get; set; }
         public static List<long> lhs { get; set; } = new List<long>();
 
         public static List<int> landMines { get; set; }
@@ -63,24 +76,10 @@ namespace AntiCheat
                 reader.ReadValueSafe(out Vector3 bodyVelocity);
                 ByteUnpacker.ReadValueBitPacked(reader, out int num);
                 reader.Seek(0);
-                if (!spawnBody)
-                {
-                    if (AllowDespawn == null)
-                    {
-                        AllowDespawn = new List<int>();
-                    }
-                    foreach (var item in p.ItemSlots)
-                    {
-                        if (item != null)
-                        {
-                            AllowDespawn.Add(item.GetInstanceID());
-                        }
-                    }
-                }
                 if ((CauseOfDeath)num == CauseOfDeath.Abandoned)
                 {
                     bypass = true;
-                    string msg = LocalizationManager.GetString("msg_behind_plaer", new Dictionary<string, string>() {
+                    string msg = LocalizationManager.GetString("msg_behind_player", new Dictionary<string, string>() {
                         { "{player}",p.playerUsername }
                     });
                     LogInfo(msg);
@@ -295,9 +294,7 @@ namespace AntiCheat
                     return;
                 }
                 bypass = true;
-                string msg = LocalizationManager.GetString("msg_wlc_player", new Dictionary<string, string>() {
-                    { "{player}",p2.playerUsername }
-                });
+                string msg = AntiCheatPlugin.PlayerJoin.Value.Replace("{player}", p2.playerUsername);
                 LogInfo(msg);
                 HUDManager.Instance.AddTextToChatOnServer(msg, -1);
                 lastClientId = p2.actualClientId;
@@ -999,7 +996,7 @@ namespace AntiCheat
 
         public static void ShowMessage(string msg, string lastmsg = null)
         {
-            if (lastMessage == msg || lastmsg == lastMessage)
+            if (lastMessage == msg || (lastmsg == lastMessage && lastmsg != null))
             {
                 return;
             }
@@ -1017,7 +1014,14 @@ namespace AntiCheat
                 { "{msg}",msg }
             });
             LogInfo(showmsg);
+            var target = HUDManager.Instance;
+            var __rpc_exec_stage = typeof(HUDManager).GetField("__rpc_exec_stage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var raw___rpc_exec_stage = __rpc_exec_stage.GetValue(target);
+            __rpc_exec_stage.SetValue(target, 0);
+
             HUDManager.Instance.AddTextToChatOnServer(showmsg, -1);
+            __rpc_exec_stage.SetValue(target, raw___rpc_exec_stage);
+            LogInfo($"AddTextToChatOnServer|{showmsg}");
             bypass = false;
         }
 
@@ -1120,10 +1124,30 @@ namespace AntiCheat
             }
             else if (p.playerSteamId == 0)
             {
+                uint clientId = ClientIdToTransportId(rpcParams.Server.Receive.SenderClientId);
+                if (clientId == 0)
+                {
+                    return false;
+                }
+                ulong steamId = ConnectionIdtoSteamIdMap[clientId];
+                Friend f = new Friend(steamId);
                 NetworkManager.Singleton.DisconnectClient(rpcParams.Server.Receive.SenderClientId);
+                StartOfRound.Instance.KickedClientIds.Add(steamId);
+                LogInfo($"检测玩家 {f.Name}({steamId}) 使用AntiKick功能，已自动踢出！");
                 return false;
             }
             return true;
+        }
+
+        public static uint ClientIdToTransportId(ulong SenderClientId)
+        {
+            if (SenderClientId == 0)
+            {
+                return 0;
+            }
+            NetworkConnectionManager networkConnectionManager = Traverse.Create(NetworkManager.Singleton).Field("ConnectionManager").GetValue<NetworkConnectionManager>();
+            ulong transportId = Traverse.Create(networkConnectionManager).Method("ClientIdToTransportId", new object[] { SenderClientId }).GetValue<ulong>();
+            return (uint)transportId;
         }
 
         [HarmonyPatch(typeof(RoundManager), "LoadNewLevel")]
@@ -1135,13 +1159,40 @@ namespace AntiCheat
                 return true;
             }
             landMines = new List<int>();
-            AllowDespawn = new List<int>();
             HUDManager.Instance.AddTextToChatOnServer(LocalizationManager.GetString("msg_game_start", new Dictionary<string, string>() {
                 { "{ver}",AntiCheatPlugin.Version }
             }), -1);
             return true;
         }
 
+
+        /// <summary>
+        /// Prefix PlayerControllerB.SwitchItemSlotsServerRpc
+        /// </summary>
+        [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_412259855")]
+        [HarmonyPrefix]
+        public static bool __rpc_handler_412259855(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (Check(rpcParams, out var p))
+            {
+
+                if (p.currentlyHeldObjectServer != null && p.currentlyHeldObjectServer.itemProperties.twoHanded)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            else if (p == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Prefix PlayerControllerB.GrabObjectServerRpc
+        /// </summary>
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_1554282707")]
         [HarmonyPrefix]
         public static bool __rpc_handler_1554282707(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -1180,7 +1231,7 @@ namespace AntiCheat
                                 __rpc_exec_stage.SetValue(target, 0);
                                 return false;
                             }
-                            else if (Vector3.Distance(g.transform.position, p.serverPlayerPosition) > 100 && !StartOfRound.Instance.shipIsLeaving && StartOfRound.Instance.shipHasLanded)
+                            if (Vector3.Distance(g.transform.position, p.serverPlayerPosition) > 100 && !StartOfRound.Instance.shipIsLeaving && StartOfRound.Instance.shipHasLanded)
                             {
                                 if (p.teleportedLastFrame)
                                 {
@@ -1188,8 +1239,8 @@ namespace AntiCheat
                                 }
                                 ShowMessage(LocalizationManager.GetString("msg_GrabObject", new Dictionary<string, string>() {
                                     { "{player}",p.playerUsername },
-                                    { "{object_postion}",g.transform.position.ToString() },
-                                    { "{player_postion}",p.serverPlayerPosition.ToString() }
+                                    { "{object_position}",g.transform.position.ToString() },
+                                    { "{player_position}",p.serverPlayerPosition.ToString() }
                                 }));
                                 g = default;
                                 grabbedObject = default;
@@ -1238,7 +1289,7 @@ namespace AntiCheat
                     {
                         ShowMessage(LocalizationManager.GetString("msg_Invisibility", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername },
-                            { "{player_postion}",newPos.ToString() }
+                            { "{player_position}",newPos.ToString() }
                         }));
                         if (AntiCheatPlugin.Invisibility2.Value)
                         {
@@ -1255,8 +1306,55 @@ namespace AntiCheat
             return true;
         }
 
+        [HarmonyPatch(typeof(NetworkManager), "Awake")]
+        [HarmonyPrefix]
+        public static void NetworkManagerAwake()
+        {
+            if (!GameNetworkManager.Instance.disableSteam)
+            {
+                ConnectionIdtoSteamIdMap[0] = SteamClient.SteamId;
+            }
+        }
 
+        [HarmonyPatch(typeof(FacepunchTransport), "Steamworks.ISocketManager.OnConnecting")]
+        [HarmonyPrefix]
 
+        public static bool FacepunchTransportOnConnecting(ref Connection connection, ref ConnectionInfo info)
+        {
+            NetIdentity identity = Traverse.Create(info).Field<NetIdentity>("identity").Value;
+            if (StartOfRound.Instance.KickedClientIds.Contains(identity.SteamId.Value))
+            {
+                LogInfo(LocalizationManager.GetString("log_refuse_connect", new Dictionary<string, string>() {
+                    {"{steamId}",identity.SteamId.Value.ToString() }
+                }));
+                return false;
+            }
+            if (ConnectionIdtoSteamIdMap.ContainsKey(connection.Id))
+            {
+                ConnectionIdtoSteamIdMap[connection.Id] = identity.SteamId.Value;
+            }
+            else
+            {
+                ConnectionIdtoSteamIdMap.Add(connection.Id, identity.SteamId.Value);
+            }
+            return true;
+        }
+
+        [HarmonyPatch(typeof(FacepunchTransport), "Steamworks.ISocketManager.OnDisconnected")]
+        [HarmonyPrefix]
+
+        public static void FacepunchTransportOnDisconnected(ref Connection connection, ref ConnectionInfo info)
+        {
+            if (NetworkManager.Singleton?.IsListening == true)
+            {
+                NetIdentity identity = Traverse.Create(info).Field<NetIdentity>("identity").Value;
+                ConnectionIdtoSteamIdMap.Remove(connection.Id);
+            }
+        }
+
+        /// <summary>
+        /// Prefix PlayerControllerB.SendNewPlayerValuesServerRpc
+        /// </summary>
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_2504133785")]
         [HarmonyPrefix]
         public static bool __rpc_handler_2504133785(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -1265,13 +1363,18 @@ namespace AntiCheat
             {
                 return true;
             }
+            if (rpcParams.Server.Receive.SenderClientId == 0)
+            {
+                return true;
+            }
             ByteUnpacker.ReadValueBitPacked(reader, out ulong newPlayerSteamId);
             reader.Seek(0);
-            if (StartOfRound.Instance.KickedClientIds.Contains(newPlayerSteamId))
+            ulong steamId = ConnectionIdtoSteamIdMap[ClientIdToTransportId(rpcParams.Server.Receive.SenderClientId)];
+            if (newPlayerSteamId != steamId)
             {
-                LogInfo(LocalizationManager.GetString("log_refuse_connect", new Dictionary<string, string>() {
-                    { "{steamId}",newPlayerSteamId.ToString() }
-                }));
+                Friend f = new Friend(steamId);
+                NetworkManager.Singleton.DisconnectClient(rpcParams.Server.Receive.SenderClientId);
+                LogInfo($"玩家 {f.Name}({steamId}) 伪造SteamID({newPlayerSteamId})加入游戏");
                 return false;
             }
             return true;
@@ -1294,7 +1397,7 @@ namespace AntiCheat
                     reader.ReadValueSafe(out chatMessage, false);
                 }
                 reader.Seek(0);
-                LogInfo($"__rpc_handler_2787681914|{p.playerUsername}{chatMessage}");
+                LogInfo($"HUDManager.AddTextMessageServerRpc|__rpc_handler_2787681914|{p.playerUsername}|{chatMessage}");
                 if (chatMessage.Contains("<color") || chatMessage.Contains("<size"))
                 {
                     LogInfo("playerId = -1");
@@ -1332,6 +1435,9 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// HUDManager.AddPlayerChatMessageClientRpc
+        /// </summary>
         [HarmonyPatch(typeof(HUDManager), "__rpc_handler_168728662")]
         [HarmonyPrefix]
         public static bool __rpc_handler_168728662(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -1339,59 +1445,14 @@ namespace AntiCheat
             return __rpc_handler_2930587515(target, reader, rpcParams);
         }
 
-        [HarmonyPatch(typeof(NetworkBehaviour), "OnNetworkDespawn")]
-        [HarmonyPrefix]
-        public static bool NetworkObjectDespawn(NetworkBehaviour __instance)
-        {
-            if (StartOfRound.Instance == null || !StartOfRound.Instance.IsHost)
-            {
-                return true;
-            }
-            PlayerControllerB p = null;
-            foreach (var item in StartOfRound.Instance.allPlayerScripts)
-            {
-                if (item.actualClientId == __instance.OwnerClientId)
-                {
-                    p = item;
-                }
-            }
-            if (p == null)
-            {
-                return false;
-            }
-            if (__instance.TryGetComponent<GrabbableObject>(out var obj))
-            {
-                if (AntiCheatPlugin.DespawnItem.Value)
-                {
-                    if (obj is GiftBoxItem || obj is KeyItem)
-                    {
-                        return true;
-                    }
-                    if (AllowDespawn.Contains(obj.GetInstanceID()))
-                    {
-                        return true;
-                    }
-                    ShowMessage(LocalizationManager.GetString("msg_DespawnItem", new Dictionary<string, string>() {
-                    { "{player}",p.playerUsername },
-                    { "{item}",p.currentlyHeldObjectServer.itemProperties.itemName }
-                }));
-                    if (AntiCheatPlugin.DespawnItem2.Value)
-                    {
-                        KickPlayer(p);
-                    }
-                    return false;
-                }
-            }
-            return true;
-        }
-
-
-
+        /// <summary>
+        /// HUDManager.AddPlayerChatMessageServerRpc
+        /// </summary>
         [HarmonyPatch(typeof(HUDManager), "__rpc_handler_2930587515")]
         [HarmonyPrefix]
         public static bool __rpc_handler_2930587515(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Check(rpcParams, out var p) || StartOfRound.Instance.localPlayerController.IsHost)
+            if (Check(rpcParams, out var p))
             {
                 if (AntiCheatPlugin.ChatReal.Value)
                 {
@@ -1405,11 +1466,11 @@ namespace AntiCheat
                         }
                         ByteUnpacker.ReadValueBitPacked(reader, out int playerId);
                         reader.Seek(0);
-                        LogInfo($"__rpc_handler_2930587515|{p.playerUsername}|{chatMessage}");
+                        LogInfo($"HUDManager.AddPlayerChatMessageServerRpc|__rpc_handler_2930587515|{p.playerUsername}|{chatMessage}");
                         if (playerId == -1)
                         {
                             LogInfo("playerId = -1");
-                            if (chatMessage.StartsWith("<color=red>[反作弊]") && bypass)
+                            if (chatMessage.StartsWith($"<color=red>{LocalizationManager.GetString("Prefix")}") && bypass)
                             {
                                 LogInfo("bypass");
                                 return true;
@@ -1588,10 +1649,10 @@ namespace AntiCheat
                             }
                             return false;
                         }
-                        LogInfo($"__rpc_handler_1329927282|{s.shellsLoaded}");
+                        LogInfo($"ShotgunItem.ShootGunServerRpc|__rpc_handler_1329927282|{s.shellsLoaded}");
                     }
                 }
-                else if (AntiCheatPlugin.ItemCooldown.Value)
+                if (AntiCheatPlugin.ItemCooldown.Value)
                 {
                     var id = p.playerSteamId;
                     var m = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -1685,7 +1746,7 @@ namespace AntiCheat
                     ShowMessage(LocalizationManager.GetString("msg_ShipConfig5", new Dictionary<string, string>() {
                         { "{player}",p.playerUsername }
                     }));
-                    UnityEngine.Object.FindObjectOfType<StartMatchLever>().CancelStartGameClientRpc();
+                    UnityEngine.Object.FindObjectOfType<StartMatchLever>().triggerScript.interactable = true;
                     if (AntiCheatPlugin.ShipConfig5.Value)
                     {
                         KickPlayer(p);
@@ -1699,7 +1760,7 @@ namespace AntiCheat
                 }
                 else
                 {
-                    UnityEngine.Object.FindObjectOfType<StartMatchLever>().CancelStartGameClientRpc();
+                    UnityEngine.Object.FindObjectOfType<StartMatchLever>().triggerScript.interactable = true;
                     ShowMessage(LocalizationManager.GetString("msg_ShipConfig2", new Dictionary<string, string>() {
                         { "{player}",p.playerUsername },
                         { "{cfg}",AntiCheatPlugin.ShipConfig2.Value.ToString() }
@@ -1709,7 +1770,7 @@ namespace AntiCheat
             }
             else if (p == null)
             {
-                UnityEngine.Object.FindObjectOfType<StartMatchLever>().CancelStartGameClientRpc();
+                UnityEngine.Object.FindObjectOfType<StartMatchLever>().triggerScript.interactable = true;
                 return false;
             }
             return true;
@@ -1808,6 +1869,7 @@ namespace AntiCheat
             }
             else if (p == null)
             {
+                UnityEngine.Object.FindObjectOfType<StartMatchLever>().triggerScript.interactable = true;
                 return false;
             }
             return true;
@@ -1826,23 +1888,40 @@ namespace AntiCheat
             LogInfo($"SetMoney:{Money}");
         }
 
-        [HarmonyPatch(typeof(DepositItemsDesk), "__rpc_handler_1114072420")]
+        public static Dictionary<long, Item> useItems = new Dictionary<long, Item>();
+
+
+
+
+        [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_1786952262")]
         [HarmonyPrefix]
-        public static bool SellAndDisplayItemProfits(DepositItemsDesk __instance)
+        public static bool __rpc_handler_1786952262(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (!StartOfRound.Instance.localPlayerController.IsHost)
+            if (Check(rpcParams, out var p))
             {
-                return true;
-            }
-            for (int i = 0; i < __instance.itemsOnCounterNetworkObjects.Count; i++)
-            {
-                if (__instance.itemsOnCounterNetworkObjects[i].IsSpawned)
+                if (AntiCheatPlugin.DespawnItem.Value)
                 {
-                    AllowDespawn.Add(__instance.itemsOnCounterNetworkObjects[i].GetInstanceID());
+                    if (p.currentlyHeldObjectServer != null && !(p.currentlyHeldObjectServer is GiftBoxItem) && !(p.currentlyHeldObjectServer is KeyItem))
+                    {
+                        ShowMessage(LocalizationManager.GetString("msg_DespawnItem", new Dictionary<string, string>() {
+                            { "{player}",p.playerUsername },
+                            { "{item}",p.currentlyHeldObjectServer.itemProperties.itemName }
+                        }));
+                        if (AntiCheatPlugin.DespawnItem2.Value)
+                        {
+                            KickPlayer(p);
+                        }
+                        return false;
+                    }
                 }
+            }
+            else if (p == null)
+            {
+                return false;
             }
             return true;
         }
+
 
         /// <summary>
         /// Prefix Turret.EnterBerserkModeServerRpc
@@ -1927,11 +2006,44 @@ namespace AntiCheat
             {
                 return;
             }
-            if (!TimeOfDay.Instance.shipLeavingAlertCalled)
+            if (AntiCheatPlugin.ShipConfig6.Value)
             {
-                if (GameNetworkManager.Instance.localPlayerController.isPlayerDead && !string.IsNullOrEmpty(HUDManager.Instance.holdButtonToEndGameEarlyVotesText.text))
+                if (!TimeOfDay.Instance.shipLeavingAlertCalled)
                 {
-                    HUDManager.Instance.holdButtonToEndGameEarlyVotesText.text += Environment.NewLine + LocalizationManager.GetString("msg_vote");
+                    if (GameNetworkManager.Instance.localPlayerController.isPlayerDead && !string.IsNullOrEmpty(HUDManager.Instance.holdButtonToEndGameEarlyVotesText.text))
+                    {
+                        HUDManager.Instance.holdButtonToEndGameEarlyVotesText.text += Environment.NewLine + LocalizationManager.GetString("msg_vote");
+                    }
+                }
+            }
+        }
+
+        public static bool doVote { get; set; }
+
+        /// <summary>
+        /// Postfix TimeOfDay.SetShipLeaveEarlyServerRpc
+        /// </summary>
+        [HarmonyPatch(typeof(TimeOfDay), "__rpc_handler_543987598")]
+        [HarmonyPostfix]
+        public static void Postfix__rpc_handler_543987598(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (StartOfRound.Instance.localPlayerController.IsHost)
+            {
+                if (AntiCheatPlugin.ShipConfig6.Value)
+                {
+                    if (doVote)
+                    {
+                        return;
+                    }
+                    if (rpcParams.Server.Receive.SenderClientId == 0)
+                    {
+                        doVote = true;
+                        for (int i = 0; i < StartOfRound.Instance.allPlayerScripts.Length; i++)
+                        {
+                            TimeOfDay.Instance.SetShipLeaveEarlyServerRpc();
+                        }
+                        doVote = false;
+                    }
                 }
             }
         }
@@ -1943,17 +2055,9 @@ namespace AntiCheat
         [HarmonyPrefix]
         public static bool __rpc_handler_543987598(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Check(rpcParams, out var p) || StartOfRound.Instance.localPlayerController.IsHost)
+            if (Check(rpcParams, out var p))
             {
                 int num = StartOfRound.Instance.connectedPlayersAmount + 1 - StartOfRound.Instance.livingPlayers;
-                if (p.isHostPlayerObject)
-                {
-                    if (TimeOfDay.Instance.votesForShipToLeaveEarly + 1 < num)
-                    {
-                        TimeOfDay.Instance.SetShipLeaveEarlyServerRpc();
-                    }
-                    return true;
-                }
                 typeof(HUDManager).GetMethod("AddChatMessage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(HUDManager.Instance, new object[] { $"{p.playerUsername} 投票让飞船提前离开({(TimeOfDay.Instance.votesForShipToLeaveEarly + 1)}/{num})", "" });
                 if (TimeOfDay.Instance.votesForShipToLeaveEarly + 1 >= num)
                 {
@@ -2018,11 +2122,13 @@ namespace AntiCheat
                         { "{cfg3}",$"{hour.ToString("00")}:{min.ToString("00")}" },
                         { "{game_time}",$"{time2.ToString("00")}:{time.ToString("00")}" }
                     }));
+                    UnityEngine.Object.FindObjectOfType<StartMatchLever>().triggerScript.interactable = true;
                     return false;
                 }
             }
             else if (p == null)
             {
+                UnityEngine.Object.FindObjectOfType<StartMatchLever>().triggerScript.interactable = true;
                 return false;
             }
             return true;
@@ -2061,7 +2167,7 @@ namespace AntiCheat
                         {
                             ShowMessage(LocalizationManager.GetString("msg_ShipBuild", new Dictionary<string, string>() {
                                 { "{player}",p.playerUsername },
-                                { "{postion}",newPosition.ToString() }
+                                { "{position}",newPosition.ToString() }
                             }));
                             if (AntiCheatPlugin.ShipBuild2.Value)
                             {

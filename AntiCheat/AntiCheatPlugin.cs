@@ -16,7 +16,7 @@ namespace AntiCheat
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheatPlugin : BaseUnityPlugin
     {
-        public const string Version = "0.5.1";
+        public const string Version = "0.5.8";
         public static ManualLogSource ManualLog = null;
         public enum Language
         {
@@ -31,12 +31,14 @@ namespace AntiCheat
         public static ConfigEntry<bool> Shovel2;
 
         public static ConfigEntry<string> Prefix;
+        public static ConfigEntry<string> PlayerJoin;
 
         public static ConfigEntry<bool> ShipConfig;
         public static ConfigEntry<int> ShipConfig2;
         public static ConfigEntry<string> ShipConfig3;
         public static ConfigEntry<int> ShipConfig4;
         public static ConfigEntry<bool> ShipConfig5;
+        public static ConfigEntry<bool> ShipConfig6;
 
         public static ConfigEntry<bool> ShipBuild;
         public static ConfigEntry<bool> ShipBuild2;
@@ -113,6 +115,7 @@ namespace AntiCheat
             ShipConfig2 = Config.Bind("ShipSetting", "StartGamePlayerCount", 8, LocalizationManager.GetString("config_ShipConfig2"));
             ShipConfig3 = Config.Bind("ShipSetting", "EndGamePlayerTime", "14:00", LocalizationManager.GetString("config_ShipConfig3"));
             ShipConfig4 = Config.Bind("ShipSetting", "EndGamePlayerCount", 50, LocalizationManager.GetString("config_ShipConfig4"));
+            ShipConfig6 = Config.Bind("ShipSetting", "OnlyOneVote", true, LocalizationManager.GetString("config_ShipConfig6"));
 
             ShipBuild = Config.Bind("ShipBuildSetting", "Enable", true, LocalizationManager.GetString("config_ShipBuild"));
             ShipBuild2 = Config.Bind("ShipBuildSetting", "Kick", false, LocalizationManager.GetString("config_Kick"));
@@ -179,6 +182,8 @@ namespace AntiCheat
 
             FreeBuy = Config.Bind("FreeBuySettings", "Enable", true, LocalizationManager.GetString("config_FreeBuy"));
             FreeBuy2 = Config.Bind("NamelessSettings", "Kick", false, LocalizationManager.GetString("config_Kick"));
+
+            PlayerJoin = Config.Bind("MsgSettings", "PlayerJoinShip", LocalizationManager.GetString("msg_wlc_player"), LocalizationManager.GetString("msg_wlc_player"));
 
             Harmony.CreateAndPatchAll(typeof(Patch));
 

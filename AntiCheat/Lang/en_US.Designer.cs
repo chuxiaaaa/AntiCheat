@@ -277,7 +277,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Votes must exceed the above ratio to take off (0-100%) 的本地化字符串。
+        ///   查找类似 You are the homeowner, and voting can immediately make the spaceship take off. 的本地化字符串。
         /// </summary>
         internal static string config_ShipConfig6 {
             get {
@@ -387,9 +387,9 @@ namespace AntiCheat.Lang {
         /// <summary>
         ///   查找类似 &lt;color=yellow&gt;[{player}] &lt;color=red&gt;I haven’t boarded the ship yet...&lt;/color&gt;&lt;/color&gt; 的本地化字符串。
         /// </summary>
-        internal static string msg_behind_plaer {
+        internal static string msg_behind_player {
             get {
-                return ResourceManager.GetString("msg_behind_plaer", resourceCulture);
+                return ResourceManager.GetString("msg_behind_player", resourceCulture);
             }
         }
         
@@ -475,7 +475,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Player {player} detected taking objects from the air! (Player coordinates: {player_postion}|Item coordinates: {object_postion}) 的本地化字符串。
+        ///   查找类似 Player {player} detected taking objects from the air! (Player coordinates: {player_position}|Item coordinates: {object_position}) 的本地化字符串。
         /// </summary>
         internal static string msg_GrabObject {
             get {
@@ -493,7 +493,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Abnormal coordinates of player {player} detected! (Player coordinates: {player_postion}) 的本地化字符串。
+        ///   查找类似 Abnormal coordinates of player {player} detected! (Player coordinates: {player_position}) 的本地化字符串。
         /// </summary>
         internal static string msg_Invisibility {
             get {
@@ -574,7 +574,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 It was detected that player {player} placed the ship items in an abnormal position ({postion})! 的本地化字符串。
+        ///   查找类似 It was detected that player {player} placed the ship items in an abnormal position ({position})! 的本地化字符串。
         /// </summary>
         internal static string msg_ShipBuild {
             get {
