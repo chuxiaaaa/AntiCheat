@@ -184,7 +184,7 @@
     <value>Allow client-side player to take off when after this time (based on game world)</value>
   </data>
   <data name="config_ShipConfig4" xml:space="preserve">
-    <value>Allow client-side player to take off when the number of alive players in the ship are exceed the specified ratio of total (alive?) players number (0-100%)</value>
+    <value>Allow client-side player to take off when the number of alive players in the ship are exceed the specified ratio of total alive players number (0-100%)</value>
   </data>
   <data name="config_ShipConfig5" xml:space="preserve">
     <value>Detect malicious lever pull behavior (kick player when this behavior is detected)</value>
