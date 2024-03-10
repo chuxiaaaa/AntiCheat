@@ -974,26 +974,11 @@ namespace AntiCheat
             return true;
         }
 
-
-
-
-        public static bool CheckSelf(PlayerControllerB p, int playerId)
-        {
-            if (playerId <= StartOfRound.Instance.allPlayerScripts.Length)
-            {
-                var p2 = StartOfRound.Instance.allPlayerScripts[playerId];
-                if (p2.playerSteamId == p.playerSteamId)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-
-
         private static string lastMessage = string.Empty;
-
+        
+        /// <summary>
+        /// 在游戏中输出信息
+        /// </summary>
         public static void ShowMessage(string msg, string lastmsg = null)
         {
             if (lastMessage == msg || (lastmsg == lastMessage && lastmsg != null))
@@ -1027,6 +1012,10 @@ namespace AntiCheat
 
         public static bool bypass { get; set; }
 
+        /// <summary>
+        /// 开礼物盒事件(一个礼物盒只能开一次)
+        /// Prefix GiftBoxItem.OpenGiftBoxServerRpc
+        /// </summary>
         [HarmonyPatch(typeof(GiftBoxItem), "__rpc_handler_2878544999")]
         [HarmonyPrefix]
         public static bool __rpc_handler_2878544999(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -1061,6 +1050,10 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// 使用面具生成假人事件(一个面具只能生成一个假人)
+        /// Prefix HauntedMaskItem.CreateMimicServerRpc
+        /// </summary>
         [HarmonyPatch(typeof(HauntedMaskItem), "__rpc_handler_1065539967")]
         [HarmonyPrefix]
         public static bool __rpc_handler_1065539967(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -1093,6 +1086,9 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// 检测是否需要处理事件(顺带处理掉SteamID为0的玩家)
+        /// </summary>
         private static bool Check(__RpcParams rpcParams, out PlayerControllerB p)
         {
             if (StartOfRound.Instance.localPlayerController == null)
@@ -1150,6 +1146,10 @@ namespace AntiCheat
             return (uint)transportId;
         }
 
+        /// <summary>
+        /// 降落时加载地图事件(显示反作弊信息)
+        /// Prefix RoundManager.LoadNewLevel
+        /// </summary>
         [HarmonyPatch(typeof(RoundManager), "LoadNewLevel")]
         [HarmonyPrefix]
         public static bool LoadNewLevel(SelectableLevel newLevel)
@@ -1165,8 +1165,8 @@ namespace AntiCheat
             return true;
         }
 
-
         /// <summary>
+        /// 玩家切换格子事件(拿了双手物品无法切换格子，他们本地客户端依旧可以)
         /// Prefix PlayerControllerB.SwitchItemSlotsServerRpc
         /// </summary>
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_412259855")]
@@ -1191,6 +1191,7 @@ namespace AntiCheat
         }
 
         /// <summary>
+        /// 玩家捡起物品事件(用于检测多格子，单手拿双手物品，隔空取物)
         /// Prefix PlayerControllerB.GrabObjectServerRpc
         /// </summary>
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_1554282707")]
@@ -1268,7 +1269,8 @@ namespace AntiCheat
         }
 
         /// <summary>
-        /// PlayerControllerB.UpdatePlayerPositionServerRpc
+        /// 玩家坐标变动事件(玩家如果隐身会将本体传送到一个很远的位置，例如当前坐标-100)
+        /// Prefix PlayerControllerB.UpdatePlayerPositionServerRpc
         /// </summary>
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_2013428264")]
         [HarmonyPrefix]
@@ -1306,6 +1308,10 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// 记录本机SteamID
+        /// Prefix NetworkManager.Awake
+        /// </summary>
         [HarmonyPatch(typeof(NetworkManager), "Awake")]
         [HarmonyPrefix]
         public static void NetworkManagerAwake()
@@ -1316,6 +1322,10 @@ namespace AntiCheat
             }
         }
 
+        /// <summary>
+        /// 代码来源 @Charlese2 HostFixes
+        /// 客户端连接事件，获取真实的SteamID
+        /// </summary>
         [HarmonyPatch(typeof(FacepunchTransport), "Steamworks.ISocketManager.OnConnecting")]
         [HarmonyPrefix]
 
@@ -1340,6 +1350,11 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// 代码来源 @Charlese2 HostFixes
+        /// 客户端断开连接事件
+        /// Prefix FacepunchTransport.OnDisconnected
+        /// </summary>
         [HarmonyPatch(typeof(FacepunchTransport), "Steamworks.ISocketManager.OnDisconnected")]
         [HarmonyPrefix]
 
@@ -1353,6 +1368,7 @@ namespace AntiCheat
         }
 
         /// <summary>
+        /// 玩家发送SteamID事件(目前还没遇到过伪造)
         /// Prefix PlayerControllerB.SendNewPlayerValuesServerRpc
         /// </summary>
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_2504133785")]
@@ -1426,7 +1442,6 @@ namespace AntiCheat
                 {
                     return false;
                 }
-                return true;
             }
             else if (p == null)
             {
@@ -1515,6 +1530,10 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// 终端噪音检测
+        /// Prefix Terminal.PlayTerminalAudioServerRpc
+        /// </summary>
         [HarmonyPatch(typeof(Terminal), "__rpc_handler_1713627637")]
         [HarmonyPrefix]
         public static bool __rpc_handler_1713627637(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -1558,6 +1577,10 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// 频繁开关灯检测，遥控器目前无法检测(为什么客户端的RPC能影响到其他玩家？待解决)
+        /// Prefix ShipLights.SetShipLightsServerRpc
+        /// </summary>
         [HarmonyPatch(typeof(ShipLights), "__rpc_handler_1625678258")]
         [HarmonyPrefix]
         public static bool __rpc_handler_1625678258(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -1607,6 +1630,11 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// 通过ClientId找到调用RPC的玩家
+        /// </summary>
+        /// <param name="rpcParams"></param>
+        /// <returns></returns>
         private static PlayerControllerB GetPlayer(__RpcParams rpcParams)
         {
             foreach (var item in StartOfRound.Instance.allPlayerScripts)
@@ -1620,6 +1648,7 @@ namespace AntiCheat
         }
 
         /// <summary>
+        /// 开枪事件
         /// Prefix ShotgunItem.ShootGunServerRpc
         /// </summary>
         [HarmonyPatch(typeof(ShotgunItem), "__rpc_handler_1329927282")]
@@ -1690,6 +1719,7 @@ namespace AntiCheat
         }
 
         /// <summary>
+        /// 挥铲事件
         /// Prefix Shovel.HitShovelServerRpc
         /// </summary>
         [HarmonyPatch(typeof(Shovel), "__rpc_handler_2096026133")]
@@ -1735,6 +1765,10 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// 玩家拉杆事件
+        /// Prefix StartOfRound.__rpc_handler_1089447320
+        /// </summary>
         [HarmonyPatch(typeof(StartOfRound), "__rpc_handler_1089447320")]
         [HarmonyPrefix]
         public static bool StartGameServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -1776,6 +1810,10 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// 玩家断开连接时清空steamId(防止游戏缓存)
+        /// Postfix StartOfRound.OnPlayerDC
+        /// </summary>
         [HarmonyPatch(typeof(StartOfRound), "OnPlayerDC")]
         [HarmonyPostfix]
         public static void OnPlayerDC(int playerObjectNumber, ulong clientId)
@@ -1788,6 +1826,10 @@ namespace AntiCheat
 
         public static PlayerControllerB whoUseTerminal { get; set; }
 
+        /// <summary>
+        /// 记录上一个使用终端的玩家
+        /// Prefix Terminal.SetTerminalInUseServerRpc
+        /// </summary>
         [HarmonyPatch(typeof(Terminal), "__rpc_handler_4047492032")]
         [HarmonyPrefix]
         public static bool __rpc_handler_4047492032(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -1803,6 +1845,11 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// 踢出玩家
+        /// </summary>
+        /// <param name="kick">玩家</param>
+        /// <param name="canJoin">重新加入</param>
         public static void KickPlayer(PlayerControllerB kick, bool canJoin = false)
         {
             if (kick.actualClientId == 0)
@@ -1835,6 +1882,10 @@ namespace AntiCheat
             }));
         }
 
+        /// <summary>
+        /// 修复复活卡黑屏问题
+        /// Prefix HUDManager.SetPlayerLevel
+        /// </summary>
         [HarmonyPatch(typeof(HUDManager), "SetPlayerLevel")]
         [HarmonyPrefix]
         public static bool SetPlayerLevel(bool isDead, bool mostProfitable, bool allPlayersDead)
@@ -1850,6 +1901,7 @@ namespace AntiCheat
         }
 
         /// <summary>
+        /// 拉杆事件(正常拉杆都要经过这一层)
         /// Prefix StartMatchLever.PlayLeverPullEffectsServerRpc
         /// </summary>
         [HarmonyPatch(typeof(StartMatchLever), "__rpc_handler_2406447821")]
@@ -1876,6 +1928,10 @@ namespace AntiCheat
         }
 
 
+        /// <summary>
+        /// 出售完货物事件(用于更新反作弊的记录金钱)
+        /// Postfix DepositItemsDesk.SellAndDisplayItemProfits
+        /// </summary>
         [HarmonyPatch(typeof(DepositItemsDesk), "SellAndDisplayItemProfits")]
         [HarmonyPostfix]
         public static void SellAndDisplayItemProfits(int profit, int newGroupCredits)
@@ -1888,11 +1944,10 @@ namespace AntiCheat
             LogInfo($"SetMoney:{Money}");
         }
 
-        public static Dictionary<long, Item> useItems = new Dictionary<long, Item>();
-
-
-
-
+        /// <summary>
+        /// 玩家销毁物品事件(允许销毁礼物盒和钥匙)
+        /// Prefix PlayerControllerB.DespawnHeldObjectServerRpc
+        /// </summary>
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_1786952262")]
         [HarmonyPrefix]
         public static bool __rpc_handler_1786952262(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -1924,6 +1979,7 @@ namespace AntiCheat
 
 
         /// <summary>
+        /// 机枪激怒事件(检测)
         /// Prefix Turret.EnterBerserkModeServerRpc
         /// </summary>
         [HarmonyPatch(typeof(Turret), "__rpc_handler_4195711963")]
@@ -1972,6 +2028,10 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// 声音更新事件(处理进房卡黑屏，但是好像无效)
+        /// Postfix SoundManager.Update
+        /// </summary>
         [HarmonyPatch(typeof(SoundManager), "Update")]
         [HarmonyPrefix]
         public static void SoundManagerUpdate()
@@ -1989,7 +2049,10 @@ namespace AntiCheat
             count = 0;
         }
 
-
+        /// <summary>
+        /// UI更新事件(房主死亡时加上一票起飞提示)
+        /// Postfix HUDManager.Update
+        /// </summary>
         [HarmonyPatch(typeof(HUDManager), "Update")]
         [HarmonyPostfix]
         public static void Update()
@@ -2021,6 +2084,7 @@ namespace AntiCheat
         public static bool doVote { get; set; }
 
         /// <summary>
+        /// 死亡玩家投票事件(这里处理房主一票起飞)
         /// Postfix TimeOfDay.SetShipLeaveEarlyServerRpc
         /// </summary>
         [HarmonyPatch(typeof(TimeOfDay), "__rpc_handler_543987598")]
@@ -2049,6 +2113,7 @@ namespace AntiCheat
         }
 
         /// <summary>
+        /// 死亡玩家投票事件(将事件转发到起飞拉杆事件)
         /// Prefix TimeOfDay.SetShipLeaveEarlyServerRpc
         /// </summary>
         [HarmonyPatch(typeof(TimeOfDay), "__rpc_handler_543987598")]
@@ -2073,6 +2138,7 @@ namespace AntiCheat
         }
 
         /// <summary>
+        /// 起飞拉杆事件
         /// Prefix StartOfRound.EndGameServerRpc
         /// </summary>
         [HarmonyPatch(typeof(StartOfRound), "__rpc_handler_2028434619")]
@@ -2135,12 +2201,9 @@ namespace AntiCheat
         }
 
         /// <summary>
+        /// 放置飞船装饰事件(检测)
         /// Prefix ShipBuildModeManager.PlaceShipObjectServerRpc
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="reader"></param>
-        /// <param name="rpcParams"></param>
-        /// <returns></returns>
         [HarmonyPatch(typeof(ShipBuildModeManager), "__rpc_handler_861494715")]
         [HarmonyPrefix]
         public static bool __rpc_handler_861494715(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -2190,6 +2253,10 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// 离开地雷事件(记录是否触发过)
+        /// Prefix Landmine.OnTriggerExit
+        /// </summary>
         [HarmonyPatch(typeof(Landmine), "OnTriggerExit")]
         [HarmonyPrefix]
         public static bool OnTriggerExit(Landmine __instance, Collider other)
@@ -2216,6 +2283,10 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// 地雷引爆事件(检测)
+        /// Prefix Landmine.ExplodeMineServerRpc
+        /// </summary>
         [HarmonyPatch(typeof(Landmine), "__rpc_handler_3032666565")]
         [HarmonyPrefix]
         public static bool __rpc_handler_3032666565(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -2246,6 +2317,10 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// 老板激怒事件(正常被激怒只有主机才会调用SeverRpc，客户端调用就是有问题)
+        /// Prefix DepositItemsDesk.AttackPlayersServerRpc
+        /// </summary>
         [HarmonyPatch(typeof(DepositItemsDesk), "__rpc_handler_3230280218")]
         [HarmonyPrefix]
         public static bool __rpc_handler_3230280218(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -2271,7 +2346,10 @@ namespace AntiCheat
             return true;
         }
 
-
+        /// <summary>
+        /// 自动添加AC标识
+        /// Prefix GameNetworkManager.StartHost
+        /// </summary>
         [HarmonyPatch(typeof(GameNetworkManager), "StartHost")]
         [HarmonyPrefix]
         public static void StartHost()

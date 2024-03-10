@@ -16,7 +16,7 @@ namespace AntiCheat
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheatPlugin : BaseUnityPlugin
     {
-        public const string Version = "0.5.8";
+        public const string Version = "0.5.9";
         public static ManualLogSource ManualLog = null;
         public enum Language
         {
@@ -181,7 +181,7 @@ namespace AntiCheat
             Nameless2 = Config.Bind("NamelessSettings", "Kick", false, LocalizationManager.GetString("config_Kick"));
 
             FreeBuy = Config.Bind("FreeBuySettings", "Enable", true, LocalizationManager.GetString("config_FreeBuy"));
-            FreeBuy2 = Config.Bind("NamelessSettings", "Kick", false, LocalizationManager.GetString("config_Kick"));
+            FreeBuy2 = Config.Bind("FreeBuySettings", "Kick", false, LocalizationManager.GetString("config_Kick"));
 
             PlayerJoin = Config.Bind("MsgSettings", "PlayerJoinShip", LocalizationManager.GetString("msg_wlc_player"), LocalizationManager.GetString("msg_wlc_player"));
 
