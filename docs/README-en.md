@@ -41,15 +41,16 @@ For example:
 * Invisible player detection
 * Jetpack explode detection
 * Landmine detonate detection
-* Abnormal enemy behavior detection
+* Abnormal monster behavior detection
 * Mini-map mod detection
-* Abnormal Enemy kill detection
+* Abnormal Enemy killed detection
 * Item pickup distance detection
 * Abnormal shovel damage detection
 * Player name detection (Nameless or Unknown)
-* 100 Free purchase detection (item purchase/unlock ship decorations)
+* Free purchases detection (item purchase/unlock ship decorations)
 * Infinite ammo detection
 * Prevent the client killing other players by calling monster killing RPC (prevent Instant-Kill)
+* Anger the Boss Detection
 
 ### Feedback
 If you encounter the false report and you can confirm this is not caused by other mod, you can report the issue on my GitHub to explain how you can reproduce the issue and help us to fix it!
