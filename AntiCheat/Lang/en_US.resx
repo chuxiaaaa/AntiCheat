@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="config_Boss" xml:space="preserve">
-    <value>Anger the Boss Detection</value>
+    <value>Provoking Boss Detection</value>
   </data>
   <data name="config_ChatReal" xml:space="preserve">
     <value>Fake chat message detection</value>
@@ -175,40 +175,40 @@
     <value>Set the lobby name prefix, Empty to disable.</value>
   </data>
   <data name="config_ShipBuild" xml:space="preserve">
-    <value>Spacecraft item location anomaly detection</value>
+    <value>Abnormal ship items location detection</value>
   </data>
   <data name="config_ShipConfig2" xml:space="preserve">
-    <value>Non-hosts can only log in if more than the specified number of people (host permissions need to be turned off)</value>
+    <value>Client-side player can pull the lever only if more than the specified player number are reached (host permissions need to be turned off)</value>
   </data>
   <data name="config_ShipConfig3" xml:space="preserve">
-    <value>Non-homeowners can only take off after this time</value>
+    <value>Allow client-side player to take off when after this time (based on game world)</value>
   </data>
   <data name="config_ShipConfig4" xml:space="preserve">
-    <value>Non-homeowners can only take off when the number of people in the spaceship (survival) exceeds the above ratio (0-100%)</value>
+    <value>Allow client-side player to take off when the number of alive players in the ship are exceed the specified ratio of total (alive?) players number (0-100%)</value>
   </data>
   <data name="config_ShipConfig5" xml:space="preserve">
-    <value>Detect force lever behavior (kick player when this behavior is detected)</value>
+    <value>Detect malicious lever pull behavior (kick player when this behavior is detected)</value>
   </data>
   <data name="config_ShipConfig6" xml:space="preserve">
-    <value>You are the homeowner, and voting can immediately make the spaceship take off.</value>
+    <value>You are the host, your vote can call the autopilot.</value>
   </data>
   <data name="config_ShipLight" xml:space="preserve">
-    <value>Lights off show detection</value>
+    <value>Light switch detection</value>
   </data>
   <data name="config_ShipSetting" xml:space="preserve">
-    <value>Only the host has landing rights</value>
+    <value>Only the host can land the ship</value>
   </data>
   <data name="config_ShipTerminal" xml:space="preserve">
-    <value>Terminal noise detection</value>
+    <value>Terminal noise spaming detection</value>
   </data>
   <data name="config_Shovel" xml:space="preserve">
-    <value>Shovel damage detection</value>
+    <value>Abnormal shovel damage detection</value>
   </data>
   <data name="config_SpawnWebTrap" xml:space="preserve">
-    <value>Spider web detection</value>
+    <value>Spawn spiderweb detection</value>
   </data>
   <data name="config_Turret" xml:space="preserve">
-    <value>Enraged machine gun detection</value>
+    <value>Malicious attacking turret detection</value>
   </data>
   <data name="Item_Shotgun" xml:space="preserve">
     <value>shotgun</value>
@@ -217,10 +217,10 @@
     <value>shovel</value>
   </data>
   <data name="log_load" xml:space="preserve">
-    <value>mod Loaded!</value>
+    <value>AntiCheat mod are Loaded!</value>
   </data>
   <data name="log_refuse_connect" xml:space="preserve">
-    <value>{steamId}'s attempt to reconnect to the game was rejected (because he has been kicked out)!</value>
+    <value>{steamId}'s attempt to reconnect to the game but was rejected (alreay kicked before)!</value>
   </data>
   <data name="MessageFormat" xml:space="preserve">
     <value>&lt;color=red&gt;{Prefix} {msg}&lt;/color&gt;</value>
