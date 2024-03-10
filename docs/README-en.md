@@ -37,7 +37,7 @@ For example:
 * Abnormal masked enemy detection
 * Abnormal gift box interact detection
 * Spawn spiderweb detection
-* Player attack turret detection
+* Player attacking turret detection
 * Invisible player detection
 * Jetpack explode detection
 * Landmine detonate detection
