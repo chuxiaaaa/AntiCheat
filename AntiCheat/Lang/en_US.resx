@@ -175,7 +175,7 @@
     <value>Set the lobby name prefix, Empty to disable.</value>
   </data>
   <data name="config_ShipBuild" xml:space="preserve">
-    <value>Abnormal furniture position location detection</value>
+    <value>Abnormal furniture position detection</value>
   </data>
   <data name="config_ShipConfig2" xml:space="preserve">
     <value>Client-side player can pull the lever only if more than the specified player number are reached (host permissions need to be turned off)</value>
