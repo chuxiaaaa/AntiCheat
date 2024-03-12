@@ -325,7 +325,7 @@
     <value>Detected player {player} damage to target {enemyName} without any weapon! ({damageAmount})</value>
   </data>
   <data name="msg_snc_player" xml:space="preserve">
-    <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;New biological data are send to the terminal! &lt;/color&gt;&lt;/color&gt;</value>
+    <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;New creature data sent to terminal! &lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Turret" xml:space="preserve">
     <value>Detect player {player} malicious attacking the turret! (distance: {Distance})</value>
