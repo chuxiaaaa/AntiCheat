@@ -259,7 +259,7 @@
     <value>Detected player {player} taking objects from too far away! (Player coordinates: {player_position}|Item coordinates: {object_position})</value>
   </data>
   <data name="msg_InfiniteAmmo" xml:space="preserve">
-    <value>Detected player {player} have infinite ammo!</value>
+    <value>Detected player {player} using infinite ammo shotgun, that shotgun are now glitched</value>
   </data>
   <data name="msg_Invisibility" xml:space="preserve">
     <value>Detected player {player} are invisible! (Player coordinates: {player_position})</value>
