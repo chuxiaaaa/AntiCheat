@@ -220,7 +220,7 @@
     <value>AntiCheat mod are Loaded!</value>
   </data>
   <data name="log_refuse_connect" xml:space="preserve">
-    <value>{steamId} attempt to reconnect to the game but was rejected (already kicked)!</value>
+    <value>{steamId} attempting to reconnect the game but was rejected (already kicked)!</value>
   </data>
   <data name="MessageFormat" xml:space="preserve">
     <value>&lt;color=red&gt;{Prefix} {msg}&lt;/color&gt;</value>
@@ -229,7 +229,7 @@
     <value>&lt;color=yellow&gt;[{player}] &lt;color=red&gt;was left behind.&lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Boss" xml:space="preserve">
-    <value>Detected player {player} attempt to provoking the Boss!</value>
+    <value>Detected player {player} attempting to provoking the Boss!</value>
   </data>
   <data name="msg_ChatReal" xml:space="preserve">
     <value>Detected player {player} try to fake as {player2} in chat!</value>
