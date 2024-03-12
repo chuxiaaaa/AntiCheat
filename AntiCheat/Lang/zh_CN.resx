@@ -217,16 +217,16 @@
     <value>铲子</value>
   </data>
   <data name="log_load" xml:space="preserve">
-    <value>模组已加载完毕！</value>
+    <value>反作弊模组已加载完毕！</value>
   </data>
   <data name="log_refuse_connect" xml:space="preserve">
-    <value>{steamId} 尝试重连游戏被拒绝(因为他已被踢出)！</value>
+    <value>{steamId} 尝试重连游戏被拒绝(已被踢出)！</value>
   </data>
   <data name="MessageFormat" xml:space="preserve">
     <value>&lt;color=red&gt;{Prefix} {msg}&lt;/color&gt;</value>
   </data>
   <data name="msg_behind_player" xml:space="preserve">
-    <value>&lt;color=yellow&gt;[{player}] &lt;color=red&gt;还没上船呢...&lt;/color&gt;&lt;/color&gt;</value>
+    <value>&lt;color=yellow&gt;[{player}] &lt;color=red&gt;被抛弃了&lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Boss" xml:space="preserve">
     <value>检测到玩家 {player} 召唤老板！</value>
@@ -325,7 +325,7 @@
     <value>检测到玩家 {player} 空手对敌人 {enemyName} 造成伤害！({damageAmount})</value>
   </data>
   <data name="msg_snc_player" xml:space="preserve">
-    <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;新生物数据发送到终端！&lt;/color&gt;&lt;/color&gt;</value>
+    <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;新的生物数据已发送至终端！&lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Turret" xml:space="preserve">
     <value>检测玩家 {player} 强制激怒机枪！(距离：{Distance})</value>
