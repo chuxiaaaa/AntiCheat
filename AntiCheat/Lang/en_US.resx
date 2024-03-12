@@ -238,7 +238,7 @@
     <value>Detected player {player} destroying items!</value>
   </data>
   <data name="msg_Enemy_ChangeOwnershipOfEnemy" xml:space="preserve">
-    <value>Detected player {player} try to change monster behavior!</value>
+    <value>Detected player {player} attempting to change monster behavior, that maybe a vanilla glitch</value>
   </data>
   <data name="msg_FreeBuy_GiveMoney" xml:space="preserve">
     <value>Detected player {player} are generating credits!</value>
