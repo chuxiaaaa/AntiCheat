@@ -280,7 +280,7 @@
     <value>检测到玩家 {player} 强制引爆地雷！</value>
   </data>
   <data name="msg_Map" xml:space="preserve">
-    <value>检测到玩家 {player} 使用小地图</value>
+    <value>检测到玩家 {player} 使用小地图！</value>
   </data>
   <data name="msg_Mask" xml:space="preserve">
     <value>检测到玩家 {player} 刷假人！</value>
