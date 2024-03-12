@@ -43,7 +43,7 @@ For example:
 * Abnormal Landmine detonate detection
 * Abnormal monster behavior detection
 * Mini-map mod detection
-* Abnormal Enemy killed detection
+* Instant-Kill enemy detection
 * Item pickup distance detection
 * Abnormal shovel damage detection
 * Player name detection (Nameless or Unknown)
