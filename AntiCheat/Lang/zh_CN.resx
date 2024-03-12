@@ -271,7 +271,7 @@
     <value>检测到玩家 {player} 引爆喷气背包！</value>
   </data>
   <data name="msg_Kick" xml:space="preserve">
-    <value>{player} 被踢出游戏！</value>
+    <value>{player} 已被踢出</value>
   </data>
   <data name="msg_KillEnemy" xml:space="preserve">
     <value>检测到玩家 {player} 秒杀怪物！( {enemyName} ,剩余血量:{HP})</value>
