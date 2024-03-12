@@ -220,7 +220,7 @@
     <value>AntiCheat mod are Loaded!</value>
   </data>
   <data name="log_refuse_connect" xml:space="preserve">
-    <value>{steamId}'s attempt to reconnect to the game but was rejected (alreay kicked before)!</value>
+    <value>{steamId} attempt to reconnect to the game but was rejected (already kicked)!</value>
   </data>
   <data name="MessageFormat" xml:space="preserve">
     <value>&lt;color=red&gt;{Prefix} {msg}&lt;/color&gt;</value>
