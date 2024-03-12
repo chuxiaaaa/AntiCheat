@@ -274,7 +274,7 @@
     <value>{player} was kicked!</value>
   </data>
   <data name="msg_KillEnemy" xml:space="preserve">
-    <value>Detected player {player} killing monster abnormally! ({enemyName}, remain HP before: {HP})</value>
+    <value>Detected player {player} instant-killed an enemy! ({enemyName}, monster HP before: {HP})</value>
   </data>
   <data name="msg_Landmine" xml:space="preserve">
     <value>Detected player {player} detonate the landmine abnormally!</value>
