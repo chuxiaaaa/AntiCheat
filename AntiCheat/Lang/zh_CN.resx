@@ -238,7 +238,7 @@
     <value>检测到玩家 {player} 销毁物品 ({item})！</value>
   </data>
   <data name="msg_Enemy_ChangeOwnershipOfEnemy" xml:space="preserve">
-    <value>检测到玩家 {player} 强制改变怪物仇恨，这可能是原版BUG</value>
+    <value>检测到玩家 {player} 强制改变怪物仇恨！</value>
   </data>
   <data name="msg_FreeBuy_GiveMoney" xml:space="preserve">
     <value>检测到玩家 {player} 刷取金钱！</value>
@@ -259,7 +259,7 @@
     <value>检测到玩家 {player} 隔空取物！(玩家坐标：{player_position}|物品坐标：{object_position})</value>
   </data>
   <data name="msg_InfiniteAmmo" xml:space="preserve">
-    <value>检测到玩家 {player} 正在使用有无限子弹的霰弹枪，那把霰弹枪可能已被作弊者使用过</value>
+    <value>检测到玩家 {player} 正使用无限子弹！</value>
   </data>
   <data name="msg_Invisibility" xml:space="preserve">
     <value>检测到玩家 {player} 坐标异常！(玩家坐标：{player_position})</value>
@@ -280,13 +280,13 @@
     <value>检测到玩家 {player} 强制引爆地雷！</value>
   </data>
   <data name="msg_Map" xml:space="preserve">
-    <value>检测到玩家 {player} 使用小地图，这可以让找东西和躲机枪更容易些！</value>
+    <value>检测到玩家 {player} 使用小地图</value>
   </data>
   <data name="msg_Mask" xml:space="preserve">
     <value>检测到玩家 {player} 刷假人！</value>
   </data>
   <data name="msg_Nameless" xml:space="preserve">
-    <value>检测到玩家名称异常，尝试重进一下？如果你的名字全是数字，你的名字总会是Nameless</value>
+    <value>检测到玩家名称异常！</value>
   </data>
   <data name="msg_ShipBuild" xml:space="preserve">
     <value>检测到玩家 {player} 将飞船物品摆放到异常位置({position})！</value>
