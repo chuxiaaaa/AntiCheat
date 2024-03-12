@@ -271,7 +271,7 @@
     <value>Detected player {player} explode the jetpack!</value>
   </data>
   <data name="msg_Kick" xml:space="preserve">
-    <value>{player} are now kicked!</value>
+    <value>{player} was kicked!</value>
   </data>
   <data name="msg_KillEnemy" xml:space="preserve">
     <value>Detected player {player} killing monster abnormally! ({enemyName}, remain HP before: {HP})</value>
