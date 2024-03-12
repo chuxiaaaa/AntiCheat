@@ -280,7 +280,7 @@
     <value>Detected player {player} detonate the landmine abnormally!</value>
   </data>
   <data name="msg_Map" xml:space="preserve">
-    <value>Detected player {player} using minimap mod, that can make find the loot more easier!</value>
+    <value>Detected player {player} using minimap mod, that can make find the loot and avoid hazard more easier!</value>
   </data>
   <data name="msg_Mask" xml:space="preserve">
     <value>Detected player {player} spawn masked enemy abnormally, which mean that player catched by a masker but that player should already dead right now!</value>
