@@ -238,10 +238,10 @@
     <value>Detected player {player} destroying items!</value>
   </data>
   <data name="msg_Enemy_ChangeOwnershipOfEnemy" xml:space="preserve">
-    <value>Detected player {player} attempting to change the monster behavior</value>
+    <value>Detected player {player} attempting to change the monster behavior!</value>
   </data>
   <data name="msg_FreeBuy_GiveMoney" xml:space="preserve">
-    <value>Detected player {player} are generating credits!</value>
+    <value>Detected player {player} are generating credits for no reason!</value>
   </data>
   <data name="msg_FreeBuy_Item" xml:space="preserve">
     <value>Detected player {player} buying items for free!</value>
