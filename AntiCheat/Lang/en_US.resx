@@ -220,7 +220,7 @@
     <value>AntiCheat mod are Loaded!</value>
   </data>
   <data name="log_refuse_connect" xml:space="preserve">
-    <value>{steamId}'s attempt to reconnect to the game but was rejected (alreay kicked before)!</value>
+    <value>{steamId} attempting to reconnect the game but was rejected (already kicked)!</value>
   </data>
   <data name="MessageFormat" xml:space="preserve">
     <value>&lt;color=red&gt;{Prefix} {msg}&lt;/color&gt;</value>
@@ -229,7 +229,7 @@
     <value>&lt;color=yellow&gt;[{player}] &lt;color=red&gt;was left behind.&lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Boss" xml:space="preserve">
-    <value>Detected player {player} attempt to provoking the Boss!</value>
+    <value>Detected player {player} attempting to provoking the Boss!</value>
   </data>
   <data name="msg_ChatReal" xml:space="preserve">
     <value>Detected player {player} try to fake as {player2} in chat!</value>
@@ -238,10 +238,10 @@
     <value>Detected player {player} destroying items!</value>
   </data>
   <data name="msg_Enemy_ChangeOwnershipOfEnemy" xml:space="preserve">
-    <value>Detected player {player} try to change monster behavior!</value>
+    <value>Detected player {player} attempting to change the monster behavior!</value>
   </data>
   <data name="msg_FreeBuy_GiveMoney" xml:space="preserve">
-    <value>Detected player {player} are generating credits!</value>
+    <value>Detected player {player} are generating credits for no reason!</value>
   </data>
   <data name="msg_FreeBuy_Item" xml:space="preserve">
     <value>Detected player {player} buying items for free!</value>
@@ -250,7 +250,7 @@
     <value>Detected player {player} buying unlockable for free!</value>
   </data>
   <data name="msg_game_start" xml:space="preserve">
-    <value>&lt;color=green&gt;Anti-cheating (v{ver}) is enabled in this lobby&lt;/color&gt;</value>
+    <value>&lt;color=green&gt;Anti-Cheat (v{ver}) is enabled in this lobby&lt;/color&gt;</value>
   </data>
   <data name="msg_Gift" xml:space="preserve">
     <value>Detected player {player} interact gift box abnormally!</value>
@@ -259,7 +259,7 @@
     <value>Detected player {player} taking objects from too far away! (Player coordinates: {player_position}|Item coordinates: {object_position})</value>
   </data>
   <data name="msg_InfiniteAmmo" xml:space="preserve">
-    <value>Detected player {player} have infinite ammo!</value>
+    <value>Detected player {player} using infinite ammo!</value>
   </data>
   <data name="msg_Invisibility" xml:space="preserve">
     <value>Detected player {player} are invisible! (Player coordinates: {player_position})</value>
@@ -271,7 +271,7 @@
     <value>Detected player {player} explode the jetpack!</value>
   </data>
   <data name="msg_Kick" xml:space="preserve">
-    <value>{player} are now kicked!</value>
+    <value>{player} was kicked!</value>
   </data>
   <data name="msg_KillEnemy" xml:space="preserve">
     <value>Detected player {player} killing monster abnormally! ({enemyName}, remain HP before: {HP})</value>
@@ -280,13 +280,13 @@
     <value>Detected player {player} detonate the landmine abnormally!</value>
   </data>
   <data name="msg_Map" xml:space="preserve">
-    <value>Detected player {player} using minimap mod, that can make find the loot more easier!</value>
+    <value>Detected player {player} using minimap mod!</value>
   </data>
   <data name="msg_Mask" xml:space="preserve">
-    <value>Detected player {player} spawn masked enemy abnormally, which mean that player catched by a masker but that player should already dead right now!</value>
+    <value>Detected player {player} abnormally spawn masked enemy!</value>
   </data>
   <data name="msg_Nameless" xml:space="preserve">
-    <value>Detected player name abnormally, try to re-join? but if name are all numbers, your name will always be Nameless.</value>
+    <value>Detected player name abnormally!</value>
   </data>
   <data name="msg_ShipBuild" xml:space="preserve">
     <value>Detected player {player} placing furniture in abnormal position ({position})!</value>
@@ -325,7 +325,7 @@
     <value>Detected player {player} damage to target {enemyName} without any weapon! ({damageAmount})</value>
   </data>
   <data name="msg_snc_player" xml:space="preserve">
-    <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;New biological data are sent to the terminal! &lt;/color&gt;&lt;/color&gt;</value>
+    <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;New creature data sent to terminal! &lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Turret" xml:space="preserve">
     <value>Detect player {player} malicious attacking the turret! (distance: {Distance})</value>
