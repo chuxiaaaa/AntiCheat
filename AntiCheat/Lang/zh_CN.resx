@@ -154,7 +154,7 @@
     <value>检测到该行为时踢出玩家</value>
   </data>
   <data name="config_KillEnemy" xml:space="preserve">
-    <value>击杀敌人检测</value>
+    <value>秒杀敌人检测</value>
   </data>
   <data name="config_Landmine" xml:space="preserve">
     <value>引爆地雷检测</value>
