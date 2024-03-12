@@ -238,7 +238,7 @@
     <value>Detected player {player} destroying items!</value>
   </data>
   <data name="msg_Enemy_ChangeOwnershipOfEnemy" xml:space="preserve">
-    <value>Detected player {player} attempting to change the monster behavior, which could be a vanilla glitch</value>
+    <value>Detected player {player} attempting to change the monster behavior</value>
   </data>
   <data name="msg_FreeBuy_GiveMoney" xml:space="preserve">
     <value>Detected player {player} are generating credits!</value>
@@ -259,7 +259,7 @@
     <value>Detected player {player} taking objects from too far away! (Player coordinates: {player_position}|Item coordinates: {object_position})</value>
   </data>
   <data name="msg_InfiniteAmmo" xml:space="preserve">
-    <value>Detected player {player} using infinite ammo shotgun, that shotgun may already used by cheater</value>
+    <value>Detected player {player} using infinite ammo.</value>
   </data>
   <data name="msg_Invisibility" xml:space="preserve">
     <value>Detected player {player} are invisible! (Player coordinates: {player_position})</value>
@@ -280,13 +280,13 @@
     <value>Detected player {player} detonate the landmine abnormally!</value>
   </data>
   <data name="msg_Map" xml:space="preserve">
-    <value>Detected player {player} using minimap mod, that can make find the loot and avoid hazard more easier!</value>
+    <value>Detected player {player} using minimap mod.</value>
   </data>
   <data name="msg_Mask" xml:space="preserve">
     <value>Detected player {player} abnormally spawn masked enemy!</value>
   </data>
   <data name="msg_Nameless" xml:space="preserve">
-    <value>Detected player name abnormally, try to re-join? but if name are all numbers, your name will always be Nameless.</value>
+    <value>Detected player name abnormally.</value>
   </data>
   <data name="msg_ShipBuild" xml:space="preserve">
     <value>Detected player {player} placing furniture in abnormal position ({position})!</value>
