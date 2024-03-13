@@ -118,22 +118,22 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="config_Boss" xml:space="preserve">
-    <value>Provoking Boss Detection</value>
+    <value>Spamming bell ringing detection</value>
   </data>
   <data name="config_ChatReal" xml:space="preserve">
     <value>Fake chat message detection</value>
   </data>
   <data name="config_DespawnItem" xml:space="preserve">
-    <value>Destory items detection</value>
+    <value>Abnormal destory item detection</value>
   </data>
   <data name="config_Enemy" xml:space="preserve">
     <value>Abnormal monster behavior detection</value>
   </data>
   <data name="config_FreeBuy" xml:space="preserve">
-    <value>Free purchases</value>
+    <value>Abnormal purchase detection</value>
   </data>
   <data name="config_Gift" xml:space="preserve">
-    <value>Abnormal gift box interact detection</value>
+    <value>Abnormal interact gift box detection</value>
   </data>
   <data name="config_GrabObject" xml:space="preserve">
     <value>Item pickup distance detection</value>
@@ -154,16 +154,16 @@
     <value>Kick player when this behavior is detected</value>
   </data>
   <data name="config_KillEnemy" xml:space="preserve">
-    <value>Instant-Kill enemy detection</value>
+    <value>Instant kill enemy detection</value>
   </data>
   <data name="config_Landmine" xml:space="preserve">
-    <value>Landmine detonate detection</value>
+    <value>Abnormal trigger landmine detection</value>
   </data>
   <data name="config_Log" xml:space="preserve">
-    <value>show log</value>
+    <value>Show log</value>
   </data>
   <data name="config_Map" xml:space="preserve">
-    <value>Mini-map mod detection</value>
+    <value>Mini-Map mod detection</value>
   </data>
   <data name="config_Mask" xml:space="preserve">
     <value>Abnormal masked enemy detection</value>
@@ -172,13 +172,13 @@
     <value>Player name detection (Nameless or Unknown)</value>
   </data>
   <data name="config_Prefix" xml:space="preserve">
-    <value>Set the lobby name prefix, Empty to disable.</value>
+    <value>Set the lobby name prefix, empty to disable.</value>
   </data>
   <data name="config_ShipBuild" xml:space="preserve">
     <value>Abnormal furniture position detection</value>
   </data>
   <data name="config_ShipConfig2" xml:space="preserve">
-    <value>Client-side player can pull the lever only if more than the specified player number are reached (host permissions need to be turned off)</value>
+    <value>Client-side player can only pull the lever when specified player number count are reached (StartGameOnlyHost must set to false)</value>
   </data>
   <data name="config_ShipConfig3" xml:space="preserve">
     <value>Allow client-side player to take off when after this time (based on game world)</value>
@@ -193,22 +193,22 @@
     <value>You are the host, your vote can call the autopilot.</value>
   </data>
   <data name="config_ShipLight" xml:space="preserve">
-    <value>Light switch detection</value>
+    <value>Spamming light switch detection</value>
   </data>
   <data name="config_ShipSetting" xml:space="preserve">
     <value>Only the host can land the ship</value>
   </data>
   <data name="config_ShipTerminal" xml:space="preserve">
-    <value>Terminal noise spaming detection</value>
+    <value>Spamming terminal noise detection</value>
   </data>
   <data name="config_Shovel" xml:space="preserve">
     <value>Abnormal shovel damage detection</value>
   </data>
   <data name="config_SpawnWebTrap" xml:space="preserve">
-    <value>Spawn spiderweb detection</value>
+    <value>Abnormal spawn spiderweb detection</value>
   </data>
   <data name="config_Turret" xml:space="preserve">
-    <value>Malicious attacking turret detection</value>
+    <value>Abnormal trigger turret overkill detection</value>
   </data>
   <data name="Item_Shotgun" xml:space="preserve">
     <value>shotgun</value>
@@ -229,7 +229,7 @@
     <value>&lt;color=yellow&gt;[{player}] &lt;color=red&gt;was left behind.&lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Boss" xml:space="preserve">
-    <value>Detected player {player} spamming ring the bell!</value>
+    <value>Detected player {player} spam to ringing the bell!</value>
   </data>
   <data name="msg_ChatReal" xml:space="preserve">
     <value>Detected player {player} try to fake as {player2} in chat!</value>
@@ -280,7 +280,7 @@
     <value>Detected player {player} anomaly triggered the landmine!</value>
   </data>
   <data name="msg_Map" xml:space="preserve">
-    <value>Detected player {player} using minimap mod!</value>
+    <value>Detected player {player} using Mini-Map mod!</value>
   </data>
   <data name="msg_Mask" xml:space="preserve">
     <value>Detected player {player} abnormally spawning masked enemies!</value>
@@ -328,10 +328,10 @@
     <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;New creature data sent to terminal! &lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Turret" xml:space="preserve">
-    <value>Detected player {player} triggered turret hazard! (distance: {Distance})</value>
+    <value>Detected player {player} triggered turret overkill! (distance: {Distance})</value>
   </data>
   <data name="msg_Turret2" xml:space="preserve">
-    <value>Detected player {player} triggered turret hazard! (NO WEAPON)</value>
+    <value>Detected player {player} triggered turret overkill! (NO WEAPON)</value>
   </data>
   <data name="msg_vote" xml:space="preserve">
     <value>You are the host, your vote can call the autopilot.</value>
