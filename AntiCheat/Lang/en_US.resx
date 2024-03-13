@@ -133,7 +133,7 @@
     <value>Abnormal purchase detection</value>
   </data>
   <data name="config_Gift" xml:space="preserve">
-    <value>Abnormal interact gift box detection</value>
+    <value>Abnormal gift box interact detection</value>
   </data>
   <data name="config_GrabObject" xml:space="preserve">
     <value>Item pickup distance detection</value>
