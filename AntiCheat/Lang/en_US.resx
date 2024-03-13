@@ -124,7 +124,7 @@
     <value>Fake chat message detection</value>
   </data>
   <data name="config_DespawnItem" xml:space="preserve">
-    <value>Abnormal destory item detection</value>
+    <value>Abnormal destroy item detection</value>
   </data>
   <data name="config_Enemy" xml:space="preserve">
     <value>Abnormal monster behavior detection</value>
