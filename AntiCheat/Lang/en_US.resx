@@ -172,7 +172,7 @@
     <value>Player name detection (Nameless or Unknown)</value>
   </data>
   <data name="config_Prefix" xml:space="preserve">
-    <value>Set the lobby name prefix, empty to disable.</value>
+    <value>Set the lobby name prefix, empty to disable</value>
   </data>
   <data name="config_ShipBuild" xml:space="preserve">
     <value>Abnormal furniture position detection</value>
