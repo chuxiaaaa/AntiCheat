@@ -208,7 +208,7 @@
     <value>Abnormal spawn spiderweb detection</value>
   </data>
   <data name="config_Turret" xml:space="preserve">
-    <value>Abnormal trigger turret overkill detection</value>
+    <value>Turret overkill detection</value>
   </data>
   <data name="Item_Shotgun" xml:space="preserve">
     <value>shotgun</value>
