@@ -130,7 +130,7 @@
     <value>Abnormal monster behavior detection</value>
   </data>
   <data name="config_FreeBuy" xml:space="preserve">
-    <value>Abnormal purchase detection</value>
+    <value>Free purchases detection</value>
   </data>
   <data name="config_Gift" xml:space="preserve">
     <value>Abnormal gift box interact detection</value>
