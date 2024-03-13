@@ -331,7 +331,7 @@
     <value>Detected player {player} triggered turret overkill! (distance: {Distance})</value>
   </data>
   <data name="msg_Turret2" xml:space="preserve">
-    <value>Detected player {player} triggered turret overkill! (NO WEAPON)</value>
+    <value>Detected player {player} triggered turret overkill! (With No Weapon)</value>
   </data>
   <data name="msg_vote" xml:space="preserve">
     <value>You are the host, your vote can call the autopilot.</value>
