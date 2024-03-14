@@ -47,9 +47,9 @@ For example:
 * Item pickup distance detection
 * Abnormal shovel damage detection
 * Player name detection (Nameless or Unknown)
-* Abnormal purchase detection (item purchase/unlock ship decorations)
+* Free purchases detection (When purchasing items or unlockable)
 * Infinite ammo detection
-* Prevent the client killing other players by calling monster killing RPC (prevent Instant-Kill)
+* Prevent the client killing other players by calling monster killing RPC (Prevent Instant-Kill)
 * Spamming bell ringing detection
 
 ### Feedback
