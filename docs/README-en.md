@@ -30,27 +30,27 @@ For example:
 * Malicious lever pull detection
 * Abnormal furniture position detection
 * Abnormal item interact cooldown detection
-* Light switch detection
-* Terminal noise spaming detection
-* Destory items detection
+* Spamming light switch detection
+* Spamming terminal noise detection
+* Abnormal destroy item detection
 * Fake chat message detection
 * Abnormal masked enemy detection
 * Abnormal gift box interact detection
-* Spawn spiderweb detection
-* Malicious attacking turret detection
+* Abnormal spawn spiderweb detection
+* Turret overkill detection
 * Invisible player detection
 * Jetpack explode detection
-* Abnormal Landmine detonate detection
+* Abnormal trigger landmine detection
 * Abnormal monster behavior detection
 * Mini-map mod detection
-* Abnormal Enemy killed detection
+* Instant kill enemy detection
 * Item pickup distance detection
 * Abnormal shovel damage detection
 * Player name detection (Nameless or Unknown)
-* Free purchases detection (item purchase/unlock ship decorations)
+* Free purchases detection (When purchasing items or unlockable)
 * Infinite ammo detection
-* Prevent the client killing other players by calling monster killing RPC (prevent Instant-Kill)
-* Provoking Boss Detection
+* Prevent the client killing other players by calling monster killing RPC (Prevent Instant-Kill)
+* Spamming bell ringing detection
 
 ### Feedback
 If you encounter the false report and you can confirm this is not caused by other mod, you can report the issue on my GitHub to explain how you can reproduce the issue and help us to fix it!
