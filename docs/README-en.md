@@ -2,65 +2,64 @@
 
 A Lethal Company anti-cheat mod (host-only)
 
-Default language is Simplified Chinese, you can switch to English by changing the Language via the configuration file.
+The default language is Simplified Chinese. You can switch to English by changing the Language to "en_us" in the configuration file.
 
 ### Introduction
 
 Discord: https://discord.gg/ZdWr2rKR
 
-This mod is used to prevent cheating when hosting the public lobby, to protect the game experience.
+This mod is designed to prevent cheating when hosting public lobbies, ensuring a fair gaming experience for all players.
 
-While using this mod, you might encounter the false report but that may not the issue on my end. Please try to uninstall all the mods except for BepInEx and this mod to reproduce the issue you are encounter. If the issue is no longer occur, it's likely a compatibility issue with the mod.
+While using this mod, you might encounter false positives, but this may not be an issue with the AntiCheat mod itself. To troubleshoot, please try uninstalling all mods except for BepInEx and AntiCheat, and attempt to reproduce the issue. If the issue no longer occurs, it's likely a compatibility problem with another mod.
 
-### Instructions
+### Installation
 
 1. Install [BepInExPack](https://thunderstore.io/c/lethal-company/p/BepInEx/BepInExPack);
-2. Place AntiCheat.dll into the directory Lethal Company\BepInEx\plugins;
-3. Launch the game, once the game launched you can see the configuration file call AntiCheat.cfg in the directory Lethal Company\BepInEx\config.
+2. Place AntiCheat.dll in the Lethal Company\BepInEx\plugins directory;
+3. Launch the game. Once the game has started, you can find the configuration file AntiCheat.cfg in the Lethal Company\BepInEx\config directory.
 
-### Create Room
-Default will add "[AC]" prefix to the lobby name that can indicate to other players the anti-cheat in this lobby is ON!
+### Creating a Room
+By default, the "[AC]" prefix will be added to the lobby name to indicate to other players that the anti-cheat is enabled in this lobby.
 
-For example:
-[v49/AC] The battle is thrilling!
+Example:
 [AC] The battle is thrilling!
 
 ### Features
 * Anti-kick detection
 * Malicious lever pull detection
 * Abnormal furniture position detection
-* Abnormal item interact cooldown detection
-* Light switch detection
-* Terminal noise spaming detection
-* Destory items detection
+* Abnormal item interaction cooldown detection
+* Spamming light switch detection
+* Spamming terminal noise detection
+* Abnormal item destruction detection
 * Fake chat message detection
 * Abnormal masked enemy detection
-* Abnormal gift box interact detection
-* Spawn spiderweb detection
-* Malicious attacking turret detection
+* Abnormal gift box interaction detection
+* Abnormal spiderweb spawning detection
+* Abnormal turret berserk mode detection
 * Invisible player detection
-* Jetpack explode detection
-* Abnormal Landmine detonate detection
+* Forced jetpack explosion detection
+* Abnormal landmine triggering detection
 * Abnormal monster behavior detection
 * Mini-map mod detection
-* Abnormal Enemy killed detection
+* Instant enemy kill detection
 * Item pickup distance detection
 * Abnormal shovel damage detection
 * Player name detection (Nameless or Unknown)
-* Free purchases detection (item purchase/unlock ship decorations)
+* Free purchases detection (items or unlockables)
 * Infinite ammo detection
-* Prevent the client killing other players by calling monster killing RPC (prevent Instant-Kill)
-* Provoking Boss Detection
+* Prevention of client-side monster killing RPC to kill other players (prevents instant-kills)
+* Spamming bell ringing detection
 
 ### Feedback
-If you encounter the false report and you can confirm this is not caused by other mod, you can report the issue on my GitHub to explain how you can reproduce the issue and help us to fix it!
+If you encounter a false positive and can confirm it's not caused by another mod, please report the issue on my GitHub, explaining how to reproduce the problem. This will help us fix it!
 
-### Contribution
+### Contributions
 <a href="https://github.com/chuxiaaaa/AntiCheat/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=chuxiaaaa/AntiCheat" />
 </a>
 
-We welcome capable developers to contribute to this mod~
+We welcome contributions from capable developers to improve this mod.
 
 ### Mod Testers
 * 超级骇人鲸 
