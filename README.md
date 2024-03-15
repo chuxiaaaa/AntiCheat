@@ -4,7 +4,7 @@
 
 一个致命公司反作弊模组(仅限主机使用)
 
-### 简介
+## 简介
 
 模组交流QQ群：263868521
 
@@ -12,18 +12,20 @@
 
 在使用模组时你可能会遇到"误检测"问题，但这并不一定是 反作弊 模组的问题，请尝试删除 除了(BepInExPack，汉化，反作弊，多人联机）以外的所有模组复现问题（如不再误测，则是模组的兼容性问题）
 
-### 使用说明
+## 使用说明
 
 1. 安装 [BepInExPack](https://thunderstore.io/c/lethal-company/p/BepInEx/BepInExPack/) 模组
 2. 将 AntiCheat.dll 放置于 Lethal Company\BepInEx\plugins\ 目录下
 3. 启动游戏
 
-### 创建房间
+## 创建房间
 
 使用反作弊时，建议您在房间名标注 [AC] 字样，向其他玩家标识这是一个启用反作弊的房间！
 例如：[v49/AC] 战斗爽！
 
-### 功能
+## 功能
+
+### 检测
 * 防踢检测
 * 强制拉杆检测
 * 飞船物品位置异常检测
@@ -49,15 +51,27 @@
 * 无限子弹检测
 * 禁止客户端调用怪物击杀其他玩家RPC (防秒杀)
 
-### 反馈
-如果你遇到误检测并确定不是模组导致，你可以提交issue来说明如何复现问题帮我们修复他！
+### 配置
 
-### 贡献
+* **Lanauge**
+
+  模组语言，对配置文件描述以及游戏内文本生效，可选值(中文/English)
+
+## 贡献
 <a href="https://github.com/chuxiaaaa/AntiCheat/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=chuxiaaaa/AntiCheat" />
 </a>
 
-欢迎各位有能力的开发者为本模组提交贡献~
+### 游戏语言
+
+* 中文(chuxiaaaa&CoolLKKPS)
+* 英文(DeathWrench&CoolLKKPS)
+
+### 自述语言
+
+* 中文(chuxiaaaa&CoolLKKPS)
+* 英文(NilaierMusic&CoolLKKPS)
+* 俄文(NilaierMusic)
 
 ### 模组测试人员
 * 超级骇人鲸 
@@ -68,3 +82,8 @@
 * 东南枝
 * Melissa
 * 我不吃牛肉
+
+欢迎各位有能力的开发者为本模组提交贡献~
+
+## 反馈
+如果你遇到误检测并确定不是模组导致，你可以提交issue来说明如何复现问题帮助我们修复问题！
