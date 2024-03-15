@@ -28,27 +28,27 @@ Example:
 * Anti-kick detection
 * Malicious lever pull detection
 * Abnormal furniture position detection
-* Abnormal item interaction cooldown detection
+* Abnormal item interact cooldown detection
 * Spamming light switch detection
 * Spamming terminal noise detection
-* Abnormal item destruction detection
+* Abnormal destroy item detection
 * Fake chat message detection
 * Abnormal masked enemy detection
-* Abnormal gift box interaction detection
-* Abnormal spiderweb spawning detection
-* Abnormal turret berserk mode detection
+* Abnormal gift box interact detection
+* Abnormal spawn spiderweb detection
+* Turret overkill detection
 * Invisible player detection
-* Forced jetpack explosion detection
-* Abnormal landmine triggering detection
+* Jetpack explode detection
+* Abnormal trigger landmine detection
 * Abnormal monster behavior detection
 * Mini-map mod detection
-* Instant enemy kill detection
+* Instant kill enemy detection
 * Item pickup distance detection
 * Abnormal shovel damage detection
 * Player name detection (Nameless or Unknown)
-* Free purchases detection (items or unlockables)
+* Free purchases detection (When purchasing items or unlockable)
 * Infinite ammo detection
-* Prevention of client-side monster killing RPC to kill other players (prevents instant-kills)
+* Prevent the client killing other players by calling monster killing RPC (Prevent Instant-Kill)
 * Spamming bell ringing detection
 
 ### Feedback
