@@ -154,7 +154,7 @@
     <value>Kick player when this behavior is detected</value>
   </data>
   <data name="config_KillEnemy" xml:space="preserve">
-    <value>Instant enemy kill detection</value>
+    <value>Enemy kill detection</value>
   </data>
   <data name="config_Landmine" xml:space="preserve">
     <value>Abnormal landmine triggering detection</value>
