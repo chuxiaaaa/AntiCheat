@@ -30,7 +30,7 @@ Example:
 
 * **Anti-kick detection**
 
-  * If the joining player has Anti-kick installed, will display that player Steam ID and username
+  * Detects if player join the lobby with Anti-kick
 
 * **Lever pull detection**
 
