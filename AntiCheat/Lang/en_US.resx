@@ -174,6 +174,9 @@
   <data name="config_Prefix" xml:space="preserve">
     <value>Set the lobby name prefix, empty to disable</value>
   </data>
+  <data name="config_RemoteTerminal" xml:space="preserve">
+    <value>Remote terminal detection</value>
+  </data>
   <data name="config_ShipBuild" xml:space="preserve">
     <value>Abnormal furniture position detection</value>
   </data>
@@ -241,13 +244,16 @@
     <value>Detected player {player} attempting to change the monster behavior!</value>
   </data>
   <data name="msg_Enemy_SwitchToBehaviour" xml:space="preserve">
-    <value>Detected player {player} try to change monster behavior state!</value>
+    <value>Detected player {player} attempting to change the monster mechanism!</value>
   </data>
   <data name="msg_FreeBuy_Item" xml:space="preserve">
     <value>Detected player {player} purchasing item for free!</value>
   </data>
+  <data name="msg_FreeBuy_Level" xml:space="preserve">
+    <value>Detected player {player} routing to a priced moon for free!</value>
+  </data>
   <data name="msg_FreeBuy_SetMoney" xml:space="preserve">
-    <value>Detected player {player} are modify credits({Money})!</value>
+    <value>Detected player {player} are modifying credits({Money})!</value>
   </data>
   <data name="msg_FreeBuy_unlockable" xml:space="preserve">
     <value>Detected player {player} purchasing unlockable for free!</value>
