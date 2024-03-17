@@ -59,7 +59,7 @@ Example:
 * Abnormal purchases detection (items, unlockables or routing)
 * Infinite ammo detection
 * Spamming bell ringing detection
-* Abnormal credit detection
+* Abnormal credits detection
 * Remote terminal detection
 * Prevention of client-side monster killing RPC to kill other players (prevents instant-kills)
 
