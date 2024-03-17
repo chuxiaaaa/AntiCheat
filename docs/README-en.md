@@ -64,9 +64,12 @@ Example: [AC] The battle is thrilling!
 
 ### Patch
 
-* Editable lobby welcome message
-* Lobby name prefix
 * Prevent blackscreen when respawn
+
+  * This is because of the exp value calculation
+
+* Lobby name prefix
+* Editable lobby welcome message
 
 ### Configuration
 
