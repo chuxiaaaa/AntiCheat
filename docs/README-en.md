@@ -115,7 +115,7 @@ Example: [AC] The battle is thrilling!
 
 ### Readme file translation contributor
 
-* Chinese (chuxiaaaa & CoolLKKPS)
+* Chinese Simplified (chuxiaaaa & CoolLKKPS)
 * English (NilaierMusic & CoolLKKPS)
 * Russian (NilaierMusic)
 
