@@ -154,7 +154,7 @@
     <value>检测到该行为时踢出玩家</value>
   </data>
   <data name="config_KillEnemy" xml:space="preserve">
-    <value>击杀敌人检测</value>
+    <value>秒杀敌人检测</value>
   </data>
   <data name="config_Landmine" xml:space="preserve">
     <value>引爆地雷检测</value>
@@ -187,7 +187,7 @@
     <value>非房主只有在该时间点以后才能起飞</value>
   </data>
   <data name="config_ShipConfig4" xml:space="preserve">
-    <value>非房主只有在当飞船人数(存活)超过以上比例才能起飞(0-100%)</value>
+    <value>非房主只有在当飞船存活人数超过总存活人数时才能起飞(0-100%)</value>
   </data>
   <data name="config_ShipConfig5" xml:space="preserve">
     <value>检测强制拉杆行为(检测到该行为时踢出玩家)</value>
@@ -220,16 +220,16 @@
     <value>铲子</value>
   </data>
   <data name="log_load" xml:space="preserve">
-    <value>模组已加载完毕！</value>
+    <value>反作弊模组已加载完毕！</value>
   </data>
   <data name="log_refuse_connect" xml:space="preserve">
-    <value>{steamId} 尝试重连游戏被拒绝(因为他已被踢出)！</value>
+    <value>{steamId} 尝试重连游戏被拒绝(已被踢出)！</value>
   </data>
   <data name="MessageFormat" xml:space="preserve">
     <value>&lt;color=red&gt;{Prefix} {msg}&lt;/color&gt;</value>
   </data>
   <data name="msg_behind_player" xml:space="preserve">
-    <value>&lt;color=yellow&gt;[{player}] &lt;color=red&gt;还没上船呢...&lt;/color&gt;&lt;/color&gt;</value>
+    <value>&lt;color=yellow&gt;[{player}] &lt;color=red&gt;被抛弃了&lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Boss" xml:space="preserve">
     <value>检测到玩家 {player} 召唤老板！</value>
@@ -268,7 +268,7 @@
     <value>检测到玩家 {player} 隔空取物！(玩家坐标：{player_position}|物品坐标：{object_position})</value>
   </data>
   <data name="msg_InfiniteAmmo" xml:space="preserve">
-    <value>检测到玩家 {player} 启用无限子弹！</value>
+    <value>检测到玩家 {player} 正使用无限子弹！</value>
   </data>
   <data name="msg_Invisibility" xml:space="preserve">
     <value>检测到玩家 {player} 坐标异常！(玩家坐标：{player_position})</value>
@@ -280,7 +280,7 @@
     <value>检测到玩家 {player} 引爆喷气背包！</value>
   </data>
   <data name="msg_Kick" xml:space="preserve">
-    <value>{player} 被踢出游戏！</value>
+    <value>{player} 已被踢出</value>
   </data>
   <data name="msg_KillEnemy" xml:space="preserve">
     <value>检测到玩家 {player} 秒杀怪物！( {enemyName} ,剩余血量:{HP})</value>
@@ -304,7 +304,7 @@
     <value>检测到玩家 {player} 将飞船物品摆放到异常位置({position})！</value>
   </data>
   <data name="msg_ShipConfig2" xml:space="preserve">
-    <value>{player} 请等待飞船人数达到 {cfg} 以上再拉杆！</value>
+    <value>{player} 请等待飞船人数达到 {cfg} 以上再拉杆，谢谢！</value>
   </data>
   <data name="msg_ShipConfig4" xml:space="preserve">
     <value>{player} 请等待飞船人数达到 {player_count}({cfg4}%) 并且 游戏时间在 {cfg3} 之后起飞(当前时间:{game_time})</value>
@@ -337,7 +337,7 @@
     <value>检测到玩家 {player} 空手对敌人 {enemyName} 造成伤害！({damageAmount})</value>
   </data>
   <data name="msg_snc_player" xml:space="preserve">
-    <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;新生物数据发送到终端！&lt;/color&gt;&lt;/color&gt;</value>
+    <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;新的生物数据已发送至终端！&lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Turret" xml:space="preserve">
     <value>检测玩家 {player} 强制激怒机枪！(距离：{Distance})</value>
