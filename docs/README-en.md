@@ -60,6 +60,9 @@ Example: [AC] The battle is thrilling!
 
 * Item pickup distance detection
 * Abnormal shovel damage detection
+
+  * No 99 shovel dmg!
+
 * Player name detection
 
   * Notify if player have Nameless or Unknown name
