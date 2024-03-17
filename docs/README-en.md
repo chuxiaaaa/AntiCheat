@@ -51,16 +51,31 @@ Example: [AC] The battle is thrilling!
 * Abnormal landmine triggering detection
 * Abnormal monster detection
 * Mini-map detection
-* Instant enemy kill detection
+
+  * Detects player who snooping, which prevent snooping on loot, mines, turret, enemy locations and more
+
+* Enemy kill detection
+
+  * Detects if player kill an enemy from too far away
+
 * Item pickup distance detection
 * Abnormal shovel damage detection
-* Player name detection (Nameless or Unknown)
-* Abnormal purchases detection (items, unlockables or routing)
+* Player name detection
+
+  * Notify if player have Nameless or Unknown name
+
+* Abnormal purchases detection
+
+  * Detects if player purchase items, unlockables or routing moon for free
+
 * Infinite ammo detection
 * Spamming bell ringing detection
 * Abnormal credits detection
 * Remote terminal detection
-* Prevention of client-side monster killing RPC to kill other players (prevents instant-kills)
+* Prevention of client-side monster killing RPC to kill other players
+
+  * Prevents instant-kills
+
 
 ### Patch
 
