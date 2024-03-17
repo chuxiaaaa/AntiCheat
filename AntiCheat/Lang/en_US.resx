@@ -232,7 +232,7 @@
     <value>&lt;color=yellow&gt;[{player}] &lt;color=red&gt;was left behind.&lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Boss" xml:space="preserve">
-    <value>Detected player {player} trying to do boss damage!</value>
+    <value>Detected player {player} attempting to do boss damage!</value>
   </data>
   <data name="msg_ChatReal" xml:space="preserve">
     <value>Detected player {player} try to fake as {player2} in chat!</value>
