@@ -56,7 +56,9 @@ Example:
 * Item pickup distance detection
 * Abnormal shovel damage detection
 * Player name detection (Nameless or Unknown)
-* Free purchases detection (items or unlockables)
+* Abnormal purchases detection (items, unlockables or routing)
+* Abnormal credit detection
+* Remote terminal detection
 * Infinite ammo detection
 * Spamming bell ringing detection
 * Abnormal jetpack explosion detection
