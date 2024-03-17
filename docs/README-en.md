@@ -38,6 +38,9 @@ Example: [AC] The battle is thrilling!
 
 * Abnormal furniture position detection
 * Abnormal item interaction cooldown detection
+
+  * Detects item interaction cooldown, including switch slot to reduce shovel swing cooldown
+
 * Spamming light switch detection
 * Spamming terminal noise detection
 * Abnormal item despawn detection
