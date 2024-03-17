@@ -52,7 +52,7 @@ Example: [AC] The battle is thrilling!
 * Abnormal monster detection
 * Mini-map detection
 
-  * Detects player who snooping, which prevent snooping on loot, mines, turret, enemy locations and more
+  * Detects player who snooping, which detect snooping on loot, mines, turret, enemy locations and more
 
 * Enemy kill detection
 
@@ -72,6 +72,10 @@ Example: [AC] The battle is thrilling!
   * Detects if player purchase items, unlockables or routing moon for free
 
 * Infinite ammo detection
+
+  * Detects if player load and firing the ammo that doesn't even exist
+  * Normal player can trigger this, as long as the shotgun has the ammo that doesn't exist
+
 * Spamming bell ringing detection
 * Abnormal credits detection
 * Remote terminal detection
