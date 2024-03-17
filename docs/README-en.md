@@ -2,7 +2,7 @@
 
 A Lethal Company anti-cheat mod (host-only)
 
-The default language is Simplified Chinese. You can switch to English by changing the Language to "en_us" in the configuration file.
+The default language is Simplified Chinese, You can switch to English by changing the Language to "English" in the configuration file.
 
 ### Introduction
 
@@ -18,7 +18,7 @@ While using this mod, you might encounter false positives, but this may not be a
 2. Place AntiCheat.dll in the Lethal Company\BepInEx\plugins directory;
 3. Launch the game. Once the game has started, you can find the configuration file AntiCheat.cfg in the Lethal Company\BepInEx\config directory.
 
-### Creating a Room
+### Creating Lobby
 By default, the "[AC]" prefix will be added to the lobby name to indicate to other players that the anti-cheat is enabled in this lobby.
 
 Example:
@@ -51,15 +51,22 @@ Example:
 * Prevention of client-side monster killing RPC to kill other players (prevents instant-kills)
 * Spamming bell ringing detection
 
-### Feedback
-If you encounter a false positive and can confirm it's not caused by another mod, please report the issue on my GitHub, explaining how to reproduce the problem. This will help us fix it!
 
 ### Contributions
 <a href="https://github.com/chuxiaaaa/AntiCheat/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=chuxiaaaa/AntiCheat" />
 </a>
 
-We welcome contributions from capable developers to improve this mod.
+### Localized translation contributor
+
+* Chinese (chuxiaaaa & CoolLKKPS)
+* English (DeathWrench & CoolLKKPS)
+
+### Readme file translation contributor
+
+* Chinese (chuxiaaaa & CoolLKKPS)
+* English (NilaierMusic & CoolLKKPS)
+* Russian (NilaierMusic)
 
 ### Mod Testers
 * 超级骇人鲸 
@@ -70,3 +77,8 @@ We welcome contributions from capable developers to improve this mod.
 * 东南枝
 * Melissa
 * 我不吃牛肉
+
+We welcome contributions from capable developers to improve this mod.
+
+### Feedback
+If you encounter a false positive and can confirm it's not caused by another mod, please report the issue on my GitHub, explaining how to reproduce the problem. This will help us fix it!
