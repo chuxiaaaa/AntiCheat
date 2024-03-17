@@ -367,7 +367,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 模组已加载完毕！ 的本地化字符串。
+        ///   查找类似 反作弊模组已加载完毕！ 的本地化字符串。
         /// </summary>
         internal static string log_load {
             get {
@@ -394,7 +394,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 &lt;color=yellow&gt;[{player}] &lt;color=red&gt;还没上船呢...&lt;/color&gt;&lt;/color&gt; 的本地化字符串。
+        ///   查找类似 &lt;color=yellow&gt;[{player}] &lt;color=red&gt;被抛弃了&lt;/color&gt;&lt;/color&gt; 的本地化字符串。
         /// </summary>
         internal static string msg_behind_player {
             get {
