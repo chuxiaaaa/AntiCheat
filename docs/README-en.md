@@ -19,20 +19,19 @@ While using this mod, you might encounter false positives, but this may not be a
 3. Launch the game. Once the game has started, you can find the configuration file AntiCheat.cfg in the Lethal Company\BepInEx\config directory.
 
 ## Creating Lobby
-By default, the "[AC]" prefix will be added to the lobby name to indicate to other players that the anti-cheat is enabled in this lobby.
 
-Example:
-[AC] The battle is thrilling!
+By default, the "[AC]" prefix will be added to the lobby name to indicate to other players that the anti-cheat is enabled in this lobby.
+Example: [AC] The battle is thrilling!
 
 ## Features
 
 ### Detection
 
-* **Anti-kick detection**
+* Anti-kick detection
 
   * Detects if player join the lobby with Anti-kick
 
-* **Lever pull detection**
+* Lever pull detection
 
   * Limited ship lever to landing and departure by checking how many player are in the ship and if current time are approved to do so or not
   * Prevent malicious lever pull
@@ -71,11 +70,12 @@ Example:
 
 ### Configuration
 
-* **Language**
+* Language
 
   * Again the default language is Simplified Chinese, You can switch to English by changing the Language to "English" in the configuration file.
 
 ## Contributions
+
 <a href="https://github.com/chuxiaaaa/AntiCheat/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=chuxiaaaa/AntiCheat" />
 </a>
@@ -92,6 +92,7 @@ Example:
 * Russian (NilaierMusic)
 
 ### Mod Testers
+
 * 超级骇人鲸 
 * Alan Backer
 * 沈阳最速傳說疾走の猛虎！貴物刀一郎
