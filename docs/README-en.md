@@ -79,7 +79,7 @@ Example: [AC] The battle is thrilling!
   * Detects if player load and firing the ammo that doesn't even exist
   * Normal player can trigger this, as long as the shotgun has the ammo that doesn't exist
 
-* Boss damage rpc spoofing detection
+* Boss attack spoofing detection
 * Abnormal credits detection
 * Remote terminal detection
 * Prevention of client-side monster killing RPC to kill other players
