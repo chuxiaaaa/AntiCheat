@@ -165,7 +165,7 @@
 
 * **Language**
 
-  描述：模组语言，对配置文件描述以及游戏内文本生效，可选值（中文/English）
+    描述：模组语言，对配置文件描述以及游戏内文本生效，可选值（中文/English）
 
 ## 贡献
 
@@ -175,14 +175,14 @@
 
 ### 游戏语言
 
-* 中文(chuxiaaaa&CoolLKKPS)
-* 英文(DeathWrench&CoolLKKPS)
+* 中文 (chuxiaaaa & CoolLKKPS)
+* 英文 (DeathWrench & CoolLKKPS)
 
 ### 自述语言
 
-* 中文(chuxiaaaa&CoolLKKPS)
-* 英文(NilaierMusic&CoolLKKPS)
-* 俄文(NilaierMusic)
+* 中文 (chuxiaaaa & CoolLKKPS)
+* 英文 (NilaierMusic & CoolLKKPS)
+* 俄文 (NilaierMusic)
 
 ### 模组测试人员
 
