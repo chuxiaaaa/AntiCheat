@@ -124,7 +124,7 @@
     <value>Fake chat message detection</value>
   </data>
   <data name="config_DespawnItem" xml:space="preserve">
-    <value>Abnormal destroy item detection</value>
+    <value>Abnormal item despawn detection</value>
   </data>
   <data name="config_Enemy" xml:space="preserve">
     <value>Abnormal monster behavior detection</value>
@@ -133,7 +133,7 @@
     <value>Free purchases detection</value>
   </data>
   <data name="config_Gift" xml:space="preserve">
-    <value>Abnormal gift box interact detection</value>
+    <value>Abnormal gift box interaction detection</value>
   </data>
   <data name="config_GrabObject" xml:space="preserve">
     <value>Item pickup distance detection</value>
@@ -145,19 +145,19 @@
     <value>Invisible player detection</value>
   </data>
   <data name="config_ItemCooldown" xml:space="preserve">
-    <value>Abnormal item interact cooldown detection</value>
+    <value>Abnormal item interaction cooldown detection</value>
   </data>
   <data name="config_Jetpack" xml:space="preserve">
-    <value>Jetpack explode detection</value>
+    <value>Abnormal jetpack explosion detection</value>
   </data>
   <data name="config_Kick" xml:space="preserve">
     <value>Kick player when this behavior is detected</value>
   </data>
   <data name="config_KillEnemy" xml:space="preserve">
-    <value>Instant kill enemy detection</value>
+    <value>Instant enemy kill detection</value>
   </data>
   <data name="config_Landmine" xml:space="preserve">
-    <value>Abnormal trigger landmine detection</value>
+    <value>Abnormal landmine triggering detection</value>
   </data>
   <data name="config_Log" xml:space="preserve">
     <value>Show log</value>
