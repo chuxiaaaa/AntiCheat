@@ -208,10 +208,10 @@
     <value>Abnormal shovel damage detection</value>
   </data>
   <data name="config_SpawnWebTrap" xml:space="preserve">
-    <value>Abnormal spawn spiderweb detection</value>
+    <value>Abnormal spiderweb spawning detection</value>
   </data>
   <data name="config_Turret" xml:space="preserve">
-    <value>Turret overkill detection</value>
+    <value>Abnormal turret berserk mode detection</value>
   </data>
   <data name="Item_Shotgun" xml:space="preserve">
     <value>shotgun</value>
