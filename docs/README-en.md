@@ -48,20 +48,19 @@ Example:
 * Abnormal spiderweb spawning detection
 * Abnormal turret berserk mode detection
 * Invisible player detection
-* Forced jetpack explosion detection
+* Abnormal jetpack explosion detection
 * Abnormal landmine triggering detection
-* Abnormal monster behavior detection
-* Mini-map mod detection
+* Abnormal monster detection
+* Mini-map detection
 * Instant enemy kill detection
 * Item pickup distance detection
 * Abnormal shovel damage detection
 * Player name detection (Nameless or Unknown)
 * Abnormal purchases detection (items, unlockables or routing)
-* Abnormal credit detection
-* Remote terminal detection
 * Infinite ammo detection
 * Spamming bell ringing detection
-* Abnormal jetpack explosion detection
+* Abnormal credit detection
+* Remote terminal detection
 * Prevention of client-side monster killing RPC to kill other players (prevents instant-kills)
 
 ### Patch
@@ -72,7 +71,7 @@ Example:
 
 ### Configuration
 
-* Language
+* **Language**
 
   * Again the default language is Simplified Chinese, You can switch to English by changing the Language to "English" in the configuration file.
 
