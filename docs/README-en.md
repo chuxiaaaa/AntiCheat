@@ -4,7 +4,7 @@ A Lethal Company anti-cheat mod (host-only)
 
 The default language is Simplified Chinese, You can switch to English by changing the Language to "English" in the configuration file.
 
-### Introduction
+## Introduction
 
 Discord: https://discord.gg/ZdWr2rKR
 
@@ -12,26 +12,36 @@ This mod is designed to prevent cheating when hosting public lobbies, ensuring a
 
 While using this mod, you might encounter false positives, but this may not be an issue with the AntiCheat mod itself. To troubleshoot, please try uninstalling all mods except for BepInEx and AntiCheat, and attempt to reproduce the issue. If the issue no longer occurs, it's likely a compatibility problem with another mod.
 
-### Installation
+## Installation
 
 1. Install [BepInExPack](https://thunderstore.io/c/lethal-company/p/BepInEx/BepInExPack);
 2. Place AntiCheat.dll in the Lethal Company\BepInEx\plugins directory;
 3. Launch the game. Once the game has started, you can find the configuration file AntiCheat.cfg in the Lethal Company\BepInEx\config directory.
 
-### Creating Lobby
+## Creating Lobby
 By default, the "[AC]" prefix will be added to the lobby name to indicate to other players that the anti-cheat is enabled in this lobby.
 
 Example:
 [AC] The battle is thrilling!
 
-### Features
-* Anti-kick detection
-* Malicious lever pull detection
+## Features
+
+### Detection
+
+* **Anti-kick detection**
+
+  * If the joining player has Anti-kick installed, will display that player Steam ID and username
+
+* **Lever pull detection**
+
+  * Limited ship lever to landing and departure by checking how many player are in the ship and if current time are approved to do so or not
+  * Prevent malicious lever pull
+
 * Abnormal furniture position detection
 * Abnormal item interaction cooldown detection
 * Spamming light switch detection
 * Spamming terminal noise detection
-* Abnormal item destruction detection
+* Abnormal item despawn detection
 * Fake chat message detection
 * Abnormal masked enemy detection
 * Abnormal gift box interaction detection
@@ -48,11 +58,23 @@ Example:
 * Player name detection (Nameless or Unknown)
 * Free purchases detection (items or unlockables)
 * Infinite ammo detection
-* Prevention of client-side monster killing RPC to kill other players (prevents instant-kills)
 * Spamming bell ringing detection
+* Abnormal jetpack explosion detection
+* Prevention of client-side monster killing RPC to kill other players (prevents instant-kills)
 
+### Patch
 
-### Contributions
+* Editable lobby welcome message
+* Lobby name prefix
+* Prevent blackscreen when respawn
+
+### Configuration
+
+* Language
+
+  * Again the default language is Simplified Chinese, You can switch to English by changing the Language to "English" in the configuration file.
+
+## Contributions
 <a href="https://github.com/chuxiaaaa/AntiCheat/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=chuxiaaaa/AntiCheat" />
 </a>
@@ -80,5 +102,5 @@ Example:
 
 We welcome contributions from capable developers to improve this mod.
 
-### Feedback
+## Feedback
 If you encounter a false positive and can confirm it's not caused by another mod, please report the issue on my GitHub, explaining how to reproduce the problem. This will help us fix it!
