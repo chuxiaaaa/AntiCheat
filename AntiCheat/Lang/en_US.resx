@@ -240,11 +240,14 @@
   <data name="msg_Enemy_ChangeOwnershipOfEnemy" xml:space="preserve">
     <value>Detected player {player} try to change monster behavior!</value>
   </data>
-  <data name="msg_FreeBuy_GiveMoney" xml:space="preserve">
-    <value>Detected player {player} are generating credits!</value>
+  <data name="msg_Enemy_SwitchToBehaviour" xml:space="preserve">
+    <value>Detected player {player} try to change monster behavior state!</value>
   </data>
   <data name="msg_FreeBuy_Item" xml:space="preserve">
     <value>Detected player {player} buying items for free!</value>
+  </data>
+  <data name="msg_FreeBuy_SetMoney" xml:space="preserve">
+    <value>Detected player {player} are modify credits({Money})!</value>
   </data>
   <data name="msg_FreeBuy_unlockable" xml:space="preserve">
     <value>Detected player {player} buying unlockable for free!</value>
@@ -287,6 +290,9 @@
   </data>
   <data name="msg_Nameless" xml:space="preserve">
     <value>Detected player name abnormally, try to re-join? but if name are all numbers, your name will always be Nameless.</value>
+  </data>
+  <data name="msg_RemoteTerminal" xml:space="preserve">
+    <value>Detected player {player} Remote Terminal!</value>
   </data>
   <data name="msg_ShipBuild" xml:space="preserve">
     <value>Detected player {player} placing furniture in abnormal position ({position})!</value>

@@ -14,6 +14,7 @@ using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -67,6 +68,7 @@ namespace AntiCheat
 
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_1346025125")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_1346025125(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -96,6 +98,7 @@ namespace AntiCheat
 
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_638895557")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_638895557(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -246,6 +249,7 @@ namespace AntiCheat
 
         [HarmonyPatch(typeof(StartOfRound), "StartTrackingAllPlayerVoices")]
         [HarmonyPostfix]
+        [HarmonyWrapSafe]
         public static void StartTrackingAllPlayerVoices()
         {
             if (!StartOfRound.Instance.localPlayerController.IsHost)
@@ -304,6 +308,7 @@ namespace AntiCheat
 
         [HarmonyPatch(typeof(HUDManager), "__rpc_handler_1944155956")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_1944155956(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -323,6 +328,7 @@ namespace AntiCheat
 
         [HarmonyPatch(typeof(GameNetworkManager), "SteamMatchmaking_OnLobbyMemberJoined")]
         [HarmonyPostfix]
+        [HarmonyWrapSafe]
         public static void SteamMatchmaking_OnLobbyMemberJoined()
         {
             if (!StartOfRound.Instance.localPlayerController.IsHost)
@@ -337,12 +343,91 @@ namespace AntiCheat
 
         public static int Money = -1;
 
+        /// <summary>
+        /// Prefix StartOfRound.ChangeLevelServerRpc
+        /// </summary>
+        [HarmonyPatch(typeof(StartOfRound), "__rpc_handler_1134466287")]
+        [HarmonyPrefix]
+        [HarmonyWrapSafe]
+        public static bool __rpc_handler_1134466287(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (Check(rpcParams, out var p))
+            {
+                LogInfo($"{p.playerUsername}|StartOfRound.ChangeLevelServerRpc");
+                if (AntiCheatPlugin.RemoteTerminal.Value)
+                {
+                    if (!CheckRemoteTerminal(p))
+                    {
+                        return false;
+                    }
+                }
+                if (AntiCheatPlugin.FreeBuy.Value)
+                {
+                    ByteUnpacker.ReadValueBitPacked(reader, out int levelID);
+                    ByteUnpacker.ReadValueBitPacked(reader, out int newGroupCreditsAmount);
+                    reader.Seek(0);
+                    if (newGroupCreditsAmount > Money || Money < 0)
+                    {
+                        ShowMessage(LocalizationManager.GetString("msg_FreeBuy_SetMoney", new Dictionary<string, string>() {
+                            { "{player}",p.playerUsername },
+                            { "{Money}",(newGroupCreditsAmount - Money).ToString() }
+                        }));
+                        if (AntiCheatPlugin.FreeBuy2.Value)
+                        {
+                            KickPlayer(p);
+                        }
+                        return false;
+                    }
+                    if (levelID > StartOfRound.Instance.levels.Length)
+                    {
+                        LogInfo($"{p.playerUsername}|ChangeLevelServerRpc|levelID > StartOfRound.Instance.levels.Length");
+                        return false;
+                    }
+                    var terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
+                    var Route = terminal.terminalNodes.allKeywords[26];//Route
+                    int itemCost = Route.compatibleNouns[levelID].result.itemCost;
+                    LogInfo($"{p.playerUsername}|ChangeLevelServerRpc|levelID:{levelID}|{itemCost}");
+                    if (itemCost == 0)
+                    {
+                        return true;
+                    }
+                    int newValue = Money - itemCost;
+                    if (newValue != newGroupCreditsAmount || Money == 0)
+                    {
+                        LogInfo($"{p.playerUsername}|ChangeLevelServerRpc|levelID:{levelID}|ExpectedValue:{newValue.ToString()}|newGroupCreditsAmount:{newGroupCreditsAmount}");
+                        ShowMessage(LocalizationManager.GetString("msg_FreeBuy_Level", new Dictionary<string, string>() {
+                            { "{player}",p.playerUsername }
+                        }));
+                        if (AntiCheatPlugin.FreeBuy2.Value)
+                        {
+                            KickPlayer(p);
+                        }
+                        return false;
+                    }
+                }
+            }
+            else if (p == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+
         [HarmonyPatch(typeof(StartOfRound), "__rpc_handler_3953483456")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_3953483456(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
             {
+                if (AntiCheatPlugin.RemoteTerminal.Value)
+                {
+                    if (!CheckRemoteTerminal(p))
+                    {
+                        return false;
+                    }
+                }
                 if (AntiCheatPlugin.FreeBuy.Value)
                 {
                     int unlockableID;
@@ -363,10 +448,11 @@ namespace AntiCheat
                         }
                         return false;
                     }
-                    else if (newGroupCreditsAmount > Money)
+                    else if (newGroupCreditsAmount > Money || Money < 0)
                     {
-                        ShowMessage(LocalizationManager.GetString("msg_FreeBuy_GiveMoney", new Dictionary<string, string>() {
-                            { "{player}",p.playerUsername }
+                        ShowMessage(LocalizationManager.GetString("msg_FreeBuy_SetMoney", new Dictionary<string, string>() {
+                            { "{player}",p.playerUsername },
+                            { "{Money}",(newGroupCreditsAmount - Money).ToString() }
                         }));
                         if (AntiCheatPlugin.FreeBuy2.Value)
                         {
@@ -389,6 +475,7 @@ namespace AntiCheat
 
         [HarmonyPatch(typeof(StartOfRound), "BuyShipUnlockableClientRpc")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool BuyShipUnlockableClientRpc(int newGroupCreditsAmount, int unlockableID = -1)
         {
             if (!StartOfRound.Instance.localPlayerController.IsHost)
@@ -401,10 +488,18 @@ namespace AntiCheat
 
         [HarmonyPatch(typeof(Terminal), "__rpc_handler_4003509079")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_4003509079(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
             {
+                if (AntiCheatPlugin.RemoteTerminal.Value)
+                {
+                    if (!CheckRemoteTerminal(p))
+                    {
+                        return false;
+                    }
+                }
                 if (AntiCheatPlugin.FreeBuy.Value)
                 {
                     reader.ReadValueSafe(out bool flag, default);
@@ -427,10 +522,11 @@ namespace AntiCheat
                         }
                         return false;
                     }
-                    else if (newGroupCredits > Money)
+                    else if (newGroupCredits > Money || Money < 0)
                     {
-                        ShowMessage(LocalizationManager.GetString("msg_FreeBuy_GiveMoney", new Dictionary<string, string>() {
-                            { "{player}",p.playerUsername }
+                        ShowMessage(LocalizationManager.GetString("msg_FreeBuy_SetMoney", new Dictionary<string, string>() {
+                            { "{player}",p.playerUsername },
+                            { "{Money}",(newGroupCredits - Money).ToString() }
                         }));
                         if (AntiCheatPlugin.FreeBuy2.Value)
                         {
@@ -449,6 +545,7 @@ namespace AntiCheat
 
         [HarmonyPatch(typeof(Terminal), "SyncGroupCreditsClientRpc")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool SyncGroupCreditsClientRpc(int newGroupCredits, int numItemsInShip)
         {
             if (!StartOfRound.Instance.localPlayerController.IsHost)
@@ -461,6 +558,7 @@ namespace AntiCheat
 
         [HarmonyPatch(typeof(StartOfRound), "ChangeLevelClientRpc")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool ChangeLevelClientRpc(int levelID, int newGroupCreditsAmount)
         {
             if (!StartOfRound.Instance.localPlayerController.IsHost)
@@ -472,12 +570,25 @@ namespace AntiCheat
         }
 
 
+        [HarmonyWrapSafe]
         [HarmonyPatch(typeof(Terminal), "BeginUsingTerminal")]
         [HarmonyPrefix]
         public static bool BeginUsingTerminal(Terminal __instance)
         {
             Money = __instance.groupCredits;
             LogInfo($"SetMoney:{Money}");
+            //if (__instance.terminalNodes != null && __instance.terminalNodes.allKeywords != null)
+            //{
+            //    for (int i = 0; i < __instance.terminalNodes.allKeywords.Length; i++)
+            //    {
+            //        var item = __instance.terminalNodes.allKeywords[i];
+            //        LogInfo($"allKeywords:{i}|name:{item.name}|specialKeywordResult?:{item.specialKeywordResult?.name}");
+            //        foreach (var item2 in item.compatibleNouns)
+            //        {
+            //            LogInfo($"compatibleNouns|noun:{item2.noun.ToString()}|name:{item2.result.name}|buyItemIndex:{item2.result.buyItemIndex}|buyRerouteToMoon:{item2.result.buyRerouteToMoon}|itemCost:{item2.result.itemCost}");
+            //        }
+            //    }
+            //}
             return true;
         }
 
@@ -485,6 +596,7 @@ namespace AntiCheat
 
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_1084949295")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_1084949295(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -507,6 +619,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(EnemyAI), "__rpc_handler_2081148948")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_2081148948(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -536,7 +649,9 @@ namespace AntiCheat
                         }
                         else
                         {
-                            ShowMessage($"检测到玩家 {p.playerUsername} 强制改变怪物状态！");
+                            ShowMessage(LocalizationManager.GetString("msg_Enemy_SwitchToBehaviour", new Dictionary<string, string>() {
+                                { "{player}", p.playerUsername }
+                            }));
                             return false;
                         }
                     }
@@ -556,6 +671,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(JesterAI), "__rpc_handler_3446243450")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_3446243450(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             return KillPlayerServerRpc(target, reader, rpcParams);
@@ -566,6 +682,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(MouthDogAI), "__rpc_handler_998670557")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_998670557(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             return KillPlayerServerRpc(target, reader, rpcParams);
@@ -576,6 +693,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(ForestGiantAI), "__rpc_handler_2965927486")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_2965927486(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             return KillPlayerServerRpc(target, reader, rpcParams);
@@ -586,6 +704,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(RedLocustBees), "__rpc_handler_3246315153")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_3246315153(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             return KillPlayerServerRpc(target, reader, rpcParams);
@@ -596,6 +715,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(MaskedPlayerEnemy), "__rpc_handler_3192502457")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_3192502457(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             return KillPlayerServerRpc(target, reader, rpcParams);
@@ -606,6 +726,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(NutcrackerEnemyAI), "__rpc_handler_3881699224")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_3881699224(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             return KillPlayerServerRpc(target, reader, rpcParams);
@@ -616,6 +737,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(BlobAI), "__rpc_handler_3848306567")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_3848306567(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             return KillPlayerServerRpc(target, reader, rpcParams);
@@ -626,6 +748,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(CentipedeAI), "__rpc_handler_2791977891")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_2791977891(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             return KillPlayerServerRpc(target, reader, rpcParams);
@@ -659,6 +782,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(EnemyAI), "__rpc_handler_255411420")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_255411420(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -677,6 +801,7 @@ namespace AntiCheat
 
         [HarmonyPatch(typeof(EnemyAI), "__rpc_handler_1810146992")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_1810146992(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -709,6 +834,7 @@ namespace AntiCheat
 
         [HarmonyPatch(typeof(EnemyAI), "__rpc_handler_3079913705")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_3079913705(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -743,6 +869,7 @@ namespace AntiCheat
 
         [HarmonyPatch(typeof(EnemyAI), "__rpc_handler_3587030867")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_3587030867(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             LogInfo("__rpc_handler_3587030867");
@@ -855,6 +982,7 @@ namespace AntiCheat
 
         [HarmonyPatch(typeof(JetpackItem), "__rpc_handler_3663112878")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_3663112878(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -897,6 +1025,7 @@ namespace AntiCheat
 
         [HarmonyPatch(typeof(EnemyAI), "__rpc_handler_2814283679")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool HitEnemyServerRpcPatch(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p) || StartOfRound.Instance.localPlayerController.IsHost)
@@ -946,10 +1075,13 @@ namespace AntiCheat
                             return false;
                         }
                     }
-                    else if (!p.isPlayerDead && obj == null && force != 1)
+                    else if (!p.isPlayerDead && obj == null)
                     {
                         if (!jcs.Contains(p.playerSteamId))
                         {
+                            LogInfo($"currentItemSlot:{p.currentItemSlot}");
+                            LogInfo($"currentlyHeldObjectServer:{p.currentlyHeldObjectServer}");
+                            LogInfo($"obj:{obj}");
                             var e = (EnemyAI)target;
                             ShowMessage(LocalizationManager.GetString("msg_Shovel6", new Dictionary<string, string>() {
                                 { "{player}",p.playerUsername },
@@ -975,7 +1107,7 @@ namespace AntiCheat
         }
 
         private static string lastMessage = string.Empty;
-        
+
         /// <summary>
         /// 在游戏中输出信息
         /// </summary>
@@ -1018,6 +1150,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(GiftBoxItem), "__rpc_handler_2878544999")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_2878544999(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -1056,6 +1189,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(HauntedMaskItem), "__rpc_handler_1065539967")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_1065539967(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -1152,6 +1286,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(RoundManager), "LoadNewLevel")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool LoadNewLevel(SelectableLevel newLevel)
         {
             if (!StartOfRound.Instance.localPlayerController.IsHost)//非主机
@@ -1171,6 +1306,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_412259855")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_412259855(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -1196,6 +1332,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_1554282707")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_1554282707(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -1274,6 +1411,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_2013428264")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_2013428264(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             reader.ReadValueSafe(out Vector3 newPos);
@@ -1314,6 +1452,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(NetworkManager), "Awake")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static void NetworkManagerAwake()
         {
             if (!GameNetworkManager.Instance.disableSteam)
@@ -1328,7 +1467,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(FacepunchTransport), "Steamworks.ISocketManager.OnConnecting")]
         [HarmonyPrefix]
-
+        [HarmonyWrapSafe]
         public static bool FacepunchTransportOnConnecting(ref Connection connection, ref ConnectionInfo info)
         {
             NetIdentity identity = Traverse.Create(info).Field<NetIdentity>("identity").Value;
@@ -1337,6 +1476,11 @@ namespace AntiCheat
                 LogInfo(LocalizationManager.GetString("log_refuse_connect", new Dictionary<string, string>() {
                     {"{steamId}",identity.SteamId.Value.ToString() }
                 }));
+                return false;
+            }
+            if (StartOfRound.Instance.allPlayerScripts.Any(x => x.isPlayerControlled && x.playerSteamId == identity.SteamId.Value))
+            {
+                LogInfo("{steamId} repeatedly joins the game.");
                 return false;
             }
             if (ConnectionIdtoSteamIdMap.ContainsKey(connection.Id))
@@ -1357,7 +1501,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(FacepunchTransport), "Steamworks.ISocketManager.OnDisconnected")]
         [HarmonyPrefix]
-
+        [HarmonyWrapSafe]
         public static void FacepunchTransportOnDisconnected(ref Connection connection, ref ConnectionInfo info)
         {
             if (NetworkManager.Singleton?.IsListening == true)
@@ -1373,6 +1517,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_2504133785")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_2504133785(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (!StartOfRound.Instance.localPlayerController.IsHost)//非主机
@@ -1402,6 +1547,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(HUDManager), "__rpc_handler_2787681914")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_2787681914(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -1455,6 +1601,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(HUDManager), "__rpc_handler_168728662")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_168728662(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             return __rpc_handler_2930587515(target, reader, rpcParams);
@@ -1465,6 +1612,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(HUDManager), "__rpc_handler_2930587515")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_2930587515(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -1530,16 +1678,112 @@ namespace AntiCheat
             return true;
         }
 
+        public static T2 GetField<T, T2>(this T obj, string name)
+        {
+            return (T2)obj.GetType().GetField(name, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.GetField).GetValue(obj);
+        }
+
+        public static void SetField<T>(this T obj, string name, object value)
+        {
+            obj.GetType().GetField(name, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.GetField).SetValue(obj, value);
+        }
+
+        public static bool CheckRemoteTerminal(PlayerControllerB p)
+        {
+            if (whoUseTerminal != p)
+            {
+                if (whoUseTerminal == null)
+                {
+                    LogInfo($"no player use terminal|request player:{p.playerUsername}");
+                }
+                else
+                {
+                    LogInfo($"whoUseTerminal:{whoUseTerminal.playerUsername}|p:{p.playerUsername}");
+                }
+                ShowMessage(LocalizationManager.GetString("msg_RemoteTerminal", new Dictionary<string, string>() {
+                    { "{player}",p.playerUsername }
+                }));
+                if (AntiCheatPlugin.RemoteTerminal2.Value)
+                {
+                    KickPlayer(p);
+                }
+                return false;
+            }
+            return true;
+        }
+
+        [HarmonyPatch(typeof(InteractTrigger), "__rpc_handler_1430497838")]
+        [HarmonyPrefix]
+        [HarmonyWrapSafe]
+        public static bool __rpc_handler_1430497838(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (Check(rpcParams, out var p) || true)
+            {
+                ByteUnpacker.ReadValueBitPacked(reader, out int playerNum);
+                reader.Seek(0);
+                if (playerNum == (int)p.playerClientId)
+                {
+                    var terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
+                    var terminalTrigger = terminal.GetField<Terminal, InteractTrigger>("terminalTrigger");
+                    if (terminalTrigger.GetInstanceID() == ((InteractTrigger)target).GetInstanceID())
+                    {
+                        whoUseTerminal = p;
+                        LogInfo($"player {p.playerUsername} use Terminal");
+                    }
+                }
+            }
+            else if (p == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        [HarmonyPatch(typeof(InteractTrigger), "__rpc_handler_880620475")]
+        [HarmonyPrefix]
+        [HarmonyWrapSafe]
+        public static bool __rpc_handler_880620475(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (Check(rpcParams, out var p) || true)
+            {
+                ByteUnpacker.ReadValueBitPacked(reader, out int playerNum);
+                reader.Seek(0);
+                if (playerNum == (int)p.playerClientId)
+                {
+                    var terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
+                    var terminalTrigger = terminal.GetField<Terminal, InteractTrigger>("terminalTrigger");
+                    if (terminalTrigger.GetInstanceID() == ((InteractTrigger)target).GetInstanceID())
+                    {
+                        whoUseTerminal = null;
+                        LogInfo($"player {p.playerUsername} stop use Terminal");
+                    }
+                }
+            }
+            else if (p == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
         /// <summary>
         /// 终端噪音检测
         /// Prefix Terminal.PlayTerminalAudioServerRpc
         /// </summary>
         [HarmonyPatch(typeof(Terminal), "__rpc_handler_1713627637")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_1713627637(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
             {
+                if (AntiCheatPlugin.RemoteTerminal.Value)
+                {
+                    if (!CheckRemoteTerminal(p))
+                    {
+                        return false;
+                    }
+                }
                 if (AntiCheatPlugin.ShipTerminal.Value)
                 {
                     DateTime dt = DateTime.Now;
@@ -1583,6 +1827,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(ShipLights), "__rpc_handler_1625678258")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_1625678258(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -1653,6 +1898,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(ShotgunItem), "__rpc_handler_1329927282")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_1329927282(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p) || StartOfRound.Instance.localPlayerController.IsHost)
@@ -1724,6 +1970,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(Shovel), "__rpc_handler_2096026133")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_2096026133(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p) || StartOfRound.Instance.localPlayerController.IsHost)
@@ -1771,6 +2018,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(StartOfRound), "__rpc_handler_1089447320")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool StartGameServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -1816,6 +2064,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(StartOfRound), "OnPlayerDC")]
         [HarmonyPostfix]
+        [HarmonyWrapSafe]
         public static void OnPlayerDC(int playerObjectNumber, ulong clientId)
         {
             PlayerControllerB component = StartOfRound.Instance.allPlayerObjects[playerObjectNumber].GetComponent<PlayerControllerB>();
@@ -1826,24 +2075,7 @@ namespace AntiCheat
 
         public static PlayerControllerB whoUseTerminal { get; set; }
 
-        /// <summary>
-        /// 记录上一个使用终端的玩家
-        /// Prefix Terminal.SetTerminalInUseServerRpc
-        /// </summary>
-        [HarmonyPatch(typeof(Terminal), "__rpc_handler_4047492032")]
-        [HarmonyPrefix]
-        public static bool __rpc_handler_4047492032(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        {
-            if (Check(rpcParams, out var p))
-            {
-                whoUseTerminal = p;
-            }
-            else if (p == null)
-            {
-                return false;
-            }
-            return true;
-        }
+
 
         /// <summary>
         /// 踢出玩家
@@ -1888,6 +2120,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(HUDManager), "SetPlayerLevel")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool SetPlayerLevel(bool isDead, bool mostProfitable, bool allPlayersDead)
         {
             foreach (var item in HUDManager.Instance.playerLevels)
@@ -1906,6 +2139,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(StartMatchLever), "__rpc_handler_2406447821")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_2406447821(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -1934,6 +2168,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(DepositItemsDesk), "SellAndDisplayItemProfits")]
         [HarmonyPostfix]
+        [HarmonyWrapSafe]
         public static void SellAndDisplayItemProfits(int profit, int newGroupCredits)
         {
             if (!StartOfRound.Instance.localPlayerController.IsHost)
@@ -1950,6 +2185,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_1786952262")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_1786952262(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -1984,6 +2220,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(Turret), "__rpc_handler_4195711963")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_4195711963(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -2028,26 +2265,27 @@ namespace AntiCheat
             return true;
         }
 
-        /// <summary>
-        /// 声音更新事件(处理进房卡黑屏，但是好像无效)
-        /// Postfix SoundManager.Update
-        /// </summary>
-        [HarmonyPatch(typeof(SoundManager), "Update")]
-        [HarmonyPrefix]
-        public static void SoundManagerUpdate()
-        {
-            if (GameNetworkManager.Instance.localPlayerController == null || NetworkManager.Singleton == null)
-            {
-                count++;
-                if (count >= 30)
-                {
-                    GameNetworkManager.Instance.LeaveCurrentSteamLobby();
-                    count = 0;
-                }
-                return;
-            }
-            count = 0;
-        }
+        ///// <summary>
+        ///// 声音更新事件(处理进房卡黑屏，但是好像无效)
+        ///// Postfix SoundManager.Update
+        ///// </summary>
+        //[HarmonyPatch(typeof(SoundManager), "Update")]
+        //[HarmonyPrefix]
+        //[HarmonyWrapSafe]
+        //public static void SoundManagerUpdate()
+        //{
+        //    if (GameNetworkManager.Instance.localPlayerController == null || NetworkManager.Singleton == null)
+        //    {
+        //        count++;
+        //        if (count >= 30)
+        //        {
+        //            GameNetworkManager.Instance.LeaveCurrentSteamLobby();
+        //            count = 0;
+        //        }
+        //        return;
+        //    }
+        //    count = 0;
+        //}
 
         /// <summary>
         /// UI更新事件(房主死亡时加上一票起飞提示)
@@ -2055,6 +2293,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(HUDManager), "Update")]
         [HarmonyPostfix]
+        [HarmonyWrapSafe]
         public static void Update()
         {
             if (!StartOfRound.Instance.IsHost)
@@ -2089,6 +2328,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(TimeOfDay), "__rpc_handler_543987598")]
         [HarmonyPostfix]
+        [HarmonyWrapSafe]
         public static void Postfix__rpc_handler_543987598(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (StartOfRound.Instance.localPlayerController.IsHost)
@@ -2118,6 +2358,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(TimeOfDay), "__rpc_handler_543987598")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_543987598(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -2143,6 +2384,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(StartOfRound), "__rpc_handler_2028434619")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool EndGameServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -2206,6 +2448,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(ShipBuildModeManager), "__rpc_handler_861494715")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_861494715(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -2259,6 +2502,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(Landmine), "OnTriggerExit")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool OnTriggerExit(Landmine __instance, Collider other)
         {
             if (!StartOfRound.Instance.IsHost)
@@ -2289,6 +2533,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(Landmine), "__rpc_handler_3032666565")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_3032666565(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -2323,6 +2568,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(DepositItemsDesk), "__rpc_handler_3230280218")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static bool __rpc_handler_3230280218(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -2352,6 +2598,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPatch(typeof(GameNetworkManager), "StartHost")]
         [HarmonyPrefix]
+        [HarmonyWrapSafe]
         public static void StartHost()
         {
             if (AntiCheatPlugin.Prefix.Value.IsNullOrWhiteSpace())

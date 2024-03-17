@@ -16,7 +16,7 @@ namespace AntiCheat
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheatPlugin : BaseUnityPlugin
     {
-        public const string Version = "0.5.9";
+        public const string Version = "0.6.0";
         public static ManualLogSource ManualLog = null;
         public enum Language
         {
@@ -97,6 +97,9 @@ namespace AntiCheat
         public static ConfigEntry<bool> FreeBuy;
         public static ConfigEntry<bool> FreeBuy2;
 
+        public static ConfigEntry<bool> RemoteTerminal;
+        public static ConfigEntry<bool> RemoteTerminal2;
+
         public static ConfigEntry<bool> Nameless;
         public static ConfigEntry<bool> Nameless2;
 
@@ -106,7 +109,7 @@ namespace AntiCheat
             ManualLog = Logger;
 
 
-            LanguageConfig = Config.Bind("LangugeSetting", "Language", Language.简体中文, string.Join(",", LocalizationManager.Languages.Select(x => x.Key)));
+            LanguageConfig = Config.Bind("LanguageSetting", "Language", Language.简体中文, string.Join(",", LocalizationManager.Languages.Select(x => x.Key)));
             LocalizationManager.SetLanguage(LanguageConfig.Value.ToString());
             Prefix = Config.Bind("ServerNameSetting", "Prefix", "AC", LocalizationManager.GetString("config_Prefix"));
             ShipConfig = Config.Bind("ShipSetting", "StartGameOnlyHost", true, LocalizationManager.GetString("config_ShipSetting"));
@@ -182,6 +185,9 @@ namespace AntiCheat
 
             FreeBuy = Config.Bind("FreeBuySettings", "Enable", true, LocalizationManager.GetString("config_FreeBuy"));
             FreeBuy2 = Config.Bind("FreeBuySettings", "Kick", false, LocalizationManager.GetString("config_Kick"));
+
+            RemoteTerminal = Config.Bind("RemoteTerminalSettings", "Enable", true, LocalizationManager.GetString("config_RemoteTerminal"));
+            RemoteTerminal2 = Config.Bind("RemoteTerminalSettings", "Kick", false, LocalizationManager.GetString("config_Kick"));
 
             PlayerJoin = Config.Bind("MsgSettings", "PlayerJoinShip", LocalizationManager.GetString("msg_wlc_player"), LocalizationManager.GetString("msg_wlc_player"));
 

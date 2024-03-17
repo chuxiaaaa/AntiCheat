@@ -232,6 +232,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 远程终端检测 的本地化字符串。
+        /// </summary>
+        internal static string config_RemoteTerminal {
+            get {
+                return ResourceManager.GetString("config_RemoteTerminal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 飞船物品位置异常检测 的本地化字符串。
         /// </summary>
         internal static string config_ShipBuild {
@@ -430,11 +439,11 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 检测到玩家 {player} 刷取金钱！ 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 强制改变怪物状态！ 的本地化字符串。
         /// </summary>
-        internal static string msg_FreeBuy_GiveMoney {
+        internal static string msg_Enemy_SwitchToBehaviour {
             get {
-                return ResourceManager.GetString("msg_FreeBuy_GiveMoney", resourceCulture);
+                return ResourceManager.GetString("msg_Enemy_SwitchToBehaviour", resourceCulture);
             }
         }
         
@@ -444,6 +453,24 @@ namespace AntiCheat.Lang {
         internal static string msg_FreeBuy_Item {
             get {
                 return ResourceManager.GetString("msg_FreeBuy_Item", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 强制切换付费星球！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_FreeBuy_Level {
+            get {
+                return ResourceManager.GetString("msg_FreeBuy_Level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 修改金钱({Money})！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_FreeBuy_SetMoney {
+            get {
+                return ResourceManager.GetString("msg_FreeBuy_SetMoney", resourceCulture);
             }
         }
         
@@ -570,6 +597,15 @@ namespace AntiCheat.Lang {
         internal static string msg_Nameless {
             get {
                 return ResourceManager.GetString("msg_Nameless", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 使用远程终端！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_RemoteTerminal {
+            get {
+                return ResourceManager.GetString("msg_RemoteTerminal", resourceCulture);
             }
         }
         
