@@ -207,6 +207,9 @@
   <data name="config_Shovel" xml:space="preserve">
     <value>铲子伤害检测</value>
   </data>
+  <data name="config_Shovel2" xml:space="preserve">
+    <value>允许玩家空手时能造成正常伤害(网络延迟可能会导致玩家空手)</value>
+  </data>
   <data name="config_SpawnWebTrap" xml:space="preserve">
     <value>刷蜘蛛网检测</value>
   </data>
@@ -347,6 +350,9 @@
   </data>
   <data name="msg_vote" xml:space="preserve">
     <value>你是房主，投票直接起飞！</value>
+  </data>
+  <data name="msg_vote_player" xml:space="preserve">
+    <value>{player} 投票让飞船提前离开({now}/{max})</value>
   </data>
   <data name="msg_wlc_player" xml:space="preserve">
     <value>&lt;color=green&gt;欢迎 &lt;color=yellow&gt;{player}&lt;/color&gt; 加入飞船&lt;/color&gt;</value>

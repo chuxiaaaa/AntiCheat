@@ -16,7 +16,7 @@ namespace AntiCheat
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheatPlugin : BaseUnityPlugin
     {
-        public const string Version = "0.6.0";
+        public const string Version = "0.6.1";
         public static ManualLogSource ManualLog = null;
         public enum Language
         {
@@ -29,6 +29,7 @@ namespace AntiCheat
 
         public static ConfigEntry<bool> Shovel;
         public static ConfigEntry<bool> Shovel2;
+        public static ConfigEntry<bool> Shovel3;
 
         public static ConfigEntry<string> Prefix;
         public static ConfigEntry<string> PlayerJoin;
@@ -103,7 +104,7 @@ namespace AntiCheat
         public static ConfigEntry<bool> Nameless;
         public static ConfigEntry<bool> Nameless2;
 
-
+    
         void Awake()
         {
             ManualLog = Logger;
@@ -178,6 +179,7 @@ namespace AntiCheat
             GrabObject2 = Config.Bind("GrabObjectSetting", "Kick", false, LocalizationManager.GetString("config_Kick"));
 
             Shovel = Config.Bind("ShovelSettings", "Enable", true, LocalizationManager.GetString("config_Shovel"));
+            Shovel3 = Config.Bind("ShovelSettings", "EmptyHand", false, LocalizationManager.GetString("config_Shovel2"));
             Shovel2 = Config.Bind("ShovelSettings", "Kick", false, LocalizationManager.GetString("config_Kick"));
 
             Nameless = Config.Bind("NamelessSettings", "Enable", true, LocalizationManager.GetString("config_Nameless"));

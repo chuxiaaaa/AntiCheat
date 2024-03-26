@@ -204,6 +204,9 @@
   <data name="config_Shovel" xml:space="preserve">
     <value>Abnormal shovel damage detection</value>
   </data>
+  <data name="config_Shovel2" xml:space="preserve">
+    <value>Allow players to deal normal damage when empty-handed (network delays may cause players to be empty-handed)</value>
+  </data>
   <data name="config_SpawnWebTrap" xml:space="preserve">
     <value>Abnormal spawn spiderweb detection</value>
   </data>
@@ -341,6 +344,9 @@
   </data>
   <data name="msg_vote" xml:space="preserve">
     <value>You are the host, your vote can call the autopilot.</value>
+  </data>
+  <data name="msg_vote_player" xml:space="preserve">
+    <value>{player} Vote for the ship to leave early.({now}/{max})</value>
   </data>
   <data name="msg_wlc_player" xml:space="preserve">
     <value>&lt;color=green&gt;&lt;color=yellow&gt;[{player}]&lt;/color&gt; joined the ship.&lt;/color&gt;</value>

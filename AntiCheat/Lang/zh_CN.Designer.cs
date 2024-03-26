@@ -169,7 +169,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 击杀敌人检测 的本地化字符串。
+        ///   查找类似 秒杀敌人检测 的本地化字符串。
         /// </summary>
         internal static string config_KillEnemy {
             get {
@@ -268,7 +268,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 非房主只有在当飞船人数(存活)超过以上比例才能起飞(0-100%) 的本地化字符串。
+        ///   查找类似 非房主只有在当飞船存活人数超过总存活人数时才能起飞(0-100%) 的本地化字符串。
         /// </summary>
         internal static string config_ShipConfig4 {
             get {
@@ -331,6 +331,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 允许玩家空手时能造成正常伤害(网络延迟可能会导致玩家空手) 的本地化字符串。
+        /// </summary>
+        internal static string config_Shovel2 {
+            get {
+                return ResourceManager.GetString("config_Shovel2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 刷蜘蛛网检测 的本地化字符串。
         /// </summary>
         internal static string config_SpawnWebTrap {
@@ -367,7 +376,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 模组已加载完毕！ 的本地化字符串。
+        ///   查找类似 反作弊模组已加载完毕！ 的本地化字符串。
         /// </summary>
         internal static string log_load {
             get {
@@ -376,7 +385,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 {steamId} 尝试重连游戏被拒绝(因为他已被踢出)！ 的本地化字符串。
+        ///   查找类似 {steamId} 尝试重连游戏被拒绝(已被踢出)！ 的本地化字符串。
         /// </summary>
         internal static string log_refuse_connect {
             get {
@@ -394,7 +403,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 &lt;color=yellow&gt;[{player}] &lt;color=red&gt;还没上船呢...&lt;/color&gt;&lt;/color&gt; 的本地化字符串。
+        ///   查找类似 &lt;color=yellow&gt;[{player}] &lt;color=red&gt;被抛弃了&lt;/color&gt;&lt;/color&gt; 的本地化字符串。
         /// </summary>
         internal static string msg_behind_player {
             get {
@@ -511,7 +520,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 检测到玩家 {player} 启用无限子弹！ 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 正使用无限子弹！ 的本地化字符串。
         /// </summary>
         internal static string msg_InfiniteAmmo {
             get {
@@ -547,7 +556,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 {player} 被踢出游戏！ 的本地化字符串。
+        ///   查找类似 {player} 已被踢出 的本地化字符串。
         /// </summary>
         internal static string msg_Kick {
             get {
@@ -619,7 +628,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 {player} 请等待飞船人数达到 {cfg} 以上再拉杆！ 的本地化字符串。
+        ///   查找类似 {player} 请等待飞船人数达到 {cfg} 以上再拉杆，谢谢！ 的本地化字符串。
         /// </summary>
         internal static string msg_ShipConfig2 {
             get {
@@ -718,7 +727,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 &lt;color=yellow&gt;[{player}] &lt;color=green&gt;新生物数据发送到终端！&lt;/color&gt;&lt;/color&gt; 的本地化字符串。
+        ///   查找类似 &lt;color=yellow&gt;[{player}] &lt;color=green&gt;新的生物数据已发送至终端！&lt;/color&gt;&lt;/color&gt; 的本地化字符串。
         /// </summary>
         internal static string msg_snc_player {
             get {
@@ -750,6 +759,15 @@ namespace AntiCheat.Lang {
         internal static string msg_vote {
             get {
                 return ResourceManager.GetString("msg_vote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {player} 投票让飞船提前离开({now}/{max}) 的本地化字符串。
+        /// </summary>
+        internal static string msg_vote_player {
+            get {
+                return ResourceManager.GetString("msg_vote_player", resourceCulture);
             }
         }
         

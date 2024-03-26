@@ -179,9 +179,12 @@ namespace AntiCheat
                     }
                     else if (obj == null || (!isGun(obj) && !isShovel(obj)))
                     {
-                        if (damageAmount != 10)
+                        LogInfo($"currentItemSlot:{p.currentItemSlot}");
+                        LogInfo($"currentlyHeldObjectServer:{p.currentlyHeldObjectServer}");
+                        LogInfo($"obj:{obj}");
+                        if (!jcs.Contains(p.playerSteamId))
                         {
-                            if (!jcs.Contains(p.playerSteamId))
+                            if (!AntiCheatPlugin.Shovel3.Value && (damageAmount == 10 || damageAmount == 20 || damageAmount == 40 || damageAmount == 100))
                             {
                                 ShowMessage(LocalizationManager.GetString("msg_Shovel3", new Dictionary<string, string>() {
                                     { "{player}",p.playerUsername },
@@ -193,9 +196,17 @@ namespace AntiCheat
                                 {
                                     KickPlayer(p);
                                 }
+                                damageAmount = 0;
+                            }
+                            else
+                            {
+                                LogInfo(LocalizationManager.GetString("msg_Shovel3", new Dictionary<string, string>() {
+                                    { "{player}",p.playerUsername },
+                                    { "{player2}",p2.playerUsername },
+                                    { "{damageAmount}",damageAmount.ToString() }
+                                }));
                             }
                         }
-                        damageAmount = 0;
                     }
                     else if (jcs.Contains(p.playerSteamId))
                     {
@@ -1083,15 +1094,26 @@ namespace AntiCheat
                             LogInfo($"currentlyHeldObjectServer:{p.currentlyHeldObjectServer}");
                             LogInfo($"obj:{obj}");
                             var e = (EnemyAI)target;
-                            ShowMessage(LocalizationManager.GetString("msg_Shovel6", new Dictionary<string, string>() {
-                                { "{player}",p.playerUsername },
-                                { "{enemyName}",e.enemyType.enemyName },
-                                { "{damageAmount}",force.ToString() }
-                            }));
-                            jcs.Add(p.playerSteamId);
-                            if (AntiCheatPlugin.Shovel2.Value)
+                            if (!AntiCheatPlugin.Shovel3.Value && (force == 1 || force == 2 || force == 3 || force == 5))
                             {
-                                KickPlayer(p);
+                                ShowMessage(LocalizationManager.GetString("msg_Shovel6", new Dictionary<string, string>() {
+                                    { "{player}",p.playerUsername },
+                                    { "{enemyName}",e.enemyType.enemyName },
+                                    { "{damageAmount}",force.ToString() }
+                                }));
+                                jcs.Add(p.playerSteamId);
+                                if (AntiCheatPlugin.Shovel2.Value)
+                                {
+                                    KickPlayer(p);
+                                }
+                            }
+                            else
+                            {
+                                LogInfo(LocalizationManager.GetString("msg_Shovel6", new Dictionary<string, string>() {
+                                    { "{player}",p.playerUsername },
+                                    { "{enemyName}",e.enemyType.enemyName },
+                                    { "{damageAmount}",force.ToString() }
+                                }));
                             }
                             return false;
                         }
@@ -2059,7 +2081,7 @@ namespace AntiCheat
         }
 
         /// <summary>
-        /// 玩家断开连接时清空steamId(防止游戏缓存)
+        /// 玩家断开连接时清空SteamId(防止游戏缓存)
         /// Postfix StartOfRound.OnPlayerDC
         /// </summary>
         [HarmonyPatch(typeof(StartOfRound), "OnPlayerDC")]
@@ -2072,10 +2094,7 @@ namespace AntiCheat
             return;
         }
 
-
         public static PlayerControllerB whoUseTerminal { get; set; }
-
-
 
         /// <summary>
         /// 踢出玩家
@@ -2114,24 +2133,6 @@ namespace AntiCheat
             }));
         }
 
-        /// <summary>
-        /// 修复复活卡黑屏问题
-        /// Prefix HUDManager.SetPlayerLevel
-        /// </summary>
-        [HarmonyPatch(typeof(HUDManager), "SetPlayerLevel")]
-        [HarmonyPrefix]
-        [HarmonyWrapSafe]
-        public static bool SetPlayerLevel(bool isDead, bool mostProfitable, bool allPlayersDead)
-        {
-            foreach (var item in HUDManager.Instance.playerLevels)
-            {
-                if (item.XPMax == 0)
-                {
-                    item.XPMax = 1;
-                }
-            }
-            return true;
-        }
 
         /// <summary>
         /// 拉杆事件(正常拉杆都要经过这一层)
@@ -2364,7 +2365,12 @@ namespace AntiCheat
             if (Check(rpcParams, out var p))
             {
                 int num = StartOfRound.Instance.connectedPlayersAmount + 1 - StartOfRound.Instance.livingPlayers;
-                typeof(HUDManager).GetMethod("AddChatMessage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(HUDManager.Instance, new object[] { $"{p.playerUsername} 投票让飞船提前离开({(TimeOfDay.Instance.votesForShipToLeaveEarly + 1)}/{num})", "" });
+                string msg = LocalizationManager.GetString("msg_vote_player", new Dictionary<string, string>() {
+                    { "{player}",p.playerUsername },
+                    { "{now}",(TimeOfDay.Instance.votesForShipToLeaveEarly + 1).ToString() },
+                    { "{max}",num.ToString() }
+                });
+                typeof(HUDManager).GetMethod("AddChatMessage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(HUDManager.Instance, new object[] { msg , "" });
                 if (TimeOfDay.Instance.votesForShipToLeaveEarly + 1 >= num)
                 {
                     LogInfo("Vote EndGame");
