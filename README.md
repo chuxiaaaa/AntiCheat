@@ -164,7 +164,7 @@
 ### 游戏语言
 
 * 中文 (chuxiaaaa & CoolLKKPS)
-* 英文 (DeathWrench & CoolLKKPS)
+* 英文 (DeathWrench & CoolLKKPS & glyphical)
 
 ### 自述语言
 
