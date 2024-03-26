@@ -133,4 +133,5 @@ Example: [AC] The battle is thrilling!
 We welcome contributions from capable developers to improve this mod.
 
 ## Feedback
+
 If you encounter a false positive and can confirm it's not caused by another mod, please report the issue on my GitHub, explaining how to reproduce the problem. This will help us fix it!
