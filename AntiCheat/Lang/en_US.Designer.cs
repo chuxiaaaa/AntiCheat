@@ -61,7 +61,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Provoking Boss Detection 的本地化字符串。
+        ///   查找类似 召唤老板检测 的本地化字符串。
         /// </summary>
         internal static string config_Boss {
             get {
@@ -70,7 +70,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Fake chat message detection 的本地化字符串。
+        ///   查找类似 发言伪造检测 的本地化字符串。
         /// </summary>
         internal static string config_ChatReal {
             get {
@@ -79,7 +79,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Destory items detection 的本地化字符串。
+        ///   查找类似 销毁物品检测 的本地化字符串。
         /// </summary>
         internal static string config_DespawnItem {
             get {
@@ -88,7 +88,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Abnormal monster behavior detection 的本地化字符串。
+        ///   查找类似 怪物异常检测 的本地化字符串。
         /// </summary>
         internal static string config_Enemy {
             get {
@@ -97,7 +97,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Free purchases 的本地化字符串。
+        ///   查找类似 零元购检测 的本地化字符串。
         /// </summary>
         internal static string config_FreeBuy {
             get {
@@ -106,7 +106,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Abnormal gift box interact detection 的本地化字符串。
+        ///   查找类似 刷礼物盒检测 的本地化字符串。
         /// </summary>
         internal static string config_Gift {
             get {
@@ -115,7 +115,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Item pickup distance detection 的本地化字符串。
+        ///   查找类似 隔空取物检测 的本地化字符串。
         /// </summary>
         internal static string config_GrabObject {
             get {
@@ -124,7 +124,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Infinite ammo detection 的本地化字符串。
+        ///   查找类似 无限子弹检测 的本地化字符串。
         /// </summary>
         internal static string config_InfiniteAmmo {
             get {
@@ -133,7 +133,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Invisible player detection 的本地化字符串。
+        ///   查找类似 隐身检测 的本地化字符串。
         /// </summary>
         internal static string config_Invisibility {
             get {
@@ -142,7 +142,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Abnormal item interact cooldown detection 的本地化字符串。
+        ///   查找类似 物品使用冷却异常检测 的本地化字符串。
         /// </summary>
         internal static string config_ItemCooldown {
             get {
@@ -151,7 +151,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Jetpack explode detection 的本地化字符串。
+        ///   查找类似 喷气背包爆炸检测 的本地化字符串。
         /// </summary>
         internal static string config_Jetpack {
             get {
@@ -160,7 +160,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Kick player when this behavior is detected 的本地化字符串。
+        ///   查找类似 检测到该行为时踢出玩家 的本地化字符串。
         /// </summary>
         internal static string config_Kick {
             get {
@@ -169,7 +169,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Abnormal Enemy killed detection 的本地化字符串。
+        ///   查找类似 击杀敌人检测 的本地化字符串。
         /// </summary>
         internal static string config_KillEnemy {
             get {
@@ -178,7 +178,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Landmine detonate detection 的本地化字符串。
+        ///   查找类似 引爆地雷检测 的本地化字符串。
         /// </summary>
         internal static string config_Landmine {
             get {
@@ -187,7 +187,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 show log 的本地化字符串。
+        ///   查找类似 显示控制台日志 的本地化字符串。
         /// </summary>
         internal static string config_Log {
             get {
@@ -196,7 +196,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Mini-map mod detection 的本地化字符串。
+        ///   查找类似 小地图检测 的本地化字符串。
         /// </summary>
         internal static string config_Map {
             get {
@@ -205,7 +205,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Abnormal masked enemy detection 的本地化字符串。
+        ///   查找类似 刷假人检测 的本地化字符串。
         /// </summary>
         internal static string config_Mask {
             get {
@@ -214,7 +214,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Player name detection (Nameless or Unknown) 的本地化字符串。
+        ///   查找类似 玩家名字检测(Nameless或Unknown) 的本地化字符串。
         /// </summary>
         internal static string config_Nameless {
             get {
@@ -223,7 +223,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Set the lobby name prefix, Empty to disable. 的本地化字符串。
+        ///   查找类似 设置房间名前缀，使用空值代表不启用前缀 的本地化字符串。
         /// </summary>
         internal static string config_Prefix {
             get {
@@ -232,7 +232,16 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Abnormal furniture position detection 的本地化字符串。
+        ///   查找类似 远程终端检测 的本地化字符串。
+        /// </summary>
+        internal static string config_RemoteTerminal {
+            get {
+                return ResourceManager.GetString("config_RemoteTerminal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 飞船物品位置异常检测 的本地化字符串。
         /// </summary>
         internal static string config_ShipBuild {
             get {
@@ -241,7 +250,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Client-side player can pull the lever only if more than the specified player number are reached (host permissions need to be turned off) 的本地化字符串。
+        ///   查找类似 非房主只有在超过指定人数才能进行着陆(需要关闭房主权限) 的本地化字符串。
         /// </summary>
         internal static string config_ShipConfig2 {
             get {
@@ -250,7 +259,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Allow client-side player to take off when after this time (based on game world) 的本地化字符串。
+        ///   查找类似 非房主只有在该时间点以后才能起飞 的本地化字符串。
         /// </summary>
         internal static string config_ShipConfig3 {
             get {
@@ -259,7 +268,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Allow client-side player to take off when the number of alive players in the ship are exceed the specified ratio of total alive players number (0-100%) 的本地化字符串。
+        ///   查找类似 非房主只有在当飞船人数(存活)超过以上比例才能起飞(0-100%) 的本地化字符串。
         /// </summary>
         internal static string config_ShipConfig4 {
             get {
@@ -268,7 +277,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detect malicious lever pull behavior (kick player when this behavior is detected) 的本地化字符串。
+        ///   查找类似 检测强制拉杆行为(检测到该行为时踢出玩家) 的本地化字符串。
         /// </summary>
         internal static string config_ShipConfig5 {
             get {
@@ -277,7 +286,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 You are the host, your vote can call the autopilot. 的本地化字符串。
+        ///   查找类似 作为房主，你可以一票起飞 的本地化字符串。
         /// </summary>
         internal static string config_ShipConfig6 {
             get {
@@ -286,7 +295,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Light switch detection 的本地化字符串。
+        ///   查找类似 灯关秀检测 的本地化字符串。
         /// </summary>
         internal static string config_ShipLight {
             get {
@@ -295,7 +304,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Only the host can land the ship 的本地化字符串。
+        ///   查找类似 只有房主才有着陆权限 的本地化字符串。
         /// </summary>
         internal static string config_ShipSetting {
             get {
@@ -304,7 +313,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Terminal noise spaming detection 的本地化字符串。
+        ///   查找类似 终端噪音检测 的本地化字符串。
         /// </summary>
         internal static string config_ShipTerminal {
             get {
@@ -313,7 +322,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Abnormal shovel damage detection 的本地化字符串。
+        ///   查找类似 铲子伤害检测 的本地化字符串。
         /// </summary>
         internal static string config_Shovel {
             get {
@@ -322,7 +331,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Spawn spiderweb detection 的本地化字符串。
+        ///   查找类似 刷蜘蛛网检测 的本地化字符串。
         /// </summary>
         internal static string config_SpawnWebTrap {
             get {
@@ -331,7 +340,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Malicious attacking turret detection 的本地化字符串。
+        ///   查找类似 激怒机枪检测 的本地化字符串。
         /// </summary>
         internal static string config_Turret {
             get {
@@ -340,7 +349,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 shotgun 的本地化字符串。
+        ///   查找类似 霰弹枪 的本地化字符串。
         /// </summary>
         internal static string Item_Shotgun {
             get {
@@ -349,7 +358,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 shovel 的本地化字符串。
+        ///   查找类似 铲子 的本地化字符串。
         /// </summary>
         internal static string Item_Shovel {
             get {
@@ -358,7 +367,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 AntiCheat mod are Loaded! 的本地化字符串。
+        ///   查找类似 反作弊模组已加载完毕！ 的本地化字符串。
         /// </summary>
         internal static string log_load {
             get {
@@ -367,7 +376,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 {steamId}&apos;s attempt to reconnect to the game but was rejected (alreay kicked before)! 的本地化字符串。
+        ///   查找类似 {steamId} 尝试重连游戏被拒绝(因为他已被踢出)！ 的本地化字符串。
         /// </summary>
         internal static string log_refuse_connect {
             get {
@@ -385,7 +394,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 &lt;color=yellow&gt;[{player}] &lt;color=red&gt;was left behind.&lt;/color&gt;&lt;/color&gt; 的本地化字符串。
+        ///   查找类似 &lt;color=yellow&gt;[{player}] &lt;color=red&gt;被抛弃了&lt;/color&gt;&lt;/color&gt; 的本地化字符串。
         /// </summary>
         internal static string msg_behind_player {
             get {
@@ -394,7 +403,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} attempt to provoking the Boss! 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 召唤老板！ 的本地化字符串。
         /// </summary>
         internal static string msg_Boss {
             get {
@@ -403,7 +412,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} try to fake as {player2} in chat! 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 尝试伪装成 {player2} 发言！ 的本地化字符串。
         /// </summary>
         internal static string msg_ChatReal {
             get {
@@ -412,7 +421,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} destroying items! 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 销毁物品 ({item})！ 的本地化字符串。
         /// </summary>
         internal static string msg_DespawnItem {
             get {
@@ -421,7 +430,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} try to change monster behavior! 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 强制改变怪物仇恨！ 的本地化字符串。
         /// </summary>
         internal static string msg_Enemy_ChangeOwnershipOfEnemy {
             get {
@@ -430,7 +439,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} try to change monster behavior state! 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 强制改变怪物状态！ 的本地化字符串。
         /// </summary>
         internal static string msg_Enemy_SwitchToBehaviour {
             get {
@@ -439,7 +448,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} buying items for free! 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 强制购买物品！ 的本地化字符串。
         /// </summary>
         internal static string msg_FreeBuy_Item {
             get {
@@ -448,7 +457,16 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} are modify credits({Money})! 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 强制切换付费星球！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_FreeBuy_Level {
+            get {
+                return ResourceManager.GetString("msg_FreeBuy_Level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 修改金钱({Money})！ 的本地化字符串。
         /// </summary>
         internal static string msg_FreeBuy_SetMoney {
             get {
@@ -457,7 +475,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} buying unlockable for free! 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 强制解锁飞船装饰！ 的本地化字符串。
         /// </summary>
         internal static string msg_FreeBuy_unlockable {
             get {
@@ -466,7 +484,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 &lt;color=green&gt;Anti-cheating (v{ver}) is enabled in this lobby&lt;/color&gt; 的本地化字符串。
+        ///   查找类似 &lt;color=green&gt;本房间启用反作弊(v{ver})&lt;/color&gt; 的本地化字符串。
         /// </summary>
         internal static string msg_game_start {
             get {
@@ -475,7 +493,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} interact gift box abnormally! 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 刷礼物盒！ 的本地化字符串。
         /// </summary>
         internal static string msg_Gift {
             get {
@@ -484,7 +502,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} taking objects from too far away! (Player coordinates: {player_position}|Item coordinates: {object_position}) 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 隔空取物！(玩家坐标：{player_position}|物品坐标：{object_position}) 的本地化字符串。
         /// </summary>
         internal static string msg_GrabObject {
             get {
@@ -493,7 +511,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} have infinite ammo! 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 启用无限子弹！ 的本地化字符串。
         /// </summary>
         internal static string msg_InfiniteAmmo {
             get {
@@ -502,7 +520,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} are invisible! (Player coordinates: {player_position}) 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 坐标异常！(玩家坐标：{player_position}) 的本地化字符串。
         /// </summary>
         internal static string msg_Invisibility {
             get {
@@ -511,7 +529,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} using {item} without respect the cooldown! 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 使用 {item} 频率异常！ 的本地化字符串。
         /// </summary>
         internal static string msg_ItemCooldown {
             get {
@@ -520,7 +538,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} explode the jetpack! 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 引爆喷气背包！ 的本地化字符串。
         /// </summary>
         internal static string msg_Jetpack {
             get {
@@ -529,7 +547,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 {player} are now kicked! 的本地化字符串。
+        ///   查找类似 {player} 被踢出游戏！ 的本地化字符串。
         /// </summary>
         internal static string msg_Kick {
             get {
@@ -538,7 +556,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} killing monster abnormally! ({enemyName}, remain HP before: {HP}) 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 秒杀怪物！( {enemyName} ,剩余血量:{HP}) 的本地化字符串。
         /// </summary>
         internal static string msg_KillEnemy {
             get {
@@ -547,7 +565,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} detonate the landmine abnormally! 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 强制引爆地雷！ 的本地化字符串。
         /// </summary>
         internal static string msg_Landmine {
             get {
@@ -556,7 +574,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} using minimap mod, that can make find the loot more easier! 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 使用小地图！ 的本地化字符串。
         /// </summary>
         internal static string msg_Map {
             get {
@@ -565,7 +583,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} spawn masked enemy abnormally, which mean that player catched by a masker but that player should already dead right now! 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 刷假人！ 的本地化字符串。
         /// </summary>
         internal static string msg_Mask {
             get {
@@ -574,7 +592,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player name abnormally, try to re-join? but if name are all numbers, your name will always be Nameless. 的本地化字符串。
+        ///   查找类似 检测到玩家名称异常！ 的本地化字符串。
         /// </summary>
         internal static string msg_Nameless {
             get {
@@ -583,7 +601,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} Remote Terminal! 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 使用远程终端！ 的本地化字符串。
         /// </summary>
         internal static string msg_RemoteTerminal {
             get {
@@ -592,7 +610,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} placing furniture in abnormal position ({position})! 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 将飞船物品摆放到异常位置({position})！ 的本地化字符串。
         /// </summary>
         internal static string msg_ShipBuild {
             get {
@@ -601,7 +619,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 {player} Please wait until the number of people in the ship are reached {cfg} or more before pulling the lever, thx! 的本地化字符串。
+        ///   查找类似 {player} 请等待飞船人数达到 {cfg} 以上再拉杆！ 的本地化字符串。
         /// </summary>
         internal static string msg_ShipConfig2 {
             get {
@@ -610,7 +628,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 {player} Please wait until the number of people in the ship are reached {player_count}({cfg4}%) and the time are reached {cfg3} to depart. (current time: {game_time}) 的本地化字符串。
+        ///   查找类似 {player} 请等待飞船人数达到 {player_count}({cfg4}%) 并且 游戏时间在 {cfg3} 之后起飞(当前时间:{game_time}) 的本地化字符串。
         /// </summary>
         internal static string msg_ShipConfig4 {
             get {
@@ -619,7 +637,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} malicious use the ship lever! 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 强制拉杆！ 的本地化字符串。
         /// </summary>
         internal static string msg_ShipConfig5 {
             get {
@@ -628,7 +646,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} switching light are too often! 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 频繁使用灯光！ 的本地化字符串。
         /// </summary>
         internal static string msg_ShipLight {
             get {
@@ -637,7 +655,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} making too many terminal noise! 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 频繁制造噪音！ 的本地化字符串。
         /// </summary>
         internal static string msg_ShipTerminal {
             get {
@@ -646,7 +664,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} using a shovel and cause abnormal damage to player {player2}! ({damageAmount}) 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 使用铲子对玩家 {player2} 造成异常伤害！({damageAmount}) 的本地化字符串。
         /// </summary>
         internal static string msg_Shovel {
             get {
@@ -655,7 +673,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} abnormal shovel range, and damage to player {player2}! ({damageAmount}) 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 铲子范围异常，对玩家 {player2} 造成伤害！({distance},{damageAmount}) 的本地化字符串。
         /// </summary>
         internal static string msg_Shovel2 {
             get {
@@ -664,7 +682,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} damage to player {player2} without any weapon! ({damageAmount}) 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 空手对玩家 {player2} 造成伤害！({damageAmount}) 的本地化字符串。
         /// </summary>
         internal static string msg_Shovel3 {
             get {
@@ -673,7 +691,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} using a shovel and cause abnormal damage to target {enemyName}! ({damageAmount}) 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 使用铲子对敌人 {enemyName} 造成异常伤害！({damageAmount}) 的本地化字符串。
         /// </summary>
         internal static string msg_Shovel4 {
             get {
@@ -682,7 +700,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} abnormal shovel range, and damage to target {enemyName}! ({damageAmount}) 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 铲子范围异常，对敌人 {enemyName} 造成伤害！({damageAmount}) 的本地化字符串。
         /// </summary>
         internal static string msg_Shovel5 {
             get {
@@ -691,7 +709,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detected player {player} damage to target {enemyName} without any weapon! ({damageAmount}) 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 空手对敌人 {enemyName} 造成伤害！({damageAmount}) 的本地化字符串。
         /// </summary>
         internal static string msg_Shovel6 {
             get {
@@ -700,7 +718,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 &lt;color=yellow&gt;[{player}] &lt;color=green&gt;New biological data are sent to the terminal! &lt;/color&gt;&lt;/color&gt; 的本地化字符串。
+        ///   查找类似 &lt;color=yellow&gt;[{player}] &lt;color=green&gt;新生物数据发送到终端！&lt;/color&gt;&lt;/color&gt; 的本地化字符串。
         /// </summary>
         internal static string msg_snc_player {
             get {
@@ -709,7 +727,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detect player {player} malicious attacking the turret! (distance: {Distance}) 的本地化字符串。
+        ///   查找类似 检测玩家 {player} 强制激怒机枪！(距离：{Distance}) 的本地化字符串。
         /// </summary>
         internal static string msg_Turret {
             get {
@@ -718,7 +736,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Detect player {player} malicious attacking the turret! (NO WEAPON)! 的本地化字符串。
+        ///   查找类似 检测玩家 {player} 强制激怒机枪(空手)！ 的本地化字符串。
         /// </summary>
         internal static string msg_Turret2 {
             get {
@@ -727,7 +745,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 You are the host, your vote can call the autopilot. 的本地化字符串。
+        ///   查找类似 你是房主，投票直接起飞！ 的本地化字符串。
         /// </summary>
         internal static string msg_vote {
             get {
@@ -736,7 +754,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 &lt;color=green&gt;&lt;color=yellow&gt;[{player}]&lt;/color&gt; joined the ship.&lt;/color&gt; 的本地化字符串。
+        ///   查找类似 &lt;color=green&gt;欢迎 &lt;color=yellow&gt;{player}&lt;/color&gt; 加入飞船&lt;/color&gt; 的本地化字符串。
         /// </summary>
         internal static string msg_wlc_player {
             get {
@@ -745,7 +763,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 [AntiCheat] 的本地化字符串。
+        ///   查找类似 [反作弊] 的本地化字符串。
         /// </summary>
         internal static string Prefix {
             get {
