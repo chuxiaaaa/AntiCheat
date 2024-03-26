@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="config_Boss" xml:space="preserve">
-    <value>Spamming bell ringing detection</value>
+    <value>Boss attack spoofing detection</value>
   </data>
   <data name="config_ChatReal" xml:space="preserve">
     <value>Fake chat message detection</value>
   </data>
   <data name="config_DespawnItem" xml:space="preserve">
-    <value>Abnormal destroy item detection</value>
+    <value>Abnormal item despawn detection</value>
   </data>
   <data name="config_Enemy" xml:space="preserve">
     <value>Abnormal monster behavior detection</value>
@@ -133,7 +133,7 @@
     <value>Free purchases detection</value>
   </data>
   <data name="config_Gift" xml:space="preserve">
-    <value>Abnormal gift box interact detection</value>
+    <value>Abnormal gift box interaction detection</value>
   </data>
   <data name="config_GrabObject" xml:space="preserve">
     <value>Item pickup distance detection</value>
@@ -145,19 +145,19 @@
     <value>Invisible player detection</value>
   </data>
   <data name="config_ItemCooldown" xml:space="preserve">
-    <value>Abnormal item interact cooldown detection</value>
+    <value>Abnormal item interaction cooldown detection</value>
   </data>
   <data name="config_Jetpack" xml:space="preserve">
-    <value>Jetpack explode detection</value>
+    <value>Abnormal jetpack explosion detection</value>
   </data>
   <data name="config_Kick" xml:space="preserve">
     <value>Kick player when this behavior is detected</value>
   </data>
   <data name="config_KillEnemy" xml:space="preserve">
-    <value>Instant kill enemy detection</value>
+    <value>Enemy kill detection</value>
   </data>
   <data name="config_Landmine" xml:space="preserve">
-    <value>Abnormal trigger landmine detection</value>
+    <value>Abnormal landmine triggering detection</value>
   </data>
   <data name="config_Log" xml:space="preserve">
     <value>Show log</value>
@@ -173,6 +173,9 @@
   </data>
   <data name="config_Prefix" xml:space="preserve">
     <value>Set the lobby name prefix, empty to disable</value>
+  </data>
+  <data name="config_RemoteTerminal" xml:space="preserve">
+    <value>Remote terminal detection</value>
   </data>
   <data name="config_ShipBuild" xml:space="preserve">
     <value>Abnormal furniture position detection</value>
@@ -208,10 +211,10 @@
     <value>Allow players to deal normal damage when empty-handed (network delays may cause players to be empty-handed)</value>
   </data>
   <data name="config_SpawnWebTrap" xml:space="preserve">
-    <value>Abnormal spawn spiderweb detection</value>
+    <value>Abnormal spiderweb spawning detection</value>
   </data>
   <data name="config_Turret" xml:space="preserve">
-    <value>Turret overkill detection</value>
+    <value>Abnormal turret berserk mode detection</value>
   </data>
   <data name="Item_Shotgun" xml:space="preserve">
     <value>shotgun</value>
@@ -232,10 +235,10 @@
     <value>&lt;color=yellow&gt;[{player}] &lt;color=red&gt;was left behind.&lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Boss" xml:space="preserve">
-    <value>Detected player {player} spamming bell ringing!</value>
+    <value>Detected player {player} attempting to call the boss attacking code functions!</value>
   </data>
   <data name="msg_ChatReal" xml:space="preserve">
-    <value>Detected player {player} try to fake as {player2} in chat!</value>
+    <value>Detected player {player} tried to spoof {player2}'s name!</value>
   </data>
   <data name="msg_DespawnItem" xml:space="preserve">
     <value>Detected player {player} destroying items!</value>
@@ -244,13 +247,16 @@
     <value>Detected player {player} attempting to change the monster behavior!</value>
   </data>
   <data name="msg_Enemy_SwitchToBehaviour" xml:space="preserve">
-    <value>Detected player {player} try to change monster behavior state!</value>
+    <value>Detected player {player} attempting to change the monster mechanism!</value>
   </data>
   <data name="msg_FreeBuy_Item" xml:space="preserve">
     <value>Detected player {player} purchasing item for free!</value>
   </data>
+  <data name="msg_FreeBuy_Level" xml:space="preserve">
+    <value>Detected player {player} routing to a priced moon for free!</value>
+  </data>
   <data name="msg_FreeBuy_SetMoney" xml:space="preserve">
-    <value>Detected player {player} are modify credits({Money})!</value>
+    <value>Detected player {player} modifying ship credits({Money})!</value>
   </data>
   <data name="msg_FreeBuy_unlockable" xml:space="preserve">
     <value>Detected player {player} purchasing unlockable for free!</value>
@@ -259,10 +265,10 @@
     <value>&lt;color=green&gt;Anti-Cheat (v{ver}) is enabled in this lobby&lt;/color&gt;</value>
   </data>
   <data name="msg_Gift" xml:space="preserve">
-    <value>Detected player {player} interact the gift box abnormally!</value>
+    <value>Detected player {player} anomaly interact the gift box!</value>
   </data>
   <data name="msg_GrabObject" xml:space="preserve">
-    <value>Detected player {player} taking objects from too far away! (Player coordinates: {player_position}|Item coordinates: {object_position})</value>
+    <value>Detected player {player} grabbing objects from too far away! (Player coordinates: {player_position}|Item coordinates: {object_position})</value>
   </data>
   <data name="msg_InfiniteAmmo" xml:space="preserve">
     <value>Detected player {player} using infinite ammo!</value>
@@ -274,13 +280,13 @@
     <value>Detected player {player} using {item} without respect the cooldown!</value>
   </data>
   <data name="msg_Jetpack" xml:space="preserve">
-    <value>Detected player {player} exploded the jetpack!</value>
+    <value>Detected player {player} anomaly exploded the jetpack!</value>
   </data>
   <data name="msg_Kick" xml:space="preserve">
     <value>{player} was kicked!</value>
   </data>
   <data name="msg_KillEnemy" xml:space="preserve">
-    <value>Detected player {player} killed an enemy instantly! ({enemyName}, monster HP before: {HP})</value>
+    <value>Detected player {player} instantly killed a monster! ({enemyName}, monster HP before: {HP})</value>
   </data>
   <data name="msg_Landmine" xml:space="preserve">
     <value>Detected player {player} anomaly triggered the landmine!</value>
@@ -289,58 +295,58 @@
     <value>Detected player {player} using Mini-Map mod!</value>
   </data>
   <data name="msg_Mask" xml:space="preserve">
-    <value>Detected player {player} abnormally spawning masked enemies!</value>
+    <value>Detected player {player} anomaly spawning masked enemies!</value>
   </data>
   <data name="msg_Nameless" xml:space="preserve">
-    <value>Detected player name anomalous!</value>
+    <value>Detected player to have an anomalous or invalid name!</value>
   </data>
   <data name="msg_RemoteTerminal" xml:space="preserve">
-    <value>Detected player {player} Remote Terminal!</value>
+    <value>Detected player {player} using Remote Terminal!</value>
   </data>
   <data name="msg_ShipBuild" xml:space="preserve">
-    <value>Detected player {player} placing furniture in abnormal position! ({position})</value>
+    <value>Detected player {player} placing furniture in an abnormal position! ({position})</value>
   </data>
   <data name="msg_ShipConfig2" xml:space="preserve">
-    <value>{player} Please wait until the number of people in the ship are reached {cfg} or more before pulling the lever, thx!</value>
+    <value>{player} Please wait until the number of people in the ship has reached {cfg} or more before pulling the lever, thanks!</value>
   </data>
   <data name="msg_ShipConfig4" xml:space="preserve">
-    <value>{player} Please wait until the number of people in the ship are reached {player_count}({cfg4}%) and the time are reached {cfg3} to depart. (current time: {game_time})</value>
+    <value>{player} Please wait until the number of people in the ship has reached {player_count}({cfg4}%) and the time has reached {cfg3} to depart. (current time: {game_time})</value>
   </data>
   <data name="msg_ShipConfig5" xml:space="preserve">
     <value>Detected player {player} malicious use the ship lever!</value>
   </data>
   <data name="msg_ShipLight" xml:space="preserve">
-    <value>Detected player {player} switching light too often!</value>
+    <value>Detected player {player} switching lights too fast!</value>
   </data>
   <data name="msg_ShipTerminal" xml:space="preserve">
-    <value>Detected player {player} making too many terminal noise!</value>
+    <value>Detected player {player} making too much terminal noise!</value>
   </data>
   <data name="msg_Shovel" xml:space="preserve">
-    <value>Detected player {player} deal abnormal damage to player {player2} by using shovel! ({damageAmount})</value>
+    <value>Detected player {player} deal abnormal damaged to player {player2} by using shovel! ({damageAmount})</value>
   </data>
   <data name="msg_Shovel2" xml:space="preserve">
-    <value>Detected player {player} abnormal shovel range, and damage to player {player2}! ({damageAmount})</value>
+    <value>Detected player {player} abnormal shovel range, and damaged to player {player2}! ({damageAmount})</value>
   </data>
   <data name="msg_Shovel3" xml:space="preserve">
-    <value>Detected player {player} damage to player {player2} without any weapon! ({damageAmount})</value>
+    <value>Detected player {player} damaged to player {player2} without any weapon! ({damageAmount})</value>
   </data>
   <data name="msg_Shovel4" xml:space="preserve">
-    <value>Detected player {player} deal abnormal damage to target {enemyName} by using shovel! ({damageAmount})</value>
+    <value>Detected player {player} deal abnormal damaged to {enemyName} by using shovel! ({damageAmount})</value>
   </data>
   <data name="msg_Shovel5" xml:space="preserve">
     <value>Detected player {player} abnormal shovel range, and damaged to target {enemyName}! ({damageAmount})</value>
   </data>
   <data name="msg_Shovel6" xml:space="preserve">
-    <value>Detected player {player} damage to target {enemyName} without any weapon! ({damageAmount})</value>
+    <value>Detected player {player} damaged to {enemyName} without any weapon! ({damageAmount})</value>
   </data>
   <data name="msg_snc_player" xml:space="preserve">
     <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;New creature data sent to terminal! &lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Turret" xml:space="preserve">
-    <value>Detected player {player} triggered turret overkill! (distance: {Distance})</value>
+    <value>Detected player {player} triggered turret berserk mode! (distance: {Distance})</value>
   </data>
   <data name="msg_Turret2" xml:space="preserve">
-    <value>Detected player {player} triggered turret overkill! (With No Weapon)</value>
+    <value>Detected player {player} triggered turret berserk mode! (With No Weapon)</value>
   </data>
   <data name="msg_vote" xml:space="preserve">
     <value>You are the host, your vote can call the autopilot.</value>
