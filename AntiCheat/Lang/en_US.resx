@@ -235,7 +235,7 @@
     <value>Detected player {player} attempting to call the boss attacking code functions!</value>
   </data>
   <data name="msg_ChatReal" xml:space="preserve">
-    <value>Detected player {player} tried to spoof {player2}'s name in chat!</value>
+    <value>Detected player {player} tried to spoof {player2}'s name!</value>
   </data>
   <data name="msg_DespawnItem" xml:space="preserve">
     <value>Detected player {player} destroying items!</value>
