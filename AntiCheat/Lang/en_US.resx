@@ -196,7 +196,7 @@
     <value>Allow your single vote to instantly force the autopilot as host.</value>
   </data>
   <data name="config_ShipLight" xml:space="preserve">
-    <value>Detects when a player spawns a light switch.</value>
+    <value>Detects when a player switches the lights too fast.</value>
   </data>
   <data name="config_ShipSetting" xml:space="preserve">
     <value>Only the host may land the ship.</value>
