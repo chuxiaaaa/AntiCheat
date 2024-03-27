@@ -199,7 +199,7 @@
     <value>Detects when a player spawns a light switch.</value>
   </data>
   <data name="config_ShipSetting" xml:space="preserve">
-    <value>Makes it so that only the host may land the ship.</value>
+    <value>Only the host may land the ship.</value>
   </data>
   <data name="config_ShipTerminal" xml:space="preserve">
     <value>Detects the spam of terminal noise.</value>
