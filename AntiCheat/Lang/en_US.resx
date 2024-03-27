@@ -208,13 +208,13 @@
     <value>Detects unusual shovel damage.</value>
   </data>
   <data name="config_Shovel2" xml:space="preserve">
-    <value>Allow players to deal normal damage when empty-handed. Note: Network delays may cause players to be empty-handed.</value>
+    <value>Allow players to deal normal damage no matter they have weapon or not, note that network de-sync can also cause active inventory slot de-sync.</value>
   </data>
   <data name="config_SpawnWebTrap" xml:space="preserve">
     <value>Detects when a player tries to spawn spiderwebs.</value>
   </data>
   <data name="config_Turret" xml:space="preserve">
-    <value>Detects when a player forces a turret to spin.</value>
+    <value>Detects when a player forces a turret to go berserk.</value>
   </data>
   <data name="Item_Shotgun" xml:space="preserve">
     <value>shotgun</value>
@@ -244,10 +244,10 @@
     <value>{player} was detected destroying items!</value>
   </data>
   <data name="msg_Enemy_ChangeOwnershipOfEnemy" xml:space="preserve">
-    <value>{player} was detected trying to control a monster!</value>
+    <value>{player} was detected trying to alter the monster behavior!</value>
   </data>
   <data name="msg_Enemy_SwitchToBehaviour" xml:space="preserve">
-    <value>{player} was detected trying to alter a monster's behavior!</value>
+    <value>{player} was detected trying to alter the monster mechanism!</value>
   </data>
   <data name="msg_FreeBuy_Item" xml:space="preserve">
     <value>{player} was detected buying an item for free!</value>
