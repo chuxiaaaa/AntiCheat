@@ -86,21 +86,14 @@ Example: [AC] The battle is thrilling!
 
   * Prevents instant-kills
 
+* Prevent the player join the lobby twice if they already in the lobby
+* (WIP) Speed detection
+* (WIP) Stamina detection
 
-### Patch
-
-* Prevent blackscreen when respawn
-
-  * This is because of the exp value calculation
+### Other
 
 * Lobby name prefix
 * Editable lobby welcome message
-
-### Configuration
-
-* Language
-
-  * Again the default language is Simplified Chinese, You can switch to English by changing the Language to "English" in the configuration file.
 
 ## Contributions
 
