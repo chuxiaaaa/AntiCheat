@@ -247,7 +247,7 @@
     <value>{player} was detected trying to alter a monster's behavior!</value>
   </data>
   <data name="msg_Enemy_SwitchToBehaviour" xml:space="preserve">
-    <value>{player} was detected trying to alter a monster's mechanics!</value>
+    <value>{player} was detected trying to alter a monster's state!</value>
   </data>
   <data name="msg_FreeBuy_Item" xml:space="preserve">
     <value>{player} was detected buying an item for free!</value>
