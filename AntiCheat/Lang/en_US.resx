@@ -223,7 +223,7 @@
     <value>shovel</value>
   </data>
   <data name="log_load" xml:space="preserve">
-    <value>AntiCheat mod are Loaded!</value>
+    <value>AntiCheat mod is loaded!</value>
   </data>
   <data name="log_refuse_connect" xml:space="preserve">
     <value>{steamId} attempted to connect to the game but was rejected! (Already kicked)</value>
