@@ -208,7 +208,7 @@
     <value>Detects unusual shovel damage.</value>
   </data>
   <data name="config_Shovel2" xml:space="preserve">
-    <value>Allow players to deal damage without a weapon. Note that network de-sync may result in a player's held item being desynchronized.</value>
+    <value>Allow players to deal damage without a weapon. Note that network de-sync may result in other players' active inventory slots being desynchronized.</value>
   </data>
   <data name="config_SpawnWebTrap" xml:space="preserve">
     <value>Detects when a player tries to spawn spiderwebs.</value>
