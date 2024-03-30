@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="config_Boss" xml:space="preserve">
-    <value>Boss attack spoofing detection</value>
+    <value>Detects when a player attempts to force the Company monster to attack.</value>
   </data>
   <data name="config_ChatReal" xml:space="preserve">
     <value>Detects when a player attempts to spoof their name as another player's.</value>
@@ -235,7 +235,7 @@
     <value>&lt;color=yellow&gt;[{player}] &lt;color=red&gt;was left behind.&lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Boss" xml:space="preserve">
-    <value>Detected player {player} attempting to call the boss attacking code functions!</value>
+    <value>{player} detected attempting to force the company monster to attack!</value>
   </data>
   <data name="msg_ChatReal" xml:space="preserve">
     <value>{player} tried to spoof {player2}'s name in chat!</value>
