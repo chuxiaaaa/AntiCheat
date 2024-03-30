@@ -340,7 +340,7 @@
     <value>{player} was detected damaging [enemyName} with no weapon! ({damageAmount})</value>
   </data>
   <data name="msg_snc_player" xml:space="preserve">
-    <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;sent new creature data sent to terminal! &lt;/color&gt;&lt;/color&gt;</value>
+    <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;sent new creature data to the terminal! &lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Turret" xml:space="preserve">
     <value>{player} was detected causing a turret to go berserk! (distance: {Distance})</value>
