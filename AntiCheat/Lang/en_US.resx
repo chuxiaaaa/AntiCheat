@@ -244,10 +244,10 @@
     <value>{player} was detected destroying items!</value>
   </data>
   <data name="msg_Enemy_ChangeOwnershipOfEnemy" xml:space="preserve">
-    <value>{player} was detected trying to alter the monster behavior!</value>
+    <value>{player} was detected trying to alter a monster's behavior!</value>
   </data>
   <data name="msg_Enemy_SwitchToBehaviour" xml:space="preserve">
-    <value>{player} was detected trying to alter the monster mechanism!</value>
+    <value>{player} was detected trying to alter a monster's mechanics!</value>
   </data>
   <data name="msg_FreeBuy_Item" xml:space="preserve">
     <value>{player} was detected buying an item for free!</value>
@@ -316,7 +316,7 @@
     <value>{player} was detected attempting to force the ship's lever!</value>
   </data>
   <data name="msg_ShipLight" xml:space="preserve">
-    <value>{player} was detected switching the lights too fast.</value>
+    <value>{player} was detected switching the lights too fast!</value>
   </data>
   <data name="msg_ShipTerminal" xml:space="preserve">
     <value>{player} was detected making too much terminal noise!</value>
