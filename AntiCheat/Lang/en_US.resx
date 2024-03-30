@@ -160,7 +160,7 @@
     <value>Detects when a player abnormally detonates a landmine.</value>
   </data>
   <data name="config_Log" xml:space="preserve">
-    <value>Show log</value>
+    <value>Show logs.</value>
   </data>
   <data name="config_Map" xml:space="preserve">
     <value>Detects the use of mini-map mods.</value>
@@ -352,7 +352,7 @@
     <value>You are the host, your vote can force the autopilot.</value>
   </data>
   <data name="msg_vote_player" xml:space="preserve">
-    <value>{player} Vote for the ship to leave early.({now}/{max})</value>
+    <value>{player} voted for the ship to leave early. ({now}/{max})</value>
   </data>
   <data name="msg_wlc_player" xml:space="preserve">
     <value>&lt;color=green&gt;&lt;color=yellow&gt;[{player}]&lt;/color&gt; joined the ship.&lt;/color&gt;</value>
