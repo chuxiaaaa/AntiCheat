@@ -216,6 +216,9 @@
   <data name="config_Turret" xml:space="preserve">
     <value>Detects when a player forces a turret to go berserk.</value>
   </data>
+  <data name="Item_Knife" xml:space="preserve">
+    <value>Kitchen knife</value>
+  </data>
   <data name="Item_Shotgun" xml:space="preserve">
     <value>shotgun</value>
   </data>
@@ -322,7 +325,7 @@
     <value>{player} was detected making too much terminal noise!</value>
   </data>
   <data name="msg_Shovel" xml:space="preserve">
-    <value>{player} was detected dealing abnormal damage to {player2} with a shovel! ({damageAmount})</value>
+    <value>{player} was detected dealing abnormal damage to {player2} with a {item}! ({damageAmount})</value>
   </data>
   <data name="msg_Shovel2" xml:space="preserve">
     <value>{player} was detected with abnormal shovel range, and damaged {player2}! ({damageAmount})</value>
@@ -331,7 +334,7 @@
     <value>{player} was detected damaging {player2} with no weapon! ({damageAmount})</value>
   </data>
   <data name="msg_Shovel4" xml:space="preserve">
-    <value>{player} was detected dealing abnormal damage to {enemyName} with a shovel! ({damageAmount})</value>
+    <value>{player} was detected dealing abnormal damage to {enemyName} with a {item}! ({damageAmount})</value>
   </data>
   <data name="msg_Shovel5" xml:space="preserve">
     <value>{player} was detected with abnormal shovel range, and damaged {enemyName}! ({damageAmount})</value>

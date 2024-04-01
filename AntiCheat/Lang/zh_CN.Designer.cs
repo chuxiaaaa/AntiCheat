@@ -358,6 +358,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 小刀 的本地化字符串。
+        /// </summary>
+        internal static string Item_Knife {
+            get {
+                return ResourceManager.GetString("Item_Knife", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 霰弹枪 的本地化字符串。
         /// </summary>
         internal static string Item_Shotgun {
@@ -673,7 +682,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 检测到玩家 {player} 使用铲子对玩家 {player2} 造成异常伤害！({damageAmount}) 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 使用{item}对玩家 {player2} 造成异常伤害！({damageAmount}) 的本地化字符串。
         /// </summary>
         internal static string msg_Shovel {
             get {
@@ -682,7 +691,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 检测到玩家 {player} 铲子范围异常，对玩家 {player2} 造成伤害！({distance},{damageAmount}) 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} {item}范围异常，对玩家 {player2} 造成伤害！({distance},{damageAmount}) 的本地化字符串。
         /// </summary>
         internal static string msg_Shovel2 {
             get {
@@ -700,7 +709,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 检测到玩家 {player} 使用铲子对敌人 {enemyName} 造成异常伤害！({damageAmount}) 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 使用{item}对敌人 {enemyName} 造成异常伤害！({damageAmount}) 的本地化字符串。
         /// </summary>
         internal static string msg_Shovel4 {
             get {
@@ -709,7 +718,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 检测到玩家 {player} 铲子范围异常，对敌人 {enemyName} 造成伤害！({damageAmount}) 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} {item}范围异常，对敌人 {enemyName} 造成伤害！({damageAmount}) 的本地化字符串。
         /// </summary>
         internal static string msg_Shovel5 {
             get {

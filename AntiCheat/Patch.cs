@@ -138,14 +138,15 @@ namespace AntiCheat
                     var distance = Vector3.Distance(p.transform.position, p2.transform.position);
                     var obj = p.ItemSlots[p.currentItemSlot];
                     string playerUsername = p.playerUsername;
-                    if (damageAmount != 10 && obj != null && isShovel(obj))
+                    if (damageAmount != 10 && obj != null && (isShovel(obj) || isKnife(obj)))
                     {
                         if (!jcs.Contains(p.playerSteamId))
                         {
                             ShowMessage(LocalizationManager.GetString("msg_Shovel", new Dictionary<string, string>() {
                                 { "{player}",p.playerUsername },
                                 { "{player2}",p2.playerUsername },
-                                { "{damageAmount}",damageAmount.ToString() }
+                                { "{damageAmount}",damageAmount.ToString() },
+                                { "{item}", isShovel(obj) ? LocalizationManager.GetString("Item_Shovel") : LocalizationManager.GetString("Item_Knife") }
                             }));
                             jcs.Add(p.playerSteamId);
                             if (AntiCheatPlugin.Shovel2.Value)
@@ -155,7 +156,7 @@ namespace AntiCheat
                         }
                         damageAmount = 0;
                     }
-                    else if (distance > 11 && obj != null && isShovel(obj))
+                    else if (distance > 11 && obj != null && (isShovel(obj) || isKnife(obj)))
                     {
                         if (p2.isPlayerDead)
                         {
@@ -167,7 +168,8 @@ namespace AntiCheat
                                 { "{player}",p.playerUsername },
                                 { "{player2}",p2.playerUsername },
                                 { "{distance}",distance.ToString() },
-                                { "{damageAmount}",damageAmount.ToString() }
+                                { "{damageAmount}",damageAmount.ToString() },
+                                { "{item}", isShovel(obj) ? LocalizationManager.GetString("Item_Shovel") : LocalizationManager.GetString("Item_Knife") }
                             }));
                             jcs.Add(p.playerSteamId);
                             if (AntiCheatPlugin.Shovel2.Value)
@@ -177,7 +179,7 @@ namespace AntiCheat
                         }
                         damageAmount = 0;
                     }
-                    else if (obj == null || (!isGun(obj) && !isShovel(obj)))
+                    else if (obj == null || (!isGun(obj) && !isShovel(obj) && !isKnife(obj)))
                     {
                         LogInfo($"currentItemSlot:{p.currentItemSlot}");
                         LogInfo($"currentlyHeldObjectServer:{p.currentlyHeldObjectServer}");
@@ -248,6 +250,11 @@ namespace AntiCheat
         public static bool isShovel(GrabbableObject item)
         {
             return item is Shovel;
+        }
+
+        public static bool isKnife(GrabbableObject item)
+        {
+            return item is KnifeItem;
         }
 
         public static bool isJetpack(GrabbableObject item)
@@ -765,6 +772,21 @@ namespace AntiCheat
             return KillPlayerServerRpc(target, reader, rpcParams);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="reader"></param>
+        /// <param name="rpcParams"></param>
+        /// <returns></returns>
+        [HarmonyPatch(typeof(RadMechAI), "__rpc_handler_2791977891")]
+        [HarmonyPrefix]
+        [HarmonyWrapSafe]
+        public static bool __rpc_handler_3707286996(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            return KillPlayerServerRpc(target, reader, rpcParams);
+        }
+
         private static bool KillPlayerServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -1068,7 +1090,7 @@ namespace AntiCheat
                 {
                     var obj = p.ItemSlots[p.currentItemSlot];
                     string playerUsername = p.playerUsername;
-                    if (force != 1 && obj != null && isShovel(obj))
+                    if (force != 1 && obj != null && (isShovel(obj) || isKnife(obj)))
                     {
                         if (!jcs.Contains(p.playerSteamId))
                         {
@@ -1076,7 +1098,8 @@ namespace AntiCheat
                             ShowMessage(LocalizationManager.GetString("msg_Shovel4", new Dictionary<string, string>() {
                                 { "{player}",p.playerUsername },
                                 { "{enemyName}",e.enemyType.enemyName },
-                                { "{damageAmount}",force.ToString() }
+                                { "{damageAmount}",force.ToString() },
+                                { "{item}", isShovel(obj) ? LocalizationManager.GetString("Item_Shovel") : LocalizationManager.GetString("Item_Knife") }
                             }));
                             jcs.Add(p.playerSteamId);
                             if (AntiCheatPlugin.Shovel2.Value)
@@ -1357,7 +1380,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_1554282707(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Check(rpcParams, out var p))
+            if (Check(rpcParams, out var p) || true)
             {
                 if (AntiCheatPlugin.GrabObject.Value)
                 {
@@ -1379,6 +1402,11 @@ namespace AntiCheat
                             }
                         }
                         var g = networkObject.GetComponentInChildren<GrabbableObject>();
+                        LogInfo(g.GetType().ToString());
+                        if (g is KnifeItem k)
+                        {
+                            LogInfo(k.knifeHitForce.ToString());
+                        }
                         if (g != null)
                         {
                             if (all)
@@ -2229,7 +2257,7 @@ namespace AntiCheat
                 if (AntiCheatPlugin.Turret.Value)
                 {
                     var obj = p.ItemSlots[p.currentItemSlot];
-                    if (obj != null && isShovel(obj))
+                    if (obj != null && (isShovel(obj) || isKnife(obj)))
                     {
                         var t = (Turret)target;
                         float v = Vector3.Distance(t.transform.position, p.transform.position);
