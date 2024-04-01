@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="config_Boss" xml:space="preserve">
-    <value>Boss attack spoofing detection</value>
+    <value>Detects when a player attempts to force the Company monster to attack.</value>
   </data>
   <data name="config_ChatReal" xml:space="preserve">
     <value>Detects when a player attempts to spoof their name as another player's.</value>
@@ -160,7 +160,7 @@
     <value>Detects when a player abnormally detonates a landmine.</value>
   </data>
   <data name="config_Log" xml:space="preserve">
-    <value>Show log</value>
+    <value>Show logs.</value>
   </data>
   <data name="config_Map" xml:space="preserve">
     <value>Detects the use of mini-map mods.</value>
@@ -208,7 +208,7 @@
     <value>Detects unusual shovel damage.</value>
   </data>
   <data name="config_Shovel2" xml:space="preserve">
-    <value>Allow players to deal normal damage no matter they have weapon or not, note that network de-sync can also cause active inventory slot de-sync.</value>
+    <value>Allow players to deal damage without a weapon. Note that network de-sync may result in other players' active inventory slots being desynchronized.</value>
   </data>
   <data name="config_SpawnWebTrap" xml:space="preserve">
     <value>Detects when a player tries to spawn spiderwebs.</value>
@@ -223,7 +223,7 @@
     <value>shovel</value>
   </data>
   <data name="log_load" xml:space="preserve">
-    <value>AntiCheat mod are Loaded!</value>
+    <value>AntiCheat mod is loaded!</value>
   </data>
   <data name="log_refuse_connect" xml:space="preserve">
     <value>{steamId} attempted to connect to the game but was rejected! (Already kicked)</value>
@@ -235,7 +235,7 @@
     <value>&lt;color=yellow&gt;[{player}] &lt;color=red&gt;was left behind.&lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Boss" xml:space="preserve">
-    <value>Detected player {player} attempting to call the boss attacking code functions!</value>
+    <value>{player} detected attempting to force the company monster to attack!</value>
   </data>
   <data name="msg_ChatReal" xml:space="preserve">
     <value>{player} tried to spoof {player2}'s name in chat!</value>
@@ -244,10 +244,10 @@
     <value>{player} was detected destroying items!</value>
   </data>
   <data name="msg_Enemy_ChangeOwnershipOfEnemy" xml:space="preserve">
-    <value>{player} was detected trying to alter the monster behavior!</value>
+    <value>{player} was detected trying to alter a monster's behavior!</value>
   </data>
   <data name="msg_Enemy_SwitchToBehaviour" xml:space="preserve">
-    <value>{player} was detected trying to alter the monster mechanism!</value>
+    <value>{player} was detected trying to alter a monster's state!</value>
   </data>
   <data name="msg_FreeBuy_Item" xml:space="preserve">
     <value>{player} was detected buying an item for free!</value>
@@ -316,7 +316,7 @@
     <value>{player} was detected attempting to force the ship's lever!</value>
   </data>
   <data name="msg_ShipLight" xml:space="preserve">
-    <value>{player} was detected switching the lights too fast.</value>
+    <value>{player} was detected switching the lights too fast!</value>
   </data>
   <data name="msg_ShipTerminal" xml:space="preserve">
     <value>{player} was detected making too much terminal noise!</value>
@@ -340,7 +340,7 @@
     <value>{player} was detected damaging [enemyName} with no weapon! ({damageAmount})</value>
   </data>
   <data name="msg_snc_player" xml:space="preserve">
-    <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;New creature data sent to terminal! &lt;/color&gt;&lt;/color&gt;</value>
+    <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;sent new creature data to the terminal! &lt;/color&gt;&lt;/color&gt;</value>
   </data>
   <data name="msg_Turret" xml:space="preserve">
     <value>{player} was detected causing a turret to go berserk! (distance: {Distance})</value>
@@ -352,7 +352,7 @@
     <value>You are the host, your vote can force the autopilot.</value>
   </data>
   <data name="msg_vote_player" xml:space="preserve">
-    <value>{player} Vote for the ship to leave early.({now}/{max})</value>
+    <value>{player} voted for the ship to leave early. ({now}/{max})</value>
   </data>
   <data name="msg_wlc_player" xml:space="preserve">
     <value>&lt;color=green&gt;&lt;color=yellow&gt;[{player}]&lt;/color&gt; joined the ship.&lt;/color&gt;</value>
