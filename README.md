@@ -1,5 +1,8 @@
 # AntiCheat
 
+[![Thunderstore Version](https://img.shields.io/thunderstore/v/chuxiaaaa/AntiCheat?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/Rune580/LethalCompany_InputUtils/)
+[![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/chuxiaaaa/AntiCheat?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/Rune580/LethalCompany_InputUtils/)
+
 [**English(Support)**](./docs/README-en.md) | [**Русский**](./docs/README-ru.md)
 
 一个致命公司反作弊模组（仅限主机使用）
