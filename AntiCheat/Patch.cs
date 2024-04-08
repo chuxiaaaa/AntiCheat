@@ -47,6 +47,7 @@ namespace AntiCheat
         public static List<long> dgcd = new List<long>();
         public static Dictionary<ulong, List<string>> czcd = new Dictionary<ulong, List<string>>();
         public static Dictionary<ulong, List<string>> sdqcd = new Dictionary<ulong, List<string>>();
+    
         public static Dictionary<uint, ulong> ConnectionIdtoSteamIdMap { get; set; } = new Dictionary<uint, ulong>();
 
 
@@ -105,7 +106,6 @@ namespace AntiCheat
             {
                 try
                 {
-                    LogInfo("__rpc_handler_638895557");
                     int damageAmount;
                     ByteUnpacker.ReadValueBitPacked(reader, out damageAmount);
                     reader.Seek(0);
@@ -130,7 +130,7 @@ namespace AntiCheat
             {
                 return true;
             }
-            LogInfo("damageAmount:" + damageAmount);
+            LogInfo($"{p.playerUsername} hit {p2.playerUsername} damageAmount:{damageAmount}");
             try
             {
                 if (AntiCheatPlugin.Shovel.Value)
@@ -216,7 +216,6 @@ namespace AntiCheat
                     }
                     if (damageAmount == 0)
                     {
-                        LogInfo("115");
                         return false;
                     }
                     else
@@ -404,6 +403,13 @@ namespace AntiCheat
                     var terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
                     var Route = terminal.terminalNodes.allKeywords[26];//Route
                     int itemCost = Route.compatibleNouns[levelID].result.itemCost;
+                    if(itemCost == 0 && Route.compatibleNouns[StartOfRound.Instance.currentLevelID].result.itemCost != 0)
+                    {
+                        ShowMessage(LocalizationManager.GetString("msg_FreeBuy_Level", new Dictionary<string, string>() {
+                            { "{player}",p.playerUsername }
+                        }));
+                        return false;
+                    }
                     LogInfo($"{p.playerUsername}|ChangeLevelServerRpc|levelID:{levelID}|{itemCost}");
                     if (itemCost == 0)
                     {
@@ -558,6 +564,20 @@ namespace AntiCheat
             {
                 return false;
             }
+            return true;
+        }
+
+        [HarmonyPatch(typeof(TimeOfDay), "SyncNewProfitQuotaClientRpc")]
+        [HarmonyPrefix]
+        [HarmonyWrapSafe]
+        public static bool SyncNewProfitQuotaClientRpc(int newProfitQuota, int overtimeBonus, int fulfilledQuota)
+        {
+            if (!StartOfRound.Instance.localPlayerController.IsHost)
+            {
+                return true;
+            }
+            Terminal terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
+            Money = Mathf.Clamp(terminal.groupCredits + overtimeBonus, terminal.groupCredits, 100000000);
             return true;
         }
 
@@ -779,7 +799,7 @@ namespace AntiCheat
         /// <param name="reader"></param>
         /// <param name="rpcParams"></param>
         /// <returns></returns>
-        [HarmonyPatch(typeof(RadMechAI), "__rpc_handler_2791977891")]
+        [HarmonyPatch(typeof(RadMechAI), "__rpc_handler_3707286996")]
         [HarmonyPrefix]
         [HarmonyWrapSafe]
         public static bool __rpc_handler_3707286996(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -1380,7 +1400,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_1554282707(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Check(rpcParams, out var p) || true)
+            if (Check(rpcParams, out var p))
             {
                 if (AntiCheatPlugin.GrabObject.Value)
                 {
@@ -1402,11 +1422,6 @@ namespace AntiCheat
                             }
                         }
                         var g = networkObject.GetComponentInChildren<GrabbableObject>();
-                        LogInfo(g.GetType().ToString());
-                        if (g is KnifeItem k)
-                        {
-                            LogInfo(k.knifeHitForce.ToString());
-                        }
                         if (g != null)
                         {
                             if (all)
@@ -2015,6 +2030,18 @@ namespace AntiCheat
         }
 
         /// <summary>
+        /// 挥刀事件
+        /// Prefix KnifeItem.HitShovelServerRpc
+        /// </summary>
+        [HarmonyPatch(typeof(KnifeItem), "__rpc_handler_2696735117")]
+        [HarmonyPrefix]
+        [HarmonyWrapSafe]
+        public static bool __rpc_handler_2696735117(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            return CheckCoolDownMethod(rpcParams, 10);
+        }
+
+        /// <summary>
         /// 挥铲事件
         /// Prefix Shovel.HitShovelServerRpc
         /// </summary>
@@ -2023,7 +2050,12 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_2096026133(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Check(rpcParams, out var p) || StartOfRound.Instance.localPlayerController.IsHost)
+            return CheckCoolDownMethod(rpcParams, 3);
+        }
+
+        private static bool CheckCoolDownMethod(__RpcParams rpcParams,int cd)
+        {
+            if (Check(rpcParams, out var p))
             {
                 if (AntiCheatPlugin.ItemCooldown.Value)
                 {
@@ -2037,7 +2069,7 @@ namespace AntiCheat
                     {
                         czcd[id].RemoveRange(0, czcd[id].Count - 1);
                     }
-                    if (czcd[id].Count(x => x == m) >= 3)
+                    if (czcd[id].Count(x => x == m) >= cd)
                     {
                         ShowMessage(LocalizationManager.GetString("msg_ItemCooldown", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername },
@@ -2398,7 +2430,7 @@ namespace AntiCheat
                     { "{now}",(TimeOfDay.Instance.votesForShipToLeaveEarly + 1).ToString() },
                     { "{max}",num.ToString() }
                 });
-                typeof(HUDManager).GetMethod("AddChatMessage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(HUDManager.Instance, new object[] { msg , "" });
+                typeof(HUDManager).GetMethod("AddChatMessage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(HUDManager.Instance, new object[] { msg, "" });
                 if (TimeOfDay.Instance.votesForShipToLeaveEarly + 1 >= num)
                 {
                     LogInfo("Vote EndGame");
@@ -2529,6 +2561,7 @@ namespace AntiCheat
             }
             return true;
         }
+
 
         /// <summary>
         /// 离开地雷事件(记录是否触发过)

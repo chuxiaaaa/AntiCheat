@@ -430,6 +430,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 检测 {player} 将付费星球改为免费星球！(这个行为只有房主才被允许！) 的本地化字符串。
+        /// </summary>
+        internal static string msg_ChangeLevel {
+            get {
+                return ResourceManager.GetString("msg_ChangeLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 检测到玩家 {player} 尝试伪装成 {player2} 发言！ 的本地化字符串。
         /// </summary>
         internal static string msg_ChatReal {

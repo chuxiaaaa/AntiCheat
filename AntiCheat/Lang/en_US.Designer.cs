@@ -430,6 +430,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 {player} was detected Changes paid moon to free moon! (This behavior is only allowed for homeowners!) 的本地化字符串。
+        /// </summary>
+        internal static string msg_ChangeLevel {
+            get {
+                return ResourceManager.GetString("msg_ChangeLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 {player} tried to spoof {player2}&apos;s name in chat! 的本地化字符串。
         /// </summary>
         internal static string msg_ChatReal {

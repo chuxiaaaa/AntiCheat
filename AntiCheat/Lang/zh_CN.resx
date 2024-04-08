@@ -240,6 +240,9 @@
   <data name="msg_Boss" xml:space="preserve">
     <value>检测到玩家 {player} 召唤老板！</value>
   </data>
+  <data name="msg_ChangeLevel" xml:space="preserve">
+    <value>检测 {player} 将付费星球改为免费星球！(这个行为只有房主才被允许！)</value>
+  </data>
   <data name="msg_ChatReal" xml:space="preserve">
     <value>检测到玩家 {player} 尝试伪装成 {player2} 发言！</value>
   </data>
