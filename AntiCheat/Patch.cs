@@ -1076,7 +1076,7 @@ namespace AntiCheat
         }
 
 
-        [HarmonyPatch(typeof(EnemyAI), "__rpc_handler_2814283679")]
+        [HarmonyPatch(typeof(EnemyAI), "__rpc_handler_3538577804")]
         [HarmonyPrefix]
         [HarmonyWrapSafe]
         public static bool HitEnemyServerRpcPatch(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -1087,23 +1087,19 @@ namespace AntiCheat
                 {
                     return false;
                 }
-                LogInfo("__rpc_handler_2814283679");
                 int force;
                 ByteUnpacker.ReadValueBitPacked(reader, out force);
                 ByteUnpacker.ReadValueBitPacked(reader, out int playerWhoHit);
                 reader.ReadValueSafe(out bool playHitSFX, default);
                 reader.Seek(0);
-                AntiCheatPlugin.ManualLog.LogDebug("force:" + force);
-                AntiCheatPlugin.ManualLog.LogDebug("playerWhoHit:" + playerWhoHit);
+                LogInfo($"{p.playerUsername} call EnemyAI.HitEnemyServerRpc|force:{force}|playerWhoHit:{playerWhoHit}");
                 if (p.isHostPlayerObject)
                 {
                     return true;
                 }
-                AntiCheatPlugin.ManualLog.LogDebug("playerWhoHit != -1 " + (playerWhoHit != -1));
-                AntiCheatPlugin.ManualLog.LogDebug("StartOfRound.Instance.allPlayerScripts[playerWhoHit] != p " + (StartOfRound.Instance.allPlayerScripts[playerWhoHit] != p));
                 if (playerWhoHit != -1 && StartOfRound.Instance.allPlayerScripts[playerWhoHit] != p)
                 {
-                    AntiCheatPlugin.ManualLog.LogDebug("return false;");
+                    LogInfo("return false;");
                     return false;
                 }
                 if (AntiCheatPlugin.Shovel.Value)
