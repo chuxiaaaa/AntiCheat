@@ -3,7 +3,7 @@
 [![Thunderstore Version](https://img.shields.io/thunderstore/v/chuxiaaaa/AntiCheat?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/chuxiaaaa/AntiCheat/versions/)
 [![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/chuxiaaaa/AntiCheat?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/chuxiaaaa/AntiCheat/)
 
-[**English(Support)**](./docs/README-en.md) | [**Русский**](./docs/README-ru.md)
+[**English(Support)**](https://github.com/chuxiaaaa/AntiCheat/blob/main/docs/README-en.md) | [**Русский**](https://github.com/chuxiaaaa/AntiCheat/blob/main/docs/README-ru.md)
 
 一个致命公司反作弊模组（仅限主机使用）
 

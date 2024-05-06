@@ -138,7 +138,11 @@ namespace AntiCheat
                     var distance = Vector3.Distance(p.transform.position, p2.transform.position);
                     var obj = p.ItemSlots[p.currentItemSlot];
                     string playerUsername = p.playerUsername;
-                    if (damageAmount != 10 && obj != null && (isShovel(obj) || isKnife(obj)))
+                    if (jcs.Contains(p.playerSteamId))
+                    {
+                        damageAmount = 0;
+                    }
+                    else if (damageAmount != 10 && obj != null && (isShovel(obj) || isKnife(obj)))
                     {
                         if (!jcs.Contains(p.playerSteamId))
                         {
@@ -186,7 +190,16 @@ namespace AntiCheat
                         LogInfo($"obj:{obj}");
                         if (!jcs.Contains(p.playerSteamId))
                         {
-                            if (!AntiCheatPlugin.Shovel3.Value && (damageAmount == 10 || damageAmount == 20 || damageAmount == 40 || damageAmount == 100))
+                            if(AntiCheatPlugin.Shovel3.Value && (damageAmount == 10 || damageAmount == 20 || damageAmount == 40 || damageAmount == 100))
+                            {
+                                LogInfo(LocalizationManager.GetString("msg_Shovel3", new Dictionary<string, string>() {
+                                    { "{player}",p.playerUsername },
+                                    { "{player2}",p2.playerUsername },
+                                    { "{damageAmount}",damageAmount.ToString() }
+                                }));
+                                return true;
+                            }
+                            else
                             {
                                 ShowMessage(LocalizationManager.GetString("msg_Shovel3", new Dictionary<string, string>() {
                                     { "{player}",p.playerUsername },
@@ -200,20 +213,9 @@ namespace AntiCheat
                                 }
                                 damageAmount = 0;
                             }
-                            else
-                            {
-                                LogInfo(LocalizationManager.GetString("msg_Shovel3", new Dictionary<string, string>() {
-                                    { "{player}",p.playerUsername },
-                                    { "{player2}",p2.playerUsername },
-                                    { "{damageAmount}",damageAmount.ToString() }
-                                }));
-                            }
                         }
                     }
-                    else if (jcs.Contains(p.playerSteamId))
-                    {
-                        damageAmount = 0;
-                    }
+                    
                     if (damageAmount == 0)
                     {
                         return false;
@@ -620,10 +622,17 @@ namespace AntiCheat
             //    for (int i = 0; i < __instance.terminalNodes.allKeywords.Length; i++)
             //    {
             //        var item = __instance.terminalNodes.allKeywords[i];
-            //        LogInfo($"allKeywords:{i}|name:{item.name}|specialKeywordResult?:{item.specialKeywordResult?.name}");
+            //        //LogInfo($"allKeywords:{i}|name:{item.name}|specialKeywordResult?:{item.specialKeywordResult?.name}");
             //        foreach (var item2 in item.compatibleNouns)
             //        {
-            //            LogInfo($"compatibleNouns|noun:{item2.noun.ToString()}|name:{item2.result.name}|buyItemIndex:{item2.result.buyItemIndex}|buyRerouteToMoon:{item2.result.buyRerouteToMoon}|itemCost:{item2.result.itemCost}");
+            //            LogInfo("item2.result.name:"+ item2.result.name);
+            //            if (item2.result.name.Trim() == "RadMechFile" || item2.result.name.Trim() == "TulipSnakeFile" || item2.result.name.Trim() == "ButlerFile" || item2.result.name.Trim() == "ArtificeInfo")
+            //            {
+            //                LogInfo($"displayText:{item2.result.displayText}");
+            //            }
+
+            //            //    LogInfo($"{item2.noun.}");
+            //            //LogInfo($"compatibleNouns|noun:{item2.noun.ToString()}|name:{item2.result.name}|buyItemIndex:{item2.result.buyItemIndex}|buyRerouteToMoon:{item2.result.buyRerouteToMoon}|itemCost:{item2.result.itemCost}");
             //        }
             //    }
             //}
@@ -869,7 +878,7 @@ namespace AntiCheat
                     }
                     if (Vector3.Distance(p.transform.position, e.transform.position) > 50f)
                     {
-                        ShowMessage(LocalizationManager.GetString("msg_Enemy_ChangeOwnershipOfEnemy", new Dictionary<string, string>() {
+                        ShowMessage(LocalizationManager.GetString("msg_KillEnemy", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername },
                             { "{enemyName}",e.enemyType.enemyName },
                             { "{HP}",e.enemyHP.ToString() }
@@ -1075,6 +1084,36 @@ namespace AntiCheat
             return true;
         }
 
+        public static List<HitData> bypassHit = new List<HitData>();
+
+        [HarmonyPatch(typeof(EnemyAI), "HitEnemyOnLocalClient")]
+        [HarmonyPrefix]
+        [HarmonyWrapSafe]
+        public static void HitEnemyOnLocalClient(EnemyAI __instance,int force, Vector3 hitDirection, PlayerControllerB playerWhoHit, bool playHitSFX, int hitID)
+        {
+            if (StartOfRound.Instance.localPlayerController.IsHost)
+            {
+                if (playerWhoHit == null)
+                {
+                    bypassHit.Add(new HitData()
+                    {
+                        EnemyInstanceId = __instance.GetInstanceID(),
+                        force = force,
+                        CalledClient = new List<ulong>()
+                    });
+                }
+            }
+        }
+
+        public class HitData
+        {
+            public int EnemyInstanceId { get; set; }
+
+            public int force { get; set; }
+
+            public List<ulong> CalledClient { get; set; }
+        }
+
 
         [HarmonyPatch(typeof(EnemyAI), "__rpc_handler_3538577804")]
         [HarmonyPrefix]
@@ -1102,15 +1141,31 @@ namespace AntiCheat
                     LogInfo("return false;");
                     return false;
                 }
+                var e = (EnemyAI)target;
+                if (playerWhoHit == -1)
+                {
+                    foreach (var item in bypassHit)
+                    {
+                        if(item.EnemyInstanceId == e.GetInstanceID() && item.force == force && !item.CalledClient.Contains(p.actualClientId))
+                        {
+                            LogInfo($"{e.GetInstanceID()} bypass|actualClientId:{p.actualClientId}");
+                            item.CalledClient.Add(p.actualClientId);
+                            return true;
+                        }
+                    }
+                }
                 if (AntiCheatPlugin.Shovel.Value)
                 {
+                    if (playerWhoHit == -1 && Vector3.Distance(p.transform.position,e.transform.position) < 30)
+                    {
+                        return true;
+                    }
                     var obj = p.ItemSlots[p.currentItemSlot];
                     string playerUsername = p.playerUsername;
                     if (force != 1 && obj != null && (isShovel(obj) || isKnife(obj)))
                     {
                         if (!jcs.Contains(p.playerSteamId))
                         {
-                            var e = (EnemyAI)target;
                             ShowMessage(LocalizationManager.GetString("msg_Shovel4", new Dictionary<string, string>() {
                                 { "{player}",p.playerUsername },
                                 { "{enemyName}",e.enemyType.enemyName },
@@ -1132,7 +1187,6 @@ namespace AntiCheat
                             LogInfo($"currentItemSlot:{p.currentItemSlot}");
                             LogInfo($"currentlyHeldObjectServer:{p.currentlyHeldObjectServer}");
                             LogInfo($"obj:{obj}");
-                            var e = (EnemyAI)target;
                             if (!AntiCheatPlugin.Shovel3.Value && (force == 1 || force == 2 || force == 3 || force == 5))
                             {
                                 ShowMessage(LocalizationManager.GetString("msg_Shovel6", new Dictionary<string, string>() {
@@ -1355,6 +1409,7 @@ namespace AntiCheat
                 return true;
             }
             landMines = new List<int>();
+            bypassHit = new List<HitData>();
             HUDManager.Instance.AddTextToChatOnServer(LocalizationManager.GetString("msg_game_start", new Dictionary<string, string>() {
                 { "{ver}",AntiCheatPlugin.Version }
             }), -1);
@@ -1644,6 +1699,10 @@ namespace AntiCheat
                         return true;
                     }
                     return false;
+                }
+                else if (chatMessage.StartsWith("[morecompanycosmetics]"))//bypass MoreCompany
+                {
+                    return true;
                 }
                 else
                 {
