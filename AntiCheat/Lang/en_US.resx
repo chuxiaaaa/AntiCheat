@@ -171,6 +171,12 @@
   <data name="config_Nameless" xml:space="preserve">
     <value>Detects invalid or anomalous player names such as Nameless or Unknown.</value>
   </data>
+  <data name="config_PlayerCarryWeight" xml:space="preserve">
+    <value>Detecting abnormal player carry weight</value>
+  </data>
+  <data name="config_PlayerCarryWeight2" xml:space="preserve">
+    <value>Restore Player Carry Weight</value>
+  </data>
   <data name="config_Prefix" xml:space="preserve">
     <value>Puts text in square brackets before the lobby name, leave empty to disable.</value>
   </data>
@@ -305,6 +311,12 @@
   </data>
   <data name="msg_Nameless" xml:space="preserve">
     <value>{player} was detected to have an anomalous or invalid name!</value>
+  </data>
+  <data name="msg_PlayerCarryWeight" xml:space="preserve">
+    <value>{player} was detected abnormal carry weight!</value>
+  </data>
+  <data name="msg_PlayerCarryWeight_Recovery" xml:space="preserve">
+    <value>Carry Weights have been forcibly restored!</value>
   </data>
   <data name="msg_RemoteTerminal" xml:space="preserve">
     <value>{player} was detected using the terminal remotely!</value>

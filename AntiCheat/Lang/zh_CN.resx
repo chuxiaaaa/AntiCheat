@@ -171,6 +171,12 @@
   <data name="config_Nameless" xml:space="preserve">
     <value>玩家名字检测(Nameless或Unknown)</value>
   </data>
+  <data name="config_PlayerCarryWeight" xml:space="preserve">
+    <value>玩家异常负重检测</value>
+  </data>
+  <data name="config_PlayerCarryWeight2" xml:space="preserve">
+    <value>强制恢复玩家负重</value>
+  </data>
   <data name="config_Prefix" xml:space="preserve">
     <value>设置房间名前缀，使用空值代表不启用前缀</value>
   </data>
@@ -305,6 +311,12 @@
   </data>
   <data name="msg_Nameless" xml:space="preserve">
     <value>检测到玩家名称异常！</value>
+  </data>
+  <data name="msg_PlayerCarryWeight" xml:space="preserve">
+    <value>检测到玩家 {player} 负重异常！</value>
+  </data>
+  <data name="msg_PlayerCarryWeight_Recovery" xml:space="preserve">
+    <value>Carry Weights have been forcibly restored!</value>
   </data>
   <data name="msg_RemoteTerminal" xml:space="preserve">
     <value>检测到玩家 {player} 使用远程终端！</value>

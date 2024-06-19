@@ -223,6 +223,24 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 玩家异常负重检测 的本地化字符串。
+        /// </summary>
+        internal static string config_PlayerCarryWeight {
+            get {
+                return ResourceManager.GetString("config_PlayerCarryWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 强制恢复玩家负重 的本地化字符串。
+        /// </summary>
+        internal static string config_PlayerCarryWeight2 {
+            get {
+                return ResourceManager.GetString("config_PlayerCarryWeight2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 设置房间名前缀，使用空值代表不启用前缀 的本地化字符串。
         /// </summary>
         internal static string config_Prefix {
@@ -624,6 +642,24 @@ namespace AntiCheat.Lang {
         internal static string msg_Nameless {
             get {
                 return ResourceManager.GetString("msg_Nameless", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 负重异常！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_PlayerCarryWeight {
+            get {
+                return ResourceManager.GetString("msg_PlayerCarryWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Carry Weights have been forcibly restored! 的本地化字符串。
+        /// </summary>
+        internal static string msg_PlayerCarryWeight_Recovery {
+            get {
+                return ResourceManager.GetString("msg_PlayerCarryWeight_Recovery", resourceCulture);
             }
         }
         

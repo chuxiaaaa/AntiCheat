@@ -1,7 +1,9 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
+
 using HarmonyLib;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,14 +11,17 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+
 using UnityEngine;
+using UnityEngine.Diagnostics;
+using UnityEngine.SceneManagement;
 
 namespace AntiCheat
 {
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheatPlugin : BaseUnityPlugin
     {
-        public const string Version = "0.6.4";
+        public const string Version = "0.6.5";
         public static ManualLogSource ManualLog = null;
         public enum Language
         {
@@ -26,6 +31,8 @@ namespace AntiCheat
         public static ConfigEntry<Language> LanguageConfig;
 
         public static ConfigEntry<bool> Log;
+
+        public static GameObject ui;
 
         public static ConfigEntry<bool> Shovel;
         public static ConfigEntry<bool> Shovel2;
@@ -72,6 +79,11 @@ namespace AntiCheat
         public static ConfigEntry<bool> Landmine;
         public static ConfigEntry<bool> Landmine2;
 
+        public static ConfigEntry<bool> PlayerCarryWeight;
+        public static ConfigEntry<bool> PlayerCarryWeight2;
+        public static ConfigEntry<bool> PlayerCarryWeight3;
+
+
         public static ConfigEntry<bool> Turret;
         public static ConfigEntry<bool> Turret2;
 
@@ -104,7 +116,97 @@ namespace AntiCheat
         public static ConfigEntry<bool> Nameless;
         public static ConfigEntry<bool> Nameless2;
 
-    
+        public static bool Gui;
+
+
+        public static void String(string text, GUIStyle style, float yPos)
+        {
+            float screenWidth = Screen.width;
+            Vector2 textSize = style.CalcSize(new GUIContent(text));
+            float xPos = (screenWidth - textSize.x) / 2;
+            GUI.Label(new Rect(xPos, yPos, textSize.x, textSize.y), text, style);
+        }
+
+        [DllImport("User32.dll")]
+        public static extern short GetAsyncKeyState(int key);
+
+        public void Update()
+        {
+            if (StartOfRound.Instance != null && !StartOfRound.Instance.IsHost)
+            {
+                return;
+            }
+            if (UnityInput.Current.GetKeyDown(KeyCode.F10))
+            {
+                Gui = !Gui;
+            }
+        }
+
+        public void OnGUI()
+        {
+            if (StartOfRound.Instance != null && !StartOfRound.Instance.IsHost)
+            {
+                return;
+            }
+            Scene activeScene = SceneManager.GetActiveScene();
+            Color darkBackground = new Color(23f / 255f, 23f / 255f, 23f / 255f, 1f);
+
+            GUI.backgroundColor = darkBackground;
+            GUI.contentColor = Color.white;
+
+            var Style = new GUIStyle(GUI.skin.label);
+            Style.normal.textColor = Color.white;
+            Style.fontStyle = FontStyle.Bold;
+            if (activeScene.name == "SampleSceneRelay")
+            {
+                if (!Gui)
+                {
+                    String($"AntiCheat(Beta{AntiCheatPlugin.Version}) Press F10", Style, 10);
+                }
+                else
+                {
+                    ShowMenu();
+                }
+            }
+        }
+
+        public void ShowMenu()
+        {
+            var e = Event.current.type;
+            if (e == EventType.Layout || e == EventType.Repaint)
+            {
+                float screenWidth = (Screen.width - 400) / 2;
+                GUILayout.Window(0, new Rect(screenWidth, 10, 400, 300), (x) =>
+                {
+                    //GUILayout.BeginHorizontal();
+                    //foreach (var item in StartOfRound.Instance.allPlayerScripts)
+                    //{
+                    //    //if (item.isPlayerControlled)
+                    //    //{
+                    //    //    GUILayout.Label($"{item.playerUsername}:{item.gameObject.}");
+                    //    //}
+                    //}
+                    //if (GUILayout.Button("检测管理"))
+                    //{
+
+                    //}
+                    //else if (GUILayout.Button("玩家管理"))
+                    //{
+
+                    //}
+                    //else if (GUILayout.Button("黑名单管理"))
+                    //{
+
+                    //}
+                    //else if (GUILayout.Button("语言设置"))
+                    //{
+
+                    //}
+                    //GUILayout.EndHorizontal();
+                }, $"AntiCheat(Beta{AntiCheatPlugin.Version})");
+            }
+        }
+
         void Awake()
         {
             ManualLog = Logger;
@@ -160,6 +262,9 @@ namespace AntiCheat
             Jetpack = Config.Bind("JetpackSetting", "Enable", true, LocalizationManager.GetString("config_Jetpack"));
             Jetpack2 = Config.Bind("JetpackSetting", "Kick", false, LocalizationManager.GetString("config_Kick"));
 
+            PlayerCarryWeight = Config.Bind("PlayerCarryWeightSetting", "Enable", true, LocalizationManager.GetString("config_PlayerCarryWeight"));
+            PlayerCarryWeight2 = Config.Bind("PlayerCarryWeightSetting", "Recovery", false, LocalizationManager.GetString("config_PlayerCarryWeight2"));
+            PlayerCarryWeight3 = Config.Bind("PlayerCarryWeightSetting", "Kick", false, LocalizationManager.GetString("config_Kick"));
 
             Landmine = Config.Bind("LandmineSetting", "Enable", true, LocalizationManager.GetString("config_Landmine"));
             Landmine2 = Config.Bind("LandmineSetting", "Kick", false, LocalizationManager.GetString("config_Kick"));

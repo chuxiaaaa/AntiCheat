@@ -223,6 +223,24 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 Detecting abnormal player carry weight 的本地化字符串。
+        /// </summary>
+        internal static string config_PlayerCarryWeight {
+            get {
+                return ResourceManager.GetString("config_PlayerCarryWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Restore Player Carry Weight 的本地化字符串。
+        /// </summary>
+        internal static string config_PlayerCarryWeight2 {
+            get {
+                return ResourceManager.GetString("config_PlayerCarryWeight2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Puts text in square brackets before the lobby name, leave empty to disable. 的本地化字符串。
         /// </summary>
         internal static string config_Prefix {
@@ -624,6 +642,24 @@ namespace AntiCheat.Lang {
         internal static string msg_Nameless {
             get {
                 return ResourceManager.GetString("msg_Nameless", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {player} was detected abnormal carry weight! 的本地化字符串。
+        /// </summary>
+        internal static string msg_PlayerCarryWeight {
+            get {
+                return ResourceManager.GetString("msg_PlayerCarryWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Carry Weights have been forcibly restored! 的本地化字符串。
+        /// </summary>
+        internal static string msg_PlayerCarryWeight_Recovery {
+            get {
+                return ResourceManager.GetString("msg_PlayerCarryWeight_Recovery", resourceCulture);
             }
         }
         

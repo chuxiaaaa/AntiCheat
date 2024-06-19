@@ -12,6 +12,7 @@ using Steamworks.Data;
 
 using System;
 using System.CodeDom;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -47,7 +48,7 @@ namespace AntiCheat
         public static List<long> dgcd = new List<long>();
         public static Dictionary<ulong, List<string>> czcd = new Dictionary<ulong, List<string>>();
         public static Dictionary<ulong, List<string>> sdqcd = new Dictionary<ulong, List<string>>();
-    
+
         public static Dictionary<uint, ulong> ConnectionIdtoSteamIdMap { get; set; } = new Dictionary<uint, ulong>();
 
 
@@ -63,7 +64,7 @@ namespace AntiCheat
         {
             if (AntiCheatPlugin.Log.Value)
             {
-                AntiCheatPlugin.ManualLog.LogInfo(info);
+                AntiCheatPlugin.ManualLog.LogInfo($"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ffff")}] {info}");
             }
         }
 
@@ -89,6 +90,99 @@ namespace AntiCheat
                     HUDManager.Instance.AddTextToChatOnServer(msg, -1);
                     bypass = false;
                 }
+            }
+            else if (p == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        [HarmonyPatch(typeof(PlayerControllerB), "TeleportPlayer")]
+        [HarmonyPostfix]
+        [HarmonyWrapSafe]
+        public static void TeleportPlayer(PlayerControllerB __instance)
+        {
+            if (!StartOfRound.Instance.IsHost)
+            {
+                return;
+            }
+            if (__instance.shipTeleporterId > 0)
+            {
+                LogInfo($"{__instance.playerUsername} call PlayerControllerB.TeleportPlayer|shipTeleporterId:{__instance.shipTeleporterId}|carryWeight:{__instance.carryWeight}");
+                __instance.StartCoroutine(SetCarryWeight(__instance));
+            }
+        }
+
+        public static IEnumerator SetCarryWeight(PlayerControllerB __instance)
+        {
+            yield return new WaitForSeconds(0.5f);
+            LogInfo($"{__instance.playerUsername} call PlayerControllerB.TeleportPlayer|set carryWeight");
+            __instance.carryWeight = 1;
+            yield break;
+        }
+
+        [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_3473255830")]
+        [HarmonyPrefix]
+        [HarmonyWrapSafe]
+        public static bool __rpc_handler_3473255830(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (Check(rpcParams, out var p))
+            {
+                ByteUnpacker.ReadValueBitPacked(reader, out int animationState);
+                reader.ReadValueSafe(out float animationSpeed, default);
+                reader.Seek(0);
+                //LogInfo($"{p.playerUsername} call PlayerControllerB.UpdatePlayerAnimationServerRpc|animationState:{animationState}|animationSpeed:{animationSpeed}");
+            }
+            else if (p == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+
+        /// <summary>
+        /// Prefix PlayerControllerB.ThrowObjectServerRpc
+        /// </summary>
+        [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_2376977494")]
+        [HarmonyPrefix]
+        [HarmonyWrapSafe]
+        public static bool __rpc_handler_2376977494(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (Check(rpcParams, out var p))
+            {
+                if (AntiCheatPlugin.PlayerCarryWeight.Value)
+                {
+                    reader.ReadValueSafe(out NetworkObjectReference grabbedObject, default);
+                    reader.Seek(0);
+                    if (grabbedObject.TryGet(out var networkObject, null))
+                    {
+                        GrabbableObject component = networkObject.GetComponent<GrabbableObject>();
+                        //LogInfo($"{p.playerUsername} call PlayerControllerB.ThrowObjectServerRpc|grabbedObject:{component}|{component.itemProperties.weight}");
+                        var carryWeight = p.carryWeight;
+                        //LogInfo($"{p.playerUsername} call PlayerControllerB.ThrowObjectServerRpc|carryWeight:{p.carryWeight}");
+                        carryWeight -= Mathf.Clamp(component.itemProperties.weight - 1f, 0f, 10f);
+                        LogInfo($"{p.playerUsername} call PlayerControllerB.ThrowObjectServerRpc|weight:{carryWeight}");
+                        if (carryWeight < 1)
+                        {
+                            string msg = LocalizationManager.GetString("msg_PlayerCarryWeight", new Dictionary<string, string>() {
+                                { "{player}",p.playerUsername },
+                            });
+                            if (AntiCheatPlugin.PlayerCarryWeight3.Value)
+                            {
+                                KickPlayer(p);
+                            }
+                            else if (AntiCheatPlugin.PlayerCarryWeight2.Value)
+                            {
+                                msg += LocalizationManager.GetString("msg_PlayerCarryWeight_Recovery"); ;
+                                p.DropAllHeldItemsServerRpc();
+                            }
+                            ShowMessage(msg);
+                        }
+                    }
+                }
+                return true;
             }
             else if (p == null)
             {
@@ -190,7 +284,7 @@ namespace AntiCheat
                         LogInfo($"obj:{obj}");
                         if (!jcs.Contains(p.playerSteamId))
                         {
-                            if(AntiCheatPlugin.Shovel3.Value && (damageAmount == 10 || damageAmount == 20 || damageAmount == 40 || damageAmount == 100))
+                            if (AntiCheatPlugin.Shovel3.Value && (damageAmount == 10 || damageAmount == 20 || damageAmount == 40 || damageAmount == 100))
                             {
                                 LogInfo(LocalizationManager.GetString("msg_Shovel3", new Dictionary<string, string>() {
                                     { "{player}",p.playerUsername },
@@ -215,7 +309,7 @@ namespace AntiCheat
                             }
                         }
                     }
-                    
+
                     if (damageAmount == 0)
                     {
                         return false;
@@ -350,7 +444,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static void SteamMatchmaking_OnLobbyMemberJoined()
         {
-            if (!StartOfRound.Instance.localPlayerController.IsHost)
+            if (StartOfRound.Instance == null || StartOfRound.Instance.localPlayerController == null || !StartOfRound.Instance.localPlayerController.IsHost)
             {
                 return;
             }
@@ -405,7 +499,7 @@ namespace AntiCheat
                     var terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
                     var Route = terminal.terminalNodes.allKeywords[26];//Route
                     int itemCost = Route.compatibleNouns[levelID].result.itemCost;
-                    if(itemCost == 0 && Route.compatibleNouns[StartOfRound.Instance.currentLevelID].result.itemCost != 0)
+                    if (itemCost == 0 && Route.compatibleNouns[StartOfRound.Instance.currentLevelID].result.itemCost != 0)
                     {
                         ShowMessage(LocalizationManager.GetString("msg_FreeBuy_Level", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername }
@@ -1089,7 +1183,7 @@ namespace AntiCheat
         [HarmonyPatch(typeof(EnemyAI), "HitEnemyOnLocalClient")]
         [HarmonyPrefix]
         [HarmonyWrapSafe]
-        public static void HitEnemyOnLocalClient(EnemyAI __instance,int force, Vector3 hitDirection, PlayerControllerB playerWhoHit, bool playHitSFX, int hitID)
+        public static void HitEnemyOnLocalClient(EnemyAI __instance, int force, Vector3 hitDirection, PlayerControllerB playerWhoHit, bool playHitSFX, int hitID)
         {
             if (StartOfRound.Instance.localPlayerController.IsHost)
             {
@@ -1144,9 +1238,13 @@ namespace AntiCheat
                 var e = (EnemyAI)target;
                 if (playerWhoHit == -1)
                 {
+                    if (e.isEnemyDead)
+                    {
+                        return true;
+                    }
                     foreach (var item in bypassHit)
                     {
-                        if(item.EnemyInstanceId == e.GetInstanceID() && item.force == force && !item.CalledClient.Contains(p.actualClientId))
+                        if (item.EnemyInstanceId == e.GetInstanceID() && item.force == force && !item.CalledClient.Contains(p.actualClientId))
                         {
                             LogInfo($"{e.GetInstanceID()} bypass|actualClientId:{p.actualClientId}");
                             item.CalledClient.Add(p.actualClientId);
@@ -1156,7 +1254,7 @@ namespace AntiCheat
                 }
                 if (AntiCheatPlugin.Shovel.Value)
                 {
-                    if (playerWhoHit == -1 && Vector3.Distance(p.transform.position,e.transform.position) < 30)
+                    if (playerWhoHit == -1 && Vector3.Distance(p.transform.position, e.transform.position) < 30)
                     {
                         return true;
                     }
@@ -1473,9 +1571,10 @@ namespace AntiCheat
                             }
                         }
                         var g = networkObject.GetComponentInChildren<GrabbableObject>();
+                        LogInfo($"{p.playerUsername} call PlayerControllerB.GrabObjectServerRpc|carryWeight:{p.carryWeight}|weight:{g.itemProperties.weight}");
                         if (g != null)
                         {
-                            if (all)
+                            if (all || p.isPlayerDead)
                             {
                                 var __rpc_exec_stage = typeof(NetworkBehaviour).GetField("__rpc_exec_stage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                                 __rpc_exec_stage.SetValue(target, 1);
@@ -1870,6 +1969,11 @@ namespace AntiCheat
                 reader.Seek(0);
                 if (playerNum == (int)p.playerClientId)
                 {
+                    if (p.isPlayerDead)
+                    {
+                        LogInfo($"player {p.playerUsername} death can't use terminal");
+                        return false;
+                    }
                     var terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
                     var terminalTrigger = terminal.GetField<Terminal, InteractTrigger>("terminalTrigger");
                     if (terminalTrigger.GetInstanceID() == ((InteractTrigger)target).GetInstanceID())
@@ -2108,7 +2212,7 @@ namespace AntiCheat
             return CheckCoolDownMethod(rpcParams, 3);
         }
 
-        private static bool CheckCoolDownMethod(__RpcParams rpcParams,int cd)
+        private static bool CheckCoolDownMethod(__RpcParams rpcParams, int cd)
         {
             if (Check(rpcParams, out var p))
             {
@@ -2574,28 +2678,31 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                try
+                if (AntiCheatPlugin.ShipBuild.Value)
                 {
-                    if (AntiCheatPlugin.ShipBuild.Value)
+                    NetworkManager networkManager = target.NetworkManager;
+                    if (networkManager == null || !networkManager.IsListening)
                     {
-                        NetworkManager networkManager = target.NetworkManager;
-                        if (networkManager == null || !networkManager.IsListening)
-                        {
-                            return true;
-                        }
-                        Vector3 newPosition;
-                        reader.ReadValueSafe(out newPosition);
-                        Vector3 newRotation;
-                        reader.ReadValueSafe(out newRotation);
-                        reader.Seek(0);
+                        return true;
+                    }
+                    Vector3 newPosition;
+                    reader.ReadValueSafe(out newPosition);
+                    Vector3 newRotation;
+                    reader.ReadValueSafe(out newRotation);
+                    reader.ReadValueSafe(out NetworkObjectReference objectRef, default);
+                    reader.Seek(0);
+                    if (objectRef.TryGet(out var networkObject, null))
+                    {
+                        PlaceableShipObject placingObject = networkObject.gameObject.GetComponentInChildren<PlaceableShipObject>();
                         var pl = GetPlayer(rpcParams);
-                        LogInfo($"newPosition:{newPosition.ToString()}|newRotation:{newRotation.ToString()}|playerWhoMoved:{pl.playerUsername}");
-                        if (newRotation.x == 0 || newPosition.x > 11.2 || newPosition.x < -5 || newPosition.y > 5 || newPosition.y < 0 || newPosition.z > -10 || newPosition.z < -18)
+                        var ShipBuildModeManager = (ShipBuildModeManager)target;
+                        LogInfo($"{p.playerUsername}|ShipBuildModeManager.PlaceShipObjectServerRpc|placingObject:{placingObject.parentObject.name},{placingObject.unlockableID}|newPosition:{newPosition}|newRotation:{newRotation}");
+                        if (!StartOfRound.Instance.shipInnerRoomBounds.bounds.Contains(newPosition))
                         {
                             ShowMessage(LocalizationManager.GetString("msg_ShipBuild", new Dictionary<string, string>() {
-                                { "{player}",p.playerUsername },
-                                { "{position}",newPosition.ToString() }
-                            }));
+                                    { "{player}",p.playerUsername },
+                                    { "{position}",newPosition.ToString() }
+                                }));
                             if (AntiCheatPlugin.ShipBuild2.Value)
                             {
                                 KickPlayer(pl);
@@ -2603,12 +2710,8 @@ namespace AntiCheat
                             return false;
                         }
                     }
-                    return true;
                 }
-                catch (Exception)
-                {
-
-                }
+                return true;
             }
             else if (p == null)
             {
