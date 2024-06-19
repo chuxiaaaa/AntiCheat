@@ -6,7 +6,7 @@ The default language is Simplified Chinese, You can switch to English by changin
 
 ## Introduction
 
-Discord: https://discord.gg/ZdWr2rKR
+Discord: [https://discord.gg/ZdWr2rKR](https://discord.gg/zem2eFFBHj)
 
 This mod is designed to prevent cheating when hosting public lobbies, ensuring a fair gaming experience for all players.
 
