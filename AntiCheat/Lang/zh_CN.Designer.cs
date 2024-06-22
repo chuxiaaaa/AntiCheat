@@ -88,6 +88,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 检测消息显示类型，PublicChat = 显示在房间公共聊天，HostChat = 显示在聊天仅主机可见，GUI = 显示在 GUI 界面中 的本地化字符串。
+        /// </summary>
+        internal static string config_DetectedMessageType {
+            get {
+                return ResourceManager.GetString("config_DetectedMessageType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 怪物异常检测 的本地化字符串。
         /// </summary>
         internal static string config_Enemy {

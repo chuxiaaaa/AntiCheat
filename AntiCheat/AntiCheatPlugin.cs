@@ -7,6 +7,7 @@ using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -21,13 +22,21 @@ namespace AntiCheat
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheatPlugin : BaseUnityPlugin
     {
-        public const string Version = "0.6.5";
+        public const string Version = "0.6.6";
         public static ManualLogSource ManualLog = null;
         public enum Language
         {
             简体中文,
             English,
         }
+
+        public enum MessageType
+        {
+            GUI,
+            HostChat,
+            PublicChat
+        }
+
         public static ConfigEntry<Language> LanguageConfig;
 
         public static ConfigEntry<bool> Log;
@@ -115,6 +124,8 @@ namespace AntiCheat
 
         public static ConfigEntry<bool> Nameless;
         public static ConfigEntry<bool> Nameless2;
+
+        public static ConfigEntry<MessageType> DetectedMessageType;
 
         public static bool Gui;
 
@@ -210,10 +221,19 @@ namespace AntiCheat
         void Awake()
         {
             ManualLog = Logger;
+            var defaultLang = Language.简体中文;
+            if (!File.Exists(Config.ConfigFilePath))
+            {
+                var lang = System.Globalization.CultureInfo.CurrentCulture.Name.ToLower();
+                if (!lang.StartsWith("zh-"))
+                {
+                    defaultLang = Language.English;
+                }
+            }
 
-
-            LanguageConfig = Config.Bind("LanguageSetting", "Language", Language.简体中文, string.Join(",", LocalizationManager.Languages.Select(x => x.Key)));
+            LanguageConfig = Config.Bind("LanguageSetting", "Language", defaultLang, string.Join(",", LocalizationManager.Languages.Select(x => x.Key)));
             LocalizationManager.SetLanguage(LanguageConfig.Value.ToString());
+
             Prefix = Config.Bind("ServerNameSetting", "Prefix", "AC", LocalizationManager.GetString("config_Prefix"));
             ShipConfig = Config.Bind("ShipSetting", "StartGameOnlyHost", true, LocalizationManager.GetString("config_ShipSetting"));
             Log = Config.Bind("LogSetting", "Log", true, LocalizationManager.GetString("config_Log"));
@@ -233,6 +253,8 @@ namespace AntiCheat
 
             ShipTerminal = Config.Bind("ShipTerminalSettings", "Enable", true, LocalizationManager.GetString("config_ShipTerminal"));
             ShipTerminal2 = Config.Bind("ShipTerminalSettings", "Kick", false, LocalizationManager.GetString("config_Kick"));
+
+            DetectedMessageType = Config.Bind("DetectedMessageType", "Type", MessageType.PublicChat, LocalizationManager.GetString("config_DetectedMessageType"));
 
             DespawnItem = Config.Bind("DespawnItemSettings", "Enable", true, LocalizationManager.GetString("config_DespawnItem"));
             DespawnItem2 = Config.Bind("DespawnItemSettings", "Kick", false, LocalizationManager.GetString("config_Kick"));

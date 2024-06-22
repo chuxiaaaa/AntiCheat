@@ -126,6 +126,9 @@
   <data name="config_DespawnItem" xml:space="preserve">
     <value>Detects when items are unusually destroyed or deleted.</value>
   </data>
+  <data name="config_DetectedMessageType" xml:space="preserve">
+    <value>Detect the message display type, PublicChat = show in room public chat, HostChat = show in chat only host, GUI = show in GUI interface</value>
+  </data>
   <data name="config_Enemy" xml:space="preserve">
     <value>Detects when a monster behaves abnormally.</value>
   </data>

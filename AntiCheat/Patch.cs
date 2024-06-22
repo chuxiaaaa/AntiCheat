@@ -1326,6 +1326,8 @@ namespace AntiCheat
         /// </summary>
         public static void ShowMessage(string msg, string lastmsg = null)
         {
+            string showmsg = string.Empty;
+            var type = AntiCheatPlugin.DetectedMessageType.Value;
             if (lastMessage == msg || (lastmsg == lastMessage && lastmsg != null))
             {
                 return;
@@ -1339,20 +1341,30 @@ namespace AntiCheat
                 lastMessage = msg;
             }
             bypass = true;
-            string showmsg = LocalizationManager.GetString("MessageFormat", new Dictionary<string, string>() {
-                { "{Prefix}",LocalizationManager.GetString("Prefix") },
-                { "{msg}",msg }
-            });
-            LogInfo(showmsg);
-            var target = HUDManager.Instance;
-            var __rpc_exec_stage = typeof(HUDManager).GetField("__rpc_exec_stage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            var raw___rpc_exec_stage = __rpc_exec_stage.GetValue(target);
-            __rpc_exec_stage.SetValue(target, 0);
-
-            HUDManager.Instance.AddTextToChatOnServer(showmsg, -1);
-            __rpc_exec_stage.SetValue(target, raw___rpc_exec_stage);
-            LogInfo($"AddTextToChatOnServer|{showmsg}");
+            showmsg = LocalizationManager.GetString("MessageFormat", new Dictionary<string, string>() {
+                    { "{Prefix}",LocalizationManager.GetString("Prefix") },
+                    { "{msg}",msg }
+                });
             bypass = false;
+            if (type == AntiCheatPlugin.MessageType.PublicChat)
+            {
+                var target = HUDManager.Instance;
+                var __rpc_exec_stage = typeof(HUDManager).GetField("__rpc_exec_stage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                var raw___rpc_exec_stage = __rpc_exec_stage.GetValue(target);
+                __rpc_exec_stage.SetValue(target, 0);
+                HUDManager.Instance.AddTextToChatOnServer(showmsg, -1);
+                LogInfo($"AddTextToChatOnServer|{showmsg}");
+                __rpc_exec_stage.SetValue(target, raw___rpc_exec_stage);
+            }
+            else if (type == AntiCheatPlugin.MessageType.HostChat)
+            {
+                LogInfo($"AddChatMessage|{showmsg}");
+                typeof(HUDManager).GetMethod("AddChatMessage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(HUDManager.Instance, new object[] { showmsg, "" });
+            }
+            else
+            {
+                LogInfo($"ShowGUI|{showmsg}");
+            }
         }
 
         public static bool bypass { get; set; }
