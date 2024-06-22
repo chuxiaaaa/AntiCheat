@@ -1328,8 +1328,13 @@ namespace AntiCheat
         {
             string showmsg = string.Empty;
             var type = AntiCheatPlugin.DetectedMessageType.Value;
+            showmsg = LocalizationManager.GetString("MessageFormat", new Dictionary<string, string>() {
+                { "{Prefix}",LocalizationManager.GetString("Prefix") },
+                { "{msg}",msg }
+            });
             if (lastMessage == msg || (lastmsg == lastMessage && lastmsg != null))
             {
+                LogInfo($"RepeatMessage|{showmsg}");
                 return;
             }
             if (lastmsg != null)
@@ -1340,14 +1345,9 @@ namespace AntiCheat
             {
                 lastMessage = msg;
             }
-            bypass = true;
-            showmsg = LocalizationManager.GetString("MessageFormat", new Dictionary<string, string>() {
-                    { "{Prefix}",LocalizationManager.GetString("Prefix") },
-                    { "{msg}",msg }
-                });
-            bypass = false;
             if (type == AntiCheatPlugin.MessageType.PublicChat)
             {
+                bypass = true;
                 var target = HUDManager.Instance;
                 var __rpc_exec_stage = typeof(HUDManager).GetField("__rpc_exec_stage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 var raw___rpc_exec_stage = __rpc_exec_stage.GetValue(target);
@@ -1355,6 +1355,7 @@ namespace AntiCheat
                 HUDManager.Instance.AddTextToChatOnServer(showmsg, -1);
                 LogInfo($"AddTextToChatOnServer|{showmsg}");
                 __rpc_exec_stage.SetValue(target, raw___rpc_exec_stage);
+                bypass = false;
             }
             else if (type == AntiCheatPlugin.MessageType.HostChat)
             {
