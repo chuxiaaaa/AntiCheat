@@ -68,10 +68,10 @@ namespace AntiCheat
             }
         }
 
-        [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_1346025125")]
+        [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_4121569671")]
         [HarmonyPrefix]
         [HarmonyWrapSafe]
-        public static bool __rpc_handler_1346025125(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        public static bool __rpc_handler_4121569671(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
             {
@@ -98,29 +98,29 @@ namespace AntiCheat
             return true;
         }
 
-        [HarmonyPatch(typeof(PlayerControllerB), "TeleportPlayer")]
-        [HarmonyPostfix]
-        [HarmonyWrapSafe]
-        public static void TeleportPlayer(PlayerControllerB __instance)
-        {
-            if (!StartOfRound.Instance.IsHost)
-            {
-                return;
-            }
-            if (__instance.shipTeleporterId > 0)
-            {
-                LogInfo($"{__instance.playerUsername} call PlayerControllerB.TeleportPlayer|shipTeleporterId:{__instance.shipTeleporterId}|carryWeight:{__instance.carryWeight}");
-                __instance.StartCoroutine(SetCarryWeight(__instance));
-            }
-        }
+        //[HarmonyPatch(typeof(PlayerControllerB), "TeleportPlayer")]
+        //[HarmonyPostfix]
+        //[HarmonyWrapSafe]
+        //public static void TeleportPlayer(PlayerControllerB __instance)
+        //{
+        //    if (!StartOfRound.Instance.IsHost)
+        //    {
+        //        return;
+        //    }
+        //    if (__instance.shipTeleporterId > 0)
+        //    {
+        //        LogInfo($"{__instance.playerUsername} call PlayerControllerB.TeleportPlayer|shipTeleporterId:{__instance.shipTeleporterId}|carryWeight:{__instance.carryWeight}");
+        //        __instance.StartCoroutine(SetCarryWeight(__instance));
+        //    }
+        //}
 
-        public static IEnumerator SetCarryWeight(PlayerControllerB __instance)
-        {
-            yield return new WaitForSeconds(0.5f);
-            LogInfo($"{__instance.playerUsername} call PlayerControllerB.TeleportPlayer|set carryWeight");
-            __instance.carryWeight = 1;
-            yield break;
-        }
+        //public static IEnumerator SetCarryWeight(PlayerControllerB __instance)
+        //{
+        //    yield return new WaitForSeconds(0.5f);
+        //    LogInfo($"{__instance.playerUsername} call PlayerControllerB.TeleportPlayer|set carryWeight");
+        //    __instance.carryWeight = 1;
+        //    yield break;
+        //}
 
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_3473255830")]
         [HarmonyPrefix]
@@ -142,54 +142,54 @@ namespace AntiCheat
         }
 
 
-        /// <summary>
-        /// Prefix PlayerControllerB.ThrowObjectServerRpc
-        /// </summary>
-        [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_2376977494")]
-        [HarmonyPrefix]
-        [HarmonyWrapSafe]
-        public static bool __rpc_handler_2376977494(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        {
-            if (Check(rpcParams, out var p))
-            {
-                if (AntiCheatPlugin.PlayerCarryWeight.Value)
-                {
-                    reader.ReadValueSafe(out NetworkObjectReference grabbedObject, default);
-                    reader.Seek(0);
-                    if (grabbedObject.TryGet(out var networkObject, null))
-                    {
-                        GrabbableObject component = networkObject.GetComponent<GrabbableObject>();
-                        //LogInfo($"{p.playerUsername} call PlayerControllerB.ThrowObjectServerRpc|grabbedObject:{component}|{component.itemProperties.weight}");
-                        var carryWeight = p.carryWeight;
-                        //LogInfo($"{p.playerUsername} call PlayerControllerB.ThrowObjectServerRpc|carryWeight:{p.carryWeight}");
-                        carryWeight -= Mathf.Clamp(component.itemProperties.weight - 1f, 0f, 10f);
-                        LogInfo($"{p.playerUsername} call PlayerControllerB.ThrowObjectServerRpc|weight:{carryWeight}");
-                        if (carryWeight < 1)
-                        {
-                            string msg = LocalizationManager.GetString("msg_PlayerCarryWeight", new Dictionary<string, string>() {
-                                { "{player}",p.playerUsername },
-                            });
-                            if (AntiCheatPlugin.PlayerCarryWeight3.Value)
-                            {
-                                KickPlayer(p);
-                            }
-                            else if (AntiCheatPlugin.PlayerCarryWeight2.Value)
-                            {
-                                msg += LocalizationManager.GetString("msg_PlayerCarryWeight_Recovery"); ;
-                                p.DropAllHeldItemsServerRpc();
-                            }
-                            ShowMessage(msg);
-                        }
-                    }
-                }
-                return true;
-            }
-            else if (p == null)
-            {
-                return false;
-            }
-            return true;
-        }
+        ///// <summary>
+        ///// Prefix PlayerControllerB.ThrowObjectServerRpc
+        ///// </summary>
+        //[HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_2376977494")]
+        //[HarmonyPrefix]
+        //[HarmonyWrapSafe]
+        //public static bool __rpc_handler_2376977494(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        //{
+        //    if (Check(rpcParams, out var p))
+        //    {
+        //        if (AntiCheatPlugin.PlayerCarryWeight.Value)
+        //        {
+        //            reader.ReadValueSafe(out NetworkObjectReference grabbedObject, default);
+        //            reader.Seek(0);
+        //            if (grabbedObject.TryGet(out var networkObject, null))
+        //            {
+        //                GrabbableObject component = networkObject.GetComponent<GrabbableObject>();
+        //                //LogInfo($"{p.playerUsername} call PlayerControllerB.ThrowObjectServerRpc|grabbedObject:{component}|{component.itemProperties.weight}");
+        //                var carryWeight = p.carryWeight;
+        //                //LogInfo($"{p.playerUsername} call PlayerControllerB.ThrowObjectServerRpc|carryWeight:{p.carryWeight}");
+        //                carryWeight -= Mathf.Clamp(component.itemProperties.weight - 1f, 0f, 10f);
+        //                LogInfo($"{p.playerUsername} call PlayerControllerB.ThrowObjectServerRpc|weight:{carryWeight}");
+        //                if (carryWeight < 1)
+        //                {
+        //                    string msg = LocalizationManager.GetString("msg_PlayerCarryWeight", new Dictionary<string, string>() {
+        //                        { "{player}",p.playerUsername },
+        //                    });
+        //                    if (AntiCheatPlugin.PlayerCarryWeight3.Value)
+        //                    {
+        //                        KickPlayer(p);
+        //                    }
+        //                    else if (AntiCheatPlugin.PlayerCarryWeight2.Value)
+        //                    {
+        //                        msg += LocalizationManager.GetString("msg_PlayerCarryWeight_Recovery"); ;
+        //                        p.DropAllHeldItemsServerRpc();
+        //                    }
+        //                    ShowMessage(msg);
+        //                }
+        //            }
+        //        }
+        //        return true;
+        //    }
+        //    else if (p == null)
+        //    {
+        //        return false;
+        //    }
+        //    return true;
+        //}
 
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_638895557")]
         [HarmonyPrefix]
@@ -1787,7 +1787,7 @@ namespace AntiCheat
                     reader.ReadValueSafe(out chatMessage, false);
                 }
                 reader.Seek(0);
-                LogInfo($"HUDManager.AddTextMessageServerRpc|__rpc_handler_2787681914|{p.playerUsername}|{chatMessage}");
+                LogInfo($"HUDManager.AddTextMessageServerRpc|{p.playerUsername}|{chatMessage}");
                 if (chatMessage.Contains("<color") || chatMessage.Contains("<size"))
                 {
                     LogInfo("playerId = -1");
