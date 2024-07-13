@@ -236,7 +236,7 @@ namespace AntiCheat
                     {
                         damageAmount = 0;
                     }
-                    else if (damageAmount != 10 && obj != null && (isShovel(obj) || isKnife(obj)))
+                    else if (damageAmount != 20 && obj != null && (isShovel(obj) || isKnife(obj)))
                     {
                         if (!jcs.Contains(p.playerSteamId))
                         {
@@ -284,7 +284,7 @@ namespace AntiCheat
                         LogInfo($"obj:{obj}");
                         if (!jcs.Contains(p.playerSteamId))
                         {
-                            if (AntiCheatPlugin.Shovel3.Value && (damageAmount == 10 || damageAmount == 20 || damageAmount == 40 || damageAmount == 100))
+                            if (AntiCheatPlugin.Shovel3.Value && (damageAmount == 10 || damageAmount == 20 || damageAmount == 30 || damageAmount == 100))
                             {
                                 LogInfo(LocalizationManager.GetString("msg_Shovel3", new Dictionary<string, string>() {
                                     { "{player}",p.playerUsername },
@@ -2859,10 +2859,10 @@ namespace AntiCheat
                 labels.Add(AntiCheatPlugin.Prefix.Value);
             }
             setting.lobbyName = "[" + string.Join("/", labels) + "]" + " " + rawText;
-            if (string.IsNullOrEmpty(setting.serverTag))
-            {
-                setting.serverTag = AntiCheatPlugin.Prefix.Value;
-            }
+            //if (string.IsNullOrEmpty(setting.serverTag))
+            //{
+            //    setting.serverTag = AntiCheatPlugin.Prefix.Value;
+            //}
         }
     }
 }
