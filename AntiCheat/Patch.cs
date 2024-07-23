@@ -60,6 +60,8 @@ namespace AntiCheat
 
         public static List<int> landMines { get; set; }
 
+        public static Dictionary<string, List<ulong>> rpcs { get; set; } = new Dictionary<string, List<ulong>>();
+
         public static void LogInfo(string info)
         {
             if (AntiCheatPlugin.Log.Value)
@@ -75,6 +77,10 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
+                if (rpcs.ContainsKey("KillPlayer"))
+                {
+                    rpcs["KillPlayer"].Remove(p.actualClientId);
+                }
                 ByteUnpacker.ReadValueBitPacked(reader, out int playerId);
                 reader.ReadValueSafe(out bool spawnBody, default);
                 reader.ReadValueSafe(out Vector3 bodyVelocity);
@@ -191,6 +197,10 @@ namespace AntiCheat
         //    return true;
         //}
 
+
+        /// <summary>
+        /// Prefix PlayerControllerB.DamagePlayerFromOtherClientServerRpc
+        /// </summary>
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_638895557")]
         [HarmonyPrefix]
         [HarmonyWrapSafe]
@@ -198,18 +208,33 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                try
-                {
-                    int damageAmount;
-                    ByteUnpacker.ReadValueBitPacked(reader, out damageAmount);
-                    reader.Seek(0);
-                    var p2 = (PlayerControllerB)target;
-                    return CheckDamage(p2, p, ref damageAmount);
-                }
-                catch (Exception)
-                {
+                ByteUnpacker.ReadValueBitPacked(reader, out int damageAmount);
+                reader.ReadValueSafe(out Vector3 hitDirection);
+                ByteUnpacker.ReadValueBitPacked(reader, out int playerWhoHit);
+                reader.Seek(0);
+                LogInfo($"{p.playerUsername} call PlayerControllerB.DamagePlayerFromOtherClientServerRpc|damageAmount:{damageAmount}|hitDirection:{hitDirection}|playerWhoHit:{playerWhoHit}");
+                var p2 = (PlayerControllerB)target;
+                return CheckDamage(p2, p, ref damageAmount);
+            }
+            else if (p == null)
+            {
+                return false;
+            }
+            return true;
+        }
 
-                }
+        /// <summary>
+        /// Prefix PlayerControllerB.HealServerRpc
+        /// </summary>
+        [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_2585603452")]
+        [HarmonyPrefix]
+        [HarmonyWrapSafe]
+        public static bool __rpc_handler_2585603452(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (Check(rpcParams, out var p))
+            {
+                LogInfo($"{p.playerUsername} call PlayerControllerB.HealServerRpc|health:{p.health}|newHealth:20");
+                p.health = 20;
             }
             else if (p == null)
             {
@@ -224,7 +249,7 @@ namespace AntiCheat
             {
                 return true;
             }
-            LogInfo($"{p.playerUsername} hit {p2.playerUsername} damageAmount:{damageAmount}");
+            LogInfo($"{p.playerUsername} hit {p2.playerUsername} damageAmount:{damageAmount}|p2:{p2.playerUsername}");
             try
             {
                 if (AntiCheatPlugin.Shovel.Value)
@@ -309,7 +334,6 @@ namespace AntiCheat
                             }
                         }
                     }
-
                     if (damageAmount == 0)
                     {
                         return false;
@@ -334,9 +358,6 @@ namespace AntiCheat
         //{
         //    return DamagePlayerFromOtherClientServerRpc(ref damageAmount, playerWhoHit);
         //}
-
-
-
         public static bool isGun(GrabbableObject item)
         {
             return item is ShotgunItem;
@@ -450,8 +471,28 @@ namespace AntiCheat
             }
             LogInfo($"SetMoney:{Money}");
             Money = UnityEngine.Object.FindObjectOfType<Terminal>().groupCredits;
+           
+        }
+
+        /// <summary>
+        /// 游戏结束时重置所有变量
+        /// StartOfRound.EndOfGame
+        /// </summary>
+        [HarmonyPatch(typeof(StartOfRound), "EndOfGame")]
+        [HarmonyPostfix]
+        [HarmonyWrapSafe]
+        public static void EndOfGame()
+        {
             jcs = new List<ulong>();
             chcs = new Dictionary<int, Dictionary<ulong, List<DateTime>>>();
+            if (rpcs.ContainsKey("Hit"))
+            {
+                rpcs["Hit"] = new List<ulong>();
+            }
+            if (rpcs.ContainsKey("KillPlayer"))
+            {
+                rpcs["KillPlayer"] = new List<ulong>();
+            }
         }
 
         public static int Money = -1;
@@ -733,24 +774,105 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// Prefix PlayerControllerB.DamagePlayer
+        /// </summary>
+        /// <returns></returns>
+        [HarmonyPatch(typeof(PlayerControllerB), "DamagePlayer")]
+        [HarmonyPrefix]
+        [HarmonyWrapSafe]
+        public static bool DamagePlayer(PlayerControllerB __instance, int damageNumber, bool hasDamageSFX = true, bool callRPC = true, CauseOfDeath causeOfDeath = CauseOfDeath.Unknown, int deathAnimation = 0, bool fallDamage = false, Vector3 force = default(Vector3))
+        {
+            LogInfo($"PlayerControllerB.DamagePlayer|{__instance.playerUsername}|damageNumber:{damageNumber}|hasDamageSFX:{hasDamageSFX}|callRPC:{callRPC}");
+            return true;
+        }
+
+        [HarmonyPatch(typeof(PlayerControllerB), "IHittable.Hit")]
+        [HarmonyPrefix]
+        [HarmonyWrapSafe]
+        public static bool Hit(PlayerControllerB __instance, int force, Vector3 hitDirection, PlayerControllerB playerWhoHit, bool playHitSFX = false, int hitID = -1)
+        {
+            if (!rpcs.ContainsKey("Hit"))
+            {
+                rpcs.Add("Hit", new List<ulong>());
+            }
+            if (__instance.AllowPlayerDeath())
+            {
+                rpcs["Hit"].Add(__instance.actualClientId);
+                LogInfo($"PlayerControllerB.Hit|{__instance.playerUsername}|force:{force}|playerWhoHit:{playerWhoHit.playerUsername}|playHitSFX:{playHitSFX}|hitID:{hitID}");
+                __instance.StartCoroutine(CheckRpc(__instance, "Hit"));
+            }
+            return true;
+        }
 
 
+
+        public static IEnumerator CheckRpc(PlayerControllerB __instance, string RPC)
+        {
+            if (RPC == "Hit" && !AntiCheatPlugin.RPCReport_Hit.Value)
+            {
+                yield break;
+            }
+            if (RPC == "KillPlayer" && !AntiCheatPlugin.RPCReport_KillPlayer.Value)
+            {
+                yield break;
+            }
+            yield return new WaitForSeconds(1f);
+            if (rpcs[RPC].Contains(__instance.actualClientId))
+            {
+                rpcs[RPC].Remove(__instance.actualClientId);
+                ShowMessage(LocalizationManager.GetString("msg_RPCReport", new Dictionary<string, string>() {
+                  { "{player}", __instance.playerUsername },
+                  { "{RPC}", RPC },
+
+                }));
+                if (AntiCheatPlugin.RPCReport_Kick.Value)
+                {
+                    KickPlayer(__instance);
+                }
+            }
+            yield break;
+        }
+
+
+        /// <summary>
+        /// Prefix PlayerControllerB.DamagePlayerServerRpc
+        /// </summary>
+        /// <returns></returns>
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_1084949295")]
         [HarmonyPrefix]
         [HarmonyWrapSafe]
         public static bool __rpc_handler_1084949295(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Check(rpcParams, out var p))
+            if (Check(rpcParams, out var p) || true)
             {
+                if (rpcs.ContainsKey("Hit"))
+                {
+                    rpcs["Hit"].Remove(p.actualClientId);
+                }
                 ByteUnpacker.ReadValueBitPacked(reader, out int damageNumber);
                 ByteUnpacker.ReadValueBitPacked(reader, out int newHealthAmount);
                 reader.Seek(0);
+                LogInfo($"{p.playerUsername} call PlayerControllerB.DamagePlayerServerRpc|damageNumber:{damageNumber}|newHealthAmount:{newHealthAmount}");
                 var p2 = (PlayerControllerB)target;
+                if (newHealthAmount < 0)
+                {
+                    ShowMessage($"检测到玩家 {p2.playerUsername} 生命值小于0！");
+                }
                 if (p2 == p)
                 {
+                    if (damageNumber < 0)
+                    {
+                        ShowMessage($"检测到玩家 {p2.playerUsername} 回复生命值({damageNumber})！");
+                        return false;
+                    }
                     return true;
                 }
                 return CheckDamage(p2, p, ref damageNumber);
+            }
+            else if (p == null)
+            {
+                return false;
             }
             return true;
         }
@@ -910,6 +1032,8 @@ namespace AntiCheat
             return KillPlayerServerRpc(target, reader, rpcParams);
         }
 
+    
+
         private static bool KillPlayerServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Check(rpcParams, out var p))
@@ -922,6 +1046,15 @@ namespace AntiCheat
                 {
                     LogInfo($"{p.playerUsername} call {e.GetType()}.KillPlayerServerRpc|playerUsername:{StartOfRound.Instance.allPlayerScripts[playerId].playerUsername}");
                     return false;
+                }
+                if (!rpcs.ContainsKey("KillPlayer"))
+                {
+                    rpcs.Add("KillPlayer", new List<ulong>());
+                }
+                if (p.AllowPlayerDeath())
+                {
+                    rpcs["KillPlayer"].Add(p.actualClientId);
+                    p.StartCoroutine(CheckRpc(p, "KillPlayer"));
                 }
             }
             else if (p == null)
@@ -2689,15 +2822,11 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_861494715(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Check(rpcParams, out var p))
+            if (Check(rpcParams, out var p) || true)
             {
                 if (AntiCheatPlugin.ShipBuild.Value)
                 {
-                    NetworkManager networkManager = target.NetworkManager;
-                    if (networkManager == null || !networkManager.IsListening)
-                    {
-                        return true;
-                    }
+
                     Vector3 newPosition;
                     reader.ReadValueSafe(out newPosition);
                     Vector3 newRotation;
@@ -2707,7 +2836,21 @@ namespace AntiCheat
                     if (objectRef.TryGet(out var networkObject, null))
                     {
                         PlaceableShipObject placingObject = networkObject.gameObject.GetComponentInChildren<PlaceableShipObject>();
-                        var pl = GetPlayer(rpcParams);
+                        //var item = StartOfRound.Instance.unlockablesList.unlockables[placingObject.unlockableID];
+                        LogInfo($"newRotation:{newRotation}|{placingObject.parentObject.startingRotation}");
+                        if (Math.Floor(newRotation.x) != Math.Floor(placingObject.parentObject.startingRotation.x) || Math.Floor(newRotation.z) != Math.Floor(placingObject.parentObject.startingRotation.z))
+                        {
+                            ShowMessage(LocalizationManager.GetString("msg_ShipBuild", new Dictionary<string, string>() {
+                                { "{player}",p.playerUsername },
+                                { "{position}",newRotation.ToString() },
+                                { "{object}",placingObject.parentObject.name }
+                            }));
+                            if (AntiCheatPlugin.ShipBuild2.Value)
+                            {
+                                KickPlayer(p);
+                            }
+                            return false;
+                        }
                         var ShipBuildModeManager = (ShipBuildModeManager)target;
                         LogInfo($"{p.playerUsername}|ShipBuildModeManager.PlaceShipObjectServerRpc|placingObject:{placingObject.parentObject.name},{placingObject.unlockableID}|newPosition:{newPosition}|newRotation:{newRotation}");
                         if (!StartOfRound.Instance.shipInnerRoomBounds.bounds.Contains(newPosition))
@@ -2718,7 +2861,7 @@ namespace AntiCheat
                                 }));
                             if (AntiCheatPlugin.ShipBuild2.Value)
                             {
-                                KickPlayer(pl);
+                                KickPlayer(p);
                             }
                             return false;
                         }

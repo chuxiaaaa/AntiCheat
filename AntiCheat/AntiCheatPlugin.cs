@@ -24,7 +24,7 @@ namespace AntiCheat
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheatPlugin : BaseUnityPlugin
     {
-        public const string Version = "0.6.9";
+        public const string Version = "0.7.0";
         public static ManualLogSource ManualLog = null;
         public enum Language
         {
@@ -126,6 +126,10 @@ namespace AntiCheat
 
         public static ConfigEntry<bool> Nameless;
         public static ConfigEntry<bool> Nameless2;
+
+        public static ConfigEntry<bool> RPCReport_Hit;
+        public static ConfigEntry<bool> RPCReport_KillPlayer;
+        public static ConfigEntry<bool> RPCReport_Kick;
 
         public static ConfigEntry<MessageType> DetectedMessageType;
 
@@ -276,6 +280,10 @@ namespace AntiCheat
             ShipConfig3 = Config.Bind("ShipSetting", "EndGamePlayerTime", "14:00", LocalizationManager.GetString("config_ShipConfig3"));
             ShipConfig4 = Config.Bind("ShipSetting", "EndGamePlayerCount", 50, LocalizationManager.GetString("config_ShipConfig4"));
             ShipConfig6 = Config.Bind("ShipSetting", "OnlyOneVote", true, LocalizationManager.GetString("config_ShipConfig6"));
+
+            RPCReport_Hit = Config.Bind("RPCReport", "Hit", true, LocalizationManager.GetString("config_RPCReport_Hit"));
+            RPCReport_KillPlayer = Config.Bind("RPCReport", "KillPlayer", true, LocalizationManager.GetString("config_RPCReport_KillPlayer"));
+            RPCReport_Kick = Config.Bind("RPCReport", "Kick", false, LocalizationManager.GetString("config_Kick"));
 
             ShipBuild = Config.Bind("ShipBuildSetting", "Enable", true, LocalizationManager.GetString("config_ShipBuild"));
             ShipBuild2 = Config.Bind("ShipBuildSetting", "Kick", false, LocalizationManager.GetString("config_Kick"));

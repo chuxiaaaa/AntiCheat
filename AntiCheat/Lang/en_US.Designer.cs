@@ -268,6 +268,24 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 Hit RPC reporting detection, when the player is attacked and does not report blood loss, it will be detected (invincibility detection) 的本地化字符串。
+        /// </summary>
+        internal static string config_RPCReport_Hit {
+            get {
+                return ResourceManager.GetString("config_RPCReport_Hit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 KillPlayer RPC report detection, when a player is killed but does not report death, it will be detected (invincibility detection) 的本地化字符串。
+        /// </summary>
+        internal static string config_RPCReport_KillPlayer {
+            get {
+                return ResourceManager.GetString("config_RPCReport_KillPlayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Detects the abnormal placement of furniture. 的本地化字符串。
         /// </summary>
         internal static string config_ShipBuild {
@@ -678,6 +696,15 @@ namespace AntiCheat.Lang {
         internal static string msg_RemoteTerminal {
             get {
                 return ResourceManager.GetString("msg_RemoteTerminal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {player} was detected not report {RPC} RPC! 的本地化字符串。
+        /// </summary>
+        internal static string msg_RPCReport {
+            get {
+                return ResourceManager.GetString("msg_RPCReport", resourceCulture);
             }
         }
         

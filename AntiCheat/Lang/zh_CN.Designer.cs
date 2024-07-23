@@ -268,6 +268,24 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 Hit RPC上报检测，玩家被攻击并且没有上报掉血时会被检测(无敌检测) 的本地化字符串。
+        /// </summary>
+        internal static string config_RPCReport_Hit {
+            get {
+                return ResourceManager.GetString("config_RPCReport_Hit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 KillPlayer RPC上报检测，玩家被击杀时没有上报死亡时会被检测(无敌检测) 的本地化字符串。
+        /// </summary>
+        internal static string config_RPCReport_KillPlayer {
+            get {
+                return ResourceManager.GetString("config_RPCReport_KillPlayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 飞船物品位置异常检测 的本地化字符串。
         /// </summary>
         internal static string config_ShipBuild {
@@ -664,7 +682,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Carry Weights have been forcibly restored! 的本地化字符串。
+        ///   查找类似 异常负重已被恢复！ 的本地化字符串。
         /// </summary>
         internal static string msg_PlayerCarryWeight_Recovery {
             get {
@@ -682,7 +700,16 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 检测到玩家 {player} 将飞船物品摆放到异常位置({position})！ 的本地化字符串。
+        ///   查找类似 检测到玩家 {player} 未上报 {RPC} RPC！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_RPCReport {
+            get {
+                return ResourceManager.GetString("msg_RPCReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 将飞船物品({object})摆放到异常位置({position})！ 的本地化字符串。
         /// </summary>
         internal static string msg_ShipBuild {
             get {

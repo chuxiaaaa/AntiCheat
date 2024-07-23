@@ -186,6 +186,12 @@
   <data name="config_RemoteTerminal" xml:space="preserve">
     <value>远程终端检测</value>
   </data>
+  <data name="config_RPCReport_Hit" xml:space="preserve">
+    <value>Hit RPC上报检测，玩家被攻击并且没有上报掉血时会被检测(无敌检测)</value>
+  </data>
+  <data name="config_RPCReport_KillPlayer" xml:space="preserve">
+    <value>KillPlayer RPC上报检测，玩家被击杀时没有上报死亡时会被检测(无敌检测)</value>
+  </data>
   <data name="config_ShipBuild" xml:space="preserve">
     <value>飞船物品位置异常检测</value>
   </data>
@@ -319,13 +325,16 @@
     <value>检测到玩家 {player} 负重异常！</value>
   </data>
   <data name="msg_PlayerCarryWeight_Recovery" xml:space="preserve">
-    <value>Carry Weights have been forcibly restored!</value>
+    <value>异常负重已被恢复！</value>
   </data>
   <data name="msg_RemoteTerminal" xml:space="preserve">
     <value>检测到玩家 {player} 使用远程终端！</value>
   </data>
+  <data name="msg_RPCReport" xml:space="preserve">
+    <value>检测到玩家 {player} 未上报 {RPC} RPC！</value>
+  </data>
   <data name="msg_ShipBuild" xml:space="preserve">
-    <value>检测到玩家 {player} 将飞船物品摆放到异常位置({position})！</value>
+    <value>检测到玩家 {player} 将飞船物品({object})摆放到异常位置({position})！</value>
   </data>
   <data name="msg_ShipConfig2" xml:space="preserve">
     <value>{player} 请等待飞船人数达到 {cfg} 以上再拉杆，谢谢！</value>
