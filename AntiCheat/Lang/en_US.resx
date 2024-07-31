@@ -141,6 +141,9 @@
   <data name="config_GrabObject" xml:space="preserve">
     <value>Detects picking up items outside of default grab range.</value>
   </data>
+  <data name="config_Health_Recover" xml:space="preserve">
+    <value>Detects players using negative damage to recover health</value>
+  </data>
   <data name="config_InfiniteAmmo" xml:space="preserve">
     <value>Detects when a player has infinite ammo. Note: If a shotgun has already been given infinite ammo, a normal player using it may cause them to be detected as using infinite ammo as well.</value>
   </data>
@@ -290,6 +293,9 @@
   </data>
   <data name="msg_GrabObject" xml:space="preserve">
     <value>{player} was detected grabbing objects from too far away! (Player coordinates: {player_position}|Item coordinates: {object_position})</value>
+  </data>
+  <data name="msg_Health_Recover" xml:space="preserve">
+    <value>{player} was detected recovering health ({hp})!</value>
   </data>
   <data name="msg_InfiniteAmmo" xml:space="preserve">
     <value>{player} was detected using infinite ammo!</value>

@@ -24,7 +24,7 @@ namespace AntiCheat
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheatPlugin : BaseUnityPlugin
     {
-        public const string Version = "0.7.0";
+        public const string Version = "0.7.1";
         public static ManualLogSource ManualLog = null;
         public enum Language
         {
@@ -56,7 +56,7 @@ namespace AntiCheat
         public static ConfigEntry<int> ShipConfig2;
         public static ConfigEntry<string> ShipConfig3;
         public static ConfigEntry<int> ShipConfig4;
-        public static ConfigEntry<bool> ShipConfig5;
+        public static ConfigEntry<bool> Ship_Kick;
         public static ConfigEntry<bool> ShipConfig6;
 
         public static ConfigEntry<bool> ShipBuild;
@@ -130,6 +130,10 @@ namespace AntiCheat
         public static ConfigEntry<bool> RPCReport_Hit;
         public static ConfigEntry<bool> RPCReport_KillPlayer;
         public static ConfigEntry<bool> RPCReport_Kick;
+
+        public static ConfigEntry<bool> Health_Recover;
+        public static ConfigEntry<bool> Health_Kick;
+
 
         public static ConfigEntry<MessageType> DetectedMessageType;
 
@@ -275,15 +279,18 @@ namespace AntiCheat
             Prefix = Config.Bind("ServerNameSetting", "Prefix", "AC", LocalizationManager.GetString("config_Prefix"));
             ShipConfig = Config.Bind("ShipSetting", "StartGameOnlyHost", true, LocalizationManager.GetString("config_ShipSetting"));
             Log = Config.Bind("LogSetting", "Log", true, LocalizationManager.GetString("config_Log"));
-            ShipConfig5 = Config.Bind("ShipSetting", "Kick", false, LocalizationManager.GetString("config_ShipConfig5"));
+            Ship_Kick = Config.Bind("ShipSetting", "Kick", false, LocalizationManager.GetString("config_ShipConfig5"));
             ShipConfig2 = Config.Bind("ShipSetting", "StartGamePlayerCount", 8, LocalizationManager.GetString("config_ShipConfig2"));
             ShipConfig3 = Config.Bind("ShipSetting", "EndGamePlayerTime", "14:00", LocalizationManager.GetString("config_ShipConfig3"));
             ShipConfig4 = Config.Bind("ShipSetting", "EndGamePlayerCount", 50, LocalizationManager.GetString("config_ShipConfig4"));
             ShipConfig6 = Config.Bind("ShipSetting", "OnlyOneVote", true, LocalizationManager.GetString("config_ShipConfig6"));
 
-            RPCReport_Hit = Config.Bind("RPCReport", "Hit", true, LocalizationManager.GetString("config_RPCReport_Hit"));
-            RPCReport_KillPlayer = Config.Bind("RPCReport", "KillPlayer", true, LocalizationManager.GetString("config_RPCReport_KillPlayer"));
-            RPCReport_Kick = Config.Bind("RPCReport", "Kick", false, LocalizationManager.GetString("config_Kick"));
+            RPCReport_Hit = Config.Bind("RPCReportSetting", "Hit", true, LocalizationManager.GetString("config_RPCReport_Hit"));
+            RPCReport_KillPlayer = Config.Bind("RPCReportSetting", "KillPlayer", true, LocalizationManager.GetString("config_RPCReport_KillPlayer"));
+            RPCReport_Kick = Config.Bind("RPCReportSetting", "Kick", false, LocalizationManager.GetString("config_Kick"));
+
+            Health_Recover = Config.Bind("HealthSetting", "Recover", true, LocalizationManager.GetString("config_Health_Recover"));
+            Health_Kick = Config.Bind("HealthSetting", "Kick", false, LocalizationManager.GetString("config_Kick"));
 
             ShipBuild = Config.Bind("ShipBuildSetting", "Enable", true, LocalizationManager.GetString("config_ShipBuild"));
             ShipBuild2 = Config.Bind("ShipBuildSetting", "Kick", false, LocalizationManager.GetString("config_Kick"));

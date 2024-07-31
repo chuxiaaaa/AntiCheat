@@ -141,6 +141,9 @@
   <data name="config_GrabObject" xml:space="preserve">
     <value>隔空取物检测</value>
   </data>
+  <data name="config_Health_Recover" xml:space="preserve">
+    <value>玩家回血检测(使用负伤害回血)</value>
+  </data>
   <data name="config_InfiniteAmmo" xml:space="preserve">
     <value>无限子弹检测</value>
   </data>
@@ -290,6 +293,9 @@
   </data>
   <data name="msg_GrabObject" xml:space="preserve">
     <value>检测到玩家 {player} 隔空取物！(玩家坐标：{player_position}|物品坐标：{object_position})</value>
+  </data>
+  <data name="msg_Health_Recover" xml:space="preserve">
+    <value>检测到玩家 {player} 回复生命值({hp})！</value>
   </data>
   <data name="msg_InfiniteAmmo" xml:space="preserve">
     <value>检测到玩家 {player} 正使用无限子弹！</value>

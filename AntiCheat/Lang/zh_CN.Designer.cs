@@ -133,6 +133,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 玩家回血检测(使用负伤害回血) 的本地化字符串。
+        /// </summary>
+        internal static string config_Health_Recover {
+            get {
+                return ResourceManager.GetString("config_Health_Recover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 无限子弹检测 的本地化字符串。
         /// </summary>
         internal static string config_InfiniteAmmo {
@@ -579,6 +588,15 @@ namespace AntiCheat.Lang {
         internal static string msg_GrabObject {
             get {
                 return ResourceManager.GetString("msg_GrabObject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 检测到玩家 {player} 回复生命值({hp})！ 的本地化字符串。
+        /// </summary>
+        internal static string msg_Health_Recover {
+            get {
+                return ResourceManager.GetString("msg_Health_Recover", resourceCulture);
             }
         }
         

@@ -133,6 +133,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 Detects players using negative damage to recover health 的本地化字符串。
+        /// </summary>
+        internal static string config_Health_Recover {
+            get {
+                return ResourceManager.GetString("config_Health_Recover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Detects when a player has infinite ammo. Note: If a shotgun has already been given infinite ammo, a normal player using it may cause them to be detected as using infinite ammo as well. 的本地化字符串。
         /// </summary>
         internal static string config_InfiniteAmmo {
@@ -579,6 +588,15 @@ namespace AntiCheat.Lang {
         internal static string msg_GrabObject {
             get {
                 return ResourceManager.GetString("msg_GrabObject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {player} was detected recovering health ({hp})! 的本地化字符串。
+        /// </summary>
+        internal static string msg_Health_Recover {
+            get {
+                return ResourceManager.GetString("msg_Health_Recover", resourceCulture);
             }
         }
         

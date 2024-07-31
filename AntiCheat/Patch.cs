@@ -471,7 +471,7 @@ namespace AntiCheat
             }
             LogInfo($"SetMoney:{Money}");
             Money = UnityEngine.Object.FindObjectOfType<Terminal>().groupCredits;
-           
+
         }
 
         /// <summary>
@@ -750,6 +750,10 @@ namespace AntiCheat
         [HarmonyPrefix]
         public static bool BeginUsingTerminal(Terminal __instance)
         {
+            if (!StartOfRound.Instance.IsHost)
+            {
+                return true;
+            }
             Money = __instance.groupCredits;
             LogInfo($"SetMoney:{Money}");
             //if (__instance.terminalNodes != null && __instance.terminalNodes.allKeywords != null)
@@ -844,7 +848,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_1084949295(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Check(rpcParams, out var p) || true)
+            if (Check(rpcParams, out var p) || StartOfRound.Instance.IsHost)
             {
                 if (rpcs.ContainsKey("Hit"))
                 {
@@ -855,16 +859,22 @@ namespace AntiCheat
                 reader.Seek(0);
                 LogInfo($"{p.playerUsername} call PlayerControllerB.DamagePlayerServerRpc|damageNumber:{damageNumber}|newHealthAmount:{newHealthAmount}");
                 var p2 = (PlayerControllerB)target;
-                if (newHealthAmount < 0)
-                {
-                    ShowMessage($"检测到玩家 {p2.playerUsername} 生命值小于0！");
-                }
                 if (p2 == p)
                 {
-                    if (damageNumber < 0)
+                    if (AntiCheatPlugin.Health_Recover.Value)
                     {
-                        ShowMessage($"检测到玩家 {p2.playerUsername} 回复生命值({damageNumber})！");
-                        return false;
+                        if (damageNumber < 0)
+                        {
+                            ShowMessage(LocalizationManager.GetString("msg_Health_Recover", new Dictionary<string, string>() {
+                                { "{player}", p.playerUsername },
+                                { "{hp}", (damageNumber * -1).ToString() }
+                            }));
+                            if (AntiCheatPlugin.Health_Kick.Value)
+                            {
+                                KickPlayer(p);
+                            }
+                            return false;
+                        }
                     }
                     return true;
                 }
@@ -1032,7 +1042,7 @@ namespace AntiCheat
             return KillPlayerServerRpc(target, reader, rpcParams);
         }
 
-    
+
 
         private static bool KillPlayerServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
@@ -1766,6 +1776,48 @@ namespace AntiCheat
             return true;
         }
 
+
+        ///// <summary>
+        ///// 玩家跳跃
+        ///// Prefix PlayerControllerB.PlayerJumpedServerRpc
+        ///// </summary>
+        //[HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_2013428264")]
+        //[HarmonyPrefix]
+        //[HarmonyWrapSafe]
+        //public static bool __rpc_handler_420292904(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        //{
+        //    if (Check(rpcParams, out var p))
+        //    {
+        //        if (!PlayerJumping.ContainsKey(p))
+        //        {
+        //            PlayerJumping.Add(p, false);
+        //        }
+        //        if (!PlayerJumping[p])
+        //        {
+        //            p.StartCoroutine(PlayerJump(p));
+        //        }
+        //    }
+        //    else if (p == null)
+        //    {
+        //        return false;
+        //    }
+        //    return true;
+        //}
+
+        //public static Dictionary<PlayerControllerB, bool> PlayerJumping { get; set; } = new Dictionary<PlayerControllerB, bool>();
+
+        //public static IEnumerator PlayerJump(PlayerControllerB p)
+        //{
+
+        //    LogInfo($"{p.playerUsername} is Jumping");
+        //    PlayerJumping[p] = true;
+        //    yield return new WaitForSeconds(0.25f);
+        //    LogInfo($"{p.playerUsername} wait isGrounded");
+        //    yield return new WaitUntil(() => Physics.Raycast(p.transform.position, Vector3.down, out var raycastHit, 80f, 268437760, QueryTriggerInteraction.Ignore) && raycastHit.distance < 0.1);
+        //    LogInfo($"{p.playerUsername} is Grounded");
+        //    PlayerJumping[p] = false;
+        //}
+
         /// <summary>
         /// 玩家坐标变动事件(玩家如果隐身会将本体传送到一个很远的位置，例如当前坐标-100)
         /// Prefix PlayerControllerB.UpdatePlayerPositionServerRpc
@@ -1779,6 +1831,18 @@ namespace AntiCheat
             reader.Seek(0);
             if (Check(rpcParams, out var p))
             {
+                //var Jumping = PlayerJumping[p];
+                //LogInfo($"{p.playerUsername} call PlayerControllerB.UpdatePlayerPositionServerRpc|newPos:{newPos}|Jumping:{Jumping}");
+                //if (!Jumping)
+                //{
+                //    if (Physics.Raycast(p.transform.position, Vector3.down, out var raycastHit, 80f, 268437760, QueryTriggerInteraction.Ignore))
+                //    {
+                //        if (raycastHit.distance > 0.1)
+                //        {
+                //            ShowMessage($"检测到玩家 {p.playerUsername} 使用noclip！{raycastHit.distance}");
+                //        }
+                //    }
+                //}
                 if (AntiCheatPlugin.Invisibility.Value)
                 {
                     var oldpos = p.serverPlayerPosition;
@@ -2219,7 +2283,7 @@ namespace AntiCheat
                         }
                         return false;
                     }
-                    else if (dgcd.Any(x => x + 1000 > m))
+                    else if (dgcd.Count(x => x + 1000 > m) > 4)
                     {
                         dgcd.Add(m);
                         ShowMessage(LocalizationManager.GetString("msg_ShipLight", new Dictionary<string, string>() {
@@ -2416,7 +2480,7 @@ namespace AntiCheat
                         { "{player}",p.playerUsername }
                     }));
                     UnityEngine.Object.FindObjectOfType<StartMatchLever>().triggerScript.interactable = true;
-                    if (AntiCheatPlugin.ShipConfig5.Value)
+                    if (AntiCheatPlugin.Ship_Kick.Value)
                     {
                         KickPlayer(p);
                         return false;
@@ -2822,7 +2886,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_861494715(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Check(rpcParams, out var p) || true)
+            if (Check(rpcParams, out var p))
             {
                 if (AntiCheatPlugin.ShipBuild.Value)
                 {
