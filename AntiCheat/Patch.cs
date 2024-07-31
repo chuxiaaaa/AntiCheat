@@ -2146,7 +2146,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_1430497838(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Check(rpcParams, out var p) || true)
+            if (Check(rpcParams, out var p) || StartOfRound.Instance.IsHost)
             {
                 ByteUnpacker.ReadValueBitPacked(reader, out int playerNum);
                 reader.Seek(0);
@@ -2173,7 +2173,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_880620475(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Check(rpcParams, out var p) || true)
+            if (Check(rpcParams, out var p) || StartOfRound.Instance.IsHost)
             {
                 ByteUnpacker.ReadValueBitPacked(reader, out int playerNum);
                 reader.Seek(0);
