@@ -277,6 +277,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 RPC report detection delay, detect whether the player reports RPC after this time (in milliseconds) 的本地化字符串。
+        /// </summary>
+        internal static string config_RPCReport_Delay {
+            get {
+                return ResourceManager.GetString("config_RPCReport_Delay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Hit RPC reporting detection, when the player is attacked and does not report blood loss, it will be detected (invincibility detection) 的本地化字符串。
         /// </summary>
         internal static string config_RPCReport_Hit {

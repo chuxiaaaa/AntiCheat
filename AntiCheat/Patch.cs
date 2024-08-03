@@ -821,7 +821,7 @@ namespace AntiCheat
             {
                 yield break;
             }
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(AntiCheatPlugin.RPCReport_Delay.Value);
             if (rpcs[RPC].Contains(__instance.actualClientId))
             {
                 rpcs[RPC].Remove(__instance.actualClientId);
@@ -2886,11 +2886,10 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_861494715(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Check(rpcParams, out var p))
+            if (Check(rpcParams, out var p) || StartOfRound.Instance.IsHost)
             {
                 if (AntiCheatPlugin.ShipBuild.Value)
                 {
-
                     Vector3 newPosition;
                     reader.ReadValueSafe(out newPosition);
                     Vector3 newRotation;
@@ -2900,21 +2899,20 @@ namespace AntiCheat
                     if (objectRef.TryGet(out var networkObject, null))
                     {
                         PlaceableShipObject placingObject = networkObject.gameObject.GetComponentInChildren<PlaceableShipObject>();
-                        //var item = StartOfRound.Instance.unlockablesList.unlockables[placingObject.unlockableID];
-                        LogInfo($"newRotation:{newRotation}|{placingObject.parentObject.startingRotation}");
-                        if (Math.Floor(newRotation.x) != Math.Floor(placingObject.parentObject.startingRotation.x) || Math.Floor(newRotation.z) != Math.Floor(placingObject.parentObject.startingRotation.z))
-                        {
-                            ShowMessage(LocalizationManager.GetString("msg_ShipBuild", new Dictionary<string, string>() {
-                                { "{player}",p.playerUsername },
-                                { "{position}",newRotation.ToString() },
-                                { "{object}",placingObject.parentObject.name }
-                            }));
-                            if (AntiCheatPlugin.ShipBuild2.Value)
-                            {
-                                KickPlayer(p);
-                            }
-                            return false;
-                        }
+                        //LogInfo($"newRotation:{newRotation}|startingRotation:{placingObject.parentObject.startingRotation}");
+                        //if (Math.Floor(newRotation.x) != Math.Floor(placingObject.parentObject.startingRotation.x) || Math.Floor(newRotation.z) != Math.Floor(placingObject.parentObject.startingRotation.z))
+                        //{
+                        //    ShowMessage(LocalizationManager.GetString("msg_ShipBuild", new Dictionary<string, string>() {
+                        //            { "{player}",p.playerUsername },
+                        //            { "{position}",newRotation.ToString() },
+                        //            { "{object}",placingObject.parentObject.name }
+                        //        }));
+                        //    if (AntiCheatPlugin.ShipBuild2.Value)
+                        //    {
+                        //        KickPlayer(p);
+                        //    }
+                        //    return false;
+                        //}
                         var ShipBuildModeManager = (ShipBuildModeManager)target;
                         LogInfo($"{p.playerUsername}|ShipBuildModeManager.PlaceShipObjectServerRpc|placingObject:{placingObject.parentObject.name},{placingObject.unlockableID}|newPosition:{newPosition}|newRotation:{newRotation}");
                         if (!StartOfRound.Instance.shipInnerRoomBounds.bounds.Contains(newPosition))

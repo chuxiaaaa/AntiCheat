@@ -277,6 +277,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 RPC 上报检测延迟，检测玩家在该时间后有没有上报RPC(单位为毫秒) 的本地化字符串。
+        /// </summary>
+        internal static string config_RPCReport_Delay {
+            get {
+                return ResourceManager.GetString("config_RPCReport_Delay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Hit RPC上报检测，玩家被攻击并且没有上报掉血时会被检测(无敌检测) 的本地化字符串。
         /// </summary>
         internal static string config_RPCReport_Hit {

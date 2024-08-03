@@ -189,6 +189,9 @@
   <data name="config_RemoteTerminal" xml:space="preserve">
     <value>远程终端检测</value>
   </data>
+  <data name="config_RPCReport_Delay" xml:space="preserve">
+    <value>RPC 上报检测延迟，检测玩家在该时间后有没有上报RPC(单位为毫秒)</value>
+  </data>
   <data name="config_RPCReport_Hit" xml:space="preserve">
     <value>Hit RPC上报检测，玩家被攻击并且没有上报掉血时会被检测(无敌检测)</value>
   </data>

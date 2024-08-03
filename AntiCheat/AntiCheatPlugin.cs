@@ -24,7 +24,7 @@ namespace AntiCheat
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheatPlugin : BaseUnityPlugin
     {
-        public const string Version = "0.7.1";
+        public const string Version = "0.7.2";
         public static ManualLogSource ManualLog = null;
         public enum Language
         {
@@ -127,6 +127,7 @@ namespace AntiCheat
         public static ConfigEntry<bool> Nameless;
         public static ConfigEntry<bool> Nameless2;
 
+        public static ConfigEntry<int> RPCReport_Delay;
         public static ConfigEntry<bool> RPCReport_Hit;
         public static ConfigEntry<bool> RPCReport_KillPlayer;
         public static ConfigEntry<bool> RPCReport_Kick;
@@ -285,6 +286,7 @@ namespace AntiCheat
             ShipConfig4 = Config.Bind("ShipSetting", "EndGamePlayerCount", 50, LocalizationManager.GetString("config_ShipConfig4"));
             ShipConfig6 = Config.Bind("ShipSetting", "OnlyOneVote", true, LocalizationManager.GetString("config_ShipConfig6"));
 
+            RPCReport_Delay = Config.Bind("RPCReportSetting", "Delay", 1000, LocalizationManager.GetString("config_RPCReport_Delay"));
             RPCReport_Hit = Config.Bind("RPCReportSetting", "Hit", true, LocalizationManager.GetString("config_RPCReport_Hit"));
             RPCReport_KillPlayer = Config.Bind("RPCReportSetting", "KillPlayer", true, LocalizationManager.GetString("config_RPCReport_KillPlayer"));
             RPCReport_Kick = Config.Bind("RPCReportSetting", "Kick", false, LocalizationManager.GetString("config_Kick"));

@@ -189,6 +189,9 @@
   <data name="config_RemoteTerminal" xml:space="preserve">
     <value>Detects when a player uses the terminal remotely.</value>
   </data>
+  <data name="config_RPCReport_Delay" xml:space="preserve">
+    <value>RPC report detection delay, detect whether the player reports RPC after this time (in milliseconds)</value>
+  </data>
   <data name="config_RPCReport_Hit" xml:space="preserve">
     <value>Hit RPC reporting detection, when the player is attacked and does not report blood loss, it will be detected (invincibility detection)</value>
   </data>
