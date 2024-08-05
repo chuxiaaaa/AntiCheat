@@ -787,7 +787,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool DamagePlayer(PlayerControllerB __instance, int damageNumber, bool hasDamageSFX = true, bool callRPC = true, CauseOfDeath causeOfDeath = CauseOfDeath.Unknown, int deathAnimation = 0, bool fallDamage = false, Vector3 force = default(Vector3))
         {
-            LogInfo($"PlayerControllerB.DamagePlayer|{__instance.playerUsername}|damageNumber:{damageNumber}|hasDamageSFX:{hasDamageSFX}|callRPC:{callRPC}");
+            //LogInfo($"PlayerControllerB.DamagePlayer|{__instance.playerUsername}|damageNumber:{damageNumber}|hasDamageSFX:{hasDamageSFX}|callRPC:{callRPC}");
             return true;
         }
 
@@ -907,12 +907,12 @@ namespace AntiCheat
                     {
                         if (j.currentBehaviourStateIndex == 0 && stateIndex == 1)
                         {
-                            if (j.targetPlayer != null && j.beginCrankingTimer <= 0f)
+                            if (j.targetPlayer != null)
                             {
                                 return true;
                             }
                         }
-                        else if (j.currentBehaviourStateIndex == 1 && stateIndex == 2 && j.stunNormalizedTimer <= 0f && j.popUpTimer <= 0)
+                        else if (j.currentBehaviourStateIndex == 1 && stateIndex == 2 && j.popUpTimer <= 0)
                         {
                             return true;
                         }
@@ -1711,6 +1711,7 @@ namespace AntiCheat
                 {
                     reader.ReadValueSafe(out NetworkObjectReference grabbedObject, default);
                     reader.Seek(0);
+                    var jetpack = false;
                     if (grabbedObject.TryGet(out var networkObject, null))
                     {
                         var all = true;
@@ -1725,11 +1726,19 @@ namespace AntiCheat
                                 all = true;
                                 break;
                             }
+                            else if(item is JetpackItem)
+                            {
+                                jetpack = true;
+                            }
                         }
                         var g = networkObject.GetComponentInChildren<GrabbableObject>();
                         LogInfo($"{p.playerUsername} call PlayerControllerB.GrabObjectServerRpc|carryWeight:{p.carryWeight}|weight:{g.itemProperties.weight}");
                         if (g != null)
                         {
+                            if (g.itemProperties.twoHanded && jetpack)
+                            {
+                                all = true;
+                            }
                             if (all || p.isPlayerDead)
                             {
                                 var __rpc_exec_stage = typeof(NetworkBehaviour).GetField("__rpc_exec_stage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
