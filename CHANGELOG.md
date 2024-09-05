@@ -1,5 +1,21 @@
 # Beta(公开测试版)
 
+## Version 0.7.5
+
+### 中文
+
+* [+] 新增聊天限速 ChatRealSettings.Cooldown 默认 200 毫秒
+* [/] 优化了部分日志输出
+* [/] 优化了聊天检测
+* [+] 怪物击杀玩家 加入了对食人魔的检测
+
+### English
+
+* [+] Added chat speed limit ChatRealSettings.Cooldown, default 200 milliseconds 
+* [/] Optimized some log output 
+* [/] Optimized chat detection 
+* [+] Monster kills player, added detection for ogres
+
 ## Version 0.7.4
 
 ### 中文
