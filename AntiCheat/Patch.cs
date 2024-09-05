@@ -49,6 +49,8 @@ namespace AntiCheat
         public static Dictionary<ulong, List<string>> czcd = new Dictionary<ulong, List<string>>();
         public static Dictionary<ulong, List<string>> sdqcd = new Dictionary<ulong, List<string>>();
 
+        public static Dictionary<ulong, bool> ChatCooldowns = new Dictionary<ulong, bool>();
+
         public static Dictionary<uint, ulong> ConnectionIdtoSteamIdMap { get; set; } = new Dictionary<uint, ulong>();
 
 
@@ -903,7 +905,7 @@ namespace AntiCheat
             {
                 ByteUnpacker.ReadValueBitPacked(reader, out int stateIndex);
                 reader.Seek(0);
-                LogInfo($"{p.playerUsername} call EnemyAI.SwitchToBehaviourServerRpc|stateIndex:{stateIndex}");
+                LogInfo($"{p.playerUsername} call EnemyAI.SwitchToBehaviourServerRpc||stateIndex:{stateIndex}");
                 if (AntiCheatPlugin.Enemy.Value)
                 {
                     var e = (EnemyAI)target;
@@ -926,10 +928,12 @@ namespace AntiCheat
                         }
                         else
                         {
-                            ShowMessage(LocalizationManager.GetString("msg_Enemy_SwitchToBehaviour", new Dictionary<string, string>() {
-                                { "{player}", p.playerUsername }
-                            }));
-                            return false;
+                            LogInfo($"{p.playerUsername} call EnemyAI.SwitchToBehaviourServerRpc||currentBehaviourStateIndex:{j.currentBehaviourStateIndex}|stateIndex:{stateIndex}|popUpTimer:{j.popUpTimer}");
+                            //ShowMessage(LocalizationManager.GetString("msg_Enemy_SwitchToBehaviour", new Dictionary<string, string>() {
+                            //    { "{player}", p.playerUsername }
+                            //}));
+                            //return false;
+                            return true;
                         }
                     }
                 }
@@ -1032,12 +1036,8 @@ namespace AntiCheat
         }
 
         /// <summary>
-        /// 
+        /// Prefix RadMechAI.GrabPlayerServerRpc
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="reader"></param>
-        /// <param name="rpcParams"></param>
-        /// <returns></returns>
         [HarmonyPatch(typeof(RadMechAI), "__rpc_handler_3707286996")]
         [HarmonyPrefix]
         [HarmonyWrapSafe]
@@ -1046,6 +1046,18 @@ namespace AntiCheat
             return KillPlayerServerRpc(target, reader, rpcParams);
         }
 
+        /// <summary>
+        /// Prefix CaveDwellerAI.GrabPlayerServerRpc
+        /// </summary>
+        /// <returns></returns>
+        [HarmonyPatch(typeof(CaveDwellerAI), "__rpc_handler_3591556954")]
+        [HarmonyPrefix]
+        [HarmonyWrapSafe]
+        public static bool __rpc_handler_3591556954(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            return KillPlayerServerRpc(target, reader, rpcParams);
+        }
+     
 
 
         private static bool KillPlayerServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -2097,24 +2109,10 @@ namespace AntiCheat
                         }
                         ByteUnpacker.ReadValueBitPacked(reader, out int playerId);
                         reader.Seek(0);
-                        LogInfo($"HUDManager.AddPlayerChatMessageServerRpc|__rpc_handler_2930587515|{p.playerUsername}|{chatMessage}");
+                        LogInfo($"{p.playerUsername} call HUDManager.AddPlayerChatMessageServerRpc|chatMessage:{chatMessage}");
                         if (playerId == -1)
                         {
-                            LogInfo("playerId = -1");
-                            if (chatMessage.StartsWith($"<color=red>{LocalizationManager.GetString("Prefix")}") && bypass)
-                            {
-                                LogInfo("bypass");
-                                return true;
-                            }
-                            if (p == StartOfRound.Instance.localPlayerController)
-                            {
-                                return true;
-                            }
                             return false;
-                        }
-                        if (p == StartOfRound.Instance.localPlayerController)
-                        {
-                            return true;
                         }
                         if (playerId <= StartOfRound.Instance.allPlayerScripts.Length)
                         {
@@ -2130,6 +2128,20 @@ namespace AntiCheat
                                 }
                                 return false;
                             }
+                            else
+                            {
+                                if (ChatCooldowns[p.playerSteamId])
+                                {
+                                    LogInfo($"{p.playerUsername} in ChatCooldown");
+                                    return false;
+                                }
+                                p.StartCoroutine(ChatCoolDown(p));
+                                return true;
+                            }
+                        }
+                        else
+                        {
+                            return false;
                         }
                     }
                     catch (Exception ex)
@@ -2144,6 +2156,13 @@ namespace AntiCheat
                 return false;
             }
             return true;
+        }
+
+        public static IEnumerator ChatCoolDown(PlayerControllerB __instance)
+        {
+            ChatCooldowns[__instance.playerSteamId] = true;
+            yield return new WaitForSeconds(AntiCheatPlugin.ChatReal_Cooldown.Value);
+            ChatCooldowns[__instance.playerSteamId] = false;
         }
 
         public static T2 GetField<T, T2>(this T obj, string name)
@@ -3103,10 +3122,6 @@ namespace AntiCheat
                 labels.Add(AntiCheatPlugin.Prefix.Value);
             }
             setting.lobbyName = "[" + string.Join("/", labels) + "]" + " " + rawText;
-            //if (string.IsNullOrEmpty(setting.serverTag))
-            //{
-            //    setting.serverTag = AntiCheatPlugin.Prefix.Value;
-            //}
         }
     }
 }

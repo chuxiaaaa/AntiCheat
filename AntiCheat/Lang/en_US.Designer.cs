@@ -79,6 +79,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 Chat speed limit (milliseconds) 的本地化字符串。
+        /// </summary>
+        internal static string config_ChatReal_Cooldown {
+            get {
+                return ResourceManager.GetString("config_ChatReal_Cooldown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Detects when items are unusually destroyed or deleted. 的本地化字符串。
         /// </summary>
         internal static string config_DespawnItem {

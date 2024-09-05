@@ -24,7 +24,7 @@ namespace AntiCheat
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheatPlugin : BaseUnityPlugin
     {
-        public const string Version = "0.7.4";
+        public const string Version = "0.7.5";
         public static ManualLogSource ManualLog = null;
         public enum Language
         {
@@ -70,6 +70,7 @@ namespace AntiCheat
         public static ConfigEntry<bool> DespawnItem2;
 
         public static ConfigEntry<bool> ChatReal;
+        public static ConfigEntry<int> ChatReal_Cooldown;
         public static ConfigEntry<bool> ChatReal2;
 
         public static ConfigEntry<bool> Mask;
@@ -311,6 +312,7 @@ namespace AntiCheat
             DespawnItem2 = Config.Bind("DespawnItemSettings", "Kick", false, LocalizationManager.GetString("config_Kick"));
 
             ChatReal = Config.Bind("ChatRealSettings", "Enable", true, LocalizationManager.GetString("config_ChatReal"));
+            ChatReal_Cooldown = Config.Bind("ChatRealSettings", "Cooldown", 200, LocalizationManager.GetString("config_ChatReal_Cooldown"));
             ChatReal2 = Config.Bind("ChatRealSettings", "Kick", false, LocalizationManager.GetString("config_Kick"));
 
             Mask = Config.Bind("MaskSettings", "Enable", true, LocalizationManager.GetString("config_Mask"));

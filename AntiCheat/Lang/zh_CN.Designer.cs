@@ -79,6 +79,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 发言限速(单位毫秒) 的本地化字符串。
+        /// </summary>
+        internal static string config_ChatReal_Cooldown {
+            get {
+                return ResourceManager.GetString("config_ChatReal_Cooldown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 销毁物品检测 的本地化字符串。
         /// </summary>
         internal static string config_DespawnItem {

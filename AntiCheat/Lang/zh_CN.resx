@@ -123,6 +123,9 @@
   <data name="config_ChatReal" xml:space="preserve">
     <value>发言伪造检测</value>
   </data>
+  <data name="config_ChatReal_Cooldown" xml:space="preserve">
+    <value>发言限速(单位毫秒)</value>
+  </data>
   <data name="config_DespawnItem" xml:space="preserve">
     <value>销毁物品检测</value>
   </data>

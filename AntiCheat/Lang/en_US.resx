@@ -123,6 +123,9 @@
   <data name="config_ChatReal" xml:space="preserve">
     <value>Detects when a player attempts to spoof their name as another player's.</value>
   </data>
+  <data name="config_ChatReal_Cooldown" xml:space="preserve">
+    <value>Chat speed limit (milliseconds)</value>
+  </data>
   <data name="config_DespawnItem" xml:space="preserve">
     <value>Detects when items are unusually destroyed or deleted.</value>
   </data>
