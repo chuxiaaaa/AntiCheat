@@ -1057,7 +1057,7 @@ namespace AntiCheat
         {
             return KillPlayerServerRpc(target, reader, rpcParams);
         }
-     
+
 
 
         private static bool KillPlayerServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -1712,6 +1712,49 @@ namespace AntiCheat
             return true;
         }
 
+
+        /// <summary>
+        /// 添加物品到腰包事件
+        /// Prefix BeltBagItem.TryAddObjectToBagServerRpc
+        /// </summary>
+        [HarmonyPatch(typeof(BeltBagItem), "__rpc_handler_2988305002")]
+        [HarmonyPrefix]
+        [HarmonyWrapSafe]
+        public static bool __rpc_handler_2988305002(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (Check(rpcParams, out var p))
+            {
+                if (AntiCheatPlugin.GrabObject.Value && AntiCheatPlugin.GrabObject_BeltBag.Value)
+                {
+                    reader.ReadValueSafe(out NetworkObjectReference netObjectRef, default);
+                    ByteUnpacker.ReadValueBitPacked(reader, out int playerWhoAdded);
+                    reader.Seek(0);
+                    if (netObjectRef.TryGet(out NetworkObject networkObject, null))
+                    {
+                        GrabbableObject component = networkObject.GetComponent<GrabbableObject>();
+                        if (!component.itemProperties.isScrap && !component.isHeld && !component.isHeldByEnemy && component.itemProperties.itemId != 123984 && component.itemProperties.itemId != 819501)
+                        {
+                            LogInfo($"{!component.itemProperties.isScrap} && {!component.isHeld} && {!component.isHeldByEnemy} && {component.itemProperties.itemId != 123984} && {component.itemProperties.itemId != 819501}");
+                            LogInfo("return true;");
+                            return true;
+                        }
+                        var __rpc_exec_stage = typeof(NetworkBehaviour).GetField("__rpc_exec_stage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                        __rpc_exec_stage.SetValue(target, 1);
+                        typeof(BeltBagItem).GetMethod("TryAddObjectToBagServerRpc", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Invoke((BeltBagItem)target, new object[] {
+                             default,playerWhoAdded
+                        });
+                        __rpc_exec_stage.SetValue(target, 0);
+                        return false;
+                    }
+                }
+            }
+            else if (p == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
         /// <summary>
         /// 玩家捡起物品事件(用于检测多格子，单手拿双手物品，隔空取物)
         /// Prefix PlayerControllerB.GrabObjectServerRpc
@@ -1727,10 +1770,11 @@ namespace AntiCheat
                 {
                     reader.ReadValueSafe(out NetworkObjectReference grabbedObject, default);
                     reader.Seek(0);
-                    var jetpack = false;
+                    //var jetpack = false;
                     if (grabbedObject.TryGet(out var networkObject, null))
                     {
                         var all = true;
+                        bool hastwohand = false;
                         foreach (var item in p.ItemSlots)
                         {
                             if (item == null)
@@ -1739,23 +1783,30 @@ namespace AntiCheat
                             }
                             else if (item.itemProperties.twoHanded)
                             {
-                                all = true;
+                                hastwohand = true;
                                 break;
                             }
-                            else if (item is JetpackItem)
-                            {
-                                jetpack = true;
-                            }
+                            //else if (item is JetpackItem)
+                            //{
+                            //    jetpack = true;
+                            //}
                         }
                         var g = networkObject.GetComponentInChildren<GrabbableObject>();
-                        LogInfo($"{p.playerUsername} call PlayerControllerB.GrabObjectServerRpc|carryWeight:{p.carryWeight}|weight:{g.itemProperties.weight}");
                         if (g != null)
                         {
-                            if (g.itemProperties.twoHanded && jetpack)
+                            bool ban = false;
+                            if (AntiCheatPlugin.GrabObject_TwoHand.Value)
                             {
-                                all = true;
+                                if (g.itemProperties.twoHanded && hastwohand)
+                                {
+                                    ban = true;
+                                }
                             }
-                            if (all || p.isPlayerDead)
+                            if (AntiCheatPlugin.GrabObject_MoreSlot.Value)
+                            {
+                                ban = all;
+                            }
+                            if (ban)
                             {
                                 var __rpc_exec_stage = typeof(NetworkBehaviour).GetField("__rpc_exec_stage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                                 __rpc_exec_stage.SetValue(target, 1);
@@ -1778,7 +1829,7 @@ namespace AntiCheat
                                 }));
                                 g = default;
                                 grabbedObject = default;
-                                if (AntiCheatPlugin.GrabObject2.Value)
+                                if (AntiCheatPlugin.GrabObject_MoreSlot.Value)
                                 {
                                     KickPlayer(p);
                                 }

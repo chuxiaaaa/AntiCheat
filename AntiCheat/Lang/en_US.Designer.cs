@@ -142,6 +142,33 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 Disables players from picking up scrap with belt bags 的本地化字符串。
+        /// </summary>
+        internal static string config_GrabObject_BeltBag {
+            get {
+                return ResourceManager.GetString("config_GrabObject_BeltBag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Prevents players from picking up more than 4 items 的本地化字符串。
+        /// </summary>
+        internal static string config_GrabObject_MoreSlot {
+            get {
+                return ResourceManager.GetString("config_GrabObject_MoreSlot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Prevents players from picking up multiple two-handed items at the same time 的本地化字符串。
+        /// </summary>
+        internal static string config_GrabObject_TwoHand {
+            get {
+                return ResourceManager.GetString("config_GrabObject_TwoHand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Detects players using negative damage to recover health 的本地化字符串。
         /// </summary>
         internal static string config_Health_Recover {

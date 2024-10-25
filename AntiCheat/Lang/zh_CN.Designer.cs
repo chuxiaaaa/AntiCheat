@@ -142,6 +142,33 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 禁止玩家用腰包拾取废料 的本地化字符串。
+        /// </summary>
+        internal static string config_GrabObject_BeltBag {
+            get {
+                return ResourceManager.GetString("config_GrabObject_BeltBag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 禁止玩家拾取超出四个物品 的本地化字符串。
+        /// </summary>
+        internal static string config_GrabObject_MoreSlot {
+            get {
+                return ResourceManager.GetString("config_GrabObject_MoreSlot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 禁止玩家同时拾取多个双手物品 的本地化字符串。
+        /// </summary>
+        internal static string config_GrabObject_TwoHand {
+            get {
+                return ResourceManager.GetString("config_GrabObject_TwoHand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 玩家回血检测(使用负伤害回血) 的本地化字符串。
         /// </summary>
         internal static string config_Health_Recover {

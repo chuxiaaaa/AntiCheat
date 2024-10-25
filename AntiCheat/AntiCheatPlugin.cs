@@ -24,7 +24,7 @@ namespace AntiCheat
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheatPlugin : BaseUnityPlugin
     {
-        public const string Version = "0.7.5";
+        public const string Version = "0.7.6";
         public static ManualLogSource ManualLog = null;
         public enum Language
         {
@@ -83,7 +83,10 @@ namespace AntiCheat
         public static ConfigEntry<bool> Invisibility2;
 
         public static ConfigEntry<bool> GrabObject;
-        public static ConfigEntry<bool> GrabObject2;
+        public static ConfigEntry<bool> GrabObject_MoreSlot;
+        public static ConfigEntry<bool> GrabObject_TwoHand;
+        public static ConfigEntry<bool> GrabObject_BeltBag;
+        public static ConfigEntry<bool> GrabObject_Kick;
 
         public static ConfigEntry<bool> Boss;
         public static ConfigEntry<bool> Boss2;
@@ -356,7 +359,10 @@ namespace AntiCheat
             Map2 = Config.Bind("MapSetting", "Kick", false, LocalizationManager.GetString("config_Kick"));
 
             GrabObject = Config.Bind("GrabObjectSetting", "Enable", true, LocalizationManager.GetString("config_GrabObject"));
-            GrabObject2 = Config.Bind("GrabObjectSetting", "Kick", false, LocalizationManager.GetString("config_Kick"));
+            GrabObject_MoreSlot = Config.Bind("GrabObjectSetting", "MoreSlot", true, LocalizationManager.GetString("config_GrabObject_MoreSlot"));
+            GrabObject_TwoHand = Config.Bind("GrabObjectSetting", "TwoHand", true, LocalizationManager.GetString("config_GrabObject_TwoHand"));
+            GrabObject_BeltBag = Config.Bind("GrabObjectSetting", "BeltBag", true, LocalizationManager.GetString("config_GrabObject_BeltBag"));
+            GrabObject_Kick = Config.Bind("GrabObjectSetting", "Kick", false, LocalizationManager.GetString("config_Kick"));
 
             Shovel = Config.Bind("ShovelSettings", "Enable", true, LocalizationManager.GetString("config_Shovel"));
             Shovel3 = Config.Bind("ShovelSettings", "EmptyHand", false, LocalizationManager.GetString("config_Shovel2"));

@@ -144,6 +144,15 @@
   <data name="config_GrabObject" xml:space="preserve">
     <value>Detects picking up items outside of default grab range.</value>
   </data>
+  <data name="config_GrabObject_BeltBag" xml:space="preserve">
+    <value>Disables players from picking up scrap with belt bags</value>
+  </data>
+  <data name="config_GrabObject_MoreSlot" xml:space="preserve">
+    <value>Prevents players from picking up more than 4 items</value>
+  </data>
+  <data name="config_GrabObject_TwoHand" xml:space="preserve">
+    <value>Prevents players from picking up multiple two-handed items at the same time</value>
+  </data>
   <data name="config_Health_Recover" xml:space="preserve">
     <value>Detects players using negative damage to recover health</value>
   </data>
