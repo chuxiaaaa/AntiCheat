@@ -1,5 +1,17 @@
 # Beta(公开测试版)
 
+## Version 0.7.6
+
+### 中文
+
+* [/] GrabObject 配置新增了 MoreSlot TwoHand BeltBag 配置项
+* [+] GrabObject.BeltBag 启用时，可以禁用玩家使用腰包拾取废料
+
+### English
+
+* [/] The GrabObject configuration has been updated with a new option: MoreSlot TwoHand BeltBag configuration.
+* [+] When GrabObject.BeltBag is enabled, players can be disabled from picking up scrap using the belt bag.
+
 ## Version 0.7.5
 
 ### 中文
