@@ -1734,8 +1734,6 @@ namespace AntiCheat
                         GrabbableObject component = networkObject.GetComponent<GrabbableObject>();
                         if (!component.itemProperties.isScrap && !component.isHeld && !component.isHeldByEnemy && component.itemProperties.itemId != 123984 && component.itemProperties.itemId != 819501)
                         {
-                            LogInfo($"{!component.itemProperties.isScrap} && {!component.isHeld} && {!component.isHeldByEnemy} && {component.itemProperties.itemId != 123984} && {component.itemProperties.itemId != 819501}");
-                            LogInfo("return true;");
                             return true;
                         }
                         var __rpc_exec_stage = typeof(NetworkBehaviour).GetField("__rpc_exec_stage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
