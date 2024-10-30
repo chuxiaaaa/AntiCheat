@@ -1736,12 +1736,7 @@ namespace AntiCheat
                         {
                             return true;
                         }
-                        var __rpc_exec_stage = typeof(NetworkBehaviour).GetField("__rpc_exec_stage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                        __rpc_exec_stage.SetValue(target, 1);
-                        typeof(BeltBagItem).GetMethod("TryAddObjectToBagServerRpc", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Invoke((BeltBagItem)target, new object[] {
-                             default,playerWhoAdded
-                        });
-                        __rpc_exec_stage.SetValue(target, 0);
+                        ((BeltBagItem)target).CancelAddObjectToBagClientRpc(playerWhoAdded);
                         return false;
                     }
                 }
@@ -2386,7 +2381,7 @@ namespace AntiCheat
                         ShipLights shipLights = UnityEngine.Object.FindAnyObjectByType<ShipLights>();
                         if (!shipLights.areLightsOn)
                         {
-                            shipLights.SetShipLightsServerRpc(true);
+                            shipLights.SetShipLightsClientRpc(true);
                         }
                         return false;
                     }
@@ -2399,7 +2394,7 @@ namespace AntiCheat
                         ShipLights shipLights = UnityEngine.Object.FindAnyObjectByType<ShipLights>();
                         if (!shipLights.areLightsOn)
                         {
-                            shipLights.SetShipLightsServerRpc(true);
+                            shipLights.SetShipLightsClientRpc(true);
                         }
                         return false;
                     }
@@ -2661,7 +2656,7 @@ namespace AntiCheat
             if (whoUseTerminal == kick && terminal.placeableObject.inUse)
             {
                 LogInfo("SetTerminalInUseServerRpc");
-                terminal.SetTerminalInUseServerRpc(false);
+                terminal.SetTerminalInUseClientRpc(false);
                 terminal.terminalInUse = false;
             }
             ShowMessage(LocalizationManager.GetString("msg_Kick", new Dictionary<string, string>() {
@@ -2878,12 +2873,7 @@ namespace AntiCheat
                     }
                     if (rpcParams.Server.Receive.SenderClientId == 0)
                     {
-                        doVote = true;
-                        for (int i = 0; i < StartOfRound.Instance.allPlayerScripts.Length; i++)
-                        {
-                            TimeOfDay.Instance.SetShipLeaveEarlyServerRpc();
-                        }
-                        doVote = false;
+                        TimeOfDay.Instance.SetShipLeaveEarlyClientRpc(TimeOfDay.Instance.normalizedTimeOfDay + 0.1f, StartOfRound.Instance.allPlayerScripts.Length);
                     }
                 }
             }
