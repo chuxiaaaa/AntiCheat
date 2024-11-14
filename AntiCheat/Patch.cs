@@ -871,10 +871,11 @@ namespace AntiCheat
                     {
                         if (damageNumber < 0)
                         {
-                            ShowMessage(LocalizationManager.GetString("msg_Health_Recover", new Dictionary<string, string>() {
+                            string msg = LocalizationManager.GetString("msg_Health_Recover", new Dictionary<string, string>() {
                                 { "{player}", p.playerUsername },
                                 { "{hp}", (damageNumber * -1).ToString() }
-                            }));
+                            });
+                            ShowMessage(msg);
                             if (AntiCheatPlugin.Health_Kick.Value)
                             {
                                 KickPlayer(p);
@@ -1125,10 +1126,20 @@ namespace AntiCheat
                 if (AntiCheatPlugin.KillEnemy.Value)
                 {
                     var e = (EnemyAI)target;
+                    foreach (var item in bypassKill)
+                    {
+                        if (item.EnemyInstanceId == e.GetInstanceID() && !item.CalledClient.Contains(p.actualClientId))
+                        {
+                            LogInfo($"{e.GetInstanceID()} bypass|actualClientId:{p.actualClientId}");
+                            item.CalledClient.Add(p.actualClientId);
+                            return true;
+                        }
+                    }
                     if (e.enemyHP <= 0)
                     {
                         return true;
                     }
+
                     if (Vector3.Distance(p.transform.position, e.transform.position) > 50f)
                     {
                         ShowMessage(LocalizationManager.GetString("msg_KillEnemy", new Dictionary<string, string>() {
@@ -1338,6 +1349,25 @@ namespace AntiCheat
         }
 
         public static List<HitData> bypassHit = new List<HitData>();
+        public static List<HitData> bypassKill = new List<HitData>();
+
+        [HarmonyPatch(typeof(EnemyAI), "KillEnemyOnOwnerClient")]
+        [HarmonyPrefix]
+        [HarmonyWrapSafe]
+        public static void KillEnemyOnOwnerClient(EnemyAI __instance)
+        {
+            if (StartOfRound.Instance.localPlayerController.IsHost)
+            {
+                LogInfo($"bypassKill -> {__instance.enemyType.enemyName}({__instance.GetInstanceID()})");
+                bypassKill.Add(new HitData()
+                {
+                    EnemyInstanceId = __instance.GetInstanceID(),
+                    force = 0,
+                    CalledClient = new List<ulong>()
+                });
+            }
+        }
+
 
         [HarmonyPatch(typeof(EnemyAI), "HitEnemyOnLocalClient")]
         [HarmonyPrefix]
@@ -1346,17 +1376,18 @@ namespace AntiCheat
         {
             if (StartOfRound.Instance.localPlayerController.IsHost)
             {
-                if (playerWhoHit == null)
-                {
+                //if (playerWhoHit == null)
+                //{
                     bypassHit.Add(new HitData()
                     {
                         EnemyInstanceId = __instance.GetInstanceID(),
                         force = force,
                         CalledClient = new List<ulong>()
                     });
-                }
+                //}
             }
         }
+
 
         public class HitData
         {
@@ -1367,6 +1398,7 @@ namespace AntiCheat
             public List<ulong> CalledClient { get; set; }
         }
 
+        public static PlayerControllerB lastDriver { get; set; }
 
         [HarmonyPatch(typeof(EnemyAI), "__rpc_handler_3538577804")]
         [HarmonyPrefix]
@@ -1394,29 +1426,40 @@ namespace AntiCheat
                     LogInfo("return false;");
                     return false;
                 }
-                var e = (EnemyAI)target;
-                if (playerWhoHit == -1)
+                VehicleController vehicleController = UnityEngine.Object.FindFirstObjectByType<VehicleController>();
+                if (vehicleController != null)
                 {
-                    if (e.isEnemyDead)
+                    PlayerControllerB currentDriver = vehicleController.currentDriver;
+                    if (force == 2 && currentDriver != null && currentDriver.playerClientId == p.playerClientId)
+                    {
+                        lastDriver = currentDriver;
+                        return true;
+                    }
+                    if (force == 2 && currentDriver == null && lastDriver.playerClientId == p.playerClientId)
                     {
                         return true;
                     }
-                    foreach (var item in bypassHit)
+                }
+                var e = (EnemyAI)target;
+                //if (e.isEnemyDead)
+                //{
+                //    return true;
+                //}
+                foreach (var item in bypassHit)
+                {
+                    if (item.EnemyInstanceId == e.GetInstanceID() && item.force == force && !item.CalledClient.Contains(p.actualClientId))
                     {
-                        if (item.EnemyInstanceId == e.GetInstanceID() && item.force == force && !item.CalledClient.Contains(p.actualClientId))
-                        {
-                            LogInfo($"{e.GetInstanceID()} bypass|actualClientId:{p.actualClientId}");
-                            item.CalledClient.Add(p.actualClientId);
-                            return true;
-                        }
+                        LogInfo($"{e.GetInstanceID()} bypass|actualClientId:{p.actualClientId}");
+                        item.CalledClient.Add(p.actualClientId);
+                        return true;
                     }
                 }
                 if (AntiCheatPlugin.Shovel.Value)
                 {
-                    if (playerWhoHit == -1 && Vector3.Distance(p.transform.position, e.transform.position) < 30)
-                    {
-                        return true;
-                    }
+                    //if (playerWhoHit == -1 && Vector3.Distance(p.transform.position, e.transform.position) < 30)
+                    //{
+                    //    return true;
+                    //}
                     var obj = p.ItemSlots[p.currentItemSlot];
                     string playerUsername = p.playerUsername;
                     if (force != 1 && obj != null && (isShovel(obj) || isKnife(obj)))
@@ -1680,6 +1723,7 @@ namespace AntiCheat
             }
             landMines = new List<int>();
             bypassHit = new List<HitData>();
+            bypassKill = new List<HitData>();
             HUDManager.Instance.AddTextToChatOnServer(LocalizationManager.GetString("msg_game_start", new Dictionary<string, string>() {
                 { "{ver}",AntiCheatPlugin.Version }
             }), -1);
@@ -2632,13 +2676,13 @@ namespace AntiCheat
         /// </summary>
         /// <param name="kick">玩家</param>
         /// <param name="canJoin">重新加入</param>
-        public static void KickPlayer(PlayerControllerB kick, bool canJoin = false)
+        public static void KickPlayer(PlayerControllerB kick, bool canJoin = false,string Reason = null)
         {
             if (kick.actualClientId == 0)
             {
                 return;
             }
-            NetworkManager.Singleton.DisconnectClient(kick.actualClientId);
+            NetworkManager.Singleton.DisconnectClient(kick.actualClientId, $"[{LocalizationManager.GetString("Prefix")}] {LocalizationManager.GetString("msg_KickPlayer")}！");
             if (kick.playerSteamId == 0)
             {
                 return;
@@ -2852,7 +2896,6 @@ namespace AntiCheat
             }
         }
 
-        public static bool doVote { get; set; }
 
         /// <summary>
         /// 死亡玩家投票事件(这里处理房主一票起飞)
@@ -2867,10 +2910,6 @@ namespace AntiCheat
             {
                 if (AntiCheatPlugin.ShipConfig6.Value)
                 {
-                    if (doVote)
-                    {
-                        return;
-                    }
                     if (rpcParams.Server.Receive.SenderClientId == 0)
                     {
                         TimeOfDay.Instance.SetShipLeaveEarlyClientRpc(TimeOfDay.Instance.normalizedTimeOfDay + 0.1f, StartOfRound.Instance.allPlayerScripts.Length);

@@ -691,6 +691,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 Cheating detected 的本地化字符串。
+        /// </summary>
+        internal static string msg_KickPlayer {
+            get {
+                return ResourceManager.GetString("msg_KickPlayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 {player} was detected killing a monster instantly! ({enemyName}, monster HP before: {HP}) 的本地化字符串。
         /// </summary>
         internal static string msg_KillEnemy {

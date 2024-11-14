@@ -327,6 +327,9 @@
   <data name="msg_Kick" xml:space="preserve">
     <value>{player} 已被踢出</value>
   </data>
+  <data name="msg_KickPlayer" xml:space="preserve">
+    <value>检测到作弊行为</value>
+  </data>
   <data name="msg_KillEnemy" xml:space="preserve">
     <value>检测到玩家 {player} 秒杀怪物！( {enemyName} ,剩余血量:{HP})</value>
   </data>

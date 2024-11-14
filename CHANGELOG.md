@@ -1,5 +1,17 @@
 # Beta(公开测试版)
 
+## Version 0.7.7
+
+### 中文
+
+* [+] 作弊玩家被踢出时将会显示被反作弊踢出的提示
+* [/] 修复了卡车击杀/击伤敌人时的误报
+
+### English
+
+* [+] When a cheating player is kicked out, a message will be displayed saying that he was kicked out by anti-cheat 
+* [/] Fixed the false positive when the truck kills / injures the enemy
+
 ## Version 0.7.6
 
 ### 中文

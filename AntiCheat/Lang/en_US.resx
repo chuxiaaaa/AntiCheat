@@ -327,6 +327,9 @@
   <data name="msg_Kick" xml:space="preserve">
     <value>{player} was kicked!</value>
   </data>
+  <data name="msg_KickPlayer" xml:space="preserve">
+    <value>Cheating detected</value>
+  </data>
   <data name="msg_KillEnemy" xml:space="preserve">
     <value>{player} was detected killing a monster instantly! ({enemyName}, monster HP before: {HP})</value>
   </data>
