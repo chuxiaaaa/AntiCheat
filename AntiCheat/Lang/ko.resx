@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="config_Boss" xml:space="preserve">
+    <value>플레이어가 회사 몬스터를 강제로 공격하게 하려고 시도할 때 이를 감지합니다.</value>
+  </data>
+  <data name="config_ChatReal" xml:space="preserve">
+    <value>플레이어가 다른 플레이어의 이름으로 속이려고 할 때 이를 감지합니다.</value>
+  </data>
+  <data name="config_ChatReal_Cooldown" xml:space="preserve">
+    <value>채팅 속도 제한 (밀리초)</value>
+  </data>
+  <data name="config_DespawnItem" xml:space="preserve">
+    <value>아이템이 비정상적으로 파괴되거나 삭제될 때 이를 감지합니다.</value>
+  </data>
+  <data name="config_DetectedMessageType" xml:space="preserve">
+    <value>메시지 표시 유형을 감지합니다. PublicChat = 방 공개 채팅에 표시, HostChat = 호스트만 채팅에 표시, GUI = GUI 인터페이스에 표시</value>
+  </data>
+  <data name="config_Enemy" xml:space="preserve">
+    <value>몬스터가 비정상적으로 행동할 때 이를 감지합니다.</value>
+  </data>
+  <data name="config_FreeBuy" xml:space="preserve">
+    <value>플레이어가 무료로 아이템을 주문하는것을 감지합니다.</value>
+  </data>
+  <data name="config_Gift" xml:space="preserve">
+    <value>플레이어가 비정상적인 선물 상자 상호작용을 감지합니다.</value>
+  </data>
+  <data name="config_GrabObject" xml:space="preserve">
+    <value>기본 잡기 범위 밖에서 아이템을 집을 때 이를 감지합니다.</value>
+  </data>
+  <data name="config_GrabObject_BeltBag" xml:space="preserve">
+    <value>플레이어가 벨트 가방으로 스크랩을 집는 것을 비활성화합니다. (가방모드 비활성화)</value>
+  </data>
+  <data name="config_GrabObject_MoreSlot" xml:space="preserve">
+    <value>플레이어가 4개 이상의 아이템을 집는 것을 방지합니다.</value>
+  </data>
+  <data name="config_GrabObject_TwoHand" xml:space="preserve">
+    <value>플레이어가 동시에 여러 개의 양손 아이템을 집는 것을 방지합니다. (양손모드 비활성화)</value>
+  </data>
+  <data name="config_Health_Recover" xml:space="preserve">
+    <value>플레이어가 음수 피해를 사용하여 체력을 회복할 때 이를 감지합니다. (healthstation같은거 비활성화)</value>
+  </data>
+  <data name="config_InfiniteAmmo" xml:space="preserve">
+    <value>플레이어가 무한 탄약을 사용할 때 이를 감지합니다. 참고: 이미 무한 탄약이 주어진 샷건을 사용하는 정상적인 플레이어도 무한 탄약을 사용하는 것으로 감지될 수 있습니다.</value>
+  </data>
+  <data name="config_Invisibility" xml:space="preserve">
+    <value>보이지 않는 플레이어를 감지합니다.</value>
+  </data>
+  <data name="config_ItemCooldown" xml:space="preserve">
+    <value>플레이어가 아이템을 너무 빨리 사용할 때 이를 감지합니다.</value>
+  </data>
+  <data name="config_Jetpack" xml:space="preserve">
+    <value>플레이어가 제트팩 폭발을 강제할 때 이를 감지합니다.</value>
+  </data>
+  <data name="config_Kick" xml:space="preserve">
+    <value>이 행동이 감지되면 플레이어를 킥합니다.</value>
+  </data>
+  <data name="config_KillEnemy" xml:space="preserve">
+    <value>적이 즉시 죽을 때 이를 감지합니다. 삽의 공격력을 100이 아닙니다!!!</value>
+  </data>
+  <data name="config_Landmine" xml:space="preserve">
+    <value>플레이어가 비정상적으로 지뢰를 폭발시킬 때 이를 감지합니다.</value>
+  </data>
+  <data name="config_Log" xml:space="preserve">
+    <value>로그를 표시합니다.</value>
+  </data>
+  <data name="config_Map" xml:space="preserve">
+    <value>미니맵 모드를 사용할 때 이를 감지합니다.</value>
+  </data>
+  <data name="config_Mask" xml:space="preserve">
+    <value>가면을 쓴 적이 비정상적으로 생성될 때 이를 감지합니다.</value>
+  </data>
+  <data name="config_Nameless" xml:space="preserve">
+    <value>이름이 없거나 알 수 없는 플레이어 이름을 감지합니다.</value>
+  </data>
+  <data name="config_PlayerCarryWeight" xml:space="preserve">
+    <value>플레이어의 비정상적인 운반 무게를 감지합니다.</value>
+  </data>
+  <data name="config_PlayerCarryWeight2" xml:space="preserve">
+    <value>플레이어의 운반 무게를 복원합니다.</value>
+  </data>
+  <data name="config_Prefix" xml:space="preserve">
+    <value>로비 이름 앞에 괄호로 텍스트를 넣습니다. 비활성화하려면 비워 두세여.</value>
+  </data>
+  <data name="config_RemoteTerminal" xml:space="preserve">
+    <value>플레이어가 원격으로 터미널을 사용할 때 이를 감지합니다.</value>
+  </data>
+  <data name="config_RPCReport_Delay" xml:space="preserve">
+    <value>RPC 보고 감지 지연, 플레이어가 이 시간 후에 RPC를 보고하는지 감지합니다 (밀리초 단위)</value>
+  </data>
+  <data name="config_RPCReport_Hit" xml:space="preserve">
+    <value>히트 RPC 보고 감지, 플레이어가 공격을 받고 피를 흘리지 않는 경우 감지됩니다 (무적 감지)</value>
+  </data>
+  <data name="config_RPCReport_KillPlayer" xml:space="preserve">
+    <value>KillPlayer RPC 보고 감지, 플레이어가 죽었지만 죽음을 보고하지 않는 경우 감지됩니다 (무적 감지)</value>
+  </data>
+  <data name="config_ShipBuild" xml:space="preserve">
+    <value>비정상적으로 배치되는걸 감지합니다.</value>
+  </data>
+  <data name="config_ShipConfig2" xml:space="preserve">
+    <value>이 플레이어 수에 도달하면 클라이언트가 레버를 당길 수 있습니다. (StartGameOnlyHost가 false로 설정되어야 합니다.)</value>
+  </data>
+  <data name="config_ShipConfig3" xml:space="preserve">
+    <value>이 게임 시간이 지나면 클라이언트가 이륙할 수 있습니다.</value>
+  </data>
+  <data name="config_ShipConfig4" xml:space="preserve">
+    <value>함선에 있는 생존 플레이어 수가 지정된 비율 이상일 때 클라이언트가 이륙할 수 있습니다. (0-100%)</value>
+  </data>
+  <data name="config_ShipConfig5" xml:space="preserve">
+    <value>플레이어가 함선 레버를 강제로 작동시키려고 할 때 이를 감지합니다. 감지되면 플레이어를 킥합니다.</value>
+  </data>
+  <data name="config_ShipConfig6" xml:space="preserve">
+    <value>호스트로서 단일 투표로 자동 조종을 즉시 강제할 수 있습니다.</value>
+  </data>
+  <data name="config_ShipLight" xml:space="preserve">
+    <value>플레이어가 너무 빨리 조명을 전환할 때 이를 감지합니다.</value>
+  </data>
+  <data name="config_ShipSetting" xml:space="preserve">
+    <value>호스트만이 함선을 착륙시킬 수 있습니다.</value>
+  </data>
+  <data name="config_ShipTerminal" xml:space="preserve">
+    <value>터미널 소음사용하여 시끄럽게 할 때 이를 감지합니다.</value>
+  </data>
+  <data name="config_Shovel" xml:space="preserve">
+    <value>비정상적인 삽 피해를 감지합니다.</value>
+  </data>
+  <data name="config_Shovel2" xml:space="preserve">
+    <value>플레이어가 무기 없이 피해를 입힐 수 있도록 허용합니다. 네트워크 비동기화로 인해 다른 플레이어의 활성 인벤토리 슬롯이 비동기화될 수 있습니다.</value>
+  </data>
+  <data name="config_SpawnWebTrap" xml:space="preserve">
+    <value>플레이어가 거미줄을 생성하려고 할 때 이를 감지합니다.</value>
+  </data>
+  <data name="config_Turret" xml:space="preserve">
+    <value>플레이어가 터렛을 폭주시키려고 할 때 이를 감지합니다.</value>
+  </data>
+  <data name="Item_Knife" xml:space="preserve">
+    <value>Kitchen knife</value>
+  </data>
+  <data name="Item_Shotgun" xml:space="preserve">
+    <value>shotgun</value>
+  </data>
+  <data name="Item_Shovel" xml:space="preserve">
+    <value>shovel</value>
+  </data>
+  <data name="log_load" xml:space="preserve">
+    <value>AntiCheat 모드 로드 성공!</value>
+  </data>
+  <data name="log_refuse_connect" xml:space="preserve">
+    <value>{steamId}가 게임에 접속을 시도했으나 거부되었습니다! (이미 킥됨)</value>
+  </data>
+  <data name="MessageFormat" xml:space="preserve">
+    <value>&lt;color=red&gt;{Prefix} {msg}&lt;/color&gt;</value>
+  </data>
+  <data name="msg_behind_player" xml:space="preserve">
+    <value>&lt;color=yellow&gt;[{player}] &lt;color=red&gt;was left behind.&lt;/color&gt;&lt;/color&gt;</value>
+  </data>
+  <data name="msg_Boss" xml:space="preserve">
+    <value>{player}가 회사 몬스터를 강제로 공격하게 하려고 시도하는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_ChangeLevel" xml:space="preserve">
+    <value>{player}가 유료 달을 무료 달로 변경하려고 시도하는 것이 감지되었습니다! (이 행동은 호스트에게만 허용됩니다!)</value>
+  </data>
+  <data name="msg_ChatReal" xml:space="preserve">
+    <value>{player}가 {player2}의 이름으로 채팅을 속이려고 시도했습니다!</value>
+  </data>
+  <data name="msg_DespawnItem" xml:space="preserve">
+    <value>{player}가 아이템을 파괴하는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_Enemy_ChangeOwnershipOfEnemy" xml:space="preserve">
+    <value>{player}가 몬스터의 행동을 변경하려고 시도하는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_Enemy_SwitchToBehaviour" xml:space="preserve">
+    <value>{player}가 몬스터의 상태를 변경하려고 시도하는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_FreeBuy_Item" xml:space="preserve">
+    <value>{player}가 무료로 아이템을 구매하는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_FreeBuy_Level" xml:space="preserve">
+    <value>{player}가 유료 달로 무료로 이동하려고 시도하는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_FreeBuy_SetMoney" xml:space="preserve">
+    <value>{player}가 함선의 크레딧을 수정하는 것이 감지되었습니다! ({Money})!</value>
+  </data>
+  <data name="msg_FreeBuy_unlockable" xml:space="preserve">
+    <value>{player}가 함선 잠금 해제를 무료로 구매하는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_game_start" xml:space="preserve">
+    <value>&lt;color=green&gt;이 로비에서 Anti-Cheat (v{ver})가 활성화되었습니다&lt;/color&gt;</value>
+  </data>
+  <data name="msg_Gift" xml:space="preserve">
+    <value>{player}가 선물 상자를 비정상적으로 작동시키는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_GrabObject" xml:space="preserve">
+    <value>{player}가 너무 멀리서 아이템을 집는 것이 감지되었습니다! (플레이어 좌표: {player_position}|아이템 좌표: {object_position})</value>
+  </data>
+  <data name="msg_Health_Recover" xml:space="preserve">
+    <value>{player}가 체력을 회복하는 것이 감지되었습니다 ({hp})!</value>
+  </data>
+  <data name="msg_InfiniteAmmo" xml:space="preserve">
+    <value>{player}가 무한 탄약을 사용하는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_Invisibility" xml:space="preserve">
+    <value>{player}가 보이지 않는 상태인 것이 감지되었습니다! (플레이어 좌표: {player_position})</value>
+  </data>
+  <data name="msg_ItemCooldown" xml:space="preserve">
+    <value>{player}가 아이템을 너무 빨리 사용하는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_Jetpack" xml:space="preserve">
+    <value>{player}가 제트팩 폭발을 강제하는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_Kick" xml:space="preserve">
+    <value>{player}가 킥되었습니다!</value>
+  </data>
+  <data name="msg_KickPlayer" xml:space="preserve">
+    <value>치트가 감지되었습니다</value>
+  </data>
+  <data name="msg_KillEnemy" xml:space="preserve">
+    <value>{player}가 몬스터를 즉시 죽이는 것이 감지되었습니다! ({enemyName}, 몬스터 HP 이전: {HP})</value>
+  </data>
+  <data name="msg_Landmine" xml:space="preserve">
+    <value>{player}가 지뢰를 강제로 폭발시키는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_Map" xml:space="preserve">
+    <value>{player}가 미니맵 모드를 사용하는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_Mask" xml:space="preserve">
+    <value>{player}가 가면을 쓴 적을 비정상적으로 생성하는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_Nameless" xml:space="preserve">
+    <value>{player}가 이름이 없거나 알 수 없는 이름을 사용하는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_PlayerCarryWeight" xml:space="preserve">
+    <value>{player}가 비정상적인 운반 무게를 사용하는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_PlayerCarryWeight_Recovery" xml:space="preserve">
+    <value>운반 무게가 강제로 복원되었습니다!</value>
+  </data>
+  <data name="msg_RemoteTerminal" xml:space="preserve">
+    <value>{player}가 원격으로 터미널을 사용하는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_RPCReport" xml:space="preserve">
+    <value>{player}가 {RPC} RPC를 보고하지 않는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_ShipBuild" xml:space="preserve">
+    <value>{player}가 가구를 비정상적인 위치에 배치하는 것이 감지되었습니다! ({position})</value>
+  </data>
+  <data name="msg_ShipConfig2" xml:space="preserve">
+    <value>{player}, 레버를 당기기 전에 함선에 있는 사람 수가 {cfg} 이상이 될 때까지 기다려 주세요, 감사합니다!</value>
+  </data>
+  <data name="msg_ShipConfig4" xml:space="preserve">
+    <value>{player}, 함선에 있는 사람 수가 {player_count}({cfg4}%) 이상이고 시간이 {cfg3}에 도달할 때까지 기다려 주세요. (현재 시간: {game_time})</value>
+  </data>
+  <data name="msg_ShipConfig5" xml:space="preserve">
+    <value>{player}가 함선 레버를 강제로 작동시키려고 시도하는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_ShipLight" xml:space="preserve">
+    <value>{player}가 너무 빨리 조명을 전환하는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_ShipTerminal" xml:space="preserve">
+    <value>{player}가 터미널 소음을 너무 많이 내는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_Shovel" xml:space="preserve">
+    <value>{player}가 {player2}에게 {item}으로 비정상적인 피해를 입히는 것이 감지되었습니다! ({damageAmount})</value>
+  </data>
+  <data name="msg_Shovel2" xml:space="preserve">
+    <value>{player}가 비정상적인 삽 범위로 {player2}에게 피해를 입히는 것이 감지되었습니다! ({damageAmount})</value>
+  </data>
+  <data name="msg_Shovel3" xml:space="preserve">
+    <value>{player}가 무기 없이 {player2}에게 피해를 입히는 것이 감지되었습니다! ({damageAmount})</value>
+  </data>
+  <data name="msg_Shovel4" xml:space="preserve">
+    <value>{player}가 {enemyName}에게 {item}으로 비정상적인 피해를 입히는 것이 감지되었습니다! ({damageAmount})</value>
+  </data>
+  <data name="msg_Shovel5" xml:space="preserve">
+    <value>{player}가 비정상적인 삽 범위로 {enemyName}에게 피해를 입히는 것이 감지되었습니다! ({damageAmount})</value>
+  </data>
+  <data name="msg_Shovel6" xml:space="preserve">
+    <value>{player}가 무기 없이 {enemyName}에게 피해를 입히는 것이 감지되었습니다! ({damageAmount})</value>
+  </data>
+  <data name="msg_snc_player" xml:space="preserve">
+    <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;터미널에 새로운 생물 데이터를 보냈습니다! &lt;/color&gt;&lt;/color&gt;</value>
+  </data>
+  <data name="msg_Turret" xml:space="preserve">
+    <value>{player}가 터렛을 폭주시키는 것이 감지되었습니다! (거리: {Distance})</value>
+  </data>
+  <data name="msg_Turret2" xml:space="preserve">
+    <value>{player}가 무기 없이 터렛을 폭주시키는 것이 감지되었습니다!</value>
+  </data>
+  <data name="msg_vote" xml:space="preserve">
+    <value>당신은 호스트입니다, 당신의 투표는 자동 조종을 강제할 수 있습니다.</value>
+  </data>
+  <data name="msg_vote_player" xml:space="preserve">
+    <value>{player}가 함선의 조기 출발을 위해 투표했습니다. ({now}/{max})</value>
+  </data>
+  <data name="msg_wlc_player" xml:space="preserve">
+    <value>&lt;color=green&gt;&lt;color=yellow&gt;[{player}]&lt;/color&gt;가 함선에 탑승했습니다.&lt;/color&gt;</value>
+  </data>
+  <data name="Prefix" xml:space="preserve">
+    <value>[AntiCheat]</value>
+  </data>
+</root>
