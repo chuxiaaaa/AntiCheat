@@ -130,24 +130,24 @@ namespace AntiCheat
         //    yield break;
         //}
 
-        [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_3473255830")]
-        [HarmonyPrefix]
-        [HarmonyWrapSafe]
-        public static bool __rpc_handler_3473255830(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        {
-            if (Check(rpcParams, out var p))
-            {
-                ByteUnpacker.ReadValueBitPacked(reader, out int animationState);
-                reader.ReadValueSafe(out float animationSpeed, default);
-                reader.Seek(0);
-                //LogInfo($"{p.playerUsername} call PlayerControllerB.UpdatePlayerAnimationServerRpc|animationState:{animationState}|animationSpeed:{animationSpeed}");
-            }
-            else if (p == null)
-            {
-                return false;
-            }
-            return true;
-        }
+        //[HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_3473255830")]
+        //[HarmonyPrefix]
+        //[HarmonyWrapSafe]
+        //public static bool __rpc_handler_3473255830(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        //{
+        //    if (Check(rpcParams, out var p))
+        //    {
+        //        ByteUnpacker.ReadValueBitPacked(reader, out int animationState);
+        //        reader.ReadValueSafe(out float animationSpeed, default);
+        //        reader.Seek(0);
+        //        //LogInfo($"{p.playerUsername} call PlayerControllerB.UpdatePlayerAnimationServerRpc|animationState:{animationState}|animationSpeed:{animationSpeed}");
+        //    }
+        //    else if (p == null)
+        //    {
+        //        return false;
+        //    }
+        //    return true;
+        //}
 
 
         ///// <summary>
@@ -2840,28 +2840,6 @@ namespace AntiCheat
             }
             return true;
         }
-
-        ///// <summary>
-        ///// 声音更新事件(处理进房卡黑屏，但是好像无效)
-        ///// Postfix SoundManager.Update
-        ///// </summary>
-        //[HarmonyPatch(typeof(SoundManager), "Update")]
-        //[HarmonyPrefix]
-        //[HarmonyWrapSafe]
-        //public static void SoundManagerUpdate()
-        //{
-        //    if (GameNetworkManager.Instance.localPlayerController == null || NetworkManager.Singleton == null)
-        //    {
-        //        count++;
-        //        if (count >= 30)
-        //        {
-        //            GameNetworkManager.Instance.LeaveCurrentSteamLobby();
-        //            count = 0;
-        //        }
-        //        return;
-        //    }
-        //    count = 0;
-        //}
 
         /// <summary>
         /// UI更新事件(房主死亡时加上一票起飞提示)

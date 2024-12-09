@@ -269,6 +269,25 @@ namespace AntiCheat
             ManualLog = Logger;
             Tabs = new Dictionary<string, bool>();
             Tabs.Add("模组配置", false);
+            FileSystemWatcher watcher = new FileSystemWatcher();
+            var fi = new FileInfo(Config.ConfigFilePath);
+            watcher.Path = fi.DirectoryName;
+            watcher.Filter = fi.Name;
+            ManualLog.LogInfo(Config.ConfigFilePath);
+            watcher.Changed += Watcher_Changed;
+            LoadConfig();
+            watcher.EnableRaisingEvents = true;
+            Harmony.CreateAndPatchAll(typeof(Patch));
+        }
+
+        private void Watcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            ManualLog.LogInfo($"Reload Config");
+            LoadConfig();
+        }
+
+        private void LoadConfig()
+        {
             var defaultLang = Language.简体中文;
             if (!File.Exists(Config.ConfigFilePath))
             {
@@ -380,11 +399,8 @@ namespace AntiCheat
 
             PlayerJoin = Config.Bind("MsgSettings", "PlayerJoinShip", LocalizationManager.GetString("msg_wlc_player"), LocalizationManager.GetString("msg_wlc_player"));
 
-            Harmony.CreateAndPatchAll(typeof(Patch));
-
             ManualLog.LogInfo($"{LocalizationManager.GetString("log_load")}");
         }
-
 
     }
 }
