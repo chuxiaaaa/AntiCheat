@@ -1,5 +1,10 @@
 # AntiCheat
 
+[![Thunderstore Version](https://img.shields.io/thunderstore/v/chuxiaaaa/AntiCheat?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/chuxiaaaa/AntiCheat/versions/)
+[![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/chuxiaaaa/AntiCheat?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/chuxiaaaa/AntiCheat/)
+
+[**简体中文(Support)**](https://github.com/chuxiaaaa/AntiCheat/blob/main/README.md) | [**Русский**](https://github.com/chuxiaaaa/AntiCheat/blob/main/docs/README-ru.md) | [**Korean(Support)**](https://github.com/chuxiaaaa/AntiCheat/blob/main/docs/README-en.md)
+
 A Lethal Company anti-cheat mod (host-only)
 
 The default language is Simplified Chinese, You can switch to English by changing the Language to "English" in the configuration file.

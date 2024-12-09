@@ -1,5 +1,10 @@
 # Античит
 
+[![Thunderstore Version](https://img.shields.io/thunderstore/v/chuxiaaaa/AntiCheat?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/chuxiaaaa/AntiCheat/versions/)
+[![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/chuxiaaaa/AntiCheat?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/chuxiaaaa/AntiCheat/)
+
+[**简体中文(Support)**](https://github.com/chuxiaaaa/AntiCheat/blob/main/docs/README-en.md) | [**English(Support)**](https://github.com/chuxiaaaa/AntiCheat/blob/main/docs/README-en.md) | [**Korean(Support)**](https://github.com/chuxiaaaa/AntiCheat/blob/main/docs/README-en.md)
+
 Античит-мод для Lethal Company (только для хоста)
 
 Язык по умолчанию - упрощенный китайский. Вы можете переключиться на английский, изменив значение Language на "en_us" в файле конфигурации.
