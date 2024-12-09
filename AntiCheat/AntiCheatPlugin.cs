@@ -273,7 +273,6 @@ namespace AntiCheat
             var fi = new FileInfo(Config.ConfigFilePath);
             watcher.Path = fi.DirectoryName;
             watcher.Filter = fi.Name;
-            ManualLog.LogInfo(Config.ConfigFilePath);
             watcher.Changed += Watcher_Changed;
             LoadConfig();
             watcher.EnableRaisingEvents = true;
