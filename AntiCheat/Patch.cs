@@ -416,7 +416,7 @@ namespace AntiCheat
                         ShowMessage(LocalizationManager.GetString("msg_Nameless"));
                         if (AntiCheatPlugin.Nameless2.Value)
                         {
-                            KickPlayer(item, true);
+                            KickPlayer(item, true, "Nameless");
                         }
                     }
                 }
@@ -453,7 +453,7 @@ namespace AntiCheat
                     { "{player}",p.playerUsername }
                 });
                 LogInfo(msg);
-                HUDManager.Instance.AddTextToChatOnServer(msg, -1);
+                //HUDManager.Instance.AddTextToChatOnServer(msg, -1);
             }
             else if (p == null)
             {
