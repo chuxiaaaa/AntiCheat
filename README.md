@@ -183,6 +183,7 @@
 - 中文 (chuxiaaaa & CoolLKKPS)
 - 英文 (NilaierMusic & CoolLKKPS)
 - 俄文 (NilaierMusic)
+- 韩文 (P-Asta)
 
 ### 模组测试人员
 

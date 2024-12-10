@@ -110,12 +110,14 @@ Example: [AC] The battle is thrilling!
 
 - Chinese (chuxiaaaa & CoolLKKPS)
 - English (DeathWrench & CoolLKKPS)
+- Korean (P-Asta)
 
 ### Readme file translation contributor
 
 - Simplified Chinese (chuxiaaaa & CoolLKKPS)
 - English (NilaierMusic & CoolLKKPS)
 - Russian (NilaierMusic)
+- Korean (P-Asta)
 
 ### Mod Testers
 
