@@ -3,7 +3,7 @@
 [![Thunderstore Version](https://img.shields.io/thunderstore/v/chuxiaaaa/AntiCheat?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/chuxiaaaa/AntiCheat/versions/)
 [![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/chuxiaaaa/AntiCheat?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/chuxiaaaa/AntiCheat/)
 
-[**简体中文(Support)**](https://github.com/chuxiaaaa/AntiCheat/blob/main/README.md) | [**Русский**](https://github.com/chuxiaaaa/AntiCheat/blob/main/docs/README-ru.md) | [**Korean(Support)**](https://github.com/chuxiaaaa/AntiCheat/blob/main/docs/README-en.md)
+[**简体中文(Support)**](https://github.com/chuxiaaaa/AntiCheat/blob/main/README.md) | **English(Support)** | [**Русский**](https://github.com/chuxiaaaa/AntiCheat/blob/main/docs/README-ru.md) | [**한국어(Support)**](https://github.com/chuxiaaaa/AntiCheat/blob/main/docs/README-ko.md)
 
 A Lethal Company anti-cheat mod (host-only)
 
@@ -32,73 +32,73 @@ Example: [AC] The battle is thrilling!
 
 ### Detection
 
-* Anti-kick detection
+- Anti-kick detection
 
-  * Detects if player join the lobby with Anti-kick
+  - Detects if player join the lobby with Anti-kick
 
-* Lever pull detection
+- Lever pull detection
 
-  * Limited ship lever to landing and departure by checking how many player are in the ship and if current time are approved to do so or not
-  * Prevent malicious lever pull
+  - Limited ship lever to landing and departure by checking how many player are in the ship and if current time are approved to do so or not
+  - Prevent malicious lever pull
 
-* Abnormal furniture position detection
-* Abnormal item interaction cooldown detection
+- Abnormal furniture position detection
+- Abnormal item interaction cooldown detection
 
-  * Detects item interaction cooldown, including switch slot to reduce shovel swing cooldown
+  - Detects item interaction cooldown, including switch slot to reduce shovel swing cooldown
 
-* Spamming light switch detection
-* Spamming terminal noise detection
-* Abnormal item despawn detection
-* Fake chat message detection
-* Abnormal masked enemy detection
-* Abnormal gift box interaction detection
-* Abnormal spiderweb spawning detection
-* Abnormal turret berserk mode detection
-* Invisible player detection
-* Abnormal jetpack explosion detection
-* Abnormal landmine triggering detection
-* Abnormal monster detection
-* Mini-map detection
+- Spamming light switch detection
+- Spamming terminal noise detection
+- Abnormal item despawn detection
+- Fake chat message detection
+- Abnormal masked enemy detection
+- Abnormal gift box interaction detection
+- Abnormal spiderweb spawning detection
+- Abnormal turret berserk mode detection
+- Invisible player detection
+- Abnormal jetpack explosion detection
+- Abnormal landmine triggering detection
+- Abnormal monster detection
+- Mini-map detection
 
-  * Detects player who snooping, which detect snooping on loot, mines, turret, enemy locations and more
+  - Detects player who snooping, which detect snooping on loot, mines, turret, enemy locations and more
 
-* Enemy kill detection
+- Enemy kill detection
 
-  * Detects if player kill an enemy from too far away
+  - Detects if player kill an enemy from too far away
 
-* Item pickup distance detection
-* Abnormal shovel damage detection
+- Item pickup distance detection
+- Abnormal shovel damage detection
 
-  * No 99 shovel dmg!
+  - No 99 shovel dmg!
 
-* Player name detection
+- Player name detection
 
-  * Notify if player have Nameless or Unknown name
+  - Notify if player have Nameless or Unknown name
 
-* Abnormal purchases detection
+- Abnormal purchases detection
 
-  * Detects if player purchase items, unlockables or routing moon for free
+  - Detects if player purchase items, unlockables or routing moon for free
 
-* Infinite ammo detection
+- Infinite ammo detection
 
-  * Detects if player load and firing the ammo that doesn't even exist
-  * Normal player can trigger this, as long as the shotgun has the ammo that doesn't exist
+  - Detects if player load and firing the ammo that doesn't even exist
+  - Normal player can trigger this, as long as the shotgun has the ammo that doesn't exist
 
-* Boss attack spoofing detection
-* Abnormal credits detection
-* Remote terminal detection
-* Prevention of client-side monster killing RPC to kill other players
+- Boss attack spoofing detection
+- Abnormal credits detection
+- Remote terminal detection
+- Prevention of client-side monster killing RPC to kill other players
 
-  * Prevents instant-kills
+  - Prevents instant-kills
 
-* Prevent the player join the lobby twice if they already in the lobby
-* (WIP) Speed detection
-* (WIP) Stamina detection
+- Prevent the player join the lobby twice if they already in the lobby
+- (WIP) Speed detection
+- (WIP) Stamina detection
 
 ### Other
 
-* Lobby name prefix
-* Editable lobby welcome message
+- Lobby name prefix
+- Editable lobby welcome message
 
 ## Contributions
 
@@ -108,25 +108,25 @@ Example: [AC] The battle is thrilling!
 
 ### Localized translation contributor
 
-* Chinese (chuxiaaaa & CoolLKKPS)
-* English (DeathWrench & CoolLKKPS)
+- Chinese (chuxiaaaa & CoolLKKPS)
+- English (DeathWrench & CoolLKKPS)
 
 ### Readme file translation contributor
 
-* Simplified Chinese (chuxiaaaa & CoolLKKPS)
-* English (NilaierMusic & CoolLKKPS)
-* Russian (NilaierMusic)
+- Simplified Chinese (chuxiaaaa & CoolLKKPS)
+- English (NilaierMusic & CoolLKKPS)
+- Russian (NilaierMusic)
 
 ### Mod Testers
 
-* 超级骇人鲸 
-* Alan Backer
-* 沈阳最速傳說疾走の猛虎！貴物刀一郎
-* 柒小鸭yz
-* 喜欢睡觉の极茶龙 
-* 东南枝
-* Melissa
-* 我不吃牛肉
+- 超级骇人鲸
+- Alan Backer
+- 沈阳最速傳說疾走の猛虎！貴物刀一郎
+- 柒小鸭 yz
+- 喜欢睡觉の极茶龙
+- 东南枝
+- Melissa
+- 我不吃牛肉
 
 We welcome contributions from capable developers to improve this mod.
 
