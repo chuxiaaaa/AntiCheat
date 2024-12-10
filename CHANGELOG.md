@@ -9,8 +9,8 @@
 
 ### English
 
-[+] Changes made to the configuration file will take effect immediately (no need to restart the game).
-[+] Added support for Korean (P-Asta); set LanguageSetting.Language = Korean in the configuration file to enable.
+* [+] Changes made to the configuration file will take effect immediately (no need to restart the game).
+* [+] Added support for Korean (P-Asta); set LanguageSetting.Language = Korean in the configuration file to enable.
 
 ## Version 0.7.7
 
