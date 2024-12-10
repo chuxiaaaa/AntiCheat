@@ -291,7 +291,11 @@ namespace AntiCheat
             if (!File.Exists(Config.ConfigFilePath))
             {
                 var lang = System.Globalization.CultureInfo.CurrentCulture.Name.ToLower();
-                if (!lang.StartsWith("zh-"))
+                if (lang.StartsWith("ko"))
+                {
+                    defaultLang = Language.Korean;
+                }
+                else if (!lang.StartsWith("zh-"))
                 {
                     defaultLang = Language.English;
                 }
