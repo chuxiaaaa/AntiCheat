@@ -1,5 +1,17 @@
 # Beta(公开测试版)
 
+## Version 0.7.8
+
+### 中文
+
+* [+] 修改配置文件后将会即时生效（不需要重启游戏了）
+* [+] 新增 韩文 支持(P-Asta)，配置文件 LanguageSetting.Language = Korean 即可启用
+
+### English
+
+[+] Changes made to the configuration file will take effect immediately (no need to restart the game).
+[+] Added support for Korean (P-Asta); set LanguageSetting.Language = Korean in the configuration file to enable.
+
 ## Version 0.7.7
 
 ### 中文
