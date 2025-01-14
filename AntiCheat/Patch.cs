@@ -72,6 +72,14 @@ namespace AntiCheat
             }
         }
 
+        public static void LogError(string info)
+        {
+            if (AntiCheatPlugin.Log.Value)
+            {
+                AntiCheatPlugin.ManualLog.LogError($"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ffff")}] {info}");
+            }
+        }
+
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_4121569671")]
         [HarmonyPrefix]
         [HarmonyWrapSafe]
@@ -1378,12 +1386,12 @@ namespace AntiCheat
             {
                 //if (playerWhoHit == null)
                 //{
-                    bypassHit.Add(new HitData()
-                    {
-                        EnemyInstanceId = __instance.GetInstanceID(),
-                        force = force,
-                        CalledClient = new List<ulong>()
-                    });
+                bypassHit.Add(new HitData()
+                {
+                    EnemyInstanceId = __instance.GetInstanceID(),
+                    force = force,
+                    CalledClient = new List<ulong>()
+                });
                 //}
             }
         }
@@ -2473,6 +2481,70 @@ namespace AntiCheat
         }
 
         /// <summary>
+        /// 上弹事件
+        /// Prefix ShotgunItem.ReloadGunEffectsServerRpc
+        /// </summary>
+        [HarmonyPatch(typeof(ShotgunItem), "__rpc_handler_3349119596")]
+        [HarmonyPrefix]
+        [HarmonyWrapSafe]
+        public static bool __rpc_handler_3349119596(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (Check(rpcParams, out var p))
+            {
+                if (AntiCheatPlugin.InfiniteAmmo.Value)
+                {
+                    reader.ReadValueSafe(out bool start, default);
+                    reader.Seek(0);
+                    LogInfo($"{p.playerUsername} call ShotgunItem.ReloadGunEffectsServerRpc");
+                    if (start)
+                    {
+                        var shot = (ShotgunItem)target;
+                        var ammo = shot.playerHeldBy.ItemSlots.FirstOrDefault(x => x is GunAmmo ga && ga.ammoType == shot.gunCompatibleAmmoID);
+                        if (ammo != default)
+                        {
+                            shot.StartCoroutine(CheckAmmo(p, shot, ammo));
+                            return true;
+                        }
+                        else
+                        {
+                            ShowMessage(LocalizationManager.GetString("msg_InfiniteAmmo", new Dictionary<string, string>() {
+                                { "{player}",p.playerUsername }
+                            }));
+                            if (AntiCheatPlugin.InfiniteAmmo2.Value)
+                            {
+                                KickPlayer(p);
+                            }
+                        }
+                        return false;
+                    }
+                }
+            }
+            else if (p == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static IEnumerator CheckAmmo(PlayerControllerB p,ShotgunItem shot,GrabbableObject ammo)
+        {
+            yield return new WaitForSeconds(0.95f + 0.3f);
+            yield return new WaitForSeconds(3f);//delay
+            if (ammo != null && ammo.NetworkObject != null && ammo.NetworkObject.IsSpawned)
+            {
+                ShowMessage(LocalizationManager.GetString("msg_InfiniteAmmo", new Dictionary<string, string>() {
+                    { "{player}",p.playerUsername }
+                }));
+                if (AntiCheatPlugin.InfiniteAmmo2.Value)
+                {
+                    KickPlayer(p);
+                }
+            }
+        }
+
+
+
+        /// <summary>
         /// 开枪事件
         /// Prefix ShotgunItem.ShootGunServerRpc
         /// </summary>
@@ -2493,6 +2565,7 @@ namespace AntiCheat
                     }
                     else
                     {
+                        LogInfo($"{p.playerUsername} call ShotgunItem.ShootGunServerRpc|ShotgunItem.shellsLoaded:{s.shellsLoaded}");
                         if (s.shellsLoaded == 0)
                         {
                             ShowMessage(LocalizationManager.GetString("msg_InfiniteAmmo", new Dictionary<string, string>() {
@@ -2504,7 +2577,6 @@ namespace AntiCheat
                             }
                             return false;
                         }
-                        LogInfo($"ShotgunItem.ShootGunServerRpc|__rpc_handler_1329927282|{s.shellsLoaded}");
                     }
                 }
                 if (AntiCheatPlugin.ItemCooldown.Value)
@@ -2676,7 +2748,7 @@ namespace AntiCheat
         /// </summary>
         /// <param name="kick">玩家</param>
         /// <param name="canJoin">重新加入</param>
-        public static void KickPlayer(PlayerControllerB kick, bool canJoin = false,string Reason = null)
+        public static void KickPlayer(PlayerControllerB kick, bool canJoin = false, string Reason = null)
         {
             if (kick.actualClientId == 0)
             {
@@ -2707,6 +2779,7 @@ namespace AntiCheat
                 { "{player}",kick.playerUsername }
             }));
         }
+
 
 
         /// <summary>
