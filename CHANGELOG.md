@@ -1,16 +1,40 @@
 # Beta(公开测试版)
 
+## Version 0.8.0
+
+### 中文
+
+* [+] 新增配置 `VersionSetting.IgnoreClientConfig` ，用于忽略客户端配置有差异(这将缓解客户端出现发生错误的情况)
+* [+] 新增配置 `LogSetting.OperationLog` ，显示玩家操作信息(加入房间/购买物品/切换星球)
+
+### English
+
+Here are the translations for the provided texts:
+
+* [+] Added configuration `VersionSetting.IgnoreClientConfig` to ignore discrepancies in client configurations (this will alleviate the occurrence of errors on the client side).
+* [+] Added configuration `LogSetting.OperationLog` to display player operation information (such as joining a room, purchasing items, switching planets).
+
+## Version 0.7.9
+
+### 中文
+
+* [+] 增加了对无限子弹的两种检测
+
+### English
+
+* [+] Added two kinds of detection for unlimited ammo
+
 ## Version 0.7.8
 
 ### 中文
 
 * [+] 修改配置文件后将会即时生效（不需要重启游戏了）
-* [+] 新增 韩文 支持(P-Asta)，配置文件 LanguageSetting.Language = Korean 即可启用
+* [+] 新增 韩文 支持(@P-Asta)，配置文件 `LanguageSetting.Language = Korean` 即可启用
 
 ### English
 
 * [+] Changes made to the configuration file will take effect immediately (no need to restart the game).
-* [+] Added support for Korean (P-Asta); set LanguageSetting.Language = Korean in the configuration file to enable.
+* [+] Added support for Korean (@P-Asta); set `LanguageSetting.Language = Korean` in the configuration file to enable.
 
 ## Version 0.7.7
 
@@ -40,14 +64,14 @@
 
 ### 中文
 
-* [+] 新增聊天限速 ChatRealSettings.Cooldown 默认 200 毫秒
+* [+] 新增聊天限速 `ChatRealSettings.Cooldown` 默认 200 毫秒
 * [/] 优化了部分日志输出
 * [/] 优化了聊天检测
 * [+] 怪物击杀玩家 加入了对食人魔的检测
 
 ### English
 
-* [+] Added chat speed limit ChatRealSettings.Cooldown, default 200 milliseconds 
+* [+] Added chat speed limit `ChatRealSettings.Cooldown`, default 200 milliseconds 
 * [/] Optimized some log output 
 * [/] Optimized chat detection 
 * [+] Monster kills player, added detection for ogres

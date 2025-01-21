@@ -156,6 +156,9 @@
   <data name="config_Health_Recover" xml:space="preserve">
     <value>玩家回血检测(使用负伤害回血)</value>
   </data>
+  <data name="config_IgnoreClientConfig" xml:space="preserve">
+    <value>忽略客户端配置有差异(这将缓解客户端发生错误的情况)</value>
+  </data>
   <data name="config_InfiniteAmmo" xml:space="preserve">
     <value>无限子弹检测</value>
   </data>
@@ -188,6 +191,9 @@
   </data>
   <data name="config_Nameless" xml:space="preserve">
     <value>玩家名字检测(Nameless或Unknown)</value>
+  </data>
+  <data name="config_OperationLog" xml:space="preserve">
+    <value>客户端玩家操作记录</value>
   </data>
   <data name="config_PlayerCarryWeight" xml:space="preserve">
     <value>玩家异常负重检测</value>
@@ -410,6 +416,18 @@
   </data>
   <data name="msg_wlc_player" xml:space="preserve">
     <value>&lt;color=green&gt;欢迎 &lt;color=yellow&gt;{player}&lt;/color&gt; 加入飞船&lt;/color&gt;</value>
+  </data>
+  <data name="OperationLog_BuyItem" xml:space="preserve">
+    <value>[操作记录] {player} 购买 {items} 物品</value>
+  </data>
+  <data name="OperationLog_BuyShipUnlockable" xml:space="preserve">
+    <value>[操作记录] {player} 解锁 {unlockable} 物品</value>
+  </data>
+  <data name="OperationLog_ChangeLevel" xml:space="preserve">
+    <value>[操作记录] {player} 切换星球 {planet}</value>
+  </data>
+  <data name="OperationLog_JoinLobby" xml:space="preserve">
+    <value>{player} 加入房间中...</value>
   </data>
   <data name="Prefix" xml:space="preserve">
     <value>[反作弊]</value>

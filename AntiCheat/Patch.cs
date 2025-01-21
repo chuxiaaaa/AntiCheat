@@ -68,7 +68,7 @@ namespace AntiCheat
         {
             if (AntiCheatPlugin.Log.Value)
             {
-                AntiCheatPlugin.ManualLog.LogInfo($"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ffff")}] {info}");
+                AntiCheatPlugin.ManualLog.LogInfo($"{info}");
             }
         }
 
@@ -76,7 +76,7 @@ namespace AntiCheat
         {
             if (AntiCheatPlugin.Log.Value)
             {
-                AntiCheatPlugin.ManualLog.LogError($"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ffff")}] {info}");
+                AntiCheatPlugin.ManualLog.LogError($"{info}");
             }
         }
 
@@ -515,9 +515,9 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_1134466287(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Check(rpcParams, out var p))
+            if (Check(rpcParams, out var p) || true)
             {
-                LogInfo($"{p.playerUsername}|StartOfRound.ChangeLevelServerRpc");
+                //LogInfo($"{p.playerUsername}|StartOfRound.ChangeLevelServerRpc");
                 if (AntiCheatPlugin.RemoteTerminal.Value)
                 {
                     if (!CheckRemoteTerminal(p))
@@ -525,11 +525,11 @@ namespace AntiCheat
                         return false;
                     }
                 }
+                ByteUnpacker.ReadValueBitPacked(reader, out int levelID);
+                ByteUnpacker.ReadValueBitPacked(reader, out int newGroupCreditsAmount);
+                reader.Seek(0);
                 if (AntiCheatPlugin.FreeBuy.Value)
                 {
-                    ByteUnpacker.ReadValueBitPacked(reader, out int levelID);
-                    ByteUnpacker.ReadValueBitPacked(reader, out int newGroupCreditsAmount);
-                    reader.Seek(0);
                     if (newGroupCreditsAmount > Money || Money < 0)
                     {
                         ShowMessage(LocalizationManager.GetString("msg_FreeBuy_SetMoney", new Dictionary<string, string>() {
@@ -548,32 +548,47 @@ namespace AntiCheat
                         return false;
                     }
                     var terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
-                    var Route = terminal.terminalNodes.allKeywords[26];//Route
-                    int itemCost = Route.compatibleNouns[levelID].result.itemCost;
-                    if (itemCost == 0 && Route.compatibleNouns[StartOfRound.Instance.currentLevelID].result.itemCost != 0)
+                    var Route = terminal.terminalNodes.allKeywords.FirstOrDefault(x => x.word.ToLower() == "route");//Route
+                    var level = StartOfRound.Instance.levels[levelID].PlanetName.Split(' ')[0];
+                    var compatibleNoun = Route.compatibleNouns.Where(x => x.result.name == level + "route");
+                    if (compatibleNoun.Any())
                     {
-                        ShowMessage(LocalizationManager.GetString("msg_FreeBuy_Level", new Dictionary<string, string>() {
-                            { "{player}",p.playerUsername }
-                        }));
-                        return false;
-                    }
-                    LogInfo($"{p.playerUsername}|ChangeLevelServerRpc|levelID:{levelID}|{itemCost}");
-                    if (itemCost == 0)
-                    {
-                        return true;
-                    }
-                    int newValue = Money - itemCost;
-                    if (newValue != newGroupCreditsAmount || Money == 0)
-                    {
-                        LogInfo($"{p.playerUsername}|ChangeLevelServerRpc|levelID:{levelID}|ExpectedValue:{newValue.ToString()}|newGroupCreditsAmount:{newGroupCreditsAmount}");
-                        ShowMessage(LocalizationManager.GetString("msg_FreeBuy_Level", new Dictionary<string, string>() {
-                            { "{player}",p.playerUsername }
-                        }));
-                        if (AntiCheatPlugin.FreeBuy2.Value)
+                        int itemCost = compatibleNoun.First().result.itemCost;
+                        level = StartOfRound.Instance.currentLevel.PlanetName.Split(' ')[0];
+                        var nowCompatibleNoun = Route.compatibleNouns.Where(x => x.result.name == level + "route");
+                        if (itemCost == 0 && nowCompatibleNoun.Any() && nowCompatibleNoun.First().result.itemCost != 0)
                         {
-                            KickPlayer(p);
+                            ShowMessage(LocalizationManager.GetString("msg_FreeBuy_Level", new Dictionary<string, string>() {
+                                { "{player}",p.playerUsername }
+                            }));
+                            return false;
                         }
-                        return false;
+                        LogInfo($"{p.playerUsername}|ChangeLevelServerRpc|levelID:{levelID}|{itemCost}");
+                        if (itemCost != 0)
+                        {
+                            int newValue = Money - itemCost;
+                            if (newValue != newGroupCreditsAmount || Money == 0)
+                            {
+                                ShowMessage(LocalizationManager.GetString("msg_FreeBuy_Level", new Dictionary<string, string>() {
+                                    { "{player}",p.playerUsername }
+                                }));
+                                if (AntiCheatPlugin.FreeBuy2.Value)
+                                {
+                                    KickPlayer(p);
+                                }
+                                return false;
+                            }
+                        }
+                    }
+                }
+                if (AntiCheatPlugin.OperationLog.Value)
+                {
+                    if (levelID < StartOfRound.Instance.levels.Length)
+                    {
+                        ShowMessageHostOnly(LocalizationManager.GetString("OperationLog_ChangeLevel", new Dictionary<string, string>() {
+                            { "{player}",p.playerUsername },
+                            { "{planet}",StartOfRound.Instance.levels[levelID].PlanetName }
+                        }));
                     }
                 }
             }
@@ -585,6 +600,10 @@ namespace AntiCheat
         }
 
 
+        /// <summary>
+        /// StartOfRound.BuyShipUnlockableServerRpc
+        /// </summary>
+        /// <returns></returns>
         [HarmonyPatch(typeof(StartOfRound), "__rpc_handler_3953483456")]
         [HarmonyPrefix]
         [HarmonyWrapSafe]
@@ -599,17 +618,15 @@ namespace AntiCheat
                         return false;
                     }
                 }
+                ByteUnpacker.ReadValueBitPacked(reader, out int unlockableID);
+                ByteUnpacker.ReadValueBitPacked(reader, out int newGroupCreditsAmount);
+                reader.Seek(0);
                 if (AntiCheatPlugin.FreeBuy.Value)
                 {
-                    int unlockableID;
-                    ByteUnpacker.ReadValueBitPacked(reader, out unlockableID);
-                    int newGroupCreditsAmount;
-                    ByteUnpacker.ReadValueBitPacked(reader, out newGroupCreditsAmount);
-                    reader.Seek(0);
-                    LogInfo($"__rpc_handler_3953483456|newGroupCreditsAmount:{newGroupCreditsAmount}");
+                    //LogInfo($"__rpc_handler_3953483456|newGroupCreditsAmount:{newGroupCreditsAmount}");
                     if (Money == newGroupCreditsAmount || Money == 0)
                     {
-                        LogInfo($"Money:{Money}|newGroupCreditsAmount:{newGroupCreditsAmount}");
+                        //LogInfo($"Money:{Money}|newGroupCreditsAmount:{newGroupCreditsAmount}");
                         ShowMessage(LocalizationManager.GetString("msg_FreeBuy_unlockable", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername }
                         }));
@@ -630,6 +647,16 @@ namespace AntiCheat
                             KickPlayer(p);
                         }
                         return false;
+                    }
+                }
+                if (AntiCheatPlugin.OperationLog.Value)
+                {
+                    if (unlockableID < StartOfRound.Instance.unlockablesList.unlockables.Count)
+                    {
+                        ShowMessageHostOnly(LocalizationManager.GetString("OperationLog_BuyShipUnlockable", new Dictionary<string, string>() {
+                            { "{player}",p.playerUsername },
+                            { "{unlockable}",StartOfRound.Instance.unlockablesList.unlockables[unlockableID].unlockableName }
+                        }));
                     }
                 }
             }
@@ -657,12 +684,16 @@ namespace AntiCheat
             return true;
         }
 
+        /// <summary>
+        /// Terminal.BuyItemsServerRpc
+        /// </summary>
+        /// <returns></returns>
         [HarmonyPatch(typeof(Terminal), "__rpc_handler_4003509079")]
         [HarmonyPrefix]
         [HarmonyWrapSafe]
         public static bool __rpc_handler_4003509079(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Check(rpcParams, out var p))
+            if (Check(rpcParams, out var p) || true)
             {
                 if (AntiCheatPlugin.RemoteTerminal.Value)
                 {
@@ -671,17 +702,18 @@ namespace AntiCheat
                         return false;
                     }
                 }
+                reader.ReadValueSafe(out bool flag, default);
+                int[] boughtItems = null;
+                if (flag)
+                {
+                    reader.ReadValueSafe(out boughtItems, default);
+                }
+                ByteUnpacker.ReadValueBitPacked(reader, out int newGroupCredits);
+                reader.Seek(0);
+
                 if (AntiCheatPlugin.FreeBuy.Value)
                 {
-                    reader.ReadValueSafe(out bool flag, default);
-                    int[] boughtItems = null;
-                    if (flag)
-                    {
-                        reader.ReadValueSafe(out boughtItems, default);
-                    }
-                    ByteUnpacker.ReadValueBitPacked(reader, out int newGroupCredits);
-                    reader.Seek(0);
-                    LogInfo("__rpc_handler_4003509079|boughtItems:" + string.Join(",", boughtItems) + "|newGroupCredits:" + newGroupCredits + "|Money:" + Money);
+                    //LogInfo("__rpc_handler_4003509079|boughtItems:" + string.Join(",", boughtItems) + "|newGroupCredits:" + newGroupCredits + "|Money:" + Money);
                     if (Money == newGroupCredits || Money == 0)
                     {
                         ShowMessage(LocalizationManager.GetString("msg_FreeBuy_Item", new Dictionary<string, string>() {
@@ -704,6 +736,17 @@ namespace AntiCheat
                             KickPlayer(p);
                         }
                         return false;
+                    }
+                }
+                if (AntiCheatPlugin.OperationLog.Value)
+                {
+                    var terminal = (Terminal)target;
+                    if (boughtItems.Count(x => x < terminal.buyableItemsList.Length) == boughtItems.Count())
+                    {
+                        ShowMessageHostOnly(LocalizationManager.GetString("OperationLog_BuyItem", new Dictionary<string, string>() {
+                            { "{player}", p.playerUsername },
+                            { "{items}", string.Join(",", boughtItems.GroupBy(x => terminal.buyableItemsList[x].itemName).Select(g => g.Count() == 1 ? g.Key : $"{g.Key}*{g.Count()}")) }
+                        }));
                     }
                 }
             }
@@ -2037,6 +2080,34 @@ namespace AntiCheat
             {
                 ConnectionIdtoSteamIdMap.Add(connection.Id, identity.SteamId.Value);
             }
+            if (AntiCheatPlugin.OperationLog.Value)
+            {
+                ShowMessageHostOnly(LocalizationManager.GetString("OperationLog_JoinLobby", new Dictionary<string, string>() {
+                    { "{player}",new Friend(ConnectionIdtoSteamIdMap[connection.Id]).Name }
+                }));
+            }
+            return true;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="__result"></param>
+        /// <returns></returns>
+        [HarmonyPatch(typeof(NetworkConfig), "CompareConfig")]
+        [HarmonyPrefix]
+        [HarmonyWrapSafe]
+        public static bool NetworkConnectionManagerInitialize(ref bool __result)
+        {
+            if (StartOfRound.Instance != null && StartOfRound.Instance.IsHost)
+            {
+                if (AntiCheatPlugin.IgnoreClientConfig.Value)
+                {
+                    __result = true;
+                    return false;
+                }
+            }
             return true;
         }
 
@@ -2526,7 +2597,7 @@ namespace AntiCheat
             return true;
         }
 
-        public static IEnumerator CheckAmmo(PlayerControllerB p,ShotgunItem shot,GrabbableObject ammo)
+        public static IEnumerator CheckAmmo(PlayerControllerB p, ShotgunItem shot, GrabbableObject ammo)
         {
             yield return new WaitForSeconds(0.95f + 0.3f);
             yield return new WaitForSeconds(3f);//delay
@@ -2986,7 +3057,7 @@ namespace AntiCheat
                     { "{now}",(TimeOfDay.Instance.votesForShipToLeaveEarly + 1).ToString() },
                     { "{max}",num.ToString() }
                 });
-                typeof(HUDManager).GetMethod("AddChatMessage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(HUDManager.Instance, new object[] { msg, "" });
+                ShowMessageHostOnly(msg);
                 if (TimeOfDay.Instance.votesForShipToLeaveEarly + 1 >= num)
                 {
                     LogInfo("Vote EndGame");
@@ -2998,6 +3069,11 @@ namespace AntiCheat
                 return false;
             }
             return true;
+        }
+
+        private static void ShowMessageHostOnly(string msg)
+        {
+            typeof(HUDManager).GetMethod("AddChatMessage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(HUDManager.Instance, new object[] { msg, "" });
         }
 
         /// <summary>

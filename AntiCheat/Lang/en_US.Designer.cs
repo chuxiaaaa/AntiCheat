@@ -178,6 +178,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 Ignore client configuration differences (this will mitigate the case of client errors) 的本地化字符串。
+        /// </summary>
+        internal static string config_IgnoreClientConfig {
+            get {
+                return ResourceManager.GetString("config_IgnoreClientConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Detects when a player has infinite ammo. Note: If a shotgun has already been given infinite ammo, a normal player using it may cause them to be detected as using infinite ammo as well. 的本地化字符串。
         /// </summary>
         internal static string config_InfiniteAmmo {
@@ -273,6 +282,15 @@ namespace AntiCheat.Lang {
         internal static string config_Nameless {
             get {
                 return ResourceManager.GetString("config_Nameless", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Client-side player action logs 的本地化字符串。
+        /// </summary>
+        internal static string config_OperationLog {
+            get {
+                return ResourceManager.GetString("config_OperationLog", resourceCulture);
             }
         }
         
@@ -939,6 +957,42 @@ namespace AntiCheat.Lang {
         internal static string msg_wlc_player {
             get {
                 return ResourceManager.GetString("msg_wlc_player", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 [ActionLog] {player} purchased {items} 的本地化字符串。
+        /// </summary>
+        internal static string OperationLog_BuyItem {
+            get {
+                return ResourceManager.GetString("OperationLog_BuyItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 [ActionLog] {player} purchased {unlockable} 的本地化字符串。
+        /// </summary>
+        internal static string OperationLog_BuyShipUnlockable {
+            get {
+                return ResourceManager.GetString("OperationLog_BuyShipUnlockable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 [ActionLog] {player} routed to moon {planet} 的本地化字符串。
+        /// </summary>
+        internal static string OperationLog_ChangeLevel {
+            get {
+                return ResourceManager.GetString("OperationLog_ChangeLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {player} is joining... 的本地化字符串。
+        /// </summary>
+        internal static string OperationLog_JoinLobby {
+            get {
+                return ResourceManager.GetString("OperationLog_JoinLobby", resourceCulture);
             }
         }
         

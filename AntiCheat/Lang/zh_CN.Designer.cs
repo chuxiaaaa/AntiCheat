@@ -178,6 +178,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 忽略客户端配置有差异(这将缓解客户端发生错误的情况) 的本地化字符串。
+        /// </summary>
+        internal static string config_IgnoreClientConfig {
+            get {
+                return ResourceManager.GetString("config_IgnoreClientConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 无限子弹检测 的本地化字符串。
         /// </summary>
         internal static string config_InfiniteAmmo {
@@ -273,6 +282,15 @@ namespace AntiCheat.Lang {
         internal static string config_Nameless {
             get {
                 return ResourceManager.GetString("config_Nameless", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 客户端玩家操作记录 的本地化字符串。
+        /// </summary>
+        internal static string config_OperationLog {
+            get {
+                return ResourceManager.GetString("config_OperationLog", resourceCulture);
             }
         }
         
@@ -939,6 +957,42 @@ namespace AntiCheat.Lang {
         internal static string msg_wlc_player {
             get {
                 return ResourceManager.GetString("msg_wlc_player", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 [操作记录] {player} 购买 {items} 物品 的本地化字符串。
+        /// </summary>
+        internal static string OperationLog_BuyItem {
+            get {
+                return ResourceManager.GetString("OperationLog_BuyItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 [操作记录] {player} 解锁 {unlockable} 物品 的本地化字符串。
+        /// </summary>
+        internal static string OperationLog_BuyShipUnlockable {
+            get {
+                return ResourceManager.GetString("OperationLog_BuyShipUnlockable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 [操作记录] {player} 切换星球 {planet} 的本地化字符串。
+        /// </summary>
+        internal static string OperationLog_ChangeLevel {
+            get {
+                return ResourceManager.GetString("OperationLog_ChangeLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {player} 加入房间中... 的本地化字符串。
+        /// </summary>
+        internal static string OperationLog_JoinLobby {
+            get {
+                return ResourceManager.GetString("OperationLog_JoinLobby", resourceCulture);
             }
         }
         

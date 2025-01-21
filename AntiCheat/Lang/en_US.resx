@@ -156,6 +156,9 @@
   <data name="config_Health_Recover" xml:space="preserve">
     <value>Detects players using negative damage to recover health</value>
   </data>
+  <data name="config_IgnoreClientConfig" xml:space="preserve">
+    <value>Ignore client configuration differences (this will mitigate the case of client errors)</value>
+  </data>
   <data name="config_InfiniteAmmo" xml:space="preserve">
     <value>Detects when a player has infinite ammo. Note: If a shotgun has already been given infinite ammo, a normal player using it may cause them to be detected as using infinite ammo as well.</value>
   </data>
@@ -188,6 +191,9 @@
   </data>
   <data name="config_Nameless" xml:space="preserve">
     <value>Detects invalid or anomalous player names such as Nameless or Unknown.</value>
+  </data>
+  <data name="config_OperationLog" xml:space="preserve">
+    <value>Client-side player action logs</value>
   </data>
   <data name="config_PlayerCarryWeight" xml:space="preserve">
     <value>Detecting abnormal player carry weight</value>
@@ -410,6 +416,18 @@
   </data>
   <data name="msg_wlc_player" xml:space="preserve">
     <value>&lt;color=green&gt;&lt;color=yellow&gt;[{player}]&lt;/color&gt; joined the ship.&lt;/color&gt;</value>
+  </data>
+  <data name="OperationLog_BuyItem" xml:space="preserve">
+    <value>[ActionLog] {player} purchased {items}</value>
+  </data>
+  <data name="OperationLog_BuyShipUnlockable" xml:space="preserve">
+    <value>[ActionLog] {player} purchased {unlockable}</value>
+  </data>
+  <data name="OperationLog_ChangeLevel" xml:space="preserve">
+    <value>[ActionLog] {player} routed to moon {planet}</value>
+  </data>
+  <data name="OperationLog_JoinLobby" xml:space="preserve">
+    <value>{player} is joining...</value>
   </data>
   <data name="Prefix" xml:space="preserve">
     <value>[AntiCheat]</value>
