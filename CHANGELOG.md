@@ -6,11 +6,13 @@
 
 * [+] 新增配置 `VersionSetting.IgnoreClientConfig` ，用于忽略客户端配置有差异(这将缓解客户端出现发生错误的情况)
 * [+] 新增配置 `LogSetting.OperationLog` ，显示玩家操作信息(加入房间/购买物品/切换星球)
+* [/] 修复了星球零元购的误报
 
 ### English
 
 * [+] Added configuration `VersionSetting.IgnoreClientConfig` to ignore discrepancies in client configurations (this will alleviate the occurrence of errors on the client side).
 * [+] Added configuration `LogSetting.OperationLog` to display player operation information (such as joining a room, purchasing items, switching planets).
+* [/] Fixed false positives for Planet Zero purchase
 
 ## Version 0.7.9
 
