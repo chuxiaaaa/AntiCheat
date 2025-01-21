@@ -9,8 +9,6 @@
 
 ### English
 
-Here are the translations for the provided texts:
-
 * [+] Added configuration `VersionSetting.IgnoreClientConfig` to ignore discrepancies in client configurations (this will alleviate the occurrence of errors on the client side).
 * [+] Added configuration `LogSetting.OperationLog` to display player operation information (such as joining a room, purchasing items, switching planets).
 
