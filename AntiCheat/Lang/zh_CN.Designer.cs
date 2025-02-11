@@ -70,6 +70,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 检测玩家将 付费星球 切换至 免费星球 的本地化字符串。
+        /// </summary>
+        internal static string config_ChangToFreeMoon {
+            get {
+                return ResourceManager.GetString("config_ChangToFreeMoon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 发言伪造检测 的本地化字符串。
         /// </summary>
         internal static string config_ChatReal {
@@ -556,6 +565,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 检测到玩家 {player} 将 付费星球 切换至 免费星球 的本地化字符串。
+        /// </summary>
+        internal static string msg_ChangeToFreeLevel {
+            get {
+                return ResourceManager.GetString("msg_ChangeToFreeLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 检测到玩家 {player} 尝试伪装成 {player2} 发言！ 的本地化字符串。
         /// </summary>
         internal static string msg_ChatReal {
@@ -907,7 +925,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 &lt;color=yellow&gt;[{player}] &lt;color=green&gt;新的生物数据已发送至终端！&lt;/color&gt;&lt;/color&gt; 的本地化字符串。
+        ///   查找类似 [{player}] 新的生物数据已发送至终端！({enemy}) 的本地化字符串。
         /// </summary>
         internal static string msg_snc_player {
             get {

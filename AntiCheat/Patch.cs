@@ -450,25 +450,7 @@ namespace AntiCheat
             }
         }
 
-        [HarmonyPatch(typeof(HUDManager), "__rpc_handler_1944155956")]
-        [HarmonyPrefix]
-        [HarmonyWrapSafe]
-        public static bool __rpc_handler_1944155956(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        {
-            if (Check(rpcParams, out var p))
-            {
-                string msg = LocalizationManager.GetString("msg_snc_player", new Dictionary<string, string>() {
-                    { "{player}",p.playerUsername }
-                });
-                LogInfo(msg);
-                //HUDManager.Instance.AddTextToChatOnServer(msg, -1);
-            }
-            else if (p == null)
-            {
-                return false;
-            }
-            return true;
-        }
+     
 
         [HarmonyPatch(typeof(GameNetworkManager), "SteamMatchmaking_OnLobbyMemberJoined")]
         [HarmonyPostfix]
@@ -481,7 +463,6 @@ namespace AntiCheat
             }
             LogInfo($"SetMoney:{Money}");
             Money = UnityEngine.Object.FindObjectOfType<Terminal>().groupCredits;
-
         }
 
         /// <summary>
@@ -515,7 +496,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_1134466287(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Check(rpcParams, out var p) || true)
+            if (Check(rpcParams, out var p))
             {
                 //LogInfo($"{p.playerUsername}|StartOfRound.ChangeLevelServerRpc");
                 if (AntiCheatPlugin.RemoteTerminal.Value)
@@ -558,12 +539,12 @@ namespace AntiCheat
                         var nowCompatibleNoun = Route.compatibleNouns.Where(x => x.result.name == level + "route");
                         if (itemCost == 0 && nowCompatibleNoun.Any() && nowCompatibleNoun.First().result.itemCost != 0)
                         {
-                            ShowMessage(LocalizationManager.GetString("msg_FreeBuy_Level", new Dictionary<string, string>() {
+                            ShowMessage(LocalizationManager.GetString("msg_ChangeToFreeLevel", new Dictionary<string, string>() {
                                 { "{player}",p.playerUsername }
                             }));
                             return false;
                         }
-                        LogInfo($"{p.playerUsername}|ChangeLevelServerRpc|levelID:{levelID}|{itemCost}");
+                        LogInfo($"{p.playerUsername}|ChangeLevelServerRpc|levelID:{levelID}|itemCost:{itemCost}");
                         if (itemCost != 0)
                         {
                             int newValue = Money - itemCost;
@@ -1702,7 +1683,7 @@ namespace AntiCheat
         /// <summary>
         /// 检测是否需要处理事件(顺带处理掉SteamID为0的玩家)
         /// </summary>
-        private static bool Check(__RpcParams rpcParams, out PlayerControllerB p)
+        public static bool Check(__RpcParams rpcParams, out PlayerControllerB p)
         {
             if (StartOfRound.Instance.localPlayerController == null)
             {
@@ -2125,38 +2106,41 @@ namespace AntiCheat
             {
                 NetIdentity identity = Traverse.Create(info).Field<NetIdentity>("identity").Value;
                 ConnectionIdtoSteamIdMap.Remove(connection.Id);
+                HUDManagerPatch.SyncAllPlayerLevelsServerRpcCalls.Remove(connection.Id);
+                StartOfRoundPatch.SyncShipUnlockablesServerRpcCalls.Remove(connection.Id);
+                StartOfRoundPatch.SyncAlreadyHeldObjectsServerRpcCalls.Remove(connection.Id);
             }
         }
 
-        /// <summary>
-        /// 玩家发送SteamID事件(目前还没遇到过伪造)
-        /// Prefix PlayerControllerB.SendNewPlayerValuesServerRpc
-        /// </summary>
-        [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_2504133785")]
-        [HarmonyPrefix]
-        [HarmonyWrapSafe]
-        public static bool __rpc_handler_2504133785(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        {
-            if (!StartOfRound.Instance.localPlayerController.IsHost)//非主机
-            {
-                return true;
-            }
-            if (rpcParams.Server.Receive.SenderClientId == 0)
-            {
-                return true;
-            }
-            ByteUnpacker.ReadValueBitPacked(reader, out ulong newPlayerSteamId);
-            reader.Seek(0);
-            ulong steamId = ConnectionIdtoSteamIdMap[ClientIdToTransportId(rpcParams.Server.Receive.SenderClientId)];
-            if (newPlayerSteamId != steamId)
-            {
-                Friend f = new Friend(steamId);
-                NetworkManager.Singleton.DisconnectClient(rpcParams.Server.Receive.SenderClientId);
-                LogInfo($"玩家 {f.Name}({steamId}) 伪造SteamID({newPlayerSteamId})加入游戏");
-                return false;
-            }
-            return true;
-        }
+        ///// <summary>
+        ///// 玩家发送SteamID事件(目前还没遇到过伪造)
+        ///// Prefix PlayerControllerB.SendNewPlayerValuesServerRpc
+        ///// </summary>
+        //[HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_2504133785")]
+        //[HarmonyPrefix]
+        //[HarmonyWrapSafe]
+        //public static bool __rpc_handler_2504133785(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        //{
+        //    if (!StartOfRound.Instance.localPlayerController.IsHost)//非主机
+        //    {
+        //        return true;
+        //    }
+        //    if (rpcParams.Server.Receive.SenderClientId == 0)
+        //    {
+        //        return true;
+        //    }
+        //    ByteUnpacker.ReadValueBitPacked(reader, out ulong newPlayerSteamId);
+        //    reader.Seek(0);
+        //    ulong steamId = ConnectionIdtoSteamIdMap[ClientIdToTransportId(rpcParams.Server.Receive.SenderClientId)];
+        //    if (newPlayerSteamId != steamId)
+        //    {
+        //        Friend f = new Friend(steamId);
+        //        NetworkManager.Singleton.DisconnectClient(rpcParams.Server.Receive.SenderClientId);
+        //        LogInfo($"玩家 {f.Name}({steamId}) 伪造SteamID({newPlayerSteamId})加入游戏");
+        //        return false;
+        //    }
+        //    return true;
+        //}
 
         /// <summary>
         /// 玩家使用信号发射器发送消息
@@ -2481,7 +2465,7 @@ namespace AntiCheat
         }
 
         /// <summary>
-        /// 频繁开关灯检测，遥控器目前无法检测(为什么客户端的RPC能影响到其他玩家？待解决)
+        /// 频繁开关灯检测
         /// Prefix ShipLights.SetShipLightsServerRpc
         /// </summary>
         [HarmonyPatch(typeof(ShipLights), "__rpc_handler_1625678258")]
@@ -3006,7 +2990,7 @@ namespace AntiCheat
             {
                 return;
             }
-            if (AntiCheatPlugin.ShipConfig6.Value)
+            if (AntiCheatPlugin.ShipSetting_OnlyOneVote.Value)
             {
                 if (!TimeOfDay.Instance.shipLeavingAlertCalled)
                 {
@@ -3030,7 +3014,7 @@ namespace AntiCheat
         {
             if (StartOfRound.Instance.localPlayerController.IsHost)
             {
-                if (AntiCheatPlugin.ShipConfig6.Value)
+                if (AntiCheatPlugin.ShipSetting_OnlyOneVote.Value)
                 {
                     if (rpcParams.Server.Receive.SenderClientId == 0)
                     {

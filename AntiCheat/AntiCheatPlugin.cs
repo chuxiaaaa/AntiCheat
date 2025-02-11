@@ -24,7 +24,7 @@ namespace AntiCheat
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheatPlugin : BaseUnityPlugin
     {
-        public const string Version = "0.8.0";
+        public const string Version = "0.8.1";
         public static ManualLogSource ManualLog = null;
         public enum Language
         {
@@ -61,7 +61,8 @@ namespace AntiCheat
         public static ConfigEntry<string> ShipConfig3;
         public static ConfigEntry<int> ShipConfig4;
         public static ConfigEntry<bool> Ship_Kick;
-        public static ConfigEntry<bool> ShipConfig6;
+        public static ConfigEntry<bool> ShipSetting_OnlyOneVote;
+        public static ConfigEntry<bool> ShipSetting_ChangToFreeMoon;
 
         public static ConfigEntry<bool> ShipBuild;
         public static ConfigEntry<bool> ShipBuild2;
@@ -280,6 +281,8 @@ namespace AntiCheat
             LoadConfig();
             watcher.EnableRaisingEvents = true;
             Harmony.CreateAndPatchAll(typeof(Patch));
+            Harmony.CreateAndPatchAll(typeof(HUDManagerPatch));
+            Harmony.CreateAndPatchAll(typeof(StartOfRoundPatch));
         }
 
         private void Watcher_Changed(object sender, FileSystemEventArgs e)
@@ -308,7 +311,6 @@ namespace AntiCheat
             LocalizationManager.SetLanguage(LanguageConfig.Value.ToString());
 
             IgnoreClientConfig = Config.Bind("VersionSetting", "IgnoreClientConfig", false, LocalizationManager.GetString("config_IgnoreClientConfig"));
-
             Prefix = Config.Bind("ServerNameSetting", "Prefix", "AC", LocalizationManager.GetString("config_Prefix"));
             ShipConfig = Config.Bind("ShipSetting", "StartGameOnlyHost", true, LocalizationManager.GetString("config_ShipSetting"));
             Log = Config.Bind("LogSetting", "Log", true, LocalizationManager.GetString("config_Log"));
@@ -318,7 +320,9 @@ namespace AntiCheat
             ShipConfig2 = Config.Bind("ShipSetting", "StartGamePlayerCount", 8, LocalizationManager.GetString("config_ShipConfig2"));
             ShipConfig3 = Config.Bind("ShipSetting", "EndGamePlayerTime", "14:00", LocalizationManager.GetString("config_ShipConfig3"));
             ShipConfig4 = Config.Bind("ShipSetting", "EndGamePlayerCount", 50, LocalizationManager.GetString("config_ShipConfig4"));
-            ShipConfig6 = Config.Bind("ShipSetting", "OnlyOneVote", true, LocalizationManager.GetString("config_ShipConfig6"));
+            ShipSetting_OnlyOneVote = Config.Bind("ShipSetting", "OnlyOneVote", true, LocalizationManager.GetString("config_ShipConfig6"));
+            ShipSetting_ChangToFreeMoon = Config.Bind<bool>("ShipSetting", "ChangToFreeMoon", false, LocalizationManager.GetString("config_ChangToFreeMoon"));
+
 
             RPCReport_Delay = Config.Bind("RPCReportSetting", "Delay", 1000, LocalizationManager.GetString("config_RPCReport_Delay"));
             RPCReport_Hit = Config.Bind("RPCReportSetting", "Hit", true, LocalizationManager.GetString("config_RPCReport_Hit"));

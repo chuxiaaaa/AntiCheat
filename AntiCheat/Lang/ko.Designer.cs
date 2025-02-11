@@ -70,6 +70,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 Detects players routing moon from priced to free 的本地化字符串。
+        /// </summary>
+        internal static string config_ChangToFreeMoon {
+            get {
+                return ResourceManager.GetString("config_ChangToFreeMoon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 플레이어가 다른 플레이어의 이름으로 속이려고 할 때 이를 감지합니다. 的本地化字符串。
         /// </summary>
         internal static string config_ChatReal {
@@ -552,6 +561,15 @@ namespace AntiCheat.Lang {
         internal static string msg_ChangeLevel {
             get {
                 return ResourceManager.GetString("msg_ChangeLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {player} was detected routing moon from priced to free! 的本地化字符串。
+        /// </summary>
+        internal static string msg_ChangeToFreeLevel {
+            get {
+                return ResourceManager.GetString("msg_ChangeToFreeLevel", resourceCulture);
             }
         }
         

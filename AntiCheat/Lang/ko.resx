@@ -120,6 +120,9 @@
   <data name="config_Boss" xml:space="preserve">
     <value>플레이어가 회사 몬스터를 강제로 공격하게 하려고 시도할 때 이를 감지합니다.</value>
   </data>
+  <data name="config_ChangToFreeMoon" xml:space="preserve">
+    <value>Detects players routing moon from priced to free</value>
+  </data>
   <data name="config_ChatReal" xml:space="preserve">
     <value>플레이어가 다른 플레이어의 이름으로 속이려고 할 때 이를 감지합니다.</value>
   </data>
@@ -281,6 +284,9 @@
   </data>
   <data name="msg_ChangeLevel" xml:space="preserve">
     <value>{player}가 유료 달을 무료 달로 변경하려고 시도하는 것이 감지되었습니다! (이 행동은 호스트에게만 허용됩니다!)</value>
+  </data>
+  <data name="msg_ChangeToFreeLevel" xml:space="preserve">
+    <value>{player} was detected routing moon from priced to free!</value>
   </data>
   <data name="msg_ChatReal" xml:space="preserve">
     <value>{player}가 {player2}의 이름으로 채팅을 속이려고 시도했습니다!</value>

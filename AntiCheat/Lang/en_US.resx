@@ -120,6 +120,9 @@
   <data name="config_Boss" xml:space="preserve">
     <value>Detects when a player attempts to force the Company monster to attack.</value>
   </data>
+  <data name="config_ChangToFreeMoon" xml:space="preserve">
+    <value>Detects players routing moon from priced to free</value>
+  </data>
   <data name="config_ChatReal" xml:space="preserve">
     <value>Detects when a player attempts to spoof their name as another player's.</value>
   </data>
@@ -282,6 +285,9 @@
   <data name="msg_ChangeLevel" xml:space="preserve">
     <value>{player} was detected Changes paid moon to free moon! (This behavior is only allowed for homeowners!)</value>
   </data>
+  <data name="msg_ChangeToFreeLevel" xml:space="preserve">
+    <value>{player} was detected routing moon from priced to free!</value>
+  </data>
   <data name="msg_ChatReal" xml:space="preserve">
     <value>{player} tried to spoof {player2}'s name in chat!</value>
   </data>
@@ -400,7 +406,7 @@
     <value>{player} was detected damaging [enemyName} with no weapon! ({damageAmount})</value>
   </data>
   <data name="msg_snc_player" xml:space="preserve">
-    <value>&lt;color=yellow&gt;[{player}] &lt;color=green&gt;sent new creature data to the terminal! &lt;/color&gt;&lt;/color&gt;</value>
+    <value>[{player}] sent new creature data to the terminal! ({enemy})</value>
   </data>
   <data name="msg_Turret" xml:space="preserve">
     <value>{player} was detected causing a turret to go berserk! (distance: {Distance})</value>

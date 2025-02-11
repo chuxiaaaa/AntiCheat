@@ -70,6 +70,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 Detects players routing moon from priced to free 的本地化字符串。
+        /// </summary>
+        internal static string config_ChangToFreeMoon {
+            get {
+                return ResourceManager.GetString("config_ChangToFreeMoon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Detects when a player attempts to spoof their name as another player&apos;s. 的本地化字符串。
         /// </summary>
         internal static string config_ChatReal {
@@ -556,6 +565,15 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
+        ///   查找类似 {player} was detected routing moon from priced to free! 的本地化字符串。
+        /// </summary>
+        internal static string msg_ChangeToFreeLevel {
+            get {
+                return ResourceManager.GetString("msg_ChangeToFreeLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 {player} tried to spoof {player2}&apos;s name in chat! 的本地化字符串。
         /// </summary>
         internal static string msg_ChatReal {
@@ -907,7 +925,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 &lt;color=yellow&gt;[{player}] &lt;color=green&gt;sent new creature data to the terminal! &lt;/color&gt;&lt;/color&gt; 的本地化字符串。
+        ///   查找类似 [{player}] sent new creature data to the terminal! ({enemy}) 的本地化字符串。
         /// </summary>
         internal static string msg_snc_player {
             get {
