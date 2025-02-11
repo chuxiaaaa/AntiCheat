@@ -1,5 +1,19 @@
 # Beta(公开测试版)
 
+## Version 0.8.1
+
+### 中文
+
+* [/] 修复了房主无法从付费星球切换至免费星球的问题
+* [+] 新增配置 `ShipSetting.ChangToFreeMoon`，用于开关 玩家从付费星球切换到免费星球 检测
+* [+] 对于部分RPC进行限制，避免用于卡房
+
+### English
+
+* [/] Fixed an issue where host were unable to switch from paid planets to free planets.
+* [+] Added a new configuration `ShipSetting.ChangToFreeMoon` to toggle the detection of players switching from paid planets to free planets.
+* [+] Implemented restrictions on certain RPCs to prevent their use for room exploits.
+
 ## Version 0.8.0
 
 ### 中文
