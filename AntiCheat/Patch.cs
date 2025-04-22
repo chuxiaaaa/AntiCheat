@@ -44,15 +44,10 @@ namespace AntiCheat
     {
         public static List<ulong> jcs = new List<ulong>();
 
-        public static List<long> zdcd = new List<long>();
-        public static List<long> dgcd = new List<long>();
         public static Dictionary<ulong, List<string>> czcd = new Dictionary<ulong, List<string>>();
         public static Dictionary<ulong, List<string>> sdqcd = new Dictionary<ulong, List<string>>();
 
-        public static Dictionary<ulong, bool> ChatCooldowns = new Dictionary<ulong, bool>();
-
         public static Dictionary<uint, ulong> ConnectionIdtoSteamIdMap { get; set; } = new Dictionary<uint, ulong>();
-
 
         public static Dictionary<int, Dictionary<ulong, List<DateTime>>> chcs = new Dictionary<int, Dictionary<ulong, List<DateTime>>>();
 
@@ -113,99 +108,6 @@ namespace AntiCheat
             }
             return true;
         }
-
-        //[HarmonyPatch(typeof(PlayerControllerB), "TeleportPlayer")]
-        //[HarmonyPostfix]
-        //[HarmonyWrapSafe]
-        //public static void TeleportPlayer(PlayerControllerB __instance)
-        //{
-        //    if (!StartOfRound.Instance.IsHost)
-        //    {
-        //        return;
-        //    }
-        //    if (__instance.shipTeleporterId > 0)
-        //    {
-        //        LogInfo($"{__instance.playerUsername} call PlayerControllerB.TeleportPlayer|shipTeleporterId:{__instance.shipTeleporterId}|carryWeight:{__instance.carryWeight}");
-        //        __instance.StartCoroutine(SetCarryWeight(__instance));
-        //    }
-        //}
-
-        //public static IEnumerator SetCarryWeight(PlayerControllerB __instance)
-        //{
-        //    yield return new WaitForSeconds(0.5f);
-        //    LogInfo($"{__instance.playerUsername} call PlayerControllerB.TeleportPlayer|set carryWeight");
-        //    __instance.carryWeight = 1;
-        //    yield break;
-        //}
-
-        //[HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_3473255830")]
-        //[HarmonyPrefix]
-        //[HarmonyWrapSafe]
-        //public static bool __rpc_handler_3473255830(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        //{
-        //    if (Check(rpcParams, out var p))
-        //    {
-        //        ByteUnpacker.ReadValueBitPacked(reader, out int animationState);
-        //        reader.ReadValueSafe(out float animationSpeed, default);
-        //        reader.Seek(0);
-        //        //LogInfo($"{p.playerUsername} call PlayerControllerB.UpdatePlayerAnimationServerRpc|animationState:{animationState}|animationSpeed:{animationSpeed}");
-        //    }
-        //    else if (p == null)
-        //    {
-        //        return false;
-        //    }
-        //    return true;
-        //}
-
-
-        ///// <summary>
-        ///// Prefix PlayerControllerB.ThrowObjectServerRpc
-        ///// </summary>
-        //[HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_2376977494")]
-        //[HarmonyPrefix]
-        //[HarmonyWrapSafe]
-        //public static bool __rpc_handler_2376977494(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        //{
-        //    if (Check(rpcParams, out var p))
-        //    {
-        //        if (AntiCheatPlugin.PlayerCarryWeight.Value)
-        //        {
-        //            reader.ReadValueSafe(out NetworkObjectReference grabbedObject, default);
-        //            reader.Seek(0);
-        //            if (grabbedObject.TryGet(out var networkObject, null))
-        //            {
-        //                GrabbableObject component = networkObject.GetComponent<GrabbableObject>();
-        //                //LogInfo($"{p.playerUsername} call PlayerControllerB.ThrowObjectServerRpc|grabbedObject:{component}|{component.itemProperties.weight}");
-        //                var carryWeight = p.carryWeight;
-        //                //LogInfo($"{p.playerUsername} call PlayerControllerB.ThrowObjectServerRpc|carryWeight:{p.carryWeight}");
-        //                carryWeight -= Mathf.Clamp(component.itemProperties.weight - 1f, 0f, 10f);
-        //                LogInfo($"{p.playerUsername} call PlayerControllerB.ThrowObjectServerRpc|weight:{carryWeight}");
-        //                if (carryWeight < 1)
-        //                {
-        //                    string msg = LocalizationManager.GetString("msg_PlayerCarryWeight", new Dictionary<string, string>() {
-        //                        { "{player}",p.playerUsername },
-        //                    });
-        //                    if (AntiCheatPlugin.PlayerCarryWeight3.Value)
-        //                    {
-        //                        KickPlayer(p);
-        //                    }
-        //                    else if (AntiCheatPlugin.PlayerCarryWeight2.Value)
-        //                    {
-        //                        msg += LocalizationManager.GetString("msg_PlayerCarryWeight_Recovery"); ;
-        //                        p.DropAllHeldItemsServerRpc();
-        //                    }
-        //                    ShowMessage(msg);
-        //                }
-        //            }
-        //        }
-        //        return true;
-        //    }
-        //    else if (p == null)
-        //    {
-        //        return false;
-        //    }
-        //    return true;
-        //}
 
 
         /// <summary>
@@ -450,7 +352,7 @@ namespace AntiCheat
             }
         }
 
-     
+
 
         [HarmonyPatch(typeof(GameNetworkManager), "SteamMatchmaking_OnLobbyMemberJoined")]
         [HarmonyPostfix]
@@ -1432,6 +1334,31 @@ namespace AntiCheat
 
         public static PlayerControllerB lastDriver { get; set; }
 
+
+        [HarmonyPatch(typeof(ButlerEnemyAI), "KillEnemy")]
+        [HarmonyPrefix]
+        [HarmonyWrapSafe]
+        public static void ButlerBlowUpAndPop(ButlerEnemyAI __instance)
+        {
+            if (StartOfRound.Instance.localPlayerController.IsHost)
+            {
+                LogInfo($"bypassHit -> {__instance.enemyType.enemyName}({__instance.GetInstanceID()})");
+                if (!(bool)AccessTools.DeclaredField(typeof(ButlerEnemyAI), "startedButlerDeathAnimation").GetValue(__instance))
+                {
+                    bypassHit.Add(new HitData()
+                    {
+                        EnemyInstanceId = __instance.GetInstanceID(),
+                        force = 6,
+                        CalledClient = new List<ulong>()
+                    });
+                }
+            }
+        }
+        //public static void HitEnemy(int force = 1, PlayerControllerB playerWhoHit = null, bool playHitSFX = false, int hitID = -1)
+        //{
+        //    LogInfo($"force:{force}|playerWhoHit:{playerWhoHit?.playerUsername}|playHitSFX:{playHitSFX}|hitID:{hitID}");
+        //}
+
         [HarmonyPatch(typeof(EnemyAI), "__rpc_handler_3538577804")]
         [HarmonyPrefix]
         [HarmonyWrapSafe]
@@ -1448,7 +1375,7 @@ namespace AntiCheat
                 ByteUnpacker.ReadValueBitPacked(reader, out int playerWhoHit);
                 reader.ReadValueSafe(out bool playHitSFX, default);
                 reader.Seek(0);
-                LogInfo($"{p.playerUsername} call EnemyAI.HitEnemyServerRpc|force:{force}|playerWhoHit:{playerWhoHit}");
+                LogInfo($"{p.playerUsername} call ({((EnemyAI)target).enemyType.enemyName})EnemyAI.HitEnemyServerRpc|force:{force}|playerWhoHit:{playerWhoHit}");
                 if (p.isHostPlayerObject)
                 {
                     return true;
@@ -2105,10 +2032,10 @@ namespace AntiCheat
             if (NetworkManager.Singleton?.IsListening == true)
             {
                 NetIdentity identity = Traverse.Create(info).Field<NetIdentity>("identity").Value;
+                HUDManagerPatch.SyncAllPlayerLevelsServerRpcCalls.Remove(ConnectionIdtoSteamIdMap[connection.Id]);
+                StartOfRoundPatch.SyncShipUnlockablesServerRpcCalls.Remove(ConnectionIdtoSteamIdMap[connection.Id]);
+                StartOfRoundPatch.SyncAlreadyHeldObjectsServerRpcCalls.Remove(ConnectionIdtoSteamIdMap[connection.Id]);
                 ConnectionIdtoSteamIdMap.Remove(connection.Id);
-                HUDManagerPatch.SyncAllPlayerLevelsServerRpcCalls.Remove(connection.Id);
-                StartOfRoundPatch.SyncShipUnlockablesServerRpcCalls.Remove(connection.Id);
-                StartOfRoundPatch.SyncAlreadyHeldObjectsServerRpcCalls.Remove(connection.Id);
             }
         }
 
@@ -2142,32 +2069,7 @@ namespace AntiCheat
         //    return true;
         //}
 
-        /// <summary>
-        /// 玩家使用信号发射器发送消息
-        /// Prefix HUDManager.UseSignalTranslatorServerRpc
-        /// </summary>
-        /// <returns></returns>
-        [HarmonyPatch(typeof(HUDManager), "__rpc_handler_2436660286")]
-        [HarmonyPrefix]
-        [HarmonyWrapSafe]
-        public static bool __rpc_handler_2436660286(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        {
-            if (Check(rpcParams, out var p))
-            {
-                if (AntiCheatPlugin.RemoteTerminal.Value)
-                {
-                    if (!CheckRemoteTerminal(p))
-                    {
-                        return false;
-                    }
-                }
-            }
-            else if (p == null)
-            {
-                return false;
-            }
-            return true;
-        }
+      
 
         /// <summary>
         /// Prefix HUDManager.AddTextMessageServerRpc
@@ -2189,7 +2091,6 @@ namespace AntiCheat
                 LogInfo($"HUDManager.AddTextMessageServerRpc|{p.playerUsername}|{chatMessage}");
                 if (chatMessage.Contains("<color") || chatMessage.Contains("<size"))
                 {
-                    LogInfo("playerId = -1");
                     if (AntiCheatPlugin.Map.Value)
                     {
                         if (chatMessage.Contains("<size=0>Tyzeron.Minimap"))
@@ -2281,13 +2182,7 @@ namespace AntiCheat
                             }
                             else
                             {
-                                if (ChatCooldowns[p.playerSteamId])
-                                {
-                                    LogInfo($"{p.playerUsername} in ChatCooldown");
-                                    return false;
-                                }
-                                p.StartCoroutine(ChatCoolDown(p));
-                                return true;
+                               return  CooldownManager.CheckCooldown("Chat", p);
                             }
                         }
                         else
@@ -2307,13 +2202,6 @@ namespace AntiCheat
                 return false;
             }
             return true;
-        }
-
-        public static IEnumerator ChatCoolDown(PlayerControllerB __instance)
-        {
-            ChatCooldowns[__instance.playerSteamId] = true;
-            yield return new WaitForSeconds(AntiCheatPlugin.ChatReal_Cooldown.Value);
-            ChatCooldowns[__instance.playerSteamId] = false;
         }
 
         public static T2 GetField<T, T2>(this T obj, string name)
@@ -2410,7 +2298,7 @@ namespace AntiCheat
         }
 
         /// <summary>
-        /// 终端噪音检测
+        /// 终端噪音限制
         /// Prefix Terminal.PlayTerminalAudioServerRpc
         /// </summary>
         [HarmonyPatch(typeof(Terminal), "__rpc_handler_1713627637")]
@@ -2427,35 +2315,7 @@ namespace AntiCheat
                         return false;
                     }
                 }
-                if (AntiCheatPlugin.ShipTerminal.Value)
-                {
-                    DateTime dt = DateTime.Now;
-                    var m = dt.Ticks / 10000;
-                    if (zdcd.Count > 200)
-                    {
-                        zdcd.RemoveRange(0, zdcd.Count - 1);
-                    }
-                    if (zdcd.Contains(m))
-                    {
-                        return false;
-                    }
-                    else if (zdcd.Any(x => x + 200 > m))
-                    {
-                        zdcd.Add(m);
-                        ShowMessage(LocalizationManager.GetString("msg_ShipTerminal", new Dictionary<string, string>() {
-                            { "{player}",p.playerUsername }
-                        }));
-                        if (AntiCheatPlugin.ShipTerminal2.Value)
-                        {
-                            KickPlayer(p);
-                        }
-                        return false;
-                    }
-                    else
-                    {
-                        zdcd.Add(m);
-                    }
-                }
+                return CooldownManager.CheckCooldown("TerminalNoise", p);
             }
             else if (p == null)
             {
@@ -2465,7 +2325,7 @@ namespace AntiCheat
         }
 
         /// <summary>
-        /// 频繁开关灯检测
+        /// 飞船灯开关速度限制
         /// Prefix ShipLights.SetShipLightsServerRpc
         /// </summary>
         [HarmonyPatch(typeof(ShipLights), "__rpc_handler_1625678258")]
@@ -2475,41 +2335,7 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                if (AntiCheatPlugin.ShipLight.Value)
-                {
-                    DateTime dt = DateTime.Now;
-                    var m = dt.Ticks / 10000;
-                    if (dgcd.Count > 200)
-                    {
-                        dgcd.RemoveRange(0, dgcd.Count - 1);
-                    }
-                    if (dgcd.Contains(m))
-                    {
-                        ShipLights shipLights = UnityEngine.Object.FindAnyObjectByType<ShipLights>();
-                        if (!shipLights.areLightsOn)
-                        {
-                            shipLights.SetShipLightsClientRpc(true);
-                        }
-                        return false;
-                    }
-                    else if (dgcd.Count(x => x + 1000 > m) > 4)
-                    {
-                        dgcd.Add(m);
-                        ShowMessage(LocalizationManager.GetString("msg_ShipLight", new Dictionary<string, string>() {
-                            { "{player}",p.playerUsername }
-                        }), "msg_ShipLight");
-                        ShipLights shipLights = UnityEngine.Object.FindAnyObjectByType<ShipLights>();
-                        if (!shipLights.areLightsOn)
-                        {
-                            shipLights.SetShipLightsClientRpc(true);
-                        }
-                        return false;
-                    }
-                    else
-                    {
-                        dgcd.Add(m);
-                    }
-                }
+                return CooldownManager.CheckCooldown("ShipLight", p);
             }
             else if (p == null)
             {

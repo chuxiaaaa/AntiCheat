@@ -126,9 +126,6 @@
   <data name="config_ChatReal" xml:space="preserve">
     <value>发言伪造检测</value>
   </data>
-  <data name="config_ChatReal_Cooldown" xml:space="preserve">
-    <value>发言限速(单位毫秒)</value>
-  </data>
   <data name="config_DespawnItem" xml:space="preserve">
     <value>销毁物品检测</value>
   </data>
@@ -159,7 +156,7 @@
   <data name="config_Health_Recover" xml:space="preserve">
     <value>玩家回血检测(使用负伤害回血)</value>
   </data>
-  <data name="config_IgnoreClientConfig" xml:space="preserve">
+  <data name="config_NetworkSetting" xml:space="preserve">
     <value>忽略客户端配置有差异(这将缓解客户端发生错误的情况)</value>
   </data>
   <data name="config_InfiniteAmmo" xml:space="preserve">
@@ -238,13 +235,16 @@
     <value>作为房主，你可以一票起飞</value>
   </data>
   <data name="config_ShipLight" xml:space="preserve">
-    <value>灯关秀检测</value>
+    <value>飞船灯关冷却</value>
+  </data>
+  <data name="config_Cooldown" xml:space="preserve">
+    <value>冷却时间(单位毫秒)</value>
   </data>
   <data name="config_ShipSetting" xml:space="preserve">
     <value>只有房主才有着陆权限</value>
   </data>
   <data name="config_ShipTerminal" xml:space="preserve">
-    <value>终端噪音检测</value>
+    <value>终端噪音冷却</value>
   </data>
   <data name="config_Shovel" xml:space="preserve">
     <value>铲子伤害检测</value>
@@ -381,9 +381,6 @@
   <data name="msg_ShipConfig5" xml:space="preserve">
     <value>检测到玩家 {player} 强制拉杆！</value>
   </data>
-  <data name="msg_ShipLight" xml:space="preserve">
-    <value>检测到玩家 {player} 频繁使用灯光！</value>
-  </data>
   <data name="msg_ShipTerminal" xml:space="preserve">
     <value>检测到玩家 {player} 频繁制造噪音！</value>
   </data>
@@ -419,9 +416,6 @@
   </data>
   <data name="msg_vote_player" xml:space="preserve">
     <value>{player} 投票让飞船提前离开({now}/{max})</value>
-  </data>
-  <data name="msg_wlc_player" xml:space="preserve">
-    <value>&lt;color=green&gt;欢迎 &lt;color=yellow&gt;{player}&lt;/color&gt; 加入飞船&lt;/color&gt;</value>
   </data>
   <data name="OperationLog_BuyItem" xml:space="preserve">
     <value>[操作记录] {player} 购买 {items} 物品</value>

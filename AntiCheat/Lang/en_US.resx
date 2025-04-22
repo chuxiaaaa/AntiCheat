@@ -126,8 +126,8 @@
   <data name="config_ChatReal" xml:space="preserve">
     <value>Detects when a player attempts to spoof their name as another player's.</value>
   </data>
-  <data name="config_ChatReal_Cooldown" xml:space="preserve">
-    <value>Chat speed limit (milliseconds)</value>
+  <data name="config_Cooldown" xml:space="preserve">
+    <value>Cooldown time. (in ms)</value>
   </data>
   <data name="config_DespawnItem" xml:space="preserve">
     <value>Detects when items are unusually destroyed or deleted.</value>
@@ -159,8 +159,8 @@
   <data name="config_Health_Recover" xml:space="preserve">
     <value>Detects players using negative damage to recover health</value>
   </data>
-  <data name="config_IgnoreClientConfig" xml:space="preserve">
-    <value>Ignore client configuration differences (this will mitigate the case of client errors)</value>
+  <data name="config_NetworkSetting" xml:space="preserve">
+    <value>Ignore network configuration differences and try to avoid "an error occurred" dialog.</value>
   </data>
   <data name="config_InfiniteAmmo" xml:space="preserve">
     <value>Detects when a player has infinite ammo. Note: If a shotgun has already been given infinite ammo, a normal player using it may cause them to be detected as using infinite ammo as well.</value>
@@ -238,13 +238,13 @@
     <value>Allow your single vote to instantly force the autopilot as host.</value>
   </data>
   <data name="config_ShipLight" xml:space="preserve">
-    <value>Detects when a player switches the lights too fast.</value>
+    <value>Enable ship light switch cooldown.</value>
   </data>
   <data name="config_ShipSetting" xml:space="preserve">
     <value>Only the host may land the ship.</value>
   </data>
   <data name="config_ShipTerminal" xml:space="preserve">
-    <value>Detects the spam of terminal noise.</value>
+    <value>Enable terminal noise cooldown.</value>
   </data>
   <data name="config_Shovel" xml:space="preserve">
     <value>Detects unusual shovel damage.</value>
@@ -381,9 +381,6 @@
   <data name="msg_ShipConfig5" xml:space="preserve">
     <value>{player} was detected attempting to force the ship's lever!</value>
   </data>
-  <data name="msg_ShipLight" xml:space="preserve">
-    <value>{player} was detected switching the lights too fast!</value>
-  </data>
   <data name="msg_ShipTerminal" xml:space="preserve">
     <value>{player} was detected making too much terminal noise!</value>
   </data>
@@ -419,9 +416,6 @@
   </data>
   <data name="msg_vote_player" xml:space="preserve">
     <value>{player} voted for the ship to leave early. ({now}/{max})</value>
-  </data>
-  <data name="msg_wlc_player" xml:space="preserve">
-    <value>&lt;color=green&gt;&lt;color=yellow&gt;[{player}]&lt;/color&gt; joined the ship.&lt;/color&gt;</value>
   </data>
   <data name="OperationLog_BuyItem" xml:space="preserve">
     <value>[ActionLog] {player} purchased {items}</value>

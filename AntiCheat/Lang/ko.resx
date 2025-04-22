@@ -126,8 +126,8 @@
   <data name="config_ChatReal" xml:space="preserve">
     <value>플레이어가 다른 플레이어의 이름으로 속이려고 할 때 이를 감지합니다.</value>
   </data>
-  <data name="config_ChatReal_Cooldown" xml:space="preserve">
-    <value>채팅 속도 제한 (밀리초)</value>
+  <data name="config_Cooldown" xml:space="preserve">
+    <value>Cooldown time. (in ms)</value>
   </data>
   <data name="config_DespawnItem" xml:space="preserve">
     <value>아이템이 비정상적으로 파괴되거나 삭제될 때 이를 감지합니다.</value>
@@ -159,8 +159,8 @@
   <data name="config_Health_Recover" xml:space="preserve">
     <value>플레이어가 음수 피해를 사용하여 체력을 회복할 때 이를 감지합니다. (healthstation같은거 비활성화)</value>
   </data>
-  <data name="config_IgnoreClientConfig" xml:space="preserve">
-    <value>Ignore client configuration differences (this will mitigate the case of client errors)</value>
+  <data name="config_NetworkSetting" xml:space="preserve">
+    <value>Ignore network configuration differences and try to avoid "an error occurred" dialog.</value>
   </data>
   <data name="config_InfiniteAmmo" xml:space="preserve">
     <value>플레이어가 무한 탄약을 사용할 때 이를 감지합니다. 참고: 이미 무한 탄약이 주어진 샷건을 사용하는 정상적인 플레이어도 무한 탄약을 사용하는 것으로 감지될 수 있습니다.</value>
@@ -238,7 +238,7 @@
     <value>호스트로서 단일 투표로 자동 조종을 즉시 강제할 수 있습니다.</value>
   </data>
   <data name="config_ShipLight" xml:space="preserve">
-    <value>플레이어가 너무 빨리 조명을 전환할 때 이를 감지합니다.</value>
+    <value>ShipLightCooldown</value>
   </data>
   <data name="config_ShipSetting" xml:space="preserve">
     <value>호스트만이 함선을 착륙시킬 수 있습니다.</value>
@@ -381,9 +381,6 @@
   <data name="msg_ShipConfig5" xml:space="preserve">
     <value>{player}가 함선 레버를 강제로 작동시키려고 시도하는 것이 감지되었습니다!</value>
   </data>
-  <data name="msg_ShipLight" xml:space="preserve">
-    <value>{player}가 너무 빨리 조명을 전환하는 것이 감지되었습니다!</value>
-  </data>
   <data name="msg_ShipTerminal" xml:space="preserve">
     <value>{player}가 터미널 소음을 너무 많이 내는 것이 감지되었습니다!</value>
   </data>
@@ -419,9 +416,6 @@
   </data>
   <data name="msg_vote_player" xml:space="preserve">
     <value>{player}가 함선의 조기 출발을 위해 투표했습니다. ({now}/{max})</value>
-  </data>
-  <data name="msg_wlc_player" xml:space="preserve">
-    <value>&lt;color=green&gt;&lt;color=yellow&gt;[{player}]&lt;/color&gt;가 함선에 탑승했습니다.&lt;/color&gt;</value>
   </data>
   <data name="OperationLog_BuyItem" xml:space="preserve">
     <value>[ActionLog] {player} purchased {items}</value>

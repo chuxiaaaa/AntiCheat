@@ -88,11 +88,11 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 发言限速(单位毫秒) 的本地化字符串。
+        ///   查找类似 冷却时间(单位毫秒) 的本地化字符串。
         /// </summary>
-        internal static string config_ChatReal_Cooldown {
+        internal static string config_Cooldown {
             get {
-                return ResourceManager.GetString("config_ChatReal_Cooldown", resourceCulture);
+                return ResourceManager.GetString("config_Cooldown", resourceCulture);
             }
         }
         
@@ -183,15 +183,6 @@ namespace AntiCheat.Lang {
         internal static string config_Health_Recover {
             get {
                 return ResourceManager.GetString("config_Health_Recover", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 忽略客户端配置有差异(这将缓解客户端发生错误的情况) 的本地化字符串。
-        /// </summary>
-        internal static string config_IgnoreClientConfig {
-            get {
-                return ResourceManager.GetString("config_IgnoreClientConfig", resourceCulture);
             }
         }
         
@@ -291,6 +282,15 @@ namespace AntiCheat.Lang {
         internal static string config_Nameless {
             get {
                 return ResourceManager.GetString("config_Nameless", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 忽略客户端配置有差异(这将缓解客户端发生错误的情况) 的本地化字符串。
+        /// </summary>
+        internal static string config_NetworkSetting {
+            get {
+                return ResourceManager.GetString("config_NetworkSetting", resourceCulture);
             }
         }
         
@@ -421,7 +421,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 灯关秀检测 的本地化字符串。
+        ///   查找类似 飞船灯关冷却 的本地化字符串。
         /// </summary>
         internal static string config_ShipLight {
             get {
@@ -439,7 +439,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 终端噪音检测 的本地化字符串。
+        ///   查找类似 终端噪音冷却 的本地化字符串。
         /// </summary>
         internal static string config_ShipTerminal {
             get {
@@ -853,15 +853,6 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 检测到玩家 {player} 频繁使用灯光！ 的本地化字符串。
-        /// </summary>
-        internal static string msg_ShipLight {
-            get {
-                return ResourceManager.GetString("msg_ShipLight", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 检测到玩家 {player} 频繁制造噪音！ 的本地化字符串。
         /// </summary>
         internal static string msg_ShipTerminal {
@@ -966,15 +957,6 @@ namespace AntiCheat.Lang {
         internal static string msg_vote_player {
             get {
                 return ResourceManager.GetString("msg_vote_player", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 &lt;color=green&gt;欢迎 &lt;color=yellow&gt;{player}&lt;/color&gt; 加入飞船&lt;/color&gt; 的本地化字符串。
-        /// </summary>
-        internal static string msg_wlc_player {
-            get {
-                return ResourceManager.GetString("msg_wlc_player", resourceCulture);
             }
         }
         

@@ -12,23 +12,25 @@ namespace AntiCheat
     {
         private static ResourceManager resourceManager;
 
-        public static Dictionary<string, Type> Languages = new Dictionary<string, Type>
-        {
-            { "简体中文", typeof(zh_CN) },
-            { "English", typeof(en_US) },
-            { "Korean", typeof(ko) }
-        };
+        //public static Dictionary<string, Type> Languages = new Dictionary<string, Type>
+        //{
+        //    { "简体中文", typeof(zh_CN) },
+        //    { "English", typeof(en_US) },
+        //    { "Korean", typeof(ko) }
+        //};
+
+        
 
         public static void SetLanguage(string language)
         {
-            if (Languages.ContainsKey(language))
-            {
-                resourceManager = new ResourceManager(Languages[language]);
-            }
-            else
-            {
-                resourceManager = new ResourceManager(typeof(zh_CN));
-            }
+            //if (Languages.ContainsKey(language))
+            //{
+            //    resourceManager = new ResourceManager(Languages[language]);
+            //}
+            //else
+            //{
+            //    resourceManager = new ResourceManager(typeof(zh_CN));
+            //}
         }
 
         public static string TryGetString(string prefix, string key)

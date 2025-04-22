@@ -24,7 +24,7 @@ namespace AntiCheat
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheatPlugin : BaseUnityPlugin
     {
-        public const string Version = "0.8.1";
+        public const string Version = "0.8.2";
         public static ManualLogSource ManualLog = null;
         public enum Language
         {
@@ -68,8 +68,10 @@ namespace AntiCheat
         public static ConfigEntry<bool> ShipBuild2;
 
         public static ConfigEntry<bool> ShipLight;
-        public static ConfigEntry<bool> ShipTerminal;
-        public static ConfigEntry<bool> ShipTerminal2;
+        public static ConfigEntry<int> ShipLight_Cooldown;
+
+        public static ConfigEntry<bool> TerminalNoise;
+        public static ConfigEntry<int> TerminalNoise_Cooldown;
 
         public static ConfigEntry<bool> DespawnItem;
         public static ConfigEntry<bool> DespawnItem2;
@@ -280,9 +282,12 @@ namespace AntiCheat
             watcher.Changed += Watcher_Changed;
             LoadConfig();
             watcher.EnableRaisingEvents = true;
+
             Harmony.CreateAndPatchAll(typeof(Patch));
             Harmony.CreateAndPatchAll(typeof(HUDManagerPatch));
             Harmony.CreateAndPatchAll(typeof(StartOfRoundPatch));
+            Harmony.CreateAndPatchAll(typeof(GrabbableObjectPatch));
+
         }
 
         private void Watcher_Changed(object sender, FileSystemEventArgs e)
@@ -307,8 +312,8 @@ namespace AntiCheat
                 }
             }
 
-            LanguageConfig = Config.Bind("LanguageSetting", "Language", defaultLang, string.Join(",", LocalizationManager.Languages.Select(x => x.Key)));
-            LocalizationManager.SetLanguage(LanguageConfig.Value.ToString());
+            //LanguageConfig = Config.Bind("LanguageSetting", "Language", defaultLang, string.Join(",", LocalizationManager.Languages.Select(x => x.Key)));
+            //LocalizationManager.SetLanguage(LanguageConfig.Value.ToString());
 
             IgnoreClientConfig = Config.Bind("VersionSetting", "IgnoreClientConfig", false, LocalizationManager.GetString("config_IgnoreClientConfig"));
             Prefix = Config.Bind("ServerNameSetting", "Prefix", "AC", LocalizationManager.GetString("config_Prefix"));
@@ -339,9 +344,10 @@ namespace AntiCheat
             ItemCooldown2 = Config.Bind("ItemCooldownSetting", "Kick", false, LocalizationManager.GetString("config_Kick"));
 
             ShipLight = Config.Bind("ShipLightSettings", "Enable", true, LocalizationManager.GetString("config_ShipLight"));
+            ShipLight_Cooldown = Config.Bind("ShipLightSettings", "Cooldown", 1000, LocalizationManager.GetString("config_Cooldown"));
 
-            ShipTerminal = Config.Bind("ShipTerminalSettings", "Enable", true, LocalizationManager.GetString("config_ShipTerminal"));
-            ShipTerminal2 = Config.Bind("ShipTerminalSettings", "Kick", false, LocalizationManager.GetString("config_Kick"));
+            TerminalNoise = Config.Bind("TerminalNoiseSettings", "Enable", true, LocalizationManager.GetString("config_ShipTerminal"));
+            TerminalNoise_Cooldown = Config.Bind("TerminalNoiseSettings", "Cooldown", 1000, LocalizationManager.GetString("config_Cooldown"));
 
             DetectedMessageType = Config.Bind("DetectedMessageType", "Type", MessageType.PublicChat, LocalizationManager.GetString("config_DetectedMessageType"));
 
@@ -349,7 +355,7 @@ namespace AntiCheat
             DespawnItem2 = Config.Bind("DespawnItemSettings", "Kick", false, LocalizationManager.GetString("config_Kick"));
 
             ChatReal = Config.Bind("ChatRealSettings", "Enable", true, LocalizationManager.GetString("config_ChatReal"));
-            ChatReal_Cooldown = Config.Bind("ChatRealSettings", "Cooldown", 200, LocalizationManager.GetString("config_ChatReal_Cooldown"));
+            ChatReal_Cooldown = Config.Bind("ChatRealSettings", "Cooldown", 100, LocalizationManager.GetString("config_Cooldown"));
             ChatReal2 = Config.Bind("ChatRealSettings", "Kick", false, LocalizationManager.GetString("config_Kick"));
 
             Mask = Config.Bind("MaskSettings", "Enable", true, LocalizationManager.GetString("config_Mask"));
@@ -412,7 +418,22 @@ namespace AntiCheat
             RemoteTerminal2 = Config.Bind("RemoteTerminalSettings", "Kick", false, LocalizationManager.GetString("config_Kick"));
 
             PlayerJoin = Config.Bind("MsgSettings", "PlayerJoinShip", LocalizationManager.GetString("msg_wlc_player"), LocalizationManager.GetString("msg_wlc_player"));
-
+            CooldownManager.Reset();
+            CooldownManager.RegisterCooldownGroup(
+                "TerminalNoise",
+                () => AntiCheatPlugin.TerminalNoise.Value,
+                () => AntiCheatPlugin.TerminalNoise_Cooldown.Value / 1000f
+            );
+            CooldownManager.RegisterCooldownGroup(
+                "ShipLight",
+                () => AntiCheatPlugin.ShipLight.Value,
+                () => AntiCheatPlugin.ShipLight_Cooldown.Value / 1000f
+            );
+            CooldownManager.RegisterCooldownGroup(
+               "Chat",
+               () => AntiCheatPlugin.ChatReal.Value,
+               () => AntiCheatPlugin.ChatReal_Cooldown.Value / 1000f
+            );
             ManualLog.LogInfo($"{LocalizationManager.GetString("log_load")}");
         }
 

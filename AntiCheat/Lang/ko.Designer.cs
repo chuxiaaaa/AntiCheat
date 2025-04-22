@@ -88,11 +88,11 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 채팅 속도 제한 (밀리초) 的本地化字符串。
+        ///   查找类似 Cooldown time. (in ms) 的本地化字符串。
         /// </summary>
-        internal static string config_ChatReal_Cooldown {
+        internal static string config_Cooldown {
             get {
-                return ResourceManager.GetString("config_ChatReal_Cooldown", resourceCulture);
+                return ResourceManager.GetString("config_Cooldown", resourceCulture);
             }
         }
         
@@ -183,15 +183,6 @@ namespace AntiCheat.Lang {
         internal static string config_Health_Recover {
             get {
                 return ResourceManager.GetString("config_Health_Recover", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Ignore client configuration differences (this will mitigate the case of client errors) 的本地化字符串。
-        /// </summary>
-        internal static string config_IgnoreClientConfig {
-            get {
-                return ResourceManager.GetString("config_IgnoreClientConfig", resourceCulture);
             }
         }
         
@@ -291,6 +282,15 @@ namespace AntiCheat.Lang {
         internal static string config_Nameless {
             get {
                 return ResourceManager.GetString("config_Nameless", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Ignore network configuration differences and try to avoid &quot;an error occurred&quot; dialog. 的本地化字符串。
+        /// </summary>
+        internal static string config_NetworkSetting {
+            get {
+                return ResourceManager.GetString("config_NetworkSetting", resourceCulture);
             }
         }
         
@@ -421,7 +421,7 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 플레이어가 너무 빨리 조명을 전환할 때 이를 감지합니다. 的本地化字符串。
+        ///   查找类似 ShipLightCooldown 的本地化字符串。
         /// </summary>
         internal static string config_ShipLight {
             get {
@@ -853,15 +853,6 @@ namespace AntiCheat.Lang {
         }
         
         /// <summary>
-        ///   查找类似 {player}가 너무 빨리 조명을 전환하는 것이 감지되었습니다! 的本地化字符串。
-        /// </summary>
-        internal static string msg_ShipLight {
-            get {
-                return ResourceManager.GetString("msg_ShipLight", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 {player}가 터미널 소음을 너무 많이 내는 것이 감지되었습니다! 的本地化字符串。
         /// </summary>
         internal static string msg_ShipTerminal {
@@ -966,15 +957,6 @@ namespace AntiCheat.Lang {
         internal static string msg_vote_player {
             get {
                 return ResourceManager.GetString("msg_vote_player", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 &lt;color=green&gt;&lt;color=yellow&gt;[{player}]&lt;/color&gt;가 함선에 탑승했습니다.&lt;/color&gt; 的本地化字符串。
-        /// </summary>
-        internal static string msg_wlc_player {
-            get {
-                return ResourceManager.GetString("msg_wlc_player", resourceCulture);
             }
         }
         

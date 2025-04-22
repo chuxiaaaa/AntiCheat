@@ -98,6 +98,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AntiCheatPlugin.cs" />
+    <Compile Include="CooldownManager.cs" />
+    <Compile Include="GrabbableObjectPatch.cs" />
     <Compile Include="HUDManagerPatch.cs" />
     <Compile Include="Lang\en_US.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -123,6 +125,7 @@
     <EmbeddedResource Include="Lang\en_US.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>en_US.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Lang\ko.resx">
       <Generator>ResXFileCodeGenerator</Generator>
