@@ -21,7 +21,7 @@ namespace AntiCheat
         [HarmonyPatch("__rpc_handler_4280509730")]
         public static bool __rpc_handler_4280509730(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Patch.Check(rpcParams, out var p))
+            if (Patches.Check(rpcParams, out var p))
             {
                 var grab = (GrabbableObject)target;
                 if(grab is RemoteProp)

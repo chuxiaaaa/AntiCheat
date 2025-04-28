@@ -24,7 +24,7 @@ namespace AntiCheat
         [HarmonyPatch("__rpc_handler_3153465849")]
         public static bool __rpc_handler_3153465849(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (!Patch.Check(rpcParams, out var p))
+            if (!Patches.Check(rpcParams, out var p))
                 return p != null;
             ByteUnpacker.ReadValueBitPacked(reader, out int logID);
             reader.Seek(0);
@@ -43,7 +43,7 @@ namespace AntiCheat
         [HarmonyPatch("__rpc_handler_1043384750")]
         public static bool __rpc_handler_1043384750(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            return !Patch.Check(rpcParams, out _);
+            return !Patches.Check(rpcParams, out _);
         }
 
 
@@ -54,7 +54,7 @@ namespace AntiCheat
         [HarmonyPatch("__rpc_handler_4217433937")]
         public static bool __rpc_handler_4217433937(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (!Patch.Check(rpcParams, out var p))
+            if (!Patches.Check(rpcParams, out var p))
                 return p != null;
             if (SyncAllPlayerLevelsServerRpcCalls.Contains(p.playerSteamId))
             {
@@ -79,7 +79,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_1944155956(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (!Patch.Check(rpcParams, out var p))
+            if (!Patches.Check(rpcParams, out var p))
                 return p != null;
             ByteUnpacker.ReadValueBitPacked(reader, out int enemyID);
             reader.Seek(0);
@@ -90,11 +90,11 @@ namespace AntiCheat
                 {
                     return false;
                 }
-                string msg = LocalizationManager.GetString("msg_snc_player", new Dictionary<string, string>() {
+                string msg = Core.AntiCheat.localizationManager.Msg_GetString("snc_player", new Dictionary<string, string>() {
                         { "{player}",p.playerUsername },
                         { "{enemy}",terminal.enemyFiles[enemyID].creatureName }
                     });
-                Patch.LogInfo(msg);
+                Patches.LogInfo(msg);
                 return true;
             }
             return false;
@@ -109,11 +109,11 @@ namespace AntiCheat
         [HarmonyPrefix]
         public static bool __rpc_handler_2436660286(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (!Patch.Check(rpcParams, out var p))
+            if (!Patches.Check(rpcParams, out var p))
                 return p != null;
-            if (AntiCheatPlugin.RemoteTerminal.Value)
+            if (Core.AntiCheat.RemoteTerminal.Value)
             {
-                if (!Patch.CheckRemoteTerminal(p))
+                if (!Patches.CheckRemoteTerminal(p))
                 {
                     return false;
                 }

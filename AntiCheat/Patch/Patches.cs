@@ -23,8 +23,6 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.Remoting.Messaging;
-using System.Security.Cryptography;
-using System.Security.Permissions;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -40,8 +38,10 @@ using static UnityEngine.GraphicsBuffer;
 
 namespace AntiCheat
 {
-    public static class Patch
+    public static class Patches
     {
+        public static Locale.LocalizationManager locale { get => Core.AntiCheat.localizationManager; } 
+
         public static List<ulong> jcs = new List<ulong>();
 
         public static Dictionary<ulong, List<string>> czcd = new Dictionary<ulong, List<string>>();
@@ -59,19 +59,13 @@ namespace AntiCheat
 
         public static Dictionary<string, List<ulong>> rpcs { get; set; } = new Dictionary<string, List<ulong>>();
 
-        public static void LogInfo(string info)
-        {
-            if (AntiCheatPlugin.Log.Value)
-            {
-                AntiCheatPlugin.ManualLog.LogInfo($"{info}");
-            }
-        }
+        public static void LogInfo(string info) => Core.AntiCheat.LogInfo(info);
 
         public static void LogError(string info)
         {
-            if (AntiCheatPlugin.Log.Value)
+            if (Core.AntiCheat.Log.Value)
             {
-                AntiCheatPlugin.ManualLog.LogError($"{info}");
+                Core.AntiCheat.ManualLog.LogError($"{info}");
             }
         }
 
@@ -94,7 +88,7 @@ namespace AntiCheat
                 if ((CauseOfDeath)num == CauseOfDeath.Abandoned)
                 {
                     bypass = true;
-                    string msg = LocalizationManager.GetString("msg_behind_player", new Dictionary<string, string>() {
+                    string msg = locale.Msg_GetString("behind_player", new Dictionary<string, string>() {
                         { "{player}",p.playerUsername }
                     });
                     LogInfo(msg);
@@ -164,7 +158,7 @@ namespace AntiCheat
             LogInfo($"{p.playerUsername} hit {p2.playerUsername} damageAmount:{damageAmount}|p2:{p2.playerUsername}");
             try
             {
-                if (AntiCheatPlugin.Shovel.Value)
+                if (Core.AntiCheat.Shovel.Value)
                 {
                     var distance = Vector3.Distance(p.transform.position, p2.transform.position);
                     var obj = p.ItemSlots[p.currentItemSlot];
@@ -177,14 +171,14 @@ namespace AntiCheat
                     {
                         if (!jcs.Contains(p.playerSteamId))
                         {
-                            ShowMessage(LocalizationManager.GetString("msg_Shovel", new Dictionary<string, string>() {
+                            ShowMessage(locale.Msg_GetString("Shovel", new Dictionary<string, string>() {
                                 { "{player}",p.playerUsername },
                                 { "{player2}",p2.playerUsername },
                                 { "{damageAmount}",damageAmount.ToString() },
-                                { "{item}", isShovel(obj) ? LocalizationManager.GetString("Item_Shovel") : LocalizationManager.GetString("Item_Knife") }
+                                { "{item}", isShovel(obj) ? locale.Item_GetString("Shovel") : locale.Item_GetString("Knife") }
                             }));
                             jcs.Add(p.playerSteamId);
-                            if (AntiCheatPlugin.Shovel2.Value)
+                            if (Core.AntiCheat.Shovel2.Value)
                             {
                                 KickPlayer(p);
                             }
@@ -199,15 +193,15 @@ namespace AntiCheat
                         }
                         if (!jcs.Contains(p.playerSteamId))
                         {
-                            ShowMessage(LocalizationManager.GetString("msg_Shovel2", new Dictionary<string, string>() {
+                            ShowMessage(locale.Msg_GetString("Shovel2", new Dictionary<string, string>() {
                                 { "{player}",p.playerUsername },
                                 { "{player2}",p2.playerUsername },
                                 { "{distance}",distance.ToString() },
                                 { "{damageAmount}",damageAmount.ToString() },
-                                { "{item}", isShovel(obj) ? LocalizationManager.GetString("Item_Shovel") : LocalizationManager.GetString("Item_Knife") }
+                                { "{item}", isShovel(obj) ? locale.Item_GetString("Shovel") : locale.Item_GetString("Knife") }
                             }));
                             jcs.Add(p.playerSteamId);
-                            if (AntiCheatPlugin.Shovel2.Value)
+                            if (Core.AntiCheat.Shovel2.Value)
                             {
                                 KickPlayer(p);
                             }
@@ -221,9 +215,9 @@ namespace AntiCheat
                         LogInfo($"obj:{obj}");
                         if (!jcs.Contains(p.playerSteamId))
                         {
-                            if (AntiCheatPlugin.Shovel3.Value && (damageAmount == 10 || damageAmount == 20 || damageAmount == 30 || damageAmount == 100))
+                            if (Core.AntiCheat.Shovel3.Value && (damageAmount == 10 || damageAmount == 20 || damageAmount == 30 || damageAmount == 100))
                             {
-                                LogInfo(LocalizationManager.GetString("msg_Shovel3", new Dictionary<string, string>() {
+                                LogInfo(locale.Msg_GetString("Shovel3", new Dictionary<string, string>() {
                                     { "{player}",p.playerUsername },
                                     { "{player2}",p2.playerUsername },
                                     { "{damageAmount}",damageAmount.ToString() }
@@ -232,13 +226,13 @@ namespace AntiCheat
                             }
                             else
                             {
-                                ShowMessage(LocalizationManager.GetString("msg_Shovel3", new Dictionary<string, string>() {
+                                ShowMessage(locale.Msg_GetString("Shovel3", new Dictionary<string, string>() {
                                     { "{player}",p.playerUsername },
                                     { "{player2}",p2.playerUsername },
                                     { "{damageAmount}",damageAmount.ToString() }
                                 }));
                                 jcs.Add(p.playerSteamId);
-                                if (AntiCheatPlugin.Shovel2.Value)
+                                if (Core.AntiCheat.Shovel2.Value)
                                 {
                                     KickPlayer(p);
                                 }
@@ -321,10 +315,10 @@ namespace AntiCheat
                 LogInfo(playerName);
                 if (Regex.IsMatch(playerName, "Nameless\\d*") || Regex.IsMatch(playerName, "Unknown\\d*") || Regex.IsMatch(playerName, "Player #\\d*"))
                 {
-                    if (AntiCheatPlugin.Nameless.Value)
+                    if (Core.AntiCheat.Nameless.Value)
                     {
-                        ShowMessage(LocalizationManager.GetString("msg_Nameless"));
-                        if (AntiCheatPlugin.Nameless2.Value)
+                        ShowMessage(locale.Msg_GetString("Nameless"));
+                        if (Core.AntiCheat.Nameless2.Value)
                         {
                             KickPlayer(item, true, "Nameless");
                         }
@@ -344,7 +338,7 @@ namespace AntiCheat
                     return;
                 }
                 bypass = true;
-                string msg = AntiCheatPlugin.PlayerJoin.Value.Replace("{player}", p2.playerUsername);
+                string msg = Core.AntiCheat.PlayerJoin.Value.Replace("{player}", p2.playerUsername);
                 LogInfo(msg);
                 HUDManager.Instance.AddTextToChatOnServer(msg, -1);
                 lastClientId = p2.actualClientId;
@@ -401,7 +395,7 @@ namespace AntiCheat
             if (Check(rpcParams, out var p))
             {
                 //LogInfo($"{p.playerUsername}|StartOfRound.ChangeLevelServerRpc");
-                if (AntiCheatPlugin.RemoteTerminal.Value)
+                if (Core.AntiCheat.RemoteTerminal.Value)
                 {
                     if (!CheckRemoteTerminal(p))
                     {
@@ -411,15 +405,15 @@ namespace AntiCheat
                 ByteUnpacker.ReadValueBitPacked(reader, out int levelID);
                 ByteUnpacker.ReadValueBitPacked(reader, out int newGroupCreditsAmount);
                 reader.Seek(0);
-                if (AntiCheatPlugin.FreeBuy.Value)
+                if (Core.AntiCheat.FreeBuy.Value)
                 {
                     if (newGroupCreditsAmount > Money || Money < 0)
                     {
-                        ShowMessage(LocalizationManager.GetString("msg_FreeBuy_SetMoney", new Dictionary<string, string>() {
+                        ShowMessage(locale.Msg_GetString("FreeBuy_SetMoney", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername },
                             { "{Money}",(newGroupCreditsAmount - Money).ToString() }
                         }));
-                        if (AntiCheatPlugin.FreeBuy2.Value)
+                        if (Core.AntiCheat.FreeBuy2.Value)
                         {
                             KickPlayer(p);
                         }
@@ -441,7 +435,7 @@ namespace AntiCheat
                         var nowCompatibleNoun = Route.compatibleNouns.Where(x => x.result.name == level + "route");
                         if (itemCost == 0 && nowCompatibleNoun.Any() && nowCompatibleNoun.First().result.itemCost != 0)
                         {
-                            ShowMessage(LocalizationManager.GetString("msg_ChangeToFreeLevel", new Dictionary<string, string>() {
+                            ShowMessage(locale.Msg_GetString("ChangeToFreeLevel", new Dictionary<string, string>() {
                                 { "{player}",p.playerUsername }
                             }));
                             return false;
@@ -452,10 +446,10 @@ namespace AntiCheat
                             int newValue = Money - itemCost;
                             if (newValue != newGroupCreditsAmount || Money == 0)
                             {
-                                ShowMessage(LocalizationManager.GetString("msg_FreeBuy_Level", new Dictionary<string, string>() {
+                                ShowMessage(locale.Msg_GetString("FreeBuy_Level", new Dictionary<string, string>() {
                                     { "{player}",p.playerUsername }
                                 }));
-                                if (AntiCheatPlugin.FreeBuy2.Value)
+                                if (Core.AntiCheat.FreeBuy2.Value)
                                 {
                                     KickPlayer(p);
                                 }
@@ -464,11 +458,11 @@ namespace AntiCheat
                         }
                     }
                 }
-                if (AntiCheatPlugin.OperationLog.Value)
+                if (Core.AntiCheat.OperationLog.Value)
                 {
                     if (levelID < StartOfRound.Instance.levels.Length)
                     {
-                        ShowMessageHostOnly(LocalizationManager.GetString("OperationLog_ChangeLevel", new Dictionary<string, string>() {
+                        ShowMessageHostOnly(locale.OperationLog_GetString("ChangeLevel", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername },
                             { "{planet}",StartOfRound.Instance.levels[levelID].PlanetName }
                         }));
@@ -494,7 +488,7 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                if (AntiCheatPlugin.RemoteTerminal.Value)
+                if (Core.AntiCheat.RemoteTerminal.Value)
                 {
                     if (!CheckRemoteTerminal(p))
                     {
@@ -504,16 +498,16 @@ namespace AntiCheat
                 ByteUnpacker.ReadValueBitPacked(reader, out int unlockableID);
                 ByteUnpacker.ReadValueBitPacked(reader, out int newGroupCreditsAmount);
                 reader.Seek(0);
-                if (AntiCheatPlugin.FreeBuy.Value)
+                if (Core.AntiCheat.FreeBuy.Value)
                 {
                     //LogInfo($"__rpc_handler_3953483456|newGroupCreditsAmount:{newGroupCreditsAmount}");
                     if (Money == newGroupCreditsAmount || Money == 0)
                     {
                         //LogInfo($"Money:{Money}|newGroupCreditsAmount:{newGroupCreditsAmount}");
-                        ShowMessage(LocalizationManager.GetString("msg_FreeBuy_unlockable", new Dictionary<string, string>() {
+                        ShowMessage(locale.Msg_GetString("FreeBuy_unlockable", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername }
                         }));
-                        if (AntiCheatPlugin.FreeBuy2.Value)
+                        if (Core.AntiCheat.FreeBuy2.Value)
                         {
                             KickPlayer(p);
                         }
@@ -521,22 +515,22 @@ namespace AntiCheat
                     }
                     else if (newGroupCreditsAmount > Money || Money < 0)
                     {
-                        ShowMessage(LocalizationManager.GetString("msg_FreeBuy_SetMoney", new Dictionary<string, string>() {
+                        ShowMessage(locale.Msg_GetString("FreeBuy_SetMoney", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername },
                             { "{Money}",(newGroupCreditsAmount - Money).ToString() }
                         }));
-                        if (AntiCheatPlugin.FreeBuy2.Value)
+                        if (Core.AntiCheat.FreeBuy2.Value)
                         {
                             KickPlayer(p);
                         }
                         return false;
                     }
                 }
-                if (AntiCheatPlugin.OperationLog.Value)
+                if (Core.AntiCheat.OperationLog.Value)
                 {
                     if (unlockableID < StartOfRound.Instance.unlockablesList.unlockables.Count)
                     {
-                        ShowMessageHostOnly(LocalizationManager.GetString("OperationLog_BuyShipUnlockable", new Dictionary<string, string>() {
+                        ShowMessageHostOnly(locale.OperationLog_GetString("BuyShipUnlockable", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername },
                             { "{unlockable}",StartOfRound.Instance.unlockablesList.unlockables[unlockableID].unlockableName }
                         }));
@@ -578,7 +572,7 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p) || true)
             {
-                if (AntiCheatPlugin.RemoteTerminal.Value)
+                if (Core.AntiCheat.RemoteTerminal.Value)
                 {
                     if (!CheckRemoteTerminal(p))
                     {
@@ -594,15 +588,15 @@ namespace AntiCheat
                 ByteUnpacker.ReadValueBitPacked(reader, out int newGroupCredits);
                 reader.Seek(0);
 
-                if (AntiCheatPlugin.FreeBuy.Value)
+                if (Core.AntiCheat.FreeBuy.Value)
                 {
                     //LogInfo("__rpc_handler_4003509079|boughtItems:" + string.Join(",", boughtItems) + "|newGroupCredits:" + newGroupCredits + "|Money:" + Money);
                     if (Money == newGroupCredits || Money == 0)
                     {
-                        ShowMessage(LocalizationManager.GetString("msg_FreeBuy_Item", new Dictionary<string, string>() {
+                        ShowMessage(locale.Msg_GetString("FreeBuy_Item", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername }
                         }));
-                        if (AntiCheatPlugin.FreeBuy2.Value)
+                        if (Core.AntiCheat.FreeBuy2.Value)
                         {
                             KickPlayer(p);
                         }
@@ -610,23 +604,23 @@ namespace AntiCheat
                     }
                     else if (newGroupCredits > Money || Money < 0)
                     {
-                        ShowMessage(LocalizationManager.GetString("msg_FreeBuy_SetMoney", new Dictionary<string, string>() {
+                        ShowMessage(locale.Msg_GetString("FreeBuy_SetMoney", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername },
                             { "{Money}",(newGroupCredits - Money).ToString() }
                         }));
-                        if (AntiCheatPlugin.FreeBuy2.Value)
+                        if (Core.AntiCheat.FreeBuy2.Value)
                         {
                             KickPlayer(p);
                         }
                         return false;
                     }
                 }
-                if (AntiCheatPlugin.OperationLog.Value)
+                if (Core.AntiCheat.OperationLog.Value)
                 {
                     var terminal = (Terminal)target;
                     if (boughtItems.Count(x => x < terminal.buyableItemsList.Length) == boughtItems.Count())
                     {
-                        ShowMessageHostOnly(LocalizationManager.GetString("OperationLog_BuyItem", new Dictionary<string, string>() {
+                        ShowMessageHostOnly(locale.OperationLog_GetString("BuyItem", new Dictionary<string, string>() {
                             { "{player}", p.playerUsername },
                             { "{items}", string.Join(",", boughtItems.GroupBy(x => terminal.buyableItemsList[x].itemName).Select(g => g.Count() == 1 ? g.Key : $"{g.Key}*{g.Count()}")) }
                         }));
@@ -749,15 +743,15 @@ namespace AntiCheat
 
         public static IEnumerator CheckRpc(PlayerControllerB __instance, string RPC)
         {
-            if (RPC == "Hit" && !AntiCheatPlugin.RPCReport_Hit.Value)
+            if (RPC == "Hit" && !Core.AntiCheat.RPCReport_Hit.Value)
             {
                 yield break;
             }
-            if (RPC == "KillPlayer" && !AntiCheatPlugin.RPCReport_KillPlayer.Value)
+            if (RPC == "KillPlayer" && !Core.AntiCheat.RPCReport_KillPlayer.Value)
             {
                 yield break;
             }
-            yield return new WaitForSeconds(AntiCheatPlugin.RPCReport_Delay.Value);
+            yield return new WaitForSeconds(Core.AntiCheat.RPCReport_Delay.Value);
             if (__instance.isPlayerDead)
             {
                 yield break;
@@ -765,12 +759,12 @@ namespace AntiCheat
             if (rpcs[RPC].Contains(__instance.actualClientId))
             {
                 rpcs[RPC].Remove(__instance.actualClientId);
-                ShowMessage(LocalizationManager.GetString("msg_RPCReport", new Dictionary<string, string>() {
+                ShowMessage(locale.Msg_GetString("RPCReport", new Dictionary<string, string>() {
                   { "{player}", __instance.playerUsername },
                   { "{RPC}", RPC },
 
                 }));
-                if (AntiCheatPlugin.RPCReport_Kick.Value)
+                if (Core.AntiCheat.RPCReport_Kick.Value)
                 {
                     KickPlayer(__instance);
                 }
@@ -801,16 +795,16 @@ namespace AntiCheat
                 var p2 = (PlayerControllerB)target;
                 if (p2 == p)
                 {
-                    if (AntiCheatPlugin.Health_Recover.Value)
+                    if (Core.AntiCheat.Health_Recover.Value)
                     {
                         if (damageNumber < 0)
                         {
-                            string msg = LocalizationManager.GetString("msg_Health_Recover", new Dictionary<string, string>() {
+                            string msg = locale.Msg_GetString("Health_Recover", new Dictionary<string, string>() {
                                 { "{player}", p.playerUsername },
                                 { "{hp}", (damageNumber * -1).ToString() }
                             });
                             ShowMessage(msg);
-                            if (AntiCheatPlugin.Health_Kick.Value)
+                            if (Core.AntiCheat.Health_Kick.Value)
                             {
                                 KickPlayer(p);
                             }
@@ -841,7 +835,7 @@ namespace AntiCheat
                 ByteUnpacker.ReadValueBitPacked(reader, out int stateIndex);
                 reader.Seek(0);
                 LogInfo($"{p.playerUsername} call EnemyAI.SwitchToBehaviourServerRpc||stateIndex:{stateIndex}");
-                if (AntiCheatPlugin.Enemy.Value)
+                if (Core.AntiCheat.Enemy.Value)
                 {
                     var e = (EnemyAI)target;
                     if (e is JesterAI j)
@@ -864,7 +858,7 @@ namespace AntiCheat
                         else
                         {
                             LogInfo($"{p.playerUsername} call EnemyAI.SwitchToBehaviourServerRpc||currentBehaviourStateIndex:{j.currentBehaviourStateIndex}|stateIndex:{stateIndex}|popUpTimer:{j.popUpTimer}");
-                            //ShowMessage(LocalizationManager.GetString("msg_Enemy_SwitchToBehaviour", new Dictionary<string, string>() {
+                            //ShowMessage(locale.Msg_GetString("Enemy_SwitchToBehaviour", new Dictionary<string, string>() {
                             //    { "{player}", p.playerUsername }
                             //}));
                             //return false;
@@ -1057,7 +1051,7 @@ namespace AntiCheat
             if (Check(rpcParams, out var p))
             {
                 LogInfo($"{p.playerUsername} call EnemyAI.KillEnemyServerRpc");
-                if (AntiCheatPlugin.KillEnemy.Value)
+                if (Core.AntiCheat.KillEnemy.Value)
                 {
                     var e = (EnemyAI)target;
                     foreach (var item in bypassKill)
@@ -1076,12 +1070,12 @@ namespace AntiCheat
 
                     if (Vector3.Distance(p.transform.position, e.transform.position) > 50f)
                     {
-                        ShowMessage(LocalizationManager.GetString("msg_KillEnemy", new Dictionary<string, string>() {
+                        ShowMessage(locale.Msg_GetString("KillEnemy", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername },
                             { "{enemyName}",e.enemyType.enemyName },
                             { "{HP}",e.enemyHP.ToString() }
                         }));
-                        if (AntiCheatPlugin.KillEnemy2.Value)
+                        if (Core.AntiCheat.KillEnemy2.Value)
                         {
                             KickPlayer(p);
                             return false;
@@ -1099,7 +1093,7 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                if (AntiCheatPlugin.Enemy.Value)
+                if (Core.AntiCheat.Enemy.Value)
                 {
                     LogInfo($"{p.playerUsername} call EnemyAI.UpdateEnemyRotationServerRpc");
                     return true;
@@ -1114,7 +1108,7 @@ namespace AntiCheat
         //{
         //    if (Check(rpcParams, out var p))
         //    {
-        //        if (AntiCheatPlugin.Enemy.Value)
+        //        if (Core.AntiCheatPlugin.Enemy.Value)
         //        {
         //            LogInfo($"{p.playerUsername} call EnemyAI.UpdateEnemyPositionServerRpc");
         //            return true;
@@ -1135,7 +1129,7 @@ namespace AntiCheat
             LogInfo("__rpc_handler_3587030867");
             if (Check(rpcParams, out var p))
             {
-                if (AntiCheatPlugin.Enemy.Value)
+                if (Core.AntiCheat.Enemy.Value)
                 {
                     ByteUnpacker.ReadValueBitPacked(reader, out int clientId);
                     reader.Seek(0);
@@ -1159,7 +1153,7 @@ namespace AntiCheat
                     }
                     if (chcs[key][p.actualClientId].Count(x => x.AddSeconds(1) > DateTime.Now) > 5)
                     {
-                        ShowMessage(LocalizationManager.GetString("msg_Enemy_ChangeOwnershipOfEnemy", new Dictionary<string, string>() {
+                        ShowMessage(locale.Msg_GetString("Enemy_ChangeOwnershipOfEnemy", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername }
                         }));
                         //KickPlayer(p); 
@@ -1247,15 +1241,15 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                if (AntiCheatPlugin.Jetpack.Value)
+                if (Core.AntiCheat.Jetpack.Value)
                 {
                     var jp = (JetpackItem)target;
                     if (jp.playerHeldBy != null && jp.playerHeldBy.actualClientId != p.actualClientId)
                     {
-                        ShowMessage(LocalizationManager.GetString("msg_Jetpack", new Dictionary<string, string>() {
+                        ShowMessage(locale.Msg_GetString("Jetpack", new Dictionary<string, string>() {
                              { "{player}",p.playerUsername }
                         }));
-                        if (AntiCheatPlugin.Jetpack2.Value)
+                        if (Core.AntiCheat.Jetpack2.Value)
                         {
                             KickPlayer(p);
                         }
@@ -1263,10 +1257,10 @@ namespace AntiCheat
                     }
                     else if (jp.playerHeldBy == null)
                     {
-                        ShowMessage(LocalizationManager.GetString("msg_Jetpack", new Dictionary<string, string>() {
+                        ShowMessage(locale.Msg_GetString("Jetpack", new Dictionary<string, string>() {
                              { "{player}",p.playerUsername }
                         }));
-                        if (AntiCheatPlugin.Jetpack2.Value)
+                        if (Core.AntiCheat.Jetpack2.Value)
                         {
                             KickPlayer(p);
                         }
@@ -1413,7 +1407,7 @@ namespace AntiCheat
                         return true;
                     }
                 }
-                if (AntiCheatPlugin.Shovel.Value)
+                if (Core.AntiCheat.Shovel.Value)
                 {
                     //if (playerWhoHit == -1 && Vector3.Distance(p.transform.position, e.transform.position) < 30)
                     //{
@@ -1425,14 +1419,14 @@ namespace AntiCheat
                     {
                         if (!jcs.Contains(p.playerSteamId))
                         {
-                            ShowMessage(LocalizationManager.GetString("msg_Shovel4", new Dictionary<string, string>() {
+                            ShowMessage(locale.Msg_GetString("Shovel4", new Dictionary<string, string>() {
                                 { "{player}",p.playerUsername },
                                 { "{enemyName}",e.enemyType.enemyName },
                                 { "{damageAmount}",force.ToString() },
-                                { "{item}", isShovel(obj) ? LocalizationManager.GetString("Item_Shovel") : LocalizationManager.GetString("Item_Knife") }
+                                { "{item}", isShovel(obj) ? locale.Item_GetString("Shovel") : locale.Item_GetString("Knife") }
                             }));
                             jcs.Add(p.playerSteamId);
-                            if (AntiCheatPlugin.Shovel2.Value)
+                            if (Core.AntiCheat.Shovel2.Value)
                             {
                                 KickPlayer(p);
                             }
@@ -1446,22 +1440,22 @@ namespace AntiCheat
                             LogInfo($"currentItemSlot:{p.currentItemSlot}");
                             LogInfo($"currentlyHeldObjectServer:{p.currentlyHeldObjectServer}");
                             LogInfo($"obj:{obj}");
-                            if (!AntiCheatPlugin.Shovel3.Value && (force == 1 || force == 2 || force == 3 || force == 5))
+                            if (!Core.AntiCheat.Shovel3.Value && (force == 1 || force == 2 || force == 3 || force == 5))
                             {
-                                ShowMessage(LocalizationManager.GetString("msg_Shovel6", new Dictionary<string, string>() {
+                                ShowMessage(locale.Msg_GetString("Shovel6", new Dictionary<string, string>() {
                                     { "{player}",p.playerUsername },
                                     { "{enemyName}",e.enemyType.enemyName },
                                     { "{damageAmount}",force.ToString() }
                                 }));
                                 jcs.Add(p.playerSteamId);
-                                if (AntiCheatPlugin.Shovel2.Value)
+                                if (Core.AntiCheat.Shovel2.Value)
                                 {
                                     KickPlayer(p);
                                 }
                             }
                             else
                             {
-                                LogInfo(LocalizationManager.GetString("msg_Shovel6", new Dictionary<string, string>() {
+                                LogInfo(locale.Msg_GetString("Shovel6", new Dictionary<string, string>() {
                                     { "{player}",p.playerUsername },
                                     { "{enemyName}",e.enemyType.enemyName },
                                     { "{damageAmount}",force.ToString() }
@@ -1488,9 +1482,9 @@ namespace AntiCheat
         public static void ShowMessage(string msg, string lastmsg = null)
         {
             string showmsg = string.Empty;
-            var type = AntiCheatPlugin.DetectedMessageType.Value;
-            showmsg = LocalizationManager.GetString("MessageFormat", new Dictionary<string, string>() {
-                { "{Prefix}",LocalizationManager.GetString("Prefix") },
+            var type = Core.AntiCheat.DetectedMessageType.Value;
+            showmsg = locale.MessageFormat(new Dictionary<string, string>() {
+                { "{Prefix}",locale.Prefix() },
                 { "{msg}",msg }
             });
             if (lastMessage == msg || (lastmsg == lastMessage && lastmsg != null))
@@ -1506,7 +1500,7 @@ namespace AntiCheat
             {
                 lastMessage = msg;
             }
-            if (type == AntiCheatPlugin.MessageType.PublicChat)
+            if (type == Core.AntiCheat.MessageType.PublicChat)
             {
                 bypass = true;
                 var target = HUDManager.Instance;
@@ -1518,7 +1512,7 @@ namespace AntiCheat
                 __rpc_exec_stage.SetValue(target, raw___rpc_exec_stage);
                 bypass = false;
             }
-            else if (type == AntiCheatPlugin.MessageType.HostChat)
+            else if (type == Core.AntiCheat.MessageType.HostChat)
             {
                 LogInfo($"AddChatMessage|{showmsg}");
                 typeof(HUDManager).GetMethod("AddChatMessage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(HUDManager.Instance, new object[] { showmsg, "" });
@@ -1542,14 +1536,14 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                if (AntiCheatPlugin.Gift.Value)
+                if (Core.AntiCheat.Gift.Value)
                 {
                     if (lhs.Contains(target.GetInstanceID()))
                     {
-                        ShowMessage(LocalizationManager.GetString("msg_Gift", new Dictionary<string, string>() {
+                        ShowMessage(locale.Msg_GetString("Gift", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername }
                         }));
-                        if (AntiCheatPlugin.Gift2.Value)
+                        if (Core.AntiCheat.Gift2.Value)
                         {
                             KickPlayer(p);
                         }
@@ -1581,14 +1575,14 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                if (AntiCheatPlugin.Mask.Value)
+                if (Core.AntiCheat.Mask.Value)
                 {
                     if (mjs.Contains(target.GetInstanceID()))
                     {
-                        ShowMessage(LocalizationManager.GetString("msg_Mask", new Dictionary<string, string>() {
+                        ShowMessage(locale.Msg_GetString("Mask", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername }
                         }));
-                        if (AntiCheatPlugin.Mask2.Value)
+                        if (Core.AntiCheat.Mask2.Value)
                         {
                             KickPlayer(p);
                         }
@@ -1683,8 +1677,8 @@ namespace AntiCheat
             landMines = new List<int>();
             bypassHit = new List<HitData>();
             bypassKill = new List<HitData>();
-            HUDManager.Instance.AddTextToChatOnServer(LocalizationManager.GetString("msg_game_start", new Dictionary<string, string>() {
-                { "{ver}",AntiCheatPlugin.Version }
+            HUDManager.Instance.AddTextToChatOnServer(locale.Msg_GetString("game_start", new Dictionary<string, string>() {
+                { "{ver}",Core.AntiCheat.Version }
             }), -1);
             return true;
         }
@@ -1727,7 +1721,7 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                if (AntiCheatPlugin.GrabObject.Value && AntiCheatPlugin.GrabObject_BeltBag.Value)
+                if (Core.AntiCheat.GrabObject.Value && Core.AntiCheat.GrabObject_BeltBag.Value)
                 {
                     reader.ReadValueSafe(out NetworkObjectReference netObjectRef, default);
                     ByteUnpacker.ReadValueBitPacked(reader, out int playerWhoAdded);
@@ -1762,7 +1756,7 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                if (AntiCheatPlugin.GrabObject.Value)
+                if (Core.AntiCheat.GrabObject.Value)
                 {
                     reader.ReadValueSafe(out NetworkObjectReference grabbedObject, default);
                     reader.Seek(0);
@@ -1791,14 +1785,14 @@ namespace AntiCheat
                         if (g != null)
                         {
                             bool ban = false;
-                            if (AntiCheatPlugin.GrabObject_TwoHand.Value)
+                            if (Core.AntiCheat.GrabObject_TwoHand.Value)
                             {
                                 if (g.itemProperties.twoHanded && hastwohand)
                                 {
                                     ban = true;
                                 }
                             }
-                            if (AntiCheatPlugin.GrabObject_MoreSlot.Value)
+                            if (Core.AntiCheat.GrabObject_MoreSlot.Value)
                             {
                                 ban = all;
                             }
@@ -1818,14 +1812,14 @@ namespace AntiCheat
                                 {
                                     return true;
                                 }
-                                ShowMessage(LocalizationManager.GetString("msg_GrabObject", new Dictionary<string, string>() {
+                                ShowMessage(locale.Msg_GetString("GrabObject", new Dictionary<string, string>() {
                                     { "{player}",p.playerUsername },
                                     { "{object_position}",g.transform.position.ToString() },
                                     { "{player_position}",p.serverPlayerPosition.ToString() }
                                 }));
                                 g = default;
                                 grabbedObject = default;
-                                if (AntiCheatPlugin.GrabObject_MoreSlot.Value)
+                                if (Core.AntiCheat.GrabObject_MoreSlot.Value)
                                 {
                                     KickPlayer(p);
                                 }
@@ -1915,7 +1909,7 @@ namespace AntiCheat
                 //        }
                 //    }
                 //}
-                if (AntiCheatPlugin.Invisibility.Value)
+                if (Core.AntiCheat.Invisibility.Value)
                 {
                     var oldpos = p.serverPlayerPosition;
                     if (p.teleportedLastFrame)
@@ -1924,11 +1918,11 @@ namespace AntiCheat
                     }
                     if (Vector3.Distance(oldpos, newPos) > 100 && Vector3.Distance(newPos, new Vector3(0, 0, 0)) > 10)
                     {
-                        ShowMessage(LocalizationManager.GetString("msg_Invisibility", new Dictionary<string, string>() {
+                        ShowMessage(locale.Msg_GetString("Invisibility", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername },
                             { "{player_position}",newPos.ToString() }
                         }));
-                        if (AntiCheatPlugin.Invisibility2.Value)
+                        if (Core.AntiCheat.Invisibility2.Value)
                         {
                             KickPlayer(p);
                         }
@@ -1970,7 +1964,7 @@ namespace AntiCheat
             NetIdentity identity = Traverse.Create(info).Field<NetIdentity>("identity").Value;
             if (StartOfRound.Instance.KickedClientIds.Contains(identity.SteamId.Value))
             {
-                LogInfo(LocalizationManager.GetString("log_refuse_connect", new Dictionary<string, string>() {
+                LogInfo(locale.Log_GetString("refuse_connect", new Dictionary<string, string>() {
                     {"{steamId}",identity.SteamId.Value.ToString() }
                 }));
                 return false;
@@ -1988,9 +1982,9 @@ namespace AntiCheat
             {
                 ConnectionIdtoSteamIdMap.Add(connection.Id, identity.SteamId.Value);
             }
-            if (AntiCheatPlugin.OperationLog.Value)
+            if (Core.AntiCheat.OperationLog.Value)
             {
-                ShowMessageHostOnly(LocalizationManager.GetString("OperationLog_JoinLobby", new Dictionary<string, string>() {
+                ShowMessageHostOnly(locale.OperationLog_GetString("JoinLobby", new Dictionary<string, string>() {
                     { "{player}",new Friend(ConnectionIdtoSteamIdMap[connection.Id]).Name }
                 }));
             }
@@ -2010,7 +2004,7 @@ namespace AntiCheat
         {
             if (StartOfRound.Instance != null && StartOfRound.Instance.IsHost)
             {
-                if (AntiCheatPlugin.IgnoreClientConfig.Value)
+                if (Core.AntiCheat.IgnoreClientConfig.Value)
                 {
                     __result = true;
                     return false;
@@ -2091,14 +2085,14 @@ namespace AntiCheat
                 LogInfo($"HUDManager.AddTextMessageServerRpc|{p.playerUsername}|{chatMessage}");
                 if (chatMessage.Contains("<color") || chatMessage.Contains("<size"))
                 {
-                    if (AntiCheatPlugin.Map.Value)
+                    if (Core.AntiCheat.Map.Value)
                     {
                         if (chatMessage.Contains("<size=0>Tyzeron.Minimap"))
                         {
-                            ShowMessage(LocalizationManager.GetString("msg_Map", new Dictionary<string, string>() {
+                            ShowMessage(locale.Msg_GetString("Map", new Dictionary<string, string>() {
                                 { "{player}",p.playerUsername }
                             }));
-                            if (AntiCheatPlugin.Map2.Value)
+                            if (Core.AntiCheat.Map2.Value)
                             {
                                 KickPlayer(p);
                             }
@@ -2149,7 +2143,7 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                if (AntiCheatPlugin.ChatReal.Value)
+                if (Core.AntiCheat.ChatReal.Value)
                 {
                     try
                     {
@@ -2170,11 +2164,11 @@ namespace AntiCheat
                         {
                             if (StartOfRound.Instance.allPlayerScripts[(int)playerId].playerSteamId != p.playerSteamId)
                             {
-                                ShowMessage(LocalizationManager.GetString("msg_ChatReal", new Dictionary<string, string>() {
+                                ShowMessage(locale.Msg_GetString("ChatReal", new Dictionary<string, string>() {
                                     { "{player}",p.playerUsername },
                                     { "{player2}",StartOfRound.Instance.allPlayerScripts[playerId].playerUsername },
                                 }));
-                                if (AntiCheatPlugin.ChatReal2.Value)
+                                if (Core.AntiCheat.ChatReal2.Value)
                                 {
                                     KickPlayer(p);
                                 }
@@ -2226,10 +2220,10 @@ namespace AntiCheat
                 {
                     LogInfo($"whoUseTerminal:{whoUseTerminal.playerUsername}|p:{p.playerUsername}");
                 }
-                ShowMessage(LocalizationManager.GetString("msg_RemoteTerminal", new Dictionary<string, string>() {
+                ShowMessage(locale.Msg_GetString("RemoteTerminal", new Dictionary<string, string>() {
                     { "{player}",p.playerUsername }
                 }));
-                if (AntiCheatPlugin.RemoteTerminal2.Value)
+                if (Core.AntiCheat.RemoteTerminal2.Value)
                 {
                     KickPlayer(p);
                 }
@@ -2308,7 +2302,7 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                if (AntiCheatPlugin.RemoteTerminal.Value)
+                if (Core.AntiCheat.RemoteTerminal.Value)
                 {
                     if (!CheckRemoteTerminal(p))
                     {
@@ -2372,7 +2366,7 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                if (AntiCheatPlugin.InfiniteAmmo.Value)
+                if (Core.AntiCheat.InfiniteAmmo.Value)
                 {
                     reader.ReadValueSafe(out bool start, default);
                     reader.Seek(0);
@@ -2388,10 +2382,10 @@ namespace AntiCheat
                         }
                         else
                         {
-                            ShowMessage(LocalizationManager.GetString("msg_InfiniteAmmo", new Dictionary<string, string>() {
+                            ShowMessage(locale.Msg_GetString("InfiniteAmmo", new Dictionary<string, string>() {
                                 { "{player}",p.playerUsername }
                             }));
-                            if (AntiCheatPlugin.InfiniteAmmo2.Value)
+                            if (Core.AntiCheat.InfiniteAmmo2.Value)
                             {
                                 KickPlayer(p);
                             }
@@ -2413,10 +2407,10 @@ namespace AntiCheat
             yield return new WaitForSeconds(3f);//delay
             if (ammo != null && ammo.NetworkObject != null && ammo.NetworkObject.IsSpawned)
             {
-                ShowMessage(LocalizationManager.GetString("msg_InfiniteAmmo", new Dictionary<string, string>() {
+                ShowMessage(locale.Msg_GetString("InfiniteAmmo", new Dictionary<string, string>() {
                     { "{player}",p.playerUsername }
                 }));
-                if (AntiCheatPlugin.InfiniteAmmo2.Value)
+                if (Core.AntiCheat.InfiniteAmmo2.Value)
                 {
                     KickPlayer(p);
                 }
@@ -2436,7 +2430,7 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p) || StartOfRound.Instance.localPlayerController.IsHost)
             {
-                if (AntiCheatPlugin.InfiniteAmmo.Value)
+                if (Core.AntiCheat.InfiniteAmmo.Value)
                 {
                     var s = (ShotgunItem)target;
                     var localClientSendingShootGunRPC = (bool)typeof(ShotgunItem).GetField("localClientSendingShootGunRPC", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(s);
@@ -2449,10 +2443,10 @@ namespace AntiCheat
                         LogInfo($"{p.playerUsername} call ShotgunItem.ShootGunServerRpc|ShotgunItem.shellsLoaded:{s.shellsLoaded}");
                         if (s.shellsLoaded == 0)
                         {
-                            ShowMessage(LocalizationManager.GetString("msg_InfiniteAmmo", new Dictionary<string, string>() {
+                            ShowMessage(locale.Msg_GetString("InfiniteAmmo", new Dictionary<string, string>() {
                                 { "{player}",p.playerUsername }
                             }));
-                            if (AntiCheatPlugin.InfiniteAmmo2.Value)
+                            if (Core.AntiCheat.InfiniteAmmo2.Value)
                             {
                                 KickPlayer(p);
                             }
@@ -2460,7 +2454,7 @@ namespace AntiCheat
                         }
                     }
                 }
-                if (AntiCheatPlugin.ItemCooldown.Value)
+                if (Core.AntiCheat.ItemCooldown.Value)
                 {
                     var id = p.playerSteamId;
                     var m = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -2474,11 +2468,11 @@ namespace AntiCheat
                     }
                     if (sdqcd[id].Count(x => x == m) >= 2)
                     {
-                        ShowMessage(LocalizationManager.GetString("msg_ItemCooldown", new Dictionary<string, string>() {
+                        ShowMessage(locale.Msg_GetString("ItemCooldown", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername },
-                            { "{item}",LocalizationManager.GetString("Item_Shotgun") }
+                            { "{item}",locale.Item_GetString("Shotgun") }
                         }));
-                        if (AntiCheatPlugin.ItemCooldown2.Value)
+                        if (Core.AntiCheat.ItemCooldown2.Value)
                         {
                             KickPlayer(p);
                         }
@@ -2525,7 +2519,7 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                if (AntiCheatPlugin.ItemCooldown.Value)
+                if (Core.AntiCheat.ItemCooldown.Value)
                 {
                     var id = p.playerSteamId;
                     var m = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -2539,11 +2533,11 @@ namespace AntiCheat
                     }
                     if (czcd[id].Count(x => x == m) >= cd)
                     {
-                        ShowMessage(LocalizationManager.GetString("msg_ItemCooldown", new Dictionary<string, string>() {
+                        ShowMessage(locale.Msg_GetString("ItemCooldown", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername },
-                            { "{item}",LocalizationManager.GetString("Item_Shovel") }
+                            { "{item}",locale.Item_GetString("Shovel") }
                         }));
-                        if (AntiCheatPlugin.ItemCooldown2.Value)
+                        if (Core.AntiCheat.ItemCooldown2.Value)
                         {
                             KickPlayer(p);
                         }
@@ -2573,29 +2567,29 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                if (AntiCheatPlugin.ShipConfig.Value && !GameNetworkManager.Instance.gameHasStarted)
+                if (Core.AntiCheat.ShipConfig.Value && !GameNetworkManager.Instance.gameHasStarted)
                 {
-                    ShowMessage(LocalizationManager.GetString("msg_ShipConfig5", new Dictionary<string, string>() {
+                    ShowMessage(locale.Msg_GetString("ShipConfig5", new Dictionary<string, string>() {
                         { "{player}",p.playerUsername }
                     }));
                     UnityEngine.Object.FindObjectOfType<StartMatchLever>().triggerScript.interactable = true;
-                    if (AntiCheatPlugin.Ship_Kick.Value)
+                    if (Core.AntiCheat.Ship_Kick.Value)
                     {
                         KickPlayer(p);
                         return false;
                     }
                     return false;
                 }
-                else if (StartOfRound.Instance.allPlayerScripts.Count(x => x.isPlayerControlled) >= AntiCheatPlugin.ShipConfig2.Value)
+                else if (StartOfRound.Instance.allPlayerScripts.Count(x => x.isPlayerControlled) >= Core.AntiCheat.ShipConfig2.Value)
                 {
                     return true;
                 }
                 else
                 {
                     UnityEngine.Object.FindObjectOfType<StartMatchLever>().triggerScript.interactable = true;
-                    ShowMessage(LocalizationManager.GetString("msg_ShipConfig2", new Dictionary<string, string>() {
+                    ShowMessage(locale.Msg_GetString("ShipConfig2", new Dictionary<string, string>() {
                         { "{player}",p.playerUsername },
-                        { "{cfg}",AntiCheatPlugin.ShipConfig2.Value.ToString() }
+                        { "{cfg}",Core.AntiCheat.ShipConfig2.Value.ToString() }
                     }));
                     return false;
                 }
@@ -2635,7 +2629,7 @@ namespace AntiCheat
             {
                 return;
             }
-            NetworkManager.Singleton.DisconnectClient(kick.actualClientId, $"[{LocalizationManager.GetString("Prefix")}] {LocalizationManager.GetString("msg_KickPlayer")}！");
+            NetworkManager.Singleton.DisconnectClient(kick.actualClientId, $"[{locale.Prefix()}] {locale.Msg_GetString("KickPlayer")}！");
             if (kick.playerSteamId == 0)
             {
                 return;
@@ -2656,7 +2650,7 @@ namespace AntiCheat
                 terminal.SetTerminalInUseClientRpc(false);
                 terminal.terminalInUse = false;
             }
-            ShowMessage(LocalizationManager.GetString("msg_Kick", new Dictionary<string, string>() {
+            ShowMessage(locale.Msg_GetString("Kick", new Dictionary<string, string>() {
                 { "{player}",kick.playerUsername }
             }));
         }
@@ -2720,15 +2714,15 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                if (AntiCheatPlugin.DespawnItem.Value)
+                if (Core.AntiCheat.DespawnItem.Value)
                 {
                     if (p.currentlyHeldObjectServer != null && !(p.currentlyHeldObjectServer is GiftBoxItem) && !(p.currentlyHeldObjectServer is KeyItem))
                     {
-                        ShowMessage(LocalizationManager.GetString("msg_DespawnItem", new Dictionary<string, string>() {
+                        ShowMessage(locale.Msg_GetString("DespawnItem", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername },
                             { "{item}",p.currentlyHeldObjectServer.itemProperties.itemName }
                         }));
-                        if (AntiCheatPlugin.DespawnItem2.Value)
+                        if (Core.AntiCheat.DespawnItem2.Value)
                         {
                             KickPlayer(p);
                         }
@@ -2755,7 +2749,7 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                if (AntiCheatPlugin.Turret.Value)
+                if (Core.AntiCheat.Turret.Value)
                 {
                     var obj = p.ItemSlots[p.currentItemSlot];
                     if (obj != null && (isShovel(obj) || isKnife(obj)))
@@ -2764,11 +2758,11 @@ namespace AntiCheat
                         float v = Vector3.Distance(t.transform.position, p.transform.position);
                         if (v > 12)
                         {
-                            ShowMessage(LocalizationManager.GetString("msg_Turret", new Dictionary<string, string>() {
+                            ShowMessage(locale.Msg_GetString("Turret", new Dictionary<string, string>() {
                                 { "{player}",p.playerUsername },
                                 { "{Distance}",v.ToString() }
                             }));
-                            if (AntiCheatPlugin.Turret2.Value)
+                            if (Core.AntiCheat.Turret2.Value)
                             {
                                 KickPlayer(p);
                             }
@@ -2777,10 +2771,10 @@ namespace AntiCheat
                     }
                     else
                     {
-                        ShowMessage(LocalizationManager.GetString("msg_Turret2", new Dictionary<string, string>() {
+                        ShowMessage(locale.Msg_GetString("Turret2", new Dictionary<string, string>() {
                              { "{player}",p.playerUsername }
                         }));
-                        if (AntiCheatPlugin.Turret2.Value)
+                        if (Core.AntiCheat.Turret2.Value)
                         {
                             KickPlayer(p);
                         }
@@ -2816,13 +2810,13 @@ namespace AntiCheat
             {
                 return;
             }
-            if (AntiCheatPlugin.ShipSetting_OnlyOneVote.Value)
+            if (Core.AntiCheat.ShipSetting_OnlyOneVote.Value)
             {
                 if (!TimeOfDay.Instance.shipLeavingAlertCalled)
                 {
                     if (GameNetworkManager.Instance.localPlayerController.isPlayerDead && !string.IsNullOrEmpty(HUDManager.Instance.holdButtonToEndGameEarlyVotesText.text))
                     {
-                        HUDManager.Instance.holdButtonToEndGameEarlyVotesText.text += Environment.NewLine + LocalizationManager.GetString("msg_vote");
+                        HUDManager.Instance.holdButtonToEndGameEarlyVotesText.text += Environment.NewLine + locale.Msg_GetString("vote");
                     }
                 }
             }
@@ -2840,7 +2834,7 @@ namespace AntiCheat
         {
             if (StartOfRound.Instance.localPlayerController.IsHost)
             {
-                if (AntiCheatPlugin.ShipSetting_OnlyOneVote.Value)
+                if (Core.AntiCheat.ShipSetting_OnlyOneVote.Value)
                 {
                     if (rpcParams.Server.Receive.SenderClientId == 0)
                     {
@@ -2862,7 +2856,7 @@ namespace AntiCheat
             if (Check(rpcParams, out var p))
             {
                 int num = StartOfRound.Instance.connectedPlayersAmount + 1 - StartOfRound.Instance.livingPlayers;
-                string msg = LocalizationManager.GetString("msg_vote_player", new Dictionary<string, string>() {
+                string msg = locale.Msg_GetString("vote_player", new Dictionary<string, string>() {
                     { "{player}",p.playerUsername },
                     { "{now}",(TimeOfDay.Instance.votesForShipToLeaveEarly + 1).ToString() },
                     { "{max}",num.ToString() }
@@ -2897,8 +2891,8 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                var hour = int.Parse(AntiCheatPlugin.ShipConfig3.Value.Split(':')[0]);
-                var min = int.Parse(AntiCheatPlugin.ShipConfig3.Value.Split(':')[1]);
+                var hour = int.Parse(Core.AntiCheat.ShipConfig3.Value.Split(':')[0]);
+                var min = int.Parse(Core.AntiCheat.ShipConfig3.Value.Split(':')[1]);
                 var time = (int)(TimeOfDay.Instance.normalizedTimeOfDay * (60f * TimeOfDay.Instance.numberOfHours)) + 360;
                 int time2 = (int)Mathf.Floor((float)(time / 60));
                 bool pm = false;
@@ -2918,7 +2912,7 @@ namespace AntiCheat
                 {
                     return true;
                 }
-                decimal p1 = Math.Round((decimal)live.Count() * (decimal)(AntiCheatPlugin.ShipConfig4.Value / 100m), 2);
+                decimal p1 = Math.Round((decimal)live.Count() * (decimal)(Core.AntiCheat.ShipConfig4.Value / 100m), 2);
                 decimal p2 = StartOfRound.Instance.allPlayerScripts.Count(x => x.isPlayerControlled && x.isInHangarShipRoom); // 
                 if (StartOfRound.Instance.currentLevel.PlanetName.Contains("Gordion"))
                 {
@@ -2931,10 +2925,10 @@ namespace AntiCheat
                 }
                 else
                 {
-                    ShowMessage(LocalizationManager.GetString("msg_ShipConfig4", new Dictionary<string, string>() {
+                    ShowMessage(locale.Msg_GetString("ShipConfig4", new Dictionary<string, string>() {
                         { "{player}",p.playerUsername },
                         { "{player_count}",p1.ToString() },
-                        { "{cfg4}",AntiCheatPlugin.ShipConfig4.Value.ToString() },
+                        { "{cfg4}",Core.AntiCheat.ShipConfig4.Value.ToString() },
                         { "{cfg3}",$"{hour.ToString("00")}:{min.ToString("00")}" },
                         { "{game_time}",$"{time2.ToString("00")}:{time.ToString("00")}" }
                     }));
@@ -2961,7 +2955,7 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p) || StartOfRound.Instance.IsHost)
             {
-                if (AntiCheatPlugin.ShipBuild.Value)
+                if (Core.AntiCheat.ShipBuild.Value)
                 {
                     Vector3 newPosition;
                     reader.ReadValueSafe(out newPosition);
@@ -2975,12 +2969,12 @@ namespace AntiCheat
                         //LogInfo($"newRotation:{newRotation}|mainMesh:{placingObject.mainMesh.transform.eulerAngles.ToString()}");
                         if (Math.Floor(newRotation.x) != Math.Floor(placingObject.mainMesh.transform.eulerAngles.x) || Math.Floor(newRotation.z) != Math.Floor(placingObject.mainMesh.transform.eulerAngles.z))
                         {
-                            ShowMessage(LocalizationManager.GetString("msg_ShipBuild", new Dictionary<string, string>() {
+                            ShowMessage(locale.Msg_GetString("ShipBuild", new Dictionary<string, string>() {
                                     { "{player}",p.playerUsername },
                                     { "{position}",newRotation.ToString() },
                                     { "{object}",placingObject.parentObject.name }
-                            }), LocalizationManager.GetString("msg_ShipBuild"));
-                            if (AntiCheatPlugin.ShipBuild2.Value)
+                            }), locale.Msg_GetString("ShipBuild"));
+                            if (Core.AntiCheat.ShipBuild2.Value)
                             {
                                 KickPlayer(p);
                             }
@@ -2990,11 +2984,11 @@ namespace AntiCheat
                         //LogInfo($"{p.playerUsername}|ShipBuildModeManager.PlaceShipObjectServerRpc|placingObject:{placingObject.parentObject.name},{placingObject.unlockableID}|newPosition:{newPosition}|newRotation:{newRotation}");
                         if (!StartOfRound.Instance.shipInnerRoomBounds.bounds.Contains(newPosition))
                         {
-                            ShowMessage(LocalizationManager.GetString("msg_ShipBuild", new Dictionary<string, string>() {
+                            ShowMessage(locale.Msg_GetString("ShipBuild", new Dictionary<string, string>() {
                                     { "{player}",p.playerUsername },
                                     { "{position}",newPosition.ToString() }
-                            }), LocalizationManager.GetString("msg_ShipBuild"));
-                            if (AntiCheatPlugin.ShipBuild2.Value)
+                            }), locale.Msg_GetString("ShipBuild"));
+                            if (Core.AntiCheat.ShipBuild2.Value)
                             {
                                 KickPlayer(p);
                             }
@@ -3054,16 +3048,16 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                if (AntiCheatPlugin.Landmine.Value)
+                if (Core.AntiCheat.Landmine.Value)
                 {
                     var lm = (Landmine)target;
                     int id = lm.GetInstanceID();
                     if (!landMines.Contains(id))
                     {
-                        ShowMessage(LocalizationManager.GetString("msg_Landmine", new Dictionary<string, string>() {
+                        ShowMessage(locale.Msg_GetString("Landmine", new Dictionary<string, string>() {
                              { "{player}",p.playerUsername }
                         }));
-                        if (AntiCheatPlugin.Landmine2.Value)
+                        if (Core.AntiCheat.Landmine2.Value)
                         {
                             KickPlayer(p);
                         }
@@ -3089,12 +3083,12 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                if (AntiCheatPlugin.Boss.Value)
+                if (Core.AntiCheat.Boss.Value)
                 {
-                    ShowMessage(LocalizationManager.GetString("msg_Boss", new Dictionary<string, string>() {
+                    ShowMessage(locale.Msg_GetString("Boss", new Dictionary<string, string>() {
                          { "{player}",p.playerUsername }
                     }));
-                    if (AntiCheatPlugin.Boss2.Value)
+                    if (Core.AntiCheat.Boss2.Value)
                     {
                         KickPlayer(p);
                     }
@@ -3117,7 +3111,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static void StartHost()
         {
-            if (AntiCheatPlugin.Prefix.Value.IsNullOrWhiteSpace())
+            if (Core.AntiCheat.Prefix.Value.IsNullOrWhiteSpace())
             {
                 return;
             }
@@ -3132,9 +3126,9 @@ namespace AntiCheat
                 labels.AddRange(txt.Split('/'));
                 rawText = rawText.Remove(0, match.Groups[0].Value.Length).TrimStart();
             }
-            if (!labels.Any(x => x == AntiCheatPlugin.Prefix.Value))
+            if (!labels.Any(x => x == Core.AntiCheat.Prefix.Value))
             {
-                labels.Add(AntiCheatPlugin.Prefix.Value);
+                labels.Add(Core.AntiCheat.Prefix.Value);
             }
             setting.lobbyName = "[" + string.Join("/", labels) + "]" + " " + rawText;
         }

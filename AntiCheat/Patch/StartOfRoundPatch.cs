@@ -24,7 +24,7 @@ namespace AntiCheat
         [HarmonyPatch("__rpc_handler_682230258")]
         public static bool __rpc_handler_682230258(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            var steamId = Patch.ConnectionIdtoSteamIdMap[Patch.ClientIdToTransportId(rpcParams.Server.Receive.SenderClientId)];
+            var steamId = Patches.ConnectionIdtoSteamIdMap[Patches.ClientIdToTransportId(rpcParams.Server.Receive.SenderClientId)];
             if (SyncAlreadyHeldObjectsServerRpcCalls.Contains(steamId))
             {
                 return false;
@@ -41,7 +41,7 @@ namespace AntiCheat
         [HarmonyPatch("__rpc_handler_744998938")]
         public static bool __rpc_handler_744998938(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Patch.Check(rpcParams, out var p))
+            if (Patches.Check(rpcParams, out var p))
             {
                 if (SyncShipUnlockablesServerRpcCalls.Contains(p.playerSteamId))
                 {
