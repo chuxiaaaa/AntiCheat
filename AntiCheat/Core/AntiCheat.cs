@@ -301,7 +301,7 @@ namespace AntiCheat.Core
         private void LoadConfig()
         {
             localizationManager = new LocalizationManager();
-            IgnoreClientConfig = Config.Bind("VersionSetting", "IgnoreClientConfig", false, localizationManager.Cfg_GetString("IgnoreClientConfig"));
+            IgnoreClientConfig = Config.Bind("VersionSetting", "NetworkSetting", false, localizationManager.Cfg_GetString("NetworkSetting"));
             Prefix = Config.Bind("ServerNameSetting", "Prefix", "AC", localizationManager.Cfg_GetString("Prefix"));
             ShipConfig = Config.Bind("ShipSetting", "StartGameOnlyHost", true, localizationManager.Cfg_GetString("ShipSetting"));
             Log = Config.Bind("LogSetting", "Log", true, localizationManager.Cfg_GetString("Log"));
@@ -403,7 +403,7 @@ namespace AntiCheat.Core
             RemoteTerminal = Config.Bind("RemoteTerminalSettings", "Enable", true, localizationManager.Cfg_GetString("RemoteTerminal"));
             RemoteTerminal2 = Config.Bind("RemoteTerminalSettings", "Kick", false, localizationManager.Cfg_GetString("Kick"));
 
-            PlayerJoin = Config.Bind("MsgSettings", "PlayerJoinShip", localizationManager.Cfg_GetString("msg_wlc_player"), localizationManager.Cfg_GetString("msg_wlc_player"));
+            PlayerJoin = Config.Bind("MsgSettings", "PlayerJoinShip", localizationManager.Msg_GetString("wlc_player"), localizationManager.Msg_GetString("wlc_player"));
             CooldownManager.Reset();
             CooldownManager.RegisterCooldownGroup(
                 "TerminalNoise",
