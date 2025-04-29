@@ -52,25 +52,39 @@ Example: [AC] The battle is thrilling!
 - Lever pull detection
 
   - Limited ship lever to landing and departure by checking how many player are in the ship and if current time are approved to do so or not
+
   - Prevent malicious lever pull
 
 - Abnormal furniture position detection
+
 - Abnormal item interaction cooldown detection
 
   - Detects item interaction cooldown, including switch slot to reduce shovel swing cooldown
 
 - Spamming light switch detection
+
 - Spamming terminal noise detection
+
 - Abnormal item despawn detection
+
 - Fake chat message detection
+
 - Abnormal masked enemy detection
+
 - Abnormal gift box interaction detection
+
 - Abnormal spiderweb spawning detection
+
 - Abnormal turret berserk mode detection
+
 - Invisible player detection
+
 - Abnormal jetpack explosion detection
+
 - Abnormal landmine triggering detection
+
 - Abnormal monster detection
+
 - Mini-map detection
 
   - Detects player who snooping, which detect snooping on loot, mines, turret, enemy locations and more
@@ -80,6 +94,7 @@ Example: [AC] The battle is thrilling!
   - Detects if player kill an enemy from too far away
 
 - Item pickup distance detection
+
 - Abnormal shovel damage detection
 
   - No 99 shovel dmg!
@@ -95,23 +110,36 @@ Example: [AC] The battle is thrilling!
 - Infinite ammo detection
 
   - Detects if player load and firing the ammo that doesn't even exist
+
   - Normal player can trigger this, as long as the shotgun has the ammo that doesn't exist
 
 - Boss attack spoofing detection
+
 - Abnormal credits detection
+
 - Remote terminal detection
+
 - Prevention of client-side monster killing RPC to kill other players
 
   - Prevents instant-kills
 
 - Prevent the player join the lobby twice if they already in the lobby
-- (WIP) Speed detection
-- (WIP) Stamina detection
 
-### Other
+* [ ]  Speed detection
+
+* [ ]  Stamina detection
+
+### Other features
 
 - Lobby name prefix
+
 - Editable lobby welcome message
+
+- Logging action made by the client
+
+- Ignore network configuration differences
+
+  - try to avoid 'an error occurred' dialog
 
 ## Contributions
 
