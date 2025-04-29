@@ -128,5 +128,10 @@
     <Analyzer Include="D:\致命公司\lib\0Harmony.dll" />
     <Analyzer Include="D:\致命公司\lib\BepInEx.Harmony.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Lang\en_US.json" />
+    <None Include="Lang\localization_cfg.json" />
+    <None Include="Lang\zh_CN.json" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
