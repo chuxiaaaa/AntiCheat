@@ -5,7 +5,7 @@
 
 [**简体中文(Support)**](https://github.com/chuxiaaaa/AntiCheat/blob/main/README.md) | **English(Support)** | [**Русский**](https://github.com/chuxiaaaa/AntiCheat/blob/main/docs/README-ru.md) | [**한국어(Support)**](https://github.com/chuxiaaaa/AntiCheat/blob/main/docs/README-ko.md)
 
-A Lethal Company anti-cheat mod (host-only)
+A Lethal Company anti-cheat server-side mod.
 
 ## i18 globally
 
