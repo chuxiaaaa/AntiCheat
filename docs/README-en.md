@@ -7,7 +7,20 @@
 
 A Lethal Company anti-cheat mod (host-only)
 
-The default language is Simplified Chinese, You can switch to English by changing the Language to "English" in the configuration file.
+## i18 globally
+
+After version 0.8.2，AntiCheat support fully customized prompt content.
+
+### Specify the language file to be used
+  1. In ``AntiCheat\locales`` folder，open ``localization_cfg.json`` file;
+  2. Change ``current_language`` value by following rule:
+      - If the value is empty, the mod will automatically set the value depends on the system language;
+      - If you want to specify，set the value to the corresponding language file name.
+
+### Create a new language file
+  1. Make a copy of ``en_US.json`` language file and rename it (to the language name you want to localize);
+  2. Localize the language file you made，and then change ``current_language`` value from ``localization_cfg.json``;
+  3. (Optional) Submit your language file by using PR in Github to let other people enjoy your creation.
 
 ## Introduction
 
