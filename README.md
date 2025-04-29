@@ -14,8 +14,8 @@
 ### 指定使用语言文件
   1. 在 AntiCheat 文件目录下找到 locales 文件夹，打开 localization_cfg.json 文件
   2. 修改 ``current_language`` 的值
-    - 如果为空，反作弊将会根据系统语言自动设置为 zh_CN/en_US
-    - 如果想指定，请将值设定为 en_US/zh_CN
+      - 如果为空，反作弊将会根据系统语言自动设置为 zh_CN/en_US
+      - 如果想指定，请将值设定为 en_US/zh_CN
 
 ### 创建新语言文件
   1. 复制 en_US.json 文件
