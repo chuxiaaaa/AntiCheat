@@ -7,6 +7,22 @@
 
 一个致命公司反作弊模组（仅限主机使用）
 
+## i18国际化
+
+在 0.8.2 版本以后，反作弊支持完全自定义提示内容
+
+### 指定使用语言文件
+  1. 在 AntiCheat 文件目录下找到 locales 文件夹，打开 localization_cfg.json 文件
+  2. 修改 ``current_language`` 的值
+    - 如果为空，反作弊将会根据系统语言自动设置为 zh_CN/en_US
+    - 如果想指定，请将值设定为 en_US/zh_CN
+
+### 创建新语言文件
+  1. 复制 en_US.json 文件
+  2. 修改文件名，将其修改为你的语言文件名称，例如 en_US.json -> zh_CN.json
+  3. 更改文件内容，修改完毕后将 ``localization_cfg.json`` 中 ``current_language`` 的值
+  4. (可选)在 Github 中提交pull request，说明并提交你的语言文件
+
 ## 简介
 
 模组交流 QQ 群：263868521

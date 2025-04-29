@@ -1,5 +1,19 @@
 # Beta(公开测试版)
 
+## Version 0.8.2
+
+### 中文
+
+* [/] i18方式从资源文件迁移到json文件，现在你可以完全自定义反作弊的提示消息
+* [/] 修复客户端在重新加入游戏后，无法看到家具的正确位置
+* [/] 修复在某些地点击杀管家检测到异常伤害的问题
+
+### English
+
+* [/] The i18n method has been migrated from resource files to JSON files, now you can fully customize the anti-cheat warning messages  
+* [/] Fixed an issue where the client could not see the correct position of furniture after rejoining the game  
+* [/] Fixed abnormal damage detection when killing the butler in certain locations
+
 ## Version 0.8.1
 
 ### 中文
