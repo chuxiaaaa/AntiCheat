@@ -22,7 +22,7 @@
         "KillEnemy": "Detects when an enemy is instantly killed.",
         "Landmine": "Detects when a player abnormally detonates a landmine.",
         "Log": "Show logs.",
-        "Map": "Detects when a player can able to control the ship monitor.",
+        "Map": "Detects the use of mini-map mods.",
         "Mask": "Detects when masked enemies are spawned abnormally.",
         "Nameless": "Detects invalid or anomalous player names such as Nameless or Unknown.",
         "NetworkSetting": "Ignore network configuration differences and try to avoid 'an error occurred' dialog.",
@@ -82,7 +82,7 @@
         "KickPlayer": "A cheat was detected",
         "KillEnemy": "{player} was detected killing a monster instantly! ({enemyName}, monster HP before: {HP})",
         "Landmine": "{player} was detected forcing a landmine explosion!",
-        "Map": "{player} was detected controlling the ship monitor abnormally!",
+        "Map": "{player} was detected to have a mini-map mod!",
         "Mask": "{player} was detected to have spawned Masked enemies abnormally!",
         "Nameless": "{player} was detected to have an anomalous or invalid name!",
         "PlayerCarryWeight": "{player} was detected abnormal carry weight!",
@@ -105,7 +105,7 @@
         "Turret2": "{player} was detected causing a turret to go berserk without a weapon!",
         "vote": "You are the host, your vote can force the autopilot.",
         "vote_player": "{player} voted for the ship to leave early. ({now}/{max})",
-        "msg_wlc_player": "<color=green><color=yellow>[{player}]</color> joined the ship.</color>"
+        "wlc_player": "<color=green><color=yellow>[{player}]</color> joined the ship.</color>"
     },
     "MessageFormat": "<color=red>{Prefix} {msg}</color>",
     "OperationLog": {
