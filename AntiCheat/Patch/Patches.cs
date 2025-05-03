@@ -2355,6 +2355,8 @@ namespace AntiCheat
             return null;//??
         }
 
+        public static Dictionary<ulong, bool> ReloadGun = new Dictionary<ulong, bool>();
+
         /// <summary>
         /// 上弹事件
         /// Prefix ShotgunItem.ReloadGunEffectsServerRpc
@@ -2370,7 +2372,15 @@ namespace AntiCheat
                 {
                     reader.ReadValueSafe(out bool start, default);
                     reader.Seek(0);
-                    LogInfo($"{p.playerUsername} call ShotgunItem.ReloadGunEffectsServerRpc");
+                    LogInfo($"{p.playerUsername} call ShotgunItem.ReloadGunEffectsServerRpc({start})");
+                    if (!ReloadGun.ContainsKey(p.playerSteamId))
+                    {
+                        ReloadGun.Add(p.playerSteamId, start);
+                    }
+                    else
+                    {
+                        ReloadGun[p.playerSteamId] = start;
+                    }
                     if (start)
                     {
                         var shot = (ShotgunItem)target;
@@ -2405,14 +2415,17 @@ namespace AntiCheat
         {
             yield return new WaitForSeconds(0.95f + 0.3f);
             yield return new WaitForSeconds(3f);//delay
-            if (ammo != null && ammo.NetworkObject != null && ammo.NetworkObject.IsSpawned)
+            if (ReloadGun.ContainsKey(p.playerSteamId) && !ReloadGun[p.playerSteamId])
             {
-                ShowMessage(locale.Msg_GetString("InfiniteAmmo", new Dictionary<string, string>() {
+                if (ammo != null && ammo.NetworkObject != null && ammo.NetworkObject.IsSpawned)
+                {
+                    ShowMessage(locale.Msg_GetString("InfiniteAmmo", new Dictionary<string, string>() {
                     { "{player}",p.playerUsername }
                 }));
-                if (Core.AntiCheat.InfiniteAmmo2.Value)
-                {
-                    KickPlayer(p);
+                    if (Core.AntiCheat.InfiniteAmmo2.Value)
+                    {
+                        KickPlayer(p);
+                    }
                 }
             }
         }

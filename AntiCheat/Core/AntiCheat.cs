@@ -26,7 +26,7 @@ namespace AntiCheat.Core
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheat : BaseUnityPlugin
     {
-        public const string Version = "0.8.2";
+        public const string Version = "0.8.3";
         public static ManualLogSource ManualLog = null;
 
         public enum MessageType
