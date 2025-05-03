@@ -5,7 +5,7 @@
 
 **简体中文(Support)** | [**English(Support)**](https://github.com/chuxiaaaa/AntiCheat/blob/main/docs/README-en.md) | [**Русский**](https://github.com/chuxiaaaa/AntiCheat/blob/main/docs/README-ru.md) | [**한국어(Support)**](https://github.com/chuxiaaaa/AntiCheat/blob/main/docs/README-ko.md)
 
-一个致命公司反作弊模组（仅限主机使用）
+一个致命公司反作弊主机端模组
 
 ## i18国际化
 
