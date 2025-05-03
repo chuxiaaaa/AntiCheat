@@ -2578,6 +2578,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool StartGameServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
+            StartMatchLever startMatchLever = UnityEngine.Object.FindObjectOfType<StartMatchLever>();
             if (Check(rpcParams, out var p))
             {
                 if (Core.AntiCheat.ShipConfig.Value && !GameNetworkManager.Instance.gameHasStarted)
@@ -2585,7 +2586,7 @@ namespace AntiCheat
                     ShowMessage(locale.Msg_GetString("ShipConfig5", new Dictionary<string, string>() {
                         { "{player}",p.playerUsername }
                     }));
-                    UnityEngine.Object.FindObjectOfType<StartMatchLever>().triggerScript.interactable = true;
+                    startMatchLever.triggerScript.interactable = true;
                     if (Core.AntiCheat.Ship_Kick.Value)
                     {
                         KickPlayer(p);
@@ -2599,7 +2600,7 @@ namespace AntiCheat
                 }
                 else
                 {
-                    UnityEngine.Object.FindObjectOfType<StartMatchLever>().triggerScript.interactable = true;
+                    startMatchLever.triggerScript.interactable = true;
                     ShowMessage(locale.Msg_GetString("ShipConfig2", new Dictionary<string, string>() {
                         { "{player}",p.playerUsername },
                         { "{cfg}",Core.AntiCheat.ShipConfig2.Value.ToString() }
@@ -2609,7 +2610,7 @@ namespace AntiCheat
             }
             else if (p == null)
             {
-                UnityEngine.Object.FindObjectOfType<StartMatchLever>().triggerScript.interactable = true;
+                startMatchLever.triggerScript.interactable = true;
                 return false;
             }
             return true;
@@ -2904,6 +2905,19 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
+                ByteUnpacker.ReadValueBitPacked(reader, out int num);
+                reader.Seek(0);
+                LogInfo($"StartOfRound.EndGameServerRpc({num})|StartOfRound.Instance.shipHasLanded:{StartOfRound.Instance.shipHasLanded}");
+                if (num == 0 && p.actualClientId != 0)
+                {
+                    UnityEngine.Object.FindObjectOfType<StartMatchLever>().triggerScript.interactable = true;
+                    return false;
+                }
+                if (!StartOfRound.Instance.shipHasLanded)
+                {
+                    UnityEngine.Object.FindObjectOfType<StartMatchLever>().triggerScript.interactable = true;
+                    return false;
+                }
                 var hour = int.Parse(Core.AntiCheat.ShipConfig3.Value.Split(':')[0]);
                 var min = int.Parse(Core.AntiCheat.ShipConfig3.Value.Split(':')[1]);
                 var time = (int)(TimeOfDay.Instance.normalizedTimeOfDay * (60f * TimeOfDay.Instance.numberOfHours)) + 360;
