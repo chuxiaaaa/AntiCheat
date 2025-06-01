@@ -1,0 +1,30 @@
+name: Build AntiCheat (.NET Framework 4.7.2)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-2019
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v3
+
+      - name: 设置 NuGet
+        uses: NuGet/setup-nuget@v1.0.5
+
+      - name: 恢复 NuGet 包
+        run: nuget restore AntiCheat.sln
+
+      - name: 设置 MSBuild
+        uses: microsoft/setup-msbuild@v1.1
+
+      - name: 编译解决方案
+        run: msbuild AntiCheat.sln /p:Configuration=Release /p:Platform="Any CPU"
