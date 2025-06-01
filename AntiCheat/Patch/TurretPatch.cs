@@ -1,10 +1,12 @@
-﻿using AntiCheat.Locale;
+﻿using AntiCheat.Core;
+using AntiCheat.Locale;
 
 using HarmonyLib;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -77,14 +79,17 @@ namespace AntiCheat.Patch
         {
             if (Patches.Check(rpcParams, out var p))
             {
-                bool remote = Patches.CheckRemoteTerminal(p);
-                Core.AntiCheat.LogInfo(p,"Turret.ToggleTurretServerRpc", $"remote:{(!remote)}");
-                if (!remote)
+                if (AntiCheat.Core.AntiCheat.RemoteTerminal.Value)
                 {
-                    return false;
+                    bool remote = Patches.CheckRemoteTerminal(p);
+                    Core.AntiCheat.LogInfo(p, "Turret.ToggleTurretServerRpc", $"remote:{(!remote)}");
+                    if (!remote)
+                    {
+                        return false;
+                    }
                 }
-            }
-            else if (p == null)
+                }
+                else if (p == null)
             {
                 return false;
             }

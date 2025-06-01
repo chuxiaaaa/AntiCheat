@@ -1,5 +1,19 @@
 # Beta(公开测试版)
 
+## Version 0.8.4
+
+* [+] 加入传送器冷却限制
+* [+] 远程终端现在会检测关闭机枪
+* [/] 现在可以在v70正常运行了
+* [/] 由于双手作弊过于泛滥，现在使用喷气背包的时候禁止抓取双手物品（如果你允许同时拥有多个双手物品，那么依旧可以抓取）
+
+### English
+
+* [+] Added warp drive cooling restrictions
+* [+] Remote terminals now detect turret shutdowns
+* [/] Fixed v70 compatibility issues
+* [/] Due to widespread two-handed cheating, grabbing two-handed items is now disabled while using a jetpack (if you allow multiple two-handed items, grabbing is still permitted)
+
 ## Version 0.8.3
 
 ### 中文
