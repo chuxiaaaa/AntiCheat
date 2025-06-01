@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics.Eventing.Reader;
+using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
@@ -1126,7 +1127,6 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_3587030867(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            LogInfo("__rpc_handler_3587030867");
             if (Check(rpcParams, out var p))
             {
                 if (Core.AntiCheat.Enemy.Value)
@@ -1286,6 +1286,10 @@ namespace AntiCheat
         {
             if (StartOfRound.Instance.localPlayerController.IsHost)
             {
+                if (bypassKill.Any(x => x.EnemyInstanceId == __instance.GetInstanceID()))
+                {
+                    return;
+                }
                 LogInfo($"bypassKill -> {__instance.enemyType.enemyName}({__instance.GetInstanceID()})");
                 bypassKill.Add(new HitData()
                 {
@@ -1304,6 +1308,10 @@ namespace AntiCheat
         {
             if (StartOfRound.Instance.localPlayerController.IsHost)
             {
+                if (bypassHit.Any(x => x.EnemyInstanceId == __instance.GetInstanceID()))
+                {
+                    return;
+                }
                 //if (playerWhoHit == null)
                 //{
                 bypassHit.Add(new HitData()
@@ -1515,7 +1523,7 @@ namespace AntiCheat
             else if (type == Core.AntiCheat.MessageType.HostChat)
             {
                 LogInfo($"AddChatMessage|{showmsg}");
-                typeof(HUDManager).GetMethod("AddChatMessage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(HUDManager.Instance, new object[] { showmsg, "" });
+                AccessTools.DeclaredMethod(typeof(HUDManager),"AddChatMessage").Invoke(HUDManager.Instance, new object[] { showmsg, "", -1, false });
             }
             else
             {
@@ -1760,7 +1768,7 @@ namespace AntiCheat
                 {
                     reader.ReadValueSafe(out NetworkObjectReference grabbedObject, default);
                     reader.Seek(0);
-                    //var jetpack = false;
+                    var jetpack = false;
                     if (grabbedObject.TryGet(out var networkObject, null))
                     {
                         var all = true;
@@ -1774,12 +1782,11 @@ namespace AntiCheat
                             else if (item.itemProperties.twoHanded)
                             {
                                 hastwohand = true;
-                                break;
                             }
-                            //else if (item is JetpackItem)
-                            //{
-                            //    jetpack = true;
-                            //}
+                            else if (item is JetpackItem)
+                            {
+                                jetpack = true;
+                            }
                         }
                         var g = networkObject.GetComponentInChildren<GrabbableObject>();
                         if (g != null)
@@ -1788,6 +1795,14 @@ namespace AntiCheat
                             if (Core.AntiCheat.GrabObject_TwoHand.Value)
                             {
                                 if (g.itemProperties.twoHanded && hastwohand)
+                                {
+                                    ban = true;
+                                }
+                                else if (g.itemProperties.twoHanded && jetpack)
+                                {
+                                    ban = true;
+                                }
+                                else if(hastwohand && jetpack)
                                 {
                                     ban = true;
                                 }
@@ -2680,6 +2695,10 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_2406447821(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
+            if (File.Exists("AntiCheat.log"))
+            {
+                File.Delete("AntiCheat.log");
+            }
             if (Check(rpcParams, out var p))
             {
                 if (UnityEngine.Object.FindAnyObjectByType<StartMatchLever>().leverHasBeenPulled && !StartOfRound.Instance.shipHasLanded)
@@ -2752,56 +2771,7 @@ namespace AntiCheat
         }
 
 
-        /// <summary>
-        /// 机枪激怒事件(检测)
-        /// Prefix Turret.EnterBerserkModeServerRpc
-        /// </summary>
-        [HarmonyPatch(typeof(Turret), "__rpc_handler_4195711963")]
-        [HarmonyPrefix]
-        [HarmonyWrapSafe]
-        public static bool __rpc_handler_4195711963(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        {
-            if (Check(rpcParams, out var p))
-            {
-                if (Core.AntiCheat.Turret.Value)
-                {
-                    var obj = p.ItemSlots[p.currentItemSlot];
-                    if (obj != null && (isShovel(obj) || isKnife(obj)))
-                    {
-                        var t = (Turret)target;
-                        float v = Vector3.Distance(t.transform.position, p.transform.position);
-                        if (v > 12)
-                        {
-                            ShowMessage(locale.Msg_GetString("Turret", new Dictionary<string, string>() {
-                                { "{player}",p.playerUsername },
-                                { "{Distance}",v.ToString() }
-                            }));
-                            if (Core.AntiCheat.Turret2.Value)
-                            {
-                                KickPlayer(p);
-                            }
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        ShowMessage(locale.Msg_GetString("Turret2", new Dictionary<string, string>() {
-                             { "{player}",p.playerUsername }
-                        }));
-                        if (Core.AntiCheat.Turret2.Value)
-                        {
-                            KickPlayer(p);
-                        }
-                        return false;
-                    }
-                }
-            }
-            else if (p == null)
-            {
-                return false;
-            }
-            return true;
-        }
+   
 
         /// <summary>
         /// UI更新事件(房主死亡时加上一票起飞提示)
@@ -2891,7 +2861,7 @@ namespace AntiCheat
 
         private static void ShowMessageHostOnly(string msg)
         {
-            typeof(HUDManager).GetMethod("AddChatMessage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(HUDManager.Instance, new object[] { msg, "" });
+            AccessTools.DeclaredMethod(typeof(HUDManager), "AddChatMessage").Invoke(HUDManager.Instance, new object[] { msg, "", -1, false });
         }
 
         /// <summary>

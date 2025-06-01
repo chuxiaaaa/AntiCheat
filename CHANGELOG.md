@@ -1,5 +1,19 @@
 # Beta(公开测试版)
 
+## Version 0.8.3
+
+### 中文
+
+* [/] 修复取消换弹会导致触发无限子弹检测
+* [/] 修复部分本地化内容没有正常获取
+* [/] 修复起飞/降落时两次检测提示
+
+### English
+
+* [/] Fixed canceling reload triggering infinite ammo detection
+* [/] Fixed some localized content not being fetched correctly
+* [/] Fixed duplicate detection prompts during takeoff/landing
+
 ## Version 0.8.2
 
 ### 中文

@@ -22,7 +22,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPrefix]
         [HarmonyPatch("__rpc_handler_3153465849")]
-        public static bool __rpc_handler_3153465849(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        public static bool GetNewStoryLogServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (!Patches.Check(rpcParams, out var p))
                 return p != null;
@@ -41,7 +41,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPrefix]
         [HarmonyPatch("__rpc_handler_1043384750")]
-        public static bool __rpc_handler_1043384750(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        public static bool SendErrorMessageServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             return !Patches.Check(rpcParams, out _);
         }
@@ -52,7 +52,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPrefix]
         [HarmonyPatch("__rpc_handler_4217433937")]
-        public static bool __rpc_handler_4217433937(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        public static bool SyncAllPlayerLevelsServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (!Patches.Check(rpcParams, out var p))
                 return p != null;
@@ -77,7 +77,7 @@ namespace AntiCheat
         [HarmonyPatch("__rpc_handler_1944155956")]
         [HarmonyPrefix]
         [HarmonyWrapSafe]
-        public static bool __rpc_handler_1944155956(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        public static bool ScanNewCreatureServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (!Patches.Check(rpcParams, out var p))
                 return p != null;
@@ -107,7 +107,7 @@ namespace AntiCheat
         /// <returns></returns>
         [HarmonyPatch("__rpc_handler_2436660286")]
         [HarmonyPrefix]
-        public static bool __rpc_handler_2436660286(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        public static bool UseSignalTranslatorServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (!Patches.Check(rpcParams, out var p))
                 return p != null;

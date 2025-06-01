@@ -1,8 +1,11 @@
 ﻿using AntiCheat.Locale;
+using AntiCheat.Patch;
 
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
+
+using GameNetcodeStuff;
 
 using HarmonyLib;
 
@@ -26,7 +29,7 @@ namespace AntiCheat.Core
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheat : BaseUnityPlugin
     {
-        public const string Version = "0.8.3";
+        public const string Version = "0.8.4";
         public static ManualLogSource ManualLog = null;
 
         public enum MessageType
@@ -278,6 +281,8 @@ namespace AntiCheat.Core
             watcher.EnableRaisingEvents = true;
 
             Harmony.CreateAndPatchAll(typeof(Patches));
+            Harmony.CreateAndPatchAll(typeof(ShipTeleporterPatch));
+            Harmony.CreateAndPatchAll(typeof(TurretPatch));
             Harmony.CreateAndPatchAll(typeof(HUDManagerPatch));
             Harmony.CreateAndPatchAll(typeof(StartOfRoundPatch));
             Harmony.CreateAndPatchAll(typeof(GrabbableObjectPatch));
@@ -295,7 +300,13 @@ namespace AntiCheat.Core
             if (Log == null || Log.Value)
             {
                 ManualLog.LogInfo($"{info}");
+                File.AppendAllLines("AntiCheat.log", new string[] { $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff")} {info}" });
             }
+        }
+
+        public static void LogInfo(PlayerControllerB p,string rpc, params object[] param)
+        {
+            LogInfo($"{p.playerUsername} call {rpc}{string.Join("|", param)}");
         }
 
         private void LoadConfig()
