@@ -113,7 +113,7 @@ namespace AntiCheat
                 return p != null;
             if (Core.AntiCheat.RemoteTerminal.Value)
             {
-                if (!Patches.CheckRemoteTerminal(p))
+                if (!Patches.CheckRemoteTerminal(p, "HUDManager.UseSignalTranslatorServerRpc"))
                 {
                     return false;
                 }

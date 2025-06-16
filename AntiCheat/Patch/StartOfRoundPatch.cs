@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿using AntiCheat.Core;
+
+using HarmonyLib;
 
 using System;
 using System.Collections.Generic;
@@ -32,6 +34,29 @@ namespace AntiCheat
             SyncAlreadyHeldObjectsServerRpcCalls.Add(steamId);
             return true;
 
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("__rpc_handler_3083945322")]
+        public static bool PlayerHasRevivedServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (Patches.Check(rpcParams, out var p))
+            {
+                AntiCheat.Core.AntiCheat.LogInfo(p, $"StartOfRound.PlayerHasRevivedServerRpc||{AccessTools.DeclaredField(typeof(StartOfRound),"playersRevived").GetValue(StartOfRound.Instance)}");
+            }
+            return true;
+        }
+
+
+        [HarmonyPrefix]
+        [HarmonyPatch("__rpc_handler_4249638645")]
+        public static bool PlayerLoadedServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (Patches.Check(rpcParams, out var p))
+            {
+                AntiCheat.Core.AntiCheat.LogInfo(p, $"StartOfRound.PlayerLoadedServerRpc||{StartOfRound.Instance.fullyLoadedPlayers.Count}");
+            }
+            return true;
         }
 
         /// <summary>

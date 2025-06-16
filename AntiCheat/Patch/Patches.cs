@@ -53,7 +53,6 @@ namespace AntiCheat
         public static Dictionary<int, Dictionary<ulong, List<DateTime>>> chcs = new Dictionary<int, Dictionary<ulong, List<DateTime>>>();
 
         public static List<long> mjs { get; set; } = new List<long>();
-        public static int count { get; set; } = 0;
         public static List<long> lhs { get; set; } = new List<long>();
 
         public static List<int> landMines { get; set; }
@@ -321,7 +320,7 @@ namespace AntiCheat
                         ShowMessage(locale.Msg_GetString("Nameless"));
                         if (Core.AntiCheat.Nameless2.Value)
                         {
-                            KickPlayer(item, true, "Nameless");
+                            KickPlayer(item, true, locale.Msg_GetString("Kick_Nameless"));
                         }
                     }
                 }
@@ -398,7 +397,7 @@ namespace AntiCheat
                 //LogInfo($"{p.playerUsername}|StartOfRound.ChangeLevelServerRpc");
                 if (Core.AntiCheat.RemoteTerminal.Value)
                 {
-                    if (!CheckRemoteTerminal(p))
+                    if (!CheckRemoteTerminal(p, "StartOfRound.ChangeLevelServerRpc"))
                     {
                         return false;
                     }
@@ -491,7 +490,7 @@ namespace AntiCheat
             {
                 if (Core.AntiCheat.RemoteTerminal.Value)
                 {
-                    if (!CheckRemoteTerminal(p))
+                    if (!CheckRemoteTerminal(p, "StartOfRound.BuyShipUnlockableServerRpc"))
                     {
                         return false;
                     }
@@ -575,7 +574,7 @@ namespace AntiCheat
             {
                 if (Core.AntiCheat.RemoteTerminal.Value)
                 {
-                    if (!CheckRemoteTerminal(p))
+                    if (!CheckRemoteTerminal(p, "Terminal.BuyItemsServerRpc"))
                     {
                         return false;
                     }
@@ -2223,17 +2222,17 @@ namespace AntiCheat
             obj.GetType().GetField(name, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.GetField).SetValue(obj, value);
         }
 
-        public static bool CheckRemoteTerminal(PlayerControllerB p)
+        public static bool CheckRemoteTerminal(PlayerControllerB p,string call)
         {
             if (whoUseTerminal != p)
             {
                 if (whoUseTerminal == null)
                 {
-                    LogInfo($"no player use terminal|request player:{p.playerUsername}");
+                    LogInfo($"no player use terminal|request player:{p.playerUsername}|call:{call}");
                 }
                 else
                 {
-                    LogInfo($"whoUseTerminal:{whoUseTerminal.playerUsername}|p:{p.playerUsername}");
+                    LogInfo($"whoUseTerminal:{whoUseTerminal.playerUsername}|p:{p.playerUsername}|call:{call}");
                 }
                 ShowMessage(locale.Msg_GetString("RemoteTerminal", new Dictionary<string, string>() {
                     { "{player}",p.playerUsername }
@@ -2258,6 +2257,8 @@ namespace AntiCheat
                 reader.Seek(0);
                 if (playerNum == (int)p.playerClientId)
                 {
+                    lastWhoUseTerminal = whoUseTerminal;
+                    
                     var terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
                     var terminalTrigger = terminal.GetField<Terminal, InteractTrigger>("terminalTrigger");
                     if (terminalTrigger.GetInstanceID() == ((InteractTrigger)target).GetInstanceID())
@@ -2319,7 +2320,7 @@ namespace AntiCheat
             {
                 if (Core.AntiCheat.RemoteTerminal.Value)
                 {
-                    if (!CheckRemoteTerminal(p))
+                    if (!CheckRemoteTerminal(p, "Terminal.PlayTerminalAudioServerRpc"))
                     {
                         return false;
                     }
@@ -2645,6 +2646,7 @@ namespace AntiCheat
             return;
         }
 
+        public static PlayerControllerB lastWhoUseTerminal { get; set; } = null;
         public static PlayerControllerB whoUseTerminal { get; set; }
 
         /// <summary>
@@ -2887,6 +2889,10 @@ namespace AntiCheat
                 {
                     UnityEngine.Object.FindObjectOfType<StartMatchLever>().triggerScript.interactable = true;
                     return false;
+                }
+                if (TimeOfDay.Instance.shipLeavingAlertCalled)
+                {
+                    return true;
                 }
                 var hour = int.Parse(Core.AntiCheat.ShipConfig3.Value.Split(':')[0]);
                 var min = int.Parse(Core.AntiCheat.ShipConfig3.Value.Split(':')[1]);

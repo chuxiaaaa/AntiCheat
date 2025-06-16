@@ -85,6 +85,7 @@
     "Map": "检测到玩家 {player} 使用小地图！",
     "Mask": "检测到玩家 {player} 刷假人！",
     "Nameless": "检测到玩家名称异常！",
+    "KickReasonNameLess": "房主无法加载你的游戏名称，你可以尝试重新加入房间\r\n请确保你的名称不是纯数字/纯字符",
     "PlayerCarryWeight": "检测到玩家 {player} 负重异常！",
     "PlayerCarryWeight_Recovery": "异常负重已被恢复！",
     "RemoteTerminal": "检测到玩家 {player} 使用远程终端！",

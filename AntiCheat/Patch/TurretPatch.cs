@@ -81,8 +81,7 @@ namespace AntiCheat.Patch
             {
                 if (AntiCheat.Core.AntiCheat.RemoteTerminal.Value)
                 {
-                    bool remote = Patches.CheckRemoteTerminal(p);
-                    Core.AntiCheat.LogInfo(p, "Turret.ToggleTurretServerRpc", $"remote:{(!remote)}");
+                    bool remote = Patches.CheckRemoteTerminal(p, "Turret.ToggleTurretServerRpc");
                     if (!remote)
                     {
                         return false;
