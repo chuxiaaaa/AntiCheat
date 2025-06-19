@@ -51,7 +51,8 @@
   "Item": {
     "Knife": "小刀",
     "Shotgun": "霰弹枪",
-    "Shovel": "铲子"
+    "Shovel": "铲子",
+    "Cruiser": "卡车"
   },
   "Log": {
     "load": "反作弊模组已加载完毕！",
@@ -66,7 +67,7 @@
     "DespawnItem": "检测到玩家 {player} 销毁物品 ({item})！",
     "Enemy_ChangeOwnershipOfEnemy": "检测到玩家 {player} 强制改变怪物仇恨！",
     "Enemy_SwitchToBehaviour": "检测到玩家 {player} 强制改变怪物状态！",
-    "FreeBuy_Item": "检测到玩家 {player} 强制购买物品！",
+    "FreeBuy_Item": "检测到玩家 {player} 强制购买 {items} 物品！",
     "FreeBuy_Level": "检测到玩家 {player} 强制切换付费星球！",
     "FreeBuy_SetMoney": "检测到玩家 {player} 修改金钱({Money})！",
     "FreeBuy_unlockable": "检测到玩家 {player} 强制解锁飞船装饰！",

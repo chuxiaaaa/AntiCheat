@@ -53,7 +53,7 @@ namespace AntiCheat
                 {
                     if (grab is LungProp lung && lung.isLungDocked)
                     {
-                        Patches.ShowMessage(Patches.locale.OperationLog_GetString("GrabLungProp"));
+                        Patches.ShowMessageHostOnly(Patches.locale.OperationLog_GetString("GrabLungProp"));
                     }
                 }
                 return true;

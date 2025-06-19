@@ -561,78 +561,7 @@ namespace AntiCheat
             return true;
         }
 
-        /// <summary>
-        /// Terminal.BuyItemsServerRpc
-        /// </summary>
-        /// <returns></returns>
-        [HarmonyPatch(typeof(Terminal), "__rpc_handler_4003509079")]
-        [HarmonyPrefix]
-        [HarmonyWrapSafe]
-        public static bool __rpc_handler_4003509079(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        {
-            if (Check(rpcParams, out var p) || true)
-            {
-                if (Core.AntiCheat.RemoteTerminal.Value)
-                {
-                    if (!CheckRemoteTerminal(p, "Terminal.BuyItemsServerRpc"))
-                    {
-                        return false;
-                    }
-                }
-                reader.ReadValueSafe(out bool flag, default);
-                int[] boughtItems = null;
-                if (flag)
-                {
-                    reader.ReadValueSafe(out boughtItems, default);
-                }
-                ByteUnpacker.ReadValueBitPacked(reader, out int newGroupCredits);
-                reader.Seek(0);
-
-                if (Core.AntiCheat.FreeBuy.Value)
-                {
-                    //LogInfo("__rpc_handler_4003509079|boughtItems:" + string.Join(",", boughtItems) + "|newGroupCredits:" + newGroupCredits + "|Money:" + Money);
-                    if (Money == newGroupCredits || Money == 0)
-                    {
-                        ShowMessage(locale.Msg_GetString("FreeBuy_Item", new Dictionary<string, string>() {
-                            { "{player}",p.playerUsername }
-                        }));
-                        if (Core.AntiCheat.FreeBuy2.Value)
-                        {
-                            KickPlayer(p);
-                        }
-                        return false;
-                    }
-                    else if (newGroupCredits > Money || Money < 0)
-                    {
-                        ShowMessage(locale.Msg_GetString("FreeBuy_SetMoney", new Dictionary<string, string>() {
-                            { "{player}",p.playerUsername },
-                            { "{Money}",(newGroupCredits - Money).ToString() }
-                        }));
-                        if (Core.AntiCheat.FreeBuy2.Value)
-                        {
-                            KickPlayer(p);
-                        }
-                        return false;
-                    }
-                }
-                if (Core.AntiCheat.OperationLog.Value)
-                {
-                    var terminal = (Terminal)target;
-                    if (boughtItems.Count(x => x < terminal.buyableItemsList.Length) == boughtItems.Count())
-                    {
-                        ShowMessageHostOnly(locale.OperationLog_GetString("BuyItem", new Dictionary<string, string>() {
-                            { "{player}", p.playerUsername },
-                            { "{items}", string.Join(",", boughtItems.GroupBy(x => terminal.buyableItemsList[x].itemName).Select(g => g.Count() == 1 ? g.Key : $"{g.Key}*{g.Count()}")) }
-                        }));
-                    }
-                }
-            }
-            else if (p == null)
-            {
-                return false;
-            }
-            return true;
-        }
+       
 
         [HarmonyPatch(typeof(TimeOfDay), "SyncNewProfitQuotaClientRpc")]
         [HarmonyPrefix]
@@ -2866,7 +2795,7 @@ namespace AntiCheat
             return true;
         }
 
-        private static void ShowMessageHostOnly(string msg)
+        public static void ShowMessageHostOnly(string msg)
         {
             AccessTools.DeclaredMethod(typeof(HUDManager), "AddChatMessage").Invoke(HUDManager.Instance, new object[] { msg, "", -1, false });
         }
