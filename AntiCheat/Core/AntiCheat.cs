@@ -279,14 +279,8 @@ namespace AntiCheat.Core
             watcher.Changed += Watcher_Changed;
             LoadConfig();
             watcher.EnableRaisingEvents = true;
-
-            Harmony.CreateAndPatchAll(typeof(Patches));
-            Harmony.CreateAndPatchAll(typeof(ShipTeleporterPatch));
-            Harmony.CreateAndPatchAll(typeof(TurretPatch));
-            Harmony.CreateAndPatchAll(typeof(HUDManagerPatch));
-            Harmony.CreateAndPatchAll(typeof(StartOfRoundPatch));
-            Harmony.CreateAndPatchAll(typeof(GrabbableObjectPatch));
-
+            Harmony harmony = new Harmony("AntiCheat");
+            harmony.PatchAll();
         }
 
         private void Watcher_Changed(object sender, FileSystemEventArgs e)

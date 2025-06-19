@@ -104,6 +104,7 @@
     "snc_player": "[{player}] 新的生物数据已发送至终端！({enemy})",
     "Turret": "检测玩家 {player} 强制激怒机枪！(距离：{Distance})",
     "Turret2": "检测玩家 {player} 强制激怒机枪(空手)！",
+    "Kick_Nameless": "你的Steam名称未正确加载(如果你是纯数字名称，请更改名称)",
     "vote": "你是房主，投票直接起飞！",
     "vote_player": "{player} 投票让飞船提前离开({now}/{max})",
     "wlc_player": "<color=green>欢迎 <color=yellow>{player}</color> 加入飞船</color>"

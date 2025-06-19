@@ -287,64 +287,64 @@ namespace AntiCheat
         public static ulong lastClientId { get; set; }
 
 
-        [HarmonyPatch(typeof(StartOfRound), "StartTrackingAllPlayerVoices")]
-        [HarmonyPostfix]
-        [HarmonyWrapSafe]
-        public static void StartTrackingAllPlayerVoices()
-        {
-            if (!StartOfRound.Instance.localPlayerController.IsHost)
-            {
-                return;
-            }
-            foreach (var item in StartOfRound.Instance.allPlayerScripts)
-            {
-                if (!item.isPlayerControlled)
-                {
-                    continue;
-                }
-                var playerName = item.playerUsername;
-                if (playerName == "Player #0")
-                {
-                    continue;
-                }
-                if (StartOfRound.Instance.KickedClientIds.Contains(item.playerSteamId))
-                {
-                    KickPlayer(item);
-                    return;
-                }
-                LogInfo(playerName);
-                if (Regex.IsMatch(playerName, "Nameless\\d*") || Regex.IsMatch(playerName, "Unknown\\d*") || Regex.IsMatch(playerName, "Player #\\d*"))
-                {
-                    if (Core.AntiCheat.Nameless.Value)
-                    {
-                        ShowMessage(locale.Msg_GetString("Nameless"));
-                        if (Core.AntiCheat.Nameless2.Value)
-                        {
-                            KickPlayer(item, true, locale.Msg_GetString("Kick_Nameless"));
-                        }
-                    }
-                }
-            }
-            var p2 = StartOfRound.Instance.allPlayerScripts.OrderByDescending(x => x.actualClientId).FirstOrDefault();
-            if (p2.actualClientId != lastClientId)
-            {
-                if (p2.isPlayerControlled && p2.playerSteamId == 0)
-                {
-                    KickPlayer(p2);
-                    return;
-                }
-                else if (!p2.isPlayerControlled)
-                {
-                    return;
-                }
-                bypass = true;
-                string msg = Core.AntiCheat.PlayerJoin.Value.Replace("{player}", p2.playerUsername);
-                LogInfo(msg);
-                HUDManager.Instance.AddTextToChatOnServer(msg, -1);
-                lastClientId = p2.actualClientId;
-                bypass = false;
-            }
-        }
+        //[HarmonyPatch(typeof(StartOfRound), "StartTrackingAllPlayerVoices")]
+        //[HarmonyPostfix]
+        //[HarmonyWrapSafe]
+        //public static void StartTrackingAllPlayerVoices()
+        //{
+        //    if (!StartOfRound.Instance.localPlayerController.IsHost)
+        //    {
+        //        return;
+        //    }
+        //    foreach (var item in StartOfRound.Instance.allPlayerScripts)
+        //    {
+        //        if (!item.isPlayerControlled)
+        //        {
+        //            continue;
+        //        }
+        //        var playerName = item.playerUsername;
+        //        if (playerName == "Player #0")
+        //        {
+        //            continue;
+        //        }
+        //        if (StartOfRound.Instance.KickedClientIds.Contains(item.playerSteamId))
+        //        {
+        //            KickPlayer(item);
+        //            return;
+        //        }
+        //        LogInfo(playerName);
+        //        if (Regex.IsMatch(playerName, "Nameless\\d*") || Regex.IsMatch(playerName, "Unknown\\d*") || Regex.IsMatch(playerName, "Player #\\d*"))
+        //        {
+        //            if (Core.AntiCheat.Nameless.Value)
+        //            {
+        //                ShowMessage(locale.Msg_GetString("Nameless"));
+        //                if (Core.AntiCheat.Nameless2.Value)
+        //                {
+        //                    KickPlayer(item, true, locale.Msg_GetString("Kick_Nameless"));
+        //                }
+        //            }
+        //        }
+        //    }
+        //    var p2 = StartOfRound.Instance.allPlayerScripts.OrderByDescending(x => x.actualClientId).FirstOrDefault();
+        //    if (p2.actualClientId != lastClientId)
+        //    {
+        //        if (p2.isPlayerControlled && p2.playerSteamId == 0)
+        //        {
+        //            KickPlayer(p2);
+        //            return;
+        //        }
+        //        else if (!p2.isPlayerControlled)
+        //        {
+        //            return;
+        //        }
+        //        bypass = true;
+        //        string msg = Core.AntiCheat.PlayerJoin.Value.Replace("{player}", p2.playerUsername);
+        //        LogInfo(msg);
+        //        HUDManager.Instance.AddTextToChatOnServer(msg, -1);
+        //        lastClientId = p2.actualClientId;
+        //        bypass = false;
+        //    }
+        //}
 
 
 
@@ -884,7 +884,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_3446243450(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            return KillPlayerServerRpc(target, reader, rpcParams);
+            return KillPlayerServerRpc(target, reader, rpcParams, "JesterAI.KillPlayerServerRpc");
         }
 
         /// <summary>
@@ -895,7 +895,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_998670557(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            return KillPlayerServerRpc(target, reader, rpcParams);
+            return KillPlayerServerRpc(target, reader, rpcParams, "MouthDogAI.KillPlayerServerRpc");
         }
 
         /// <summary>
@@ -906,7 +906,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_2965927486(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            return KillPlayerServerRpc(target, reader, rpcParams);
+            return KillPlayerServerRpc(target, reader, rpcParams, "ForestGiantAI.GrabPlayerServerRpc");
         }
 
         /// <summary>
@@ -917,7 +917,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_3246315153(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            return KillPlayerServerRpc(target, reader, rpcParams);
+            return KillPlayerServerRpc(target, reader, rpcParams, "RedLocustBees.BeeKillPlayerServerRpc");
         }
 
         /// <summary>
@@ -928,7 +928,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_3192502457(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            return KillPlayerServerRpc(target, reader, rpcParams);
+            return KillPlayerServerRpc(target, reader, rpcParams, "MaskedPlayerEnemy.KillPlayerAnimationServerRpc");
         }
 
         /// <summary>
@@ -939,7 +939,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_3881699224(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            return KillPlayerServerRpc(target, reader, rpcParams);
+            return KillPlayerServerRpc(target, reader, rpcParams, "NutcrackerEnemyAI.LegKickPlayerServerRpc");
         }
 
         /// <summary>
@@ -950,7 +950,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_3848306567(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            return KillPlayerServerRpc(target, reader, rpcParams);
+            return KillPlayerServerRpc(target, reader, rpcParams, "BlobAI.SlimeKillPlayerEffectServerRpc");
         }
 
         /// <summary>
@@ -961,7 +961,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_2791977891(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            return KillPlayerServerRpc(target, reader, rpcParams);
+            return KillPlayerServerRpc(target, reader, rpcParams, "CentipedeAI.ClingToPlayerServerRpc");
         }
 
         /// <summary>
@@ -972,7 +972,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_3707286996(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            return KillPlayerServerRpc(target, reader, rpcParams);
+            return KillPlayerServerRpc(target, reader, rpcParams, "RadMechAI.GrabPlayerServerRpc");
         }
 
         /// <summary>
@@ -984,12 +984,12 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_3591556954(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            return KillPlayerServerRpc(target, reader, rpcParams);
+            return KillPlayerServerRpc(target, reader, rpcParams, "CaveDwellerAI.GrabPlayerServerRpc");
         }
 
 
 
-        private static bool KillPlayerServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        private static bool KillPlayerServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams,string call)
         {
             if (Check(rpcParams, out var p))
             {
@@ -1008,6 +1008,7 @@ namespace AntiCheat
                 }
                 if (p.AllowPlayerDeath())
                 {
+                    LogInfo($"StartCoroutine:CheckRpc|{p.playerUsername}|{call}");
                     rpcs["KillPlayer"].Add(p.actualClientId);
                     p.StartCoroutine(CheckRpc(p, "KillPlayer"));
                 }

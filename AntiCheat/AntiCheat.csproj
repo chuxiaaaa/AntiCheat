@@ -103,6 +103,7 @@
   <ItemGroup>
     <Compile Include="Core\AntiCheat.cs" />
     <Compile Include="CooldownManager.cs" />
+    <Compile Include="Patch\DoorLockPatch.cs" />
     <Compile Include="Patch\GrabbableObjectPatch.cs" />
     <Compile Include="Patch\HUDManagerPatch.cs" />
     <Compile Include="Lang\ko.Designer.cs">
