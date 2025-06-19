@@ -87,13 +87,11 @@ namespace AntiCheat
                 reader.Seek(0);
                 if ((CauseOfDeath)num == CauseOfDeath.Abandoned)
                 {
-                    bypass = true;
                     string msg = locale.Msg_GetString("behind_player", new Dictionary<string, string>() {
                         { "{player}",p.playerUsername }
                     });
                     LogInfo(msg);
-                    HUDManager.Instance.AddTextToChatOnServer(msg, -1);
-                    bypass = false;
+                    AddTextMessageClientRpc(msg);
                 }
             }
             else if (p == null)
@@ -1439,9 +1437,7 @@ namespace AntiCheat
             }
             if (type == Core.AntiCheat.MessageType.PublicChat)
             {
-                AccessTools.DeclaredMethod(typeof(HUDManager), "AddPlayerChatMessageClientRpc").Invoke(HUDManager.Instance,new object[] {
-                    showmsg, -1
-                });
+                AddTextMessageClientRpc(showmsg);
             }
             else if (type == Core.AntiCheat.MessageType.HostChat)
             {
@@ -1452,6 +1448,13 @@ namespace AntiCheat
             {
                 LogInfo($"ShowGUI|{showmsg}");
             }
+        }
+
+        private static void AddTextMessageClientRpc(string showmsg)
+        {
+            AccessTools.DeclaredMethod(typeof(HUDManager), "AddTextMessageClientRpc").Invoke(HUDManager.Instance, new object[] {
+                    showmsg
+            });
         }
 
         public static bool bypass { get; set; }
@@ -2036,11 +2039,6 @@ namespace AntiCheat
                             }
                             return false;
                         }
-                    }
-                    if (bypass)
-                    {
-                        LogInfo("bypass");
-                        return true;
                     }
                     return false;
                 }
