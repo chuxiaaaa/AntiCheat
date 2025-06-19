@@ -1439,20 +1439,14 @@ namespace AntiCheat
             }
             if (type == Core.AntiCheat.MessageType.PublicChat)
             {
-                bypass = true;
-                var target = HUDManager.Instance;
-                var __rpc_exec_stage = typeof(HUDManager).GetField("__rpc_exec_stage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                var raw___rpc_exec_stage = __rpc_exec_stage.GetValue(target);
-                __rpc_exec_stage.SetValue(target, 0);
-                HUDManager.Instance.AddTextToChatOnServer(showmsg, -1);
-                LogInfo($"AddTextToChatOnServer|{showmsg}");
-                __rpc_exec_stage.SetValue(target, raw___rpc_exec_stage);
-                bypass = false;
+                AccessTools.DeclaredMethod(typeof(HUDManager), "AddPlayerChatMessageClientRpc").Invoke(HUDManager.Instance,new object[] {
+                    showmsg, -1
+                });
             }
             else if (type == Core.AntiCheat.MessageType.HostChat)
             {
                 LogInfo($"AddChatMessage|{showmsg}");
-                AccessTools.DeclaredMethod(typeof(HUDManager),"AddChatMessage").Invoke(HUDManager.Instance, new object[] { showmsg, "", -1, false });
+                ShowMessageHostOnly(showmsg);
             }
             else
             {
