@@ -2225,6 +2225,10 @@ namespace AntiCheat
 
         public static bool CheckRemoteTerminal(PlayerControllerB p,string call)
         {
+            if (whoUseTerminal == null && lastWhoUseTerminal == p)
+            {
+                return true;
+            }
             if (whoUseTerminal != p)
             {
                 if (whoUseTerminal == null)

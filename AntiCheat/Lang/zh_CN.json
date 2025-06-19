@@ -113,6 +113,7 @@
     "BuyItem": "[操作记录] {player} 购买 {items} 物品",
     "BuyShipUnlockable": "[操作记录] {player} 解锁 {unlockable} 物品",
     "ChangeLevel": "[操作记录] {player} 切换星球 {planet}",
+    "GrabLungProp": "[操作记录] {player} 取下了设施电源",
     "JoinLobby": "{player} 加入房间中..."
   },
   "MessageFormat": "<color=red>{Prefix} {msg}</color>",

@@ -20,7 +20,6 @@ namespace AntiCheat.Patch
         [HarmonyPatch("ConnectClientToPlayerObject")]
         public static void ConnectClientToPlayerObject()
         {
-            Core.AntiCheat.LogInfo("ConnectClientToPlayerObject");
             HUDManagerPatch.SyncAllPlayerLevelsServerRpcCalls = new List<ulong>();
             StartOfRoundPatch.SyncShipUnlockablesServerRpcCalls = new List<ulong>();
             StartOfRoundPatch.SyncAlreadyHeldObjectsServerRpcCalls = new List<ulong>();

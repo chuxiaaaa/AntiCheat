@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿using AntiCheat.Core;
+
+using HarmonyLib;
 
 using System;
 using System.Collections.Generic;
@@ -19,7 +21,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPrefix]
         [HarmonyPatch("__rpc_handler_4280509730")]
-        public static bool __rpc_handler_4280509730(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        public static bool ActivateItemServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Patches.Check(rpcParams, out var p))
             {
@@ -29,6 +31,32 @@ namespace AntiCheat
                     return CooldownManager.CheckCooldown("ShipLight", p);
                 }
                 return false;
+            }
+            else if (p == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// EquipItemServerRpc
+        /// </summary>
+        [HarmonyPrefix]
+        [HarmonyPatch("__rpc_handler_947748389")]
+        public static bool EquipItemServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (Patches.Check(rpcParams, out var p))
+            {
+                var grab = (GrabbableObject)target;
+                if (AntiCheat.Core.AntiCheat.OperationLog.Value)
+                {
+                    if (grab is LungProp lung && lung.isLungDocked)
+                    {
+                        Patches.ShowMessage(Patches.locale.OperationLog_GetString("GrabLungProp"));
+                    }
+                }
+                return true;
             }
             else if (p == null)
             {
