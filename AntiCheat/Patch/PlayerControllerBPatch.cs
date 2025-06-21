@@ -7,6 +7,7 @@ using Steamworks.Data;
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Permissions;
 using System.Text;
@@ -26,7 +27,11 @@ namespace AntiCheat.Patch
         {
             if (__instance.isHostPlayerObject && StartOfRound.Instance.IsHost)
             {
-                Core.AntiCheat.LogInfo($"27:ConnectClientToPlayerObject");
+                if (File.Exists("AntiCheat.log"))
+                {
+                    File.Delete("AntiCheat.log");
+                }
+                Patches.explosions = new List<Patches.ExplosionData>();
                 Patches.ConnectionIdtoSteamIdMap = new Dictionary<uint, ulong>();
                 HUDManagerPatch.SyncAllPlayerLevelsServerRpcCalls = new List<ulong>();
                 StartOfRoundPatch.SyncShipUnlockablesServerRpcCalls = new List<ulong>();

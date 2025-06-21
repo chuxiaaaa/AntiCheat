@@ -4,6 +4,7 @@ using HarmonyLib;
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,6 +40,9 @@ namespace AntiCheat
         public static List<ulong> CallPlayerHasRevivedServerRpc { get; set; } = new List<ulong>();
         public static List<ulong> CallPlayerLoadedServerRpc { get; set; } = new List<ulong>();
 
+
+
+
         [HarmonyPrefix]
         [HarmonyPatch("__rpc_handler_3083945322")]
         public static bool PlayerHasRevivedServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -66,6 +70,17 @@ namespace AntiCheat
                 }
             }
             return true;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch("StartGame")]
+        public static void StartGame()
+        {
+            CallPlayerLoadedServerRpc = new List<ulong>();
+            if (File.Exists("AntiCheat.log"))
+            {
+                File.Delete("AntiCheat.log");
+            }
         }
 
 

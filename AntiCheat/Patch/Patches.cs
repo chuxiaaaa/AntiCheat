@@ -73,6 +73,13 @@ namespace AntiCheat
             }
         }
 
+        /// <summary>
+        /// PlayerControllerB.KillPlayerServerRpc
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="reader"></param>
+        /// <param name="rpcParams"></param>
+        /// <returns></returns>
         [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_4121569671")]
         [HarmonyPrefix]
         [HarmonyWrapSafe]
@@ -82,7 +89,7 @@ namespace AntiCheat
             {
                 if (rpcs.ContainsKey("KillPlayer"))
                 {
-                    rpcs["KillPlayer"].Remove(p.actualClientId);
+                    rpcs["KillPlayer"].Remove(p.playerClientId);
                 }
                 ByteUnpacker.ReadValueBitPacked(reader, out int playerId);
                 reader.ReadValueSafe(out bool spawnBody, default);
@@ -327,8 +334,8 @@ namespace AntiCheat
         //            }
         //        }
         //    }
-        //    var p2 = StartOfRound.Instance.allPlayerScripts.OrderByDescending(x => x.actualClientId).FirstOrDefault();
-        //    if (p2.actualClientId != lastClientId)
+        //    var p2 = StartOfRound.Instance.allPlayerScripts.OrderByDescending(x => x.playerClientId).FirstOrDefault();
+        //    if (p2.playerClientId != lastClientId)
         //    {
         //        if (p2.isPlayerControlled && p2.playerSteamId == 0)
         //        {
@@ -343,7 +350,7 @@ namespace AntiCheat
         //        string msg = Core.AntiCheat.PlayerJoin.Value.Replace("{player}", p2.playerUsername);
         //        LogInfo(msg);
         //        HUDManager.Instance.AddTextToChatOnServer(msg, -1);
-        //        lastClientId = p2.actualClientId;
+        //        lastClientId = p2.playerClientId;
         //        bypass = false;
         //    }
         //}
@@ -663,7 +670,7 @@ namespace AntiCheat
             }
             if (__instance.AllowPlayerDeath())
             {
-                rpcs["Hit"].Add(__instance.actualClientId);
+                rpcs["Hit"].Add(__instance.playerClientId);
                 LogInfo($"PlayerControllerB.Hit|{__instance.playerUsername}|force:{force}|playerWhoHit:{playerWhoHit.playerUsername}|playHitSFX:{playHitSFX}|hitID:{hitID}");
                 __instance.StartCoroutine(CheckRpc(__instance, "Hit"));
             }
@@ -682,14 +689,14 @@ namespace AntiCheat
             {
                 yield break;
             }
-            yield return new WaitForSeconds(Core.AntiCheat.RPCReport_Delay.Value);
+            yield return new WaitForSeconds(Core.AntiCheat.RPCReport_Delay.Value / 1000);
             if (__instance.isPlayerDead)
             {
                 yield break;
             }
-            if (rpcs[RPC].Contains(__instance.actualClientId))
+            if (rpcs[RPC].Contains(__instance.playerClientId))
             {
-                rpcs[RPC].Remove(__instance.actualClientId);
+                rpcs[RPC].Remove(__instance.playerClientId);
                 ShowMessage(locale.Msg_GetString("RPCReport", new Dictionary<string, string>() {
                   { "{player}", __instance.playerUsername },
                   { "{RPC}", RPC },
@@ -717,7 +724,7 @@ namespace AntiCheat
             {
                 if (rpcs.ContainsKey("Hit"))
                 {
-                    rpcs["Hit"].Remove(p.actualClientId);
+                    rpcs["Hit"].Remove(p.playerClientId);
                 }
                 ByteUnpacker.ReadValueBitPacked(reader, out int damageNumber);
                 ByteUnpacker.ReadValueBitPacked(reader, out int newHealthAmount);
@@ -829,16 +836,16 @@ namespace AntiCheat
             return KillPlayerServerRpc(target, reader, rpcParams, "MouthDogAI.KillPlayerServerRpc");
         }
 
-        /// <summary>
-        /// Prefix ForestGiantAI.GrabPlayerServerRpc
-        /// </summary>
-        [HarmonyPatch(typeof(ForestGiantAI), "__rpc_handler_2965927486")]
-        [HarmonyPrefix]
-        [HarmonyWrapSafe]
-        public static bool __rpc_handler_2965927486(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        {
-            return KillPlayerServerRpc(target, reader, rpcParams, "ForestGiantAI.GrabPlayerServerRpc");
-        }
+        ///// <summary>
+        ///// Prefix ForestGiantAI.GrabPlayerServerRpc
+        ///// </summary>
+        //[HarmonyPatch(typeof(ForestGiantAI), "__rpc_handler_2965927486")]
+        //[HarmonyPrefix]
+        //[HarmonyWrapSafe]
+        //public static bool __rpc_handler_2965927486(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        //{
+        //    return KillPlayerServerRpc(target, reader, rpcParams, "ForestGiantAI.GrabPlayerServerRpc");
+        //}
 
         /// <summary>
         /// Prefix RedLocustBees.BeeKillPlayerServerRpc
@@ -851,16 +858,16 @@ namespace AntiCheat
             return KillPlayerServerRpc(target, reader, rpcParams, "RedLocustBees.BeeKillPlayerServerRpc");
         }
 
-        /// <summary>
-        /// Prefix MaskedPlayerEnemy.KillPlayerAnimationServerRpc
-        /// </summary>
-        [HarmonyPatch(typeof(MaskedPlayerEnemy), "__rpc_handler_3192502457")]
-        [HarmonyPrefix]
-        [HarmonyWrapSafe]
-        public static bool __rpc_handler_3192502457(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        {
-            return KillPlayerServerRpc(target, reader, rpcParams, "MaskedPlayerEnemy.KillPlayerAnimationServerRpc");
-        }
+        ///// <summary>
+        ///// Prefix MaskedPlayerEnemy.KillPlayerAnimationServerRpc
+        ///// </summary>
+        //[HarmonyPatch(typeof(MaskedPlayerEnemy), "__rpc_handler_3192502457")]
+        //[HarmonyPrefix]
+        //[HarmonyWrapSafe]
+        //public static bool __rpc_handler_3192502457(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        //{
+        //    return KillPlayerServerRpc(target, reader, rpcParams, "MaskedPlayerEnemy.KillPlayerAnimationServerRpc");
+        //}
 
         /// <summary>
         /// Prefix NutcrackerEnemyAI.LegKickPlayerServerRpc
@@ -873,27 +880,27 @@ namespace AntiCheat
             return KillPlayerServerRpc(target, reader, rpcParams, "NutcrackerEnemyAI.LegKickPlayerServerRpc");
         }
 
-        /// <summary>
-        /// Prefix BlobAI.SlimeKillPlayerEffectServerRpc
-        /// </summary>
-        [HarmonyPatch(typeof(BlobAI), "__rpc_handler_3848306567")]
-        [HarmonyPrefix]
-        [HarmonyWrapSafe]
-        public static bool __rpc_handler_3848306567(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        {
-            return KillPlayerServerRpc(target, reader, rpcParams, "BlobAI.SlimeKillPlayerEffectServerRpc");
-        }
+        ///// <summary>
+        ///// Prefix BlobAI.SlimeKillPlayerEffectServerRpc
+        ///// </summary>
+        //[HarmonyPatch(typeof(BlobAI), "__rpc_handler_3848306567")]
+        //[HarmonyPrefix]
+        //[HarmonyWrapSafe]
+        //public static bool __rpc_handler_3848306567(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        //{
+        //    return KillPlayerServerRpc(target, reader, rpcParams, "BlobAI.SlimeKillPlayerEffectServerRpc");
+        //}
 
-        /// <summary>
-        /// Prefix CentipedeAI.ClingToPlayerServerRpc
-        /// </summary>
-        [HarmonyPatch(typeof(CentipedeAI), "__rpc_handler_2791977891")]
-        [HarmonyPrefix]
-        [HarmonyWrapSafe]
-        public static bool __rpc_handler_2791977891(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        {
-            return KillPlayerServerRpc(target, reader, rpcParams, "CentipedeAI.ClingToPlayerServerRpc");
-        }
+        ///// <summary>
+        ///// Prefix CentipedeAI.ClingToPlayerServerRpc
+        ///// </summary>
+        //[HarmonyPatch(typeof(CentipedeAI), "__rpc_handler_2791977891")]
+        //[HarmonyPrefix]
+        //[HarmonyWrapSafe]
+        //public static bool __rpc_handler_2791977891(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        //{
+        //    return KillPlayerServerRpc(target, reader, rpcParams, "CentipedeAI.ClingToPlayerServerRpc");
+        //}
 
         /// <summary>
         /// Prefix RadMechAI.GrabPlayerServerRpc
@@ -940,7 +947,7 @@ namespace AntiCheat
                 if (p.AllowPlayerDeath())
                 {
                     LogInfo($"StartCoroutine:CheckRpc|{p.playerUsername}|{call}");
-                    rpcs["KillPlayer"].Add(p.actualClientId);
+                    rpcs["KillPlayer"].Add(p.playerClientId);
                     p.StartCoroutine(CheckRpc(p, "KillPlayer"));
                 }
             }
@@ -988,10 +995,10 @@ namespace AntiCheat
                 {
                     foreach (var item in bypassKill)
                     {
-                        if (item.EnemyInstanceId == e.GetInstanceID() && !item.CalledClient.Contains(p.actualClientId))
+                        if (item.EnemyInstanceId == e.GetInstanceID() && !item.CalledClient.Contains(p.playerClientId))
                         {
-                            LogInfo($"{e.GetInstanceID()} bypass|actualClientId:{p.actualClientId}");
-                            item.CalledClient.Add(p.actualClientId);
+                            LogInfo($"{e.GetInstanceID()} bypass|playerClientId:{p.playerClientId}");
+                            item.CalledClient.Add(p.playerClientId);
                             return true;
                         }
                     }
@@ -1091,7 +1098,7 @@ namespace AntiCheat
                 if (Core.AntiCheat.Jetpack.Value)
                 {
                     var jp = (JetpackItem)target;
-                    if (jp.playerHeldBy != null && jp.playerHeldBy.actualClientId != p.actualClientId)
+                    if (jp.playerHeldBy != null && jp.playerHeldBy.playerClientId != p.playerClientId)
                     {
                         ShowMessage(locale.Msg_GetString("Jetpack", new Dictionary<string, string>() {
                              { "{player}",p.playerUsername }
@@ -1171,12 +1178,23 @@ namespace AntiCheat
             }
         }
 
+        public static List<ExplosionData> explosions { get; set; } = new List<ExplosionData>();
+
+        public class ExplosionData
+        {
+            public List<ulong> CalledClient { get; set; }
+
+            public Vector3 ExplosionPostion { get; set; }
+
+            public DateTime CreateDateTime { get; set; }
+        }
 
         public class HitData
         {
             public int EnemyInstanceId { get; set; }
 
             public int force { get; set; }
+
 
             public List<ulong> CalledClient { get; set; }
         }
@@ -1191,18 +1209,11 @@ namespace AntiCheat
         {
             if (StartOfRound.Instance.localPlayerController.IsHost)
             {
-                LogInfo($"bypassHit -> {__instance.enemyType.enemyName}({__instance.GetInstanceID()})");
-                if (!(bool)AccessTools.DeclaredField(typeof(ButlerEnemyAI), "startedButlerDeathAnimation").GetValue(__instance))
-                {
-                    bypassHit.Add(new HitData()
-                    {
-                        EnemyInstanceId = __instance.GetInstanceID(),
-                        force = 6,
-                        CalledClient = new List<ulong>()
-                    });
-                }
+                LandminePatch.SpawnExplosion(__instance.transform.position + Vector3.up * 0.15f);
             }
         }
+
+
         //public static void HitEnemy(int force = 1, PlayerControllerB playerWhoHit = null, bool playHitSFX = false, int hitID = -1)
         //{
         //    LogInfo($"force:{force}|playerWhoHit:{playerWhoHit?.playerUsername}|playHitSFX:{playHitSFX}|hitID:{hitID}");
@@ -1255,10 +1266,10 @@ namespace AntiCheat
                 //}
                 foreach (var item in bypassHit)
                 {
-                    if (item.EnemyInstanceId == e.GetInstanceID() && item.force == force && !item.CalledClient.Contains(p.actualClientId))
+                    if (item.EnemyInstanceId == e.GetInstanceID() && item.force == force && !item.CalledClient.Contains(p.playerClientId))
                     {
-                        LogInfo($"{e.GetInstanceID()} bypass|actualClientId:{p.actualClientId}");
-                        item.CalledClient.Add(p.actualClientId);
+                        LogInfo($"{e.GetInstanceID()} bypass|playerClientId:{p.playerClientId}");
+                        item.CalledClient.Add(p.playerClientId);
                         return true;
                     }
                 }
@@ -1270,7 +1281,19 @@ namespace AntiCheat
                     //}
                     var obj = p.ItemSlots[p.currentItemSlot];
                     string playerUsername = p.playerUsername;
-                    if (force != 1 && obj != null && (isShovel(obj) || isKnife(obj)))
+                    if(force == 6)
+                    {
+                        LogInfo($"force = 6||enemyPostion:{e.transform.position}");
+                        foreach (var item in explosions)
+                        {
+                            if (item.CalledClient.Contains(p.playerClientId))
+                            {
+                                continue;
+                            }
+                            LogInfo($"ExplosionPostion:{item.ExplosionPostion}||Distance:{Vector3.Distance(item.ExplosionPostion, e.transform.position)}");
+                        }
+                    }
+                    else if (force != 1 && obj != null && (isShovel(obj) || isKnife(obj)))
                     {
                         if (!jcs.Contains(p.playerSteamId))
                         {
@@ -1362,7 +1385,6 @@ namespace AntiCheat
             }
             else if (type == Core.AntiCheat.MessageType.HostChat)
             {
-                LogInfo($"AddChatMessage|{showmsg}");
                 ShowMessageHostOnly(showmsg);
             }
             else
@@ -2041,6 +2063,7 @@ namespace AntiCheat
 
         public static bool CheckRemoteTerminal(PlayerControllerB p,string call)
         {
+            LogInfo(p, "CheckRemoteTerminal", $"Call:{call}");
             if (whoUseTerminal == null && lastWhoUseTerminal == p.playerSteamId)
             {
                 return true;
@@ -2410,6 +2433,7 @@ namespace AntiCheat
             return true;
         }
 
+   
         /// <summary>
         /// 玩家拉杆事件
         /// Prefix StartOfRound.__rpc_handler_1089447320
@@ -2419,10 +2443,10 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool StartGameServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
+            StartOfRoundPatch.CallPlayerHasRevivedServerRpc = new List<ulong>();
             StartMatchLever startMatchLever = UnityEngine.Object.FindObjectOfType<StartMatchLever>();
             if (Check(rpcParams, out var p))
             {
-                StartOfRoundPatch.CallPlayerHasRevivedServerRpc = new List<ulong>();
                 if (Core.AntiCheat.ShipConfig.Value && !GameNetworkManager.Instance.gameHasStarted)
                 {
                     ShowMessage(locale.Msg_GetString("ShipConfig5", new Dictionary<string, string>() {
@@ -2482,11 +2506,11 @@ namespace AntiCheat
         /// <param name="canJoin">重新加入</param>
         public static void KickPlayer(PlayerControllerB kick, bool canJoin = false, string Reason = null)
         {
-            if (kick.actualClientId == 0)
+            if (kick.playerClientId == 0)
             {
                 return;
             }
-            NetworkManager.Singleton.DisconnectClient(kick.actualClientId, $"[{locale.Prefix()}] {locale.Msg_GetString("KickPlayer")}！");
+            NetworkManager.Singleton.DisconnectClient(kick.playerClientId, $"[{locale.Prefix()}] {locale.Msg_GetString("KickPlayer")}！");
             if (kick.playerSteamId == 0)
             {
                 return;
@@ -2523,10 +2547,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_2406447821(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (File.Exists("AntiCheat.log"))
-            {
-                File.Delete("AntiCheat.log");
-            }
+          
             if (Check(rpcParams, out var p))
             {
                 if (UnityEngine.Object.FindAnyObjectByType<StartMatchLever>().leverHasBeenPulled && !StartOfRound.Instance.shipHasLanded)
@@ -2689,6 +2710,7 @@ namespace AntiCheat
 
         public static void ShowMessageHostOnly(string msg)
         {
+            LogInfo($"ShowMessageHostOnly -> {msg}");
             AccessTools.DeclaredMethod(typeof(HUDManager), "AddChatMessage").Invoke(HUDManager.Instance, new object[] { msg, "", -1, false });
         }
 
@@ -2705,9 +2727,8 @@ namespace AntiCheat
             {
                 ByteUnpacker.ReadValueBitPacked(reader, out int num);
                 reader.Seek(0);
-                StartOfRoundPatch.CallPlayerLoadedServerRpc = new List<ulong>();
                 LogInfo(p, "StartOfRound.EndGameServerRpc", $"num:{num}", $"shipHasLanded:{StartOfRound.Instance.shipHasLanded}");
-                if (num == 0 && p.actualClientId != 0)
+                if (num == 0 && p.playerClientId != 0)
                 {
                     UnityEngine.Object.FindObjectOfType<StartMatchLever>().triggerScript.interactable = true;
                     return false;
@@ -2850,6 +2871,10 @@ namespace AntiCheat
                 return true;
             }
             if (__instance.hasExploded)
+            {
+                return true;
+            }
+            if (!__instance.gameObject.activeSelf)
             {
                 return true;
             }

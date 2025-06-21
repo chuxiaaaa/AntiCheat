@@ -113,6 +113,7 @@
     </Compile>
     <Compile Include="Locale\Locale.cs" />
     <Compile Include="Locale\LocalizationManager.cs" />
+    <Compile Include="Patch\LandminePatch.cs" />
     <Compile Include="Patch\Patches.cs" />
     <Compile Include="Patch\PlayerControllerBPatch.cs" />
     <Compile Include="Patch\ShipTeleporterPatch.cs" />

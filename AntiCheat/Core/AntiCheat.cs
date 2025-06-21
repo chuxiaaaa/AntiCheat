@@ -29,7 +29,7 @@ namespace AntiCheat.Core
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheat : BaseUnityPlugin
     {
-        public const string Version = "0.8.4";
+        public const string Version = "0.8.5";
         public static ManualLogSource ManualLog = null;
 
         public enum MessageType
@@ -289,6 +289,7 @@ namespace AntiCheat.Core
             Harmony.CreateAndPatchAll(typeof(TerminalPatch));
             Harmony.CreateAndPatchAll(typeof(PlayerControllerBPatch));
             Harmony.CreateAndPatchAll(typeof(DoorLockPatch));
+            Harmony.CreateAndPatchAll(typeof(LandminePatch));
         }
 
         private void Watcher_Changed(object sender, FileSystemEventArgs e)
