@@ -51,8 +51,10 @@ namespace AntiCheat
                 var grab = (GrabbableObject)target;
                 if (AntiCheat.Core.AntiCheat.OperationLog.Value)
                 {
-                    if (grab is LungProp lung && lung.isLungDocked)
+                    Patches.LogInfo($"{p.playerUsername} call EquipItemServerRpc({grab.itemProperties.itemName})");
+                    if (grab is LungProp lung)
                     {
+                        Patches.LogInfo($"lung.isLungDocked:{lung.isLungDocked}");
                         Patches.ShowMessageHostOnly(Patches.locale.OperationLog_GetString("GrabLungProp"));
                     }
                 }

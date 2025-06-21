@@ -36,13 +36,34 @@ namespace AntiCheat
 
         }
 
+        public static List<ulong> CallPlayerHasRevivedServerRpc { get; set; } = new List<ulong>();
+        public static List<ulong> CallPlayerLoadedServerRpc { get; set; } = new List<ulong>();
+
         [HarmonyPrefix]
         [HarmonyPatch("__rpc_handler_3083945322")]
         public static bool PlayerHasRevivedServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (Patches.Check(rpcParams, out var p))
             {
-                AntiCheat.Core.AntiCheat.LogInfo(p, $"StartOfRound.PlayerHasRevivedServerRpc||{AccessTools.DeclaredField(typeof(StartOfRound),"playersRevived").GetValue(StartOfRound.Instance)}");
+                int playersRevived = (int)AccessTools.DeclaredField(typeof(StartOfRound), "playersRevived").GetValue(StartOfRound.Instance);
+                AntiCheat.Core.AntiCheat.LogInfo(p, $"StartOfRound.PlayerHasRevivedServerRpc", $"playersRevived:{playersRevived}");
+                CallPlayerHasRevivedServerRpc.Add(p.playerSteamId);
+                if (playersRevived < GameNetworkManager.Instance.connectedPlayers && playersRevived + 5 > GameNetworkManager.Instance.connectedPlayers)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    foreach (var item in StartOfRound.Instance.allPlayerScripts)
+                    {
+                        if (!item.isPlayerControlled || item.isHostPlayerObject)
+                        {
+                            continue;
+                        }
+                        if (!CallPlayerHasRevivedServerRpc.Contains(item.playerSteamId))
+                        {
+                            sb.Append(item.playerUsername + "||");
+                        }
+                    }
+                    AntiCheat.Core.AntiCheat.LogInfo($"Wait For:{sb.ToString()}");
+                }
             }
             return true;
         }
@@ -54,7 +75,25 @@ namespace AntiCheat
         {
             if (Patches.Check(rpcParams, out var p))
             {
-                AntiCheat.Core.AntiCheat.LogInfo(p, $"StartOfRound.PlayerLoadedServerRpc||{StartOfRound.Instance.fullyLoadedPlayers.Count}");
+                int fullyLoadedPlayers = StartOfRound.Instance.fullyLoadedPlayers.Count;
+                AntiCheat.Core.AntiCheat.LogInfo(p, $"StartOfRound.PlayerLoadedServerRpc", $"fullyLoadedPlayers:{fullyLoadedPlayers}");
+                CallPlayerLoadedServerRpc.Add(p.playerSteamId);
+                if (fullyLoadedPlayers < GameNetworkManager.Instance.connectedPlayers && fullyLoadedPlayers + 5 > GameNetworkManager.Instance.connectedPlayers)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    foreach (var item in StartOfRound.Instance.allPlayerScripts)
+                    {
+                        if (!item.isPlayerControlled || item.isHostPlayerObject)
+                        {
+                            continue;
+                        }
+                        if (!CallPlayerLoadedServerRpc.Contains(item.playerSteamId))
+                        {
+                            sb.Append(item.playerUsername + "||");
+                        }
+                    }
+                    AntiCheat.Core.AntiCheat.LogInfo($"PlayerLoadedServerRpc Wait For:{sb.ToString()}");
+                }
             }
             return true;
         }

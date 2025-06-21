@@ -1,4 +1,6 @@
-﻿using BepInEx;
+﻿using AntiCheat.Patch;
+
+using BepInEx;
 using BepInEx.Configuration;
 
 using GameNetcodeStuff;
@@ -50,7 +52,7 @@ namespace AntiCheat
 
         public static Dictionary<uint, ulong> ConnectionIdtoSteamIdMap { get; set; } = new Dictionary<uint, ulong>();
 
-        public static Dictionary<int, Dictionary<ulong, List<DateTime>>> chcs = new Dictionary<int, Dictionary<ulong, List<DateTime>>>();
+        //public static Dictionary<int, Dictionary<ulong, List<DateTime>>> chcs = new Dictionary<int, Dictionary<ulong, List<DateTime>>>();
 
         public static List<long> mjs { get; set; } = new List<long>();
         public static List<long> lhs { get; set; } = new List<long>();
@@ -60,6 +62,8 @@ namespace AntiCheat
         public static Dictionary<string, List<ulong>> rpcs { get; set; } = new Dictionary<string, List<ulong>>();
 
         public static void LogInfo(string info) => Core.AntiCheat.LogInfo(info);
+
+        public static void LogInfo(PlayerControllerB p, string rpc, params object[] param) => Core.AntiCheat.LogInfo(p, rpc, param);
 
         public static void LogError(string info)
         {
@@ -116,7 +120,7 @@ namespace AntiCheat
                 reader.ReadValueSafe(out Vector3 hitDirection);
                 ByteUnpacker.ReadValueBitPacked(reader, out int playerWhoHit);
                 reader.Seek(0);
-                LogInfo($"{p.playerUsername} call PlayerControllerB.DamagePlayerFromOtherClientServerRpc|damageAmount:{damageAmount}|hitDirection:{hitDirection}|playerWhoHit:{playerWhoHit}");
+                LogInfo(p, "PlayerControllerB.DamagePlayerFromOtherClientServerRpc",$"damageAmount:{damageAmount}",$"hitDirection:{hitDirection}",$"playerWhoHit:{playerWhoHit}");
                 var p2 = (PlayerControllerB)target;
                 return CheckDamage(p2, p, ref damageAmount);
             }
@@ -137,7 +141,7 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                LogInfo($"{p.playerUsername} call PlayerControllerB.HealServerRpc|health:{p.health}|newHealth:20");
+                LogInfo(p, "PlayerControllerB.HealServerRpc", $"health:{p.health}", $"newHealth:20");
                 p.health = 20;
             }
             else if (p == null)
@@ -369,7 +373,7 @@ namespace AntiCheat
         public static void EndOfGame()
         {
             jcs = new List<ulong>();
-            chcs = new Dictionary<int, Dictionary<ulong, List<DateTime>>>();
+            //chcs = new Dictionary<int, Dictionary<ulong, List<DateTime>>>();
             if (rpcs.ContainsKey("Hit"))
             {
                 rpcs["Hit"] = new List<ulong>();
@@ -761,10 +765,10 @@ namespace AntiCheat
             {
                 ByteUnpacker.ReadValueBitPacked(reader, out int stateIndex);
                 reader.Seek(0);
-                LogInfo($"{p.playerUsername} call EnemyAI.SwitchToBehaviourServerRpc||stateIndex:{stateIndex}");
+                var e = (EnemyAI)target;
+                LogInfo(p, $"({e.enemyType.enemyName})EnemyAI.SwitchToBehaviourServerRpc", $"stateIndex:{stateIndex}");
                 if (Core.AntiCheat.Enemy.Value)
                 {
-                    var e = (EnemyAI)target;
                     if (e is JesterAI j)
                     {
                         if (j.currentBehaviourStateIndex == 0 && stateIndex == 1)
@@ -784,7 +788,7 @@ namespace AntiCheat
                         }
                         else
                         {
-                            LogInfo($"{p.playerUsername} call EnemyAI.SwitchToBehaviourServerRpc||currentBehaviourStateIndex:{j.currentBehaviourStateIndex}|stateIndex:{stateIndex}|popUpTimer:{j.popUpTimer}");
+                            LogInfo($"{p.playerUsername} call ({e.enemyType.enemyName})EnemyAI.SwitchToBehaviourServerRpc||currentBehaviourStateIndex:{j.currentBehaviourStateIndex}|stateIndex:{stateIndex}|popUpTimer:{j.popUpTimer}");
                             //ShowMessage(locale.Msg_GetString("Enemy_SwitchToBehaviour", new Dictionary<string, string>() {
                             //    { "{player}", p.playerUsername }
                             //}));
@@ -959,9 +963,9 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                reader.ReadValueSafe(out Vector3 newPos);
-                reader.Seek(0);
-                LogInfo($"{p.playerUsername} call EnemyAI.UpdateEnemyPositionServerRpc|newPos:{newPos}");
+                //reader.ReadValueSafe(out Vector3 newPos);
+                //reader.Seek(0);
+                //LogInfo($"{p.playerUsername} call EnemyAI.UpdateEnemyPositionServerRpc|newPos:{newPos}");
             }
             else if (p == null)
             {
@@ -978,10 +982,10 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                LogInfo($"{p.playerUsername} call EnemyAI.KillEnemyServerRpc");
+                var e = (EnemyAI)target;
+                LogInfo(p, $"({e.enemyType.enemyName})EnemyAI.KillEnemyServerRpc");
                 if (Core.AntiCheat.KillEnemy.Value)
                 {
-                    var e = (EnemyAI)target;
                     foreach (var item in bypassKill)
                     {
                         if (item.EnemyInstanceId == e.GetInstanceID() && !item.CalledClient.Contains(p.actualClientId))
@@ -1023,7 +1027,7 @@ namespace AntiCheat
             {
                 if (Core.AntiCheat.Enemy.Value)
                 {
-                    LogInfo($"{p.playerUsername} call EnemyAI.UpdateEnemyRotationServerRpc");
+                    //LogInfo($"{p.playerUsername} call EnemyAI.UpdateEnemyRotationServerRpc");
                     return true;
                 }
             }
@@ -1066,91 +1070,7 @@ namespace AntiCheat
                         return true;
                     }
                     float v = Vector3.Distance(p.transform.position, enemy.transform.position);
-                    LogInfo($"Distance:{v}");
-                    LogInfo($"{p.playerUsername}|{p.actualClientId} called ChangeOwnershipOfEnemy|enemy:{enemy.enemyType.enemyName}|clientId:{clientId}");
-                    LogInfo($"OwnerClientId:{enemy.OwnerClientId}");
-                    int key = enemy.GetInstanceID();
-                    if (!chcs.ContainsKey(key))
-                    {
-                        chcs.Add(key, new Dictionary<ulong, List<DateTime>>());
-                    }
-                    if (!chcs[key].ContainsKey(p.actualClientId))
-                    {
-                        chcs[key].Add(p.actualClientId, new List<DateTime>());
-                    }
-                    if (chcs[key][p.actualClientId].Count(x => x.AddSeconds(1) > DateTime.Now) > 5)
-                    {
-                        ShowMessage(locale.Msg_GetString("Enemy_ChangeOwnershipOfEnemy", new Dictionary<string, string>() {
-                            { "{player}",p.playerUsername }
-                        }));
-                        //KickPlayer(p); 
-                        return false;
-                    }
-                    chcs[key][p.actualClientId].Add(DateTime.Now);
-                    if (enemy.isEnemyDead)
-                    {
-                        return false;
-                    }
-                    else if (enemy is CrawlerAI c)
-                    {
-                        if (c.stunnedByPlayer != null)
-                        {
-                            if ((int)c.stunnedByPlayer.actualClientId != clientId)
-                            {
-                                return false;
-                            }
-                        }
-                        else
-                        {
-                            var p2 = enemy.CheckLineOfSightForPlayer(55f, 60, -1);
-                            if (p2 != null && (int)p2.actualClientId != clientId)
-                            {
-                                return false;
-                            }
-
-                        }
-                    }
-                    else if (enemy is JesterAI j)
-                    {
-                        if (j.currentBehaviourStateIndex != 2)
-                        {
-                            LogInfo("client ChangeOwnershipOfEnemy:" + clientId);
-                            return p.isHostPlayerObject;
-                        }
-                        else
-                        {
-                            if (j.TargetClosestPlayer(4f, false, 70f) && j.targetPlayer != null && (int)j.targetPlayer.actualClientId == clientId)
-                            {
-                                return true;
-                            }
-                            return false;
-                        }
-                    }
-                    else if (enemy is FlowermanAI f)
-                    {
-                        if (f.currentBehaviourStateIndex != 2)
-                        {
-                            LogInfo("client ChangeOwnershipOfEnemy:" + clientId);
-                            return p.isHostPlayerObject;
-                        }
-                        else
-                        {
-                            if (f.TargetClosestPlayer(1.5f, false, 70f) && f.targetPlayer != null && (int)f.targetPlayer.actualClientId == clientId)
-                            {
-                                return true;
-                            }
-                            return false;
-                        }
-                    }
-                    else if (enemy is RedLocustBees r)
-                    {
-                        var p2 = r.CheckLineOfSightForPlayer(360f, 16, 1);
-                        if (p2 != null && Vector3.Distance(p2.transform.position, r.hive.transform.position) < (float)r.defenseDistance && (int)r.targetPlayer.actualClientId == clientId)
-                        {
-                            return true;
-                        }
-                        return false;
-                    }
+                    LogInfo(p, $"({enemy.enemyType.enemyName})EnemyAI.ChangeEnemyOwnerServerRpc", $"Distance:{v}", $"CallClientId:{p.playerClientId}", $"OwnerClientId:{enemy.OwnerClientId}", $"NewClientId:{clientId}");
                     return true;
                 }
             }
@@ -1304,7 +1224,7 @@ namespace AntiCheat
                 ByteUnpacker.ReadValueBitPacked(reader, out int playerWhoHit);
                 reader.ReadValueSafe(out bool playHitSFX, default);
                 reader.Seek(0);
-                LogInfo($"{p.playerUsername} call ({((EnemyAI)target).enemyType.enemyName})EnemyAI.HitEnemyServerRpc|force:{force}|playerWhoHit:{playerWhoHit}");
+                LogInfo(p, $"({((EnemyAI)target).enemyType.enemyName})EnemyAI.HitEnemyServerRpc", $"force:{force}", $"playerWhoHit:{playerWhoHit}");
                 if (p.isHostPlayerObject)
                 {
                     return true;
@@ -1437,6 +1357,7 @@ namespace AntiCheat
             }
             if (type == Core.AntiCheat.MessageType.PublicChat)
             {
+                LogInfo($"AddTextMessageClientRpc|{showmsg}");
                 AddTextMessageClientRpc(showmsg);
             }
             else if (type == Core.AntiCheat.MessageType.HostChat)
@@ -1450,10 +1371,10 @@ namespace AntiCheat
             }
         }
 
-        private static void AddTextMessageClientRpc(string showmsg)
+        public static void AddTextMessageClientRpc(string showmsg)
         {
             AccessTools.DeclaredMethod(typeof(HUDManager), "AddTextMessageClientRpc").Invoke(HUDManager.Instance, new object[] {
-                    showmsg
+                showmsg
             });
         }
 
@@ -1917,10 +1838,12 @@ namespace AntiCheat
             }
             if (ConnectionIdtoSteamIdMap.ContainsKey(connection.Id))
             {
+                LogInfo($"1921:ConnectionIdtoSteamIdMap[{connection.Id}] = {identity.SteamId.Value}");
                 ConnectionIdtoSteamIdMap[connection.Id] = identity.SteamId.Value;
             }
             else
             {
+                LogInfo($"1926:ConnectionIdtoSteamIdMap[{connection.Id}] = {identity.SteamId.Value}");
                 ConnectionIdtoSteamIdMap.Add(connection.Id, identity.SteamId.Value);
             }
             if (Core.AntiCheat.OperationLog.Value)
@@ -1974,35 +1897,7 @@ namespace AntiCheat
             }
         }
 
-        ///// <summary>
-        ///// 玩家发送SteamID事件(目前还没遇到过伪造)
-        ///// Prefix PlayerControllerB.SendNewPlayerValuesServerRpc
-        ///// </summary>
-        //[HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_2504133785")]
-        //[HarmonyPrefix]
-        //[HarmonyWrapSafe]
-        //public static bool __rpc_handler_2504133785(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        //{
-        //    if (!StartOfRound.Instance.localPlayerController.IsHost)//非主机
-        //    {
-        //        return true;
-        //    }
-        //    if (rpcParams.Server.Receive.SenderClientId == 0)
-        //    {
-        //        return true;
-        //    }
-        //    ByteUnpacker.ReadValueBitPacked(reader, out ulong newPlayerSteamId);
-        //    reader.Seek(0);
-        //    ulong steamId = ConnectionIdtoSteamIdMap[ClientIdToTransportId(rpcParams.Server.Receive.SenderClientId)];
-        //    if (newPlayerSteamId != steamId)
-        //    {
-        //        Friend f = new Friend(steamId);
-        //        NetworkManager.Singleton.DisconnectClient(rpcParams.Server.Receive.SenderClientId);
-        //        LogInfo($"玩家 {f.Name}({steamId}) 伪造SteamID({newPlayerSteamId})加入游戏");
-        //        return false;
-        //    }
-        //    return true;
-        //}
+
 
       
 
@@ -2146,7 +2041,7 @@ namespace AntiCheat
 
         public static bool CheckRemoteTerminal(PlayerControllerB p,string call)
         {
-            if (whoUseTerminal == null && lastWhoUseTerminal == p)
+            if (whoUseTerminal == null && lastWhoUseTerminal == p.playerSteamId)
             {
                 return true;
             }
@@ -2183,7 +2078,11 @@ namespace AntiCheat
                 reader.Seek(0);
                 if (playerNum == (int)p.playerClientId)
                 {
-                    lastWhoUseTerminal = whoUseTerminal;
+                    if (whoUseTerminal != null)
+                    {
+                        LogInfo($"player {whoUseTerminal.playerUsername} lastUseTerminal");
+                        lastWhoUseTerminal = whoUseTerminal.playerSteamId;
+                    }
                     
                     var terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
                     var terminalTrigger = terminal.GetField<Terminal, InteractTrigger>("terminalTrigger");
@@ -2523,6 +2422,7 @@ namespace AntiCheat
             StartMatchLever startMatchLever = UnityEngine.Object.FindObjectOfType<StartMatchLever>();
             if (Check(rpcParams, out var p))
             {
+                StartOfRoundPatch.CallPlayerHasRevivedServerRpc = new List<ulong>();
                 if (Core.AntiCheat.ShipConfig.Value && !GameNetworkManager.Instance.gameHasStarted)
                 {
                     ShowMessage(locale.Msg_GetString("ShipConfig5", new Dictionary<string, string>() {
@@ -2572,7 +2472,7 @@ namespace AntiCheat
             return;
         }
 
-        public static PlayerControllerB lastWhoUseTerminal { get; set; } = null;
+        public static ulong lastWhoUseTerminal { get; set; }
         public static PlayerControllerB whoUseTerminal { get; set; }
 
         /// <summary>
@@ -2805,7 +2705,8 @@ namespace AntiCheat
             {
                 ByteUnpacker.ReadValueBitPacked(reader, out int num);
                 reader.Seek(0);
-                LogInfo($"StartOfRound.EndGameServerRpc({num})|StartOfRound.Instance.shipHasLanded:{StartOfRound.Instance.shipHasLanded}");
+                StartOfRoundPatch.CallPlayerLoadedServerRpc = new List<ulong>();
+                LogInfo(p, "StartOfRound.EndGameServerRpc", $"num:{num}", $"shipHasLanded:{StartOfRound.Instance.shipHasLanded}");
                 if (num == 0 && p.actualClientId != 0)
                 {
                     UnityEngine.Object.FindObjectOfType<StartMatchLever>().triggerScript.interactable = true;

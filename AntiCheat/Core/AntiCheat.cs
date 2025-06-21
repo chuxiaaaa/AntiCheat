@@ -279,8 +279,16 @@ namespace AntiCheat.Core
             watcher.Changed += Watcher_Changed;
             LoadConfig();
             watcher.EnableRaisingEvents = true;
-            Harmony harmony = new Harmony("AntiCheat");
-            harmony.PatchAll();
+
+            Harmony.CreateAndPatchAll(typeof(Patches));
+            Harmony.CreateAndPatchAll(typeof(ShipTeleporterPatch));
+            Harmony.CreateAndPatchAll(typeof(TurretPatch));
+            Harmony.CreateAndPatchAll(typeof(HUDManagerPatch));
+            Harmony.CreateAndPatchAll(typeof(StartOfRoundPatch));
+            Harmony.CreateAndPatchAll(typeof(GrabbableObjectPatch));
+            Harmony.CreateAndPatchAll(typeof(TerminalPatch));
+            Harmony.CreateAndPatchAll(typeof(PlayerControllerBPatch));
+            Harmony.CreateAndPatchAll(typeof(DoorLockPatch));
         }
 
         private void Watcher_Changed(object sender, FileSystemEventArgs e)
@@ -300,7 +308,7 @@ namespace AntiCheat.Core
 
         public static void LogInfo(PlayerControllerB p,string rpc, params object[] param)
         {
-            LogInfo($"{p.playerUsername} call {rpc}{string.Join("|", param)}");
+            LogInfo($"{p.playerUsername} call {rpc};{string.Join("|", param)}");
         }
 
         private void LoadConfig()
