@@ -2,6 +2,8 @@
 
 using HarmonyLib;
 
+using Steamworks.Ugc;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,9 +28,14 @@ namespace AntiCheat
             if (Patches.Check(rpcParams, out var p))
             {
                 var grab = (GrabbableObject)target;
-                if(grab is RemoteProp)
+                if (grab is RemoteProp)
                 {
-                    return CooldownManager.CheckCooldown("ShipLight", p);
+                    bool canUse = CooldownManager.CheckCooldown("ShipLight", p);
+                    if (!canUse)
+                    {
+                        ((ShipLights)target).SetShipLightsClientRpc(true);
+                    }
+                    return canUse;
                 }
                 return false;
             }
@@ -39,32 +46,25 @@ namespace AntiCheat
             return true;
         }
 
+
         /// <summary>
         /// EquipItemServerRpc
         /// </summary>
         [HarmonyPrefix]
-        [HarmonyPatch("__rpc_handler_947748389")]
-        public static bool EquipItemServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        [HarmonyPatch(typeof(LungProp), "EquipItem")]
+        public static bool EquipItem(LungProp __instance)
         {
-            if (Patches.Check(rpcParams, out var p))
+            if (AntiCheat.Core.AntiCheat.OperationLog.Value)
             {
-                var grab = (GrabbableObject)target;
-                if (AntiCheat.Core.AntiCheat.OperationLog.Value)
+                if (__instance.isLungDocked && StartOfRound.Instance.shipHasLanded)
                 {
-                    Patches.LogInfo($"{p.playerUsername} call EquipItemServerRpc({grab.itemProperties.itemName})");
-                    if (grab is LungProp lung)
-                    {
-                        Patches.LogInfo($"lung.isLungDocked:{lung.isLungDocked}");
-                        Patches.ShowMessageHostOnly(Patches.locale.OperationLog_GetString("GrabLungProp"));
-                    }
+                    Patches.ShowMessageHostOnly(Patches.locale.OperationLog_GetString("GrabLungProp", new Dictionary<string, string>() {
+                        { "{player}", $"{StartOfRound.Instance.allPlayerScripts.First(x => x.OwnerClientId == __instance.OwnerClientId).playerUsername}" }
+                    }));
                 }
-                return true;
-            }
-            else if (p == null)
-            {
-                return false;
             }
             return true;
+
         }
     }
 }

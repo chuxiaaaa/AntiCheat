@@ -659,23 +659,23 @@ namespace AntiCheat
             return true;
         }
 
-        [HarmonyPatch(typeof(PlayerControllerB), "IHittable.Hit")]
-        [HarmonyPrefix]
-        [HarmonyWrapSafe]
-        public static bool Hit(PlayerControllerB __instance, int force, Vector3 hitDirection, PlayerControllerB playerWhoHit, bool playHitSFX = false, int hitID = -1)
-        {
-            if (!rpcs.ContainsKey("Hit"))
-            {
-                rpcs.Add("Hit", new List<ulong>());
-            }
-            if (__instance.AllowPlayerDeath())
-            {
-                rpcs["Hit"].Add(__instance.playerClientId);
-                LogInfo($"PlayerControllerB.Hit|{__instance.playerUsername}|force:{force}|playerWhoHit:{playerWhoHit.playerUsername}|playHitSFX:{playHitSFX}|hitID:{hitID}");
-                __instance.StartCoroutine(CheckRpc(__instance, "Hit"));
-            }
-            return true;
-        }
+        //[HarmonyPatch(typeof(PlayerControllerB), "IHittable.Hit")]
+        //[HarmonyPrefix]
+        //[HarmonyWrapSafe]
+        //public static bool Hit(PlayerControllerB __instance, int force, Vector3 hitDirection, PlayerControllerB playerWhoHit, bool playHitSFX = false, int hitID = -1)
+        //{
+        //    if (!rpcs.ContainsKey("Hit"))
+        //    {
+        //        rpcs.Add("Hit", new List<ulong>());
+        //    }
+        //    if (__instance.AllowPlayerDeath())
+        //    {
+        //        rpcs["Hit"].Add(__instance.playerClientId);
+        //        LogInfo($"PlayerControllerB.Hit|{__instance.playerUsername}|force:{force}|playerWhoHit:{playerWhoHit.playerUsername}|playHitSFX:{playHitSFX}|hitID:{hitID}");
+        //        __instance.StartCoroutine(CheckRpc(__instance, "Hit"));
+        //    }
+        //    return true;
+        //}
 
 
 
@@ -913,17 +913,17 @@ namespace AntiCheat
             return KillPlayerServerRpc(target, reader, rpcParams, "RadMechAI.GrabPlayerServerRpc");
         }
 
-        /// <summary>
-        /// Prefix CaveDwellerAI.GrabPlayerServerRpc
-        /// </summary>
-        /// <returns></returns>
-        [HarmonyPatch(typeof(CaveDwellerAI), "__rpc_handler_3591556954")]
-        [HarmonyPrefix]
-        [HarmonyWrapSafe]
-        public static bool __rpc_handler_3591556954(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        {
-            return KillPlayerServerRpc(target, reader, rpcParams, "CaveDwellerAI.GrabPlayerServerRpc");
-        }
+        ///// <summary>
+        ///// Prefix CaveDwellerAI.GrabPlayerServerRpc
+        ///// </summary>
+        ///// <returns></returns>
+        //[HarmonyPatch(typeof(CaveDwellerAI), "__rpc_handler_3591556954")]
+        //[HarmonyPrefix]
+        //[HarmonyWrapSafe]
+        //public static bool __rpc_handler_3591556954(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        //{
+        //    return KillPlayerServerRpc(target, reader, rpcParams, "CaveDwellerAI.GrabPlayerServerRpc");
+        //}
 
 
 
@@ -1315,8 +1315,12 @@ namespace AntiCheat
                     {
                         if (!jcs.Contains(p.playerSteamId))
                         {
+                            for (int i = 0; i < p.ItemSlots.Length; i++)
+                            {
+                                LogInfo($"i:{i}|itemName:{p.ItemSlots[i]?.itemProperties?.itemName}");
+                            }
                             LogInfo($"currentItemSlot:{p.currentItemSlot}");
-                            LogInfo($"currentlyHeldObjectServer:{p.currentlyHeldObjectServer}");
+                            LogInfo($"currentlyHeldObjectServer:{p.currentlyHeldObjectServer?.itemProperties?.itemName}");
                             LogInfo($"obj:{obj}");
                             if (!Core.AntiCheat.Shovel3.Value && (force == 1 || force == 2 || force == 3 || force == 5))
                             {
@@ -2051,15 +2055,6 @@ namespace AntiCheat
             return true;
         }
 
-        public static T2 GetField<T, T2>(this T obj, string name)
-        {
-            return (T2)obj.GetType().GetField(name, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.GetField).GetValue(obj);
-        }
-
-        public static void SetField<T>(this T obj, string name, object value)
-        {
-            obj.GetType().GetField(name, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.GetField).SetValue(obj, value);
-        }
 
         public static bool CheckRemoteTerminal(PlayerControllerB p,string call)
         {
@@ -2108,7 +2103,7 @@ namespace AntiCheat
                     }
                     
                     var terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
-                    var terminalTrigger = terminal.GetField<Terminal, InteractTrigger>("terminalTrigger");
+                    var terminalTrigger = (InteractTrigger)AccessTools.DeclaredField(typeof(Terminal), "terminalTrigger").GetValue(terminal);
                     if (terminalTrigger.GetInstanceID() == ((InteractTrigger)target).GetInstanceID())
                     {
                         whoUseTerminal = p;
@@ -2140,7 +2135,7 @@ namespace AntiCheat
                         return false;
                     }
                     var terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
-                    var terminalTrigger = terminal.GetField<Terminal, InteractTrigger>("terminalTrigger");
+                    var terminalTrigger = (InteractTrigger)AccessTools.DeclaredField(typeof(Terminal), "terminalTrigger").GetValue(terminal);
                     if (terminalTrigger.GetInstanceID() == ((InteractTrigger)target).GetInstanceID())
                     {
                         whoUseTerminal = null;
@@ -2193,7 +2188,12 @@ namespace AntiCheat
         {
             if (Check(rpcParams, out var p))
             {
-                return CooldownManager.CheckCooldown("ShipLight", p);
+                bool canUse = CooldownManager.CheckCooldown("ShipLight", p);
+                if (!canUse)
+                {
+                    ((ShipLights)target).SetShipLightsClientRpc(true);
+                }
+                return canUse;
             }
             else if (p == null)
             {
@@ -2864,7 +2864,7 @@ namespace AntiCheat
         [HarmonyPatch(typeof(Landmine), "OnTriggerExit")]
         [HarmonyPrefix]
         [HarmonyWrapSafe]
-        public static bool OnTriggerExit(Landmine __instance, Collider other)
+        public static bool TriggerMineOnLocalClientByExiting(Landmine __instance, Collider other)
         {
             if (!StartOfRound.Instance.IsHost)
             {
@@ -2878,7 +2878,7 @@ namespace AntiCheat
             {
                 return true;
             }
-            bool mineActivated = (bool)typeof(Landmine).GetField("mineActivated", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(__instance);
+            bool mineActivated = (bool)AccessTools.DeclaredField(typeof(Landmine), "mineActivated").GetValue(__instance);
             if (!mineActivated)
             {
                 return true;
@@ -2888,7 +2888,7 @@ namespace AntiCheat
             {
                 landMines.Add(id);
             }
-            LogInfo($"Landmine.OnTriggerExit({id})");
+            //LogInfo($"Landmine.OnTriggerExit({id})");
             return true;
         }
 
@@ -2907,7 +2907,7 @@ namespace AntiCheat
                 {
                     var lm = (Landmine)target;
                     int id = lm.GetInstanceID();
-                    if (!landMines.Contains(id))
+                    if (!landMines.Contains(id) && !lm.hasExploded)
                     {
                         ShowMessage(locale.Msg_GetString("Landmine", new Dictionary<string, string>() {
                              { "{player}",p.playerUsername }

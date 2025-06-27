@@ -6,14 +6,18 @@ using Steamworks;
 using Steamworks.Data;
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 
 using Unity.Netcode;
+
+using UnityEngine;
 
 namespace AntiCheat.Patch
 {
@@ -39,13 +43,15 @@ namespace AntiCheat.Patch
             }
         }
 
+      
+
+
         /// <summary>
         /// 玩家发送SteamID事件(目前还没遇到过伪造)
         /// Prefix PlayerControllerB.SendNewPlayerValuesServerRpc
         /// </summary>
-        [HarmonyPatch(typeof(PlayerControllerB), "__rpc_handler_2504133785")]
+        [HarmonyPatch("__rpc_handler_2504133785")]
         [HarmonyPrefix]
-        [HarmonyWrapSafe]
         public static bool SendNewPlayerValuesServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (!StartOfRound.Instance.localPlayerController.IsHost)//非主机

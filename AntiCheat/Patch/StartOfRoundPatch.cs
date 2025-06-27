@@ -66,7 +66,7 @@ namespace AntiCheat
                             sb.Append(item.playerUsername + "||");
                         }
                     }
-                    AntiCheat.Core.AntiCheat.LogInfo($"Wait For:{sb.ToString()}");
+                    AntiCheat.Core.AntiCheat.LogInfo($"Wait For:{sb.ToString()}||now:{playersRevived}||connectedPlayers:{GameNetworkManager.Instance.connectedPlayers}");
                 }
             }
             return true;
