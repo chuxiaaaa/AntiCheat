@@ -290,6 +290,7 @@ namespace AntiCheat.Core
             Harmony.CreateAndPatchAll(typeof(PlayerControllerBPatch));
             Harmony.CreateAndPatchAll(typeof(DoorLockPatch));
             Harmony.CreateAndPatchAll(typeof(LandminePatch));
+            Harmony.CreateAndPatchAll(typeof(RoundManagerPatch));
         }
 
         private void Watcher_Changed(object sender, FileSystemEventArgs e)

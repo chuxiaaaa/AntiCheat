@@ -34,13 +34,10 @@ namespace AntiCheat
             }
             SyncAlreadyHeldObjectsServerRpcCalls.Add(steamId);
             return true;
-
         }
 
         public static List<ulong> CallPlayerHasRevivedServerRpc { get; set; } = new List<ulong>();
         public static List<ulong> CallPlayerLoadedServerRpc { get; set; } = new List<ulong>();
-
-
 
 
         [HarmonyPrefix]

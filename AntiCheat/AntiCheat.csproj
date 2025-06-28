@@ -116,6 +116,7 @@
     <Compile Include="Patch\LandminePatch.cs" />
     <Compile Include="Patch\Patches.cs" />
     <Compile Include="Patch\PlayerControllerBPatch.cs" />
+    <Compile Include="Patch\RoundManagerPatch.cs" />
     <Compile Include="Patch\ShipTeleporterPatch.cs" />
     <Compile Include="Patch\TerminalPatch.cs" />
     <Compile Include="Patch\TurretPatch.cs" />
