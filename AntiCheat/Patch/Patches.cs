@@ -1281,13 +1281,13 @@ namespace AntiCheat
                     //}
                     var obj = p.ItemSlots[p.currentItemSlot];
                     string playerUsername = p.playerUsername;
-                    if(force == 6)
+                    if(force == 6 && playerWhoHit == -1)
                     {
                         LogInfo($"force = 6||enemyPostion:{e.transform.position}");
                         explosions = explosions.Where(x => x.CreateDateTime.AddSeconds(10) > DateTime.Now).ToList();
                         foreach (var item in explosions)
                         {
-                            if (item.CalledClient.Contains(p.playerClientId))
+                            if (item.CalledClient.Contains(p.playerSteamId))
                             {
                                 continue;
                             }
@@ -1295,7 +1295,7 @@ namespace AntiCheat
                             LogInfo($"ExplosionPostion:{item.ExplosionPostion}||Distance:{ExplosionDistance}");
                             if (ExplosionDistance < 5f)
                             {
-                                item.CalledClient.Add(p.playerClientId);
+                                item.CalledClient.Add(p.playerSteamId);
                                 return true;
                             }
                         }
