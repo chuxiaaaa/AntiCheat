@@ -50,7 +50,7 @@ namespace AntiCheat
             if (Patches.Check(rpcParams, out var p))
             {
                 int playersRevived = (int)AccessTools.DeclaredField(typeof(StartOfRound), "playersRevived").GetValue(StartOfRound.Instance);
-                AntiCheat.Core.AntiCheat.LogInfo(p, $"StartOfRound.PlayerHasRevivedServerRpc", $"playersRevived:{playersRevived}");
+                AntiCheat.Core.AntiCheat.LogInfo(p, $"StartOfRound.PlayerHasRevivedServerRpc", $"playersRevived:{(playersRevived + 1)}", $"connectedPlayers:{GameNetworkManager.Instance.connectedPlayers}");
                 CallPlayerHasRevivedServerRpc.Add(p.playerSteamId);
                 if (playersRevived < GameNetworkManager.Instance.connectedPlayers && playersRevived + 5 > GameNetworkManager.Instance.connectedPlayers)
                 {
@@ -66,7 +66,14 @@ namespace AntiCheat
                             sb.Append(item.playerUsername + "||");
                         }
                     }
-                    AntiCheat.Core.AntiCheat.LogInfo($"Wait For:{sb.ToString()}||now:{playersRevived}||connectedPlayers:{GameNetworkManager.Instance.connectedPlayers}");
+                    if (!string.IsNullOrWhiteSpace(sb.ToString()))
+                    {
+                        AntiCheat.Core.AntiCheat.LogInfo($"PlayerHasRevivedServerRpc Wait For:{sb.ToString()}");
+                    }
+                    else
+                    {
+                        AntiCheat.Core.AntiCheat.LogInfo($"PlayerHasRevivedServerRpc All Players Loaded");
+                    }
                 }
             }
             return true;
@@ -91,7 +98,7 @@ namespace AntiCheat
             if (Patches.Check(rpcParams, out var p))
             {
                 int fullyLoadedPlayers = StartOfRound.Instance.fullyLoadedPlayers.Count;
-                AntiCheat.Core.AntiCheat.LogInfo(p, $"StartOfRound.PlayerLoadedServerRpc", $"fullyLoadedPlayers:{fullyLoadedPlayers}");
+                AntiCheat.Core.AntiCheat.LogInfo(p, $"StartOfRound.PlayerLoadedServerRpc", $"fullyLoadedPlayers:{(fullyLoadedPlayers + 1)}", $"connectedPlayers:{GameNetworkManager.Instance.connectedPlayers}");
                 CallPlayerLoadedServerRpc.Add(p.playerSteamId);
                 if (fullyLoadedPlayers < GameNetworkManager.Instance.connectedPlayers && fullyLoadedPlayers + 5 > GameNetworkManager.Instance.connectedPlayers)
                 {
@@ -107,7 +114,14 @@ namespace AntiCheat
                             sb.Append(item.playerUsername + "||");
                         }
                     }
-                    AntiCheat.Core.AntiCheat.LogInfo($"PlayerLoadedServerRpc Wait For:{sb.ToString()}");
+                    if (!string.IsNullOrWhiteSpace(sb.ToString()))
+                    {
+                        AntiCheat.Core.AntiCheat.LogInfo($"PlayerLoadedServerRpc Wait For:{sb.ToString()}");
+                    }
+                    else
+                    {
+                        AntiCheat.Core.AntiCheat.LogInfo($"PlayerLoadedServerRpc All Players Loaded");
+                    }
                 }
             }
             return true;
