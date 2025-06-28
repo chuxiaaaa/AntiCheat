@@ -1284,13 +1284,20 @@ namespace AntiCheat
                     if(force == 6)
                     {
                         LogInfo($"force = 6||enemyPostion:{e.transform.position}");
+                        explosions = explosions.Where(x => x.CreateDateTime.AddSeconds(10) > DateTime.Now).ToList();
                         foreach (var item in explosions)
                         {
                             if (item.CalledClient.Contains(p.playerClientId))
                             {
                                 continue;
                             }
-                            LogInfo($"ExplosionPostion:{item.ExplosionPostion}||Distance:{Vector3.Distance(item.ExplosionPostion, e.transform.position)}");
+                            float ExplosionDistance = Vector3.Distance(item.ExplosionPostion, e.transform.position);
+                            LogInfo($"ExplosionPostion:{item.ExplosionPostion}||Distance:{ExplosionDistance}");
+                            if (ExplosionDistance < 5f)
+                            {
+                                item.CalledClient.Add(p.playerClientId);
+                                return true;
+                            }
                         }
                     }
                     else if (force != 1 && obj != null && (isShovel(obj) || isKnife(obj)))
