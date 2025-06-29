@@ -1324,7 +1324,7 @@ namespace AntiCheat
                         {
                             for (int i = 0; i < p.ItemSlots.Length; i++)
                             {
-                                LogInfo($"i:{i}|itemName:{p.ItemSlots[i]?.itemProperties?.itemName}");
+                                LogInfo($"p:{p.playerUsername}|i:{i}|itemName:{p.ItemSlots[i]?.itemProperties?.itemName}");
                             }
                             LogInfo($"currentItemSlot:{p.currentItemSlot}");
                             LogInfo($"currentlyHeldObjectServer:{p.currentlyHeldObjectServer?.itemProperties?.itemName}");
@@ -1687,7 +1687,7 @@ namespace AntiCheat
                                     ban = true;
                                 }
                             }
-                            if (Core.AntiCheat.GrabObject_MoreSlot.Value)
+                            if (Core.AntiCheat.GrabObject_MoreSlot.Value && !ban)
                             {
                                 ban = all;
                             }
@@ -2066,9 +2066,13 @@ namespace AntiCheat
         public static bool CheckRemoteTerminal(PlayerControllerB p,string call)
         {
             LogInfo(p, "CheckRemoteTerminal", $"Call:{call}");
-            if (whoUseTerminal == null && lastWhoUseTerminal == p.playerSteamId)
+            if (whoUseTerminal == null && lastWhoUseTerminal.Value == p.playerSteamId)
             {
-                return true;
+                LogInfo($"whoUseTerminal == null && lastWhoUseTerminal == {p.playerSteamId}||Time:{Math.Round((DateTime.Now - lastWhoUseTerminal.Key).TotalSeconds, 2)}s");
+                if (lastWhoUseTerminal.Key.AddSeconds(10) > DateTime.Now)
+                {
+                    return true;
+                }
             }
             if (whoUseTerminal != p)
             {
@@ -2103,12 +2107,7 @@ namespace AntiCheat
                 reader.Seek(0);
                 if (playerNum == (int)p.playerClientId)
                 {
-                    if (whoUseTerminal != null)
-                    {
-                        LogInfo($"player {whoUseTerminal.playerUsername} lastUseTerminal");
-                        lastWhoUseTerminal = whoUseTerminal.playerSteamId;
-                    }
-                    
+             
                     var terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
                     var terminalTrigger = (InteractTrigger)AccessTools.DeclaredField(typeof(Terminal), "terminalTrigger").GetValue(terminal);
                     if (terminalTrigger.GetInstanceID() == ((InteractTrigger)target).GetInstanceID())
@@ -2145,6 +2144,7 @@ namespace AntiCheat
                     var terminalTrigger = (InteractTrigger)AccessTools.DeclaredField(typeof(Terminal), "terminalTrigger").GetValue(terminal);
                     if (terminalTrigger.GetInstanceID() == ((InteractTrigger)target).GetInstanceID())
                     {
+                        lastWhoUseTerminal = new KeyValuePair<DateTime, ulong>(DateTime.Now, p.playerSteamId);
                         whoUseTerminal = null;
                         LogInfo($"player {p.playerUsername} stop use Terminal");
                     }
@@ -2503,7 +2503,7 @@ namespace AntiCheat
             return;
         }
 
-        public static ulong lastWhoUseTerminal { get; set; }
+        public static KeyValuePair<DateTime,ulong> lastWhoUseTerminal { get; set; }
         public static PlayerControllerB whoUseTerminal { get; set; }
 
         /// <summary>
