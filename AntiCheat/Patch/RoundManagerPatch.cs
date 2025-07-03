@@ -44,10 +44,11 @@ namespace AntiCheat.Patch
                     {
                         AntiCheat.Core.AntiCheat.LogInfo($"FinishedGeneratingLevelServerRpc Wait For:{sb.ToString()}");
                     }
-                    else
-                    {
-                        AntiCheat.Core.AntiCheat.LogInfo($"FinishedGeneratingLevelServerRpc All Players Loaded");
-                    }
+                }
+                if (playersFinishedGeneratingFloorCount == GameNetworkManager.Instance.connectedPlayers)
+                {
+                    AntiCheat.Core.AntiCheat.LogInfo($"FinishedGeneratingLevelServerRpc All Players Loaded");
+                    CallFinishedGeneratingLevelServerRpc = new List<ulong>();
                 }
             }
             return true;

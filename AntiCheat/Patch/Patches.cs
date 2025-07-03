@@ -55,7 +55,6 @@ namespace AntiCheat
         //public static Dictionary<int, Dictionary<ulong, List<DateTime>>> chcs = new Dictionary<int, Dictionary<ulong, List<DateTime>>>();
 
         public static List<long> mjs { get; set; } = new List<long>();
-        public static List<long> lhs { get; set; } = new List<long>();
 
         public static List<int> landMines { get; set; }
 
@@ -220,7 +219,7 @@ namespace AntiCheat
                     else if (obj == null || (!isGun(obj) && !isShovel(obj) && !isKnife(obj)))
                     {
                         LogInfo($"currentItemSlot:{p.currentItemSlot}");
-                        LogInfo($"currentlyHeldObjectServer:{p.currentlyHeldObjectServer}");
+                        LogInfo($"currentlyHeldObjectServer:{p.currentlyHeldObjectServer?.itemProperties?.itemName}");
                         LogInfo($"obj:{obj}");
                         if (!jcs.Contains(p.playerSteamId))
                         {
@@ -1426,7 +1425,8 @@ namespace AntiCheat
             {
                 if (Core.AntiCheat.Gift.Value)
                 {
-                    if (lhs.Contains(target.GetInstanceID()))
+                    var item = (GiftBoxItem)target;
+                    if ((bool)AccessTools.DeclaredField(typeof(GiftBoxItem), "hasUsedGift").GetValue(item))
                     {
                         ShowMessage(locale.Msg_GetString("Gift", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername }
@@ -1439,9 +1439,7 @@ namespace AntiCheat
                     }
                     else
                     {
-                        lhs.Add(target.GetInstanceID());
-                        var item = (GiftBoxItem)target;
-                        item.OnNetworkDespawn();
+                        StartOfRound.Instance.localPlayerController.StartCoroutine(DestroySelf(item.gameObject));
                     }
                 }
             }
@@ -1450,6 +1448,12 @@ namespace AntiCheat
                 return false;
             }
             return true;
+        }
+
+        public static IEnumerator DestroySelf(GameObject self)
+        {
+            yield return new WaitForSeconds(5f);
+            UnityEngine.Object.Destroy(self);
         }
 
         /// <summary>
@@ -2291,8 +2295,8 @@ namespace AntiCheat
                 if (ammo != null && ammo.NetworkObject != null && ammo.NetworkObject.IsSpawned)
                 {
                     ShowMessage(locale.Msg_GetString("InfiniteAmmo", new Dictionary<string, string>() {
-                    { "{player}",p.playerUsername }
-                }));
+                        { "{player}",p.playerUsername }
+                    }));
                     if (Core.AntiCheat.InfiniteAmmo2.Value)
                     {
                         KickPlayer(p);
@@ -2450,7 +2454,6 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool StartGameServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            StartOfRoundPatch.CallPlayerHasRevivedServerRpc = new List<ulong>();
             StartMatchLever startMatchLever = UnityEngine.Object.FindObjectOfType<StartMatchLever>();
             if (Check(rpcParams, out var p))
             {

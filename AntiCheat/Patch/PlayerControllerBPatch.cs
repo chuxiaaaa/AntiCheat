@@ -1,4 +1,6 @@
-﻿using GameNetcodeStuff;
+﻿using AntiCheat.Core;
+
+using GameNetcodeStuff;
 
 using HarmonyLib;
 
@@ -11,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Runtime.Remoting.Messaging;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,8 +46,19 @@ namespace AntiCheat.Patch
             }
         }
 
-      
-
+        /// <summary>
+        /// DropAllHeldItemsServerRpc
+        /// </summary>
+        /// <returns></returns>
+        [HarmonyPatch("__rpc_handler_760742013")]
+        [HarmonyPrefix]
+        public static bool DropAllHeldItemsServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (!Patches.Check(rpcParams, out var p))
+                return p != null;
+            AntiCheat.Core.AntiCheat.LogInfo(p, $"PlayerControllerB.DropAllHeldItemsServerRpc");
+            return true;
+        }
 
         /// <summary>
         /// 玩家发送SteamID事件(目前还没遇到过伪造)

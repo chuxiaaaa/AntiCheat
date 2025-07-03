@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 
 using Unity.Netcode;
 
+using UnityEngine;
+
 namespace AntiCheat
 {
     [HarmonyPatch(typeof(StartOfRound))]
@@ -25,7 +27,7 @@ namespace AntiCheat
         /// </summary>
         [HarmonyPrefix]
         [HarmonyPatch("__rpc_handler_682230258")]
-        public static bool __rpc_handler_682230258(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        public static bool SyncAlreadyHeldObjectsServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             var steamId = Patches.ConnectionIdtoSteamIdMap[Patches.ClientIdToTransportId(rpcParams.Server.Receive.SenderClientId)];
             if (SyncAlreadyHeldObjectsServerRpcCalls.Contains(steamId))
@@ -67,10 +69,12 @@ namespace AntiCheat
                     {
                         AntiCheat.Core.AntiCheat.LogInfo($"PlayerHasRevivedServerRpc Wait For:{sb.ToString()}");
                     }
-                    else
-                    {
-                        AntiCheat.Core.AntiCheat.LogInfo($"PlayerHasRevivedServerRpc All Players Loaded");
-                    }
+                    
+                }
+                if ((playersRevived + 1) == GameNetworkManager.Instance.connectedPlayers)
+                {
+                    AntiCheat.Core.AntiCheat.LogInfo($"PlayerHasRevivedServerRpc All Players Loaded");
+                    CallPlayerHasRevivedServerRpc = new List<ulong>();
                 }
             }
             return true;
@@ -80,7 +84,6 @@ namespace AntiCheat
         [HarmonyPatch("StartGame")]
         public static void StartGame()
         {
-            CallPlayerLoadedServerRpc = new List<ulong>();
             if (File.Exists("AntiCheat.log"))
             {
                 File.Delete("AntiCheat.log");
@@ -115,10 +118,11 @@ namespace AntiCheat
                     {
                         AntiCheat.Core.AntiCheat.LogInfo($"PlayerLoadedServerRpc Wait For:{sb.ToString()}");
                     }
-                    else
-                    {
-                        AntiCheat.Core.AntiCheat.LogInfo($"PlayerLoadedServerRpc All Players Loaded");
-                    }
+                }
+                if ((fullyLoadedPlayers + 1) == GameNetworkManager.Instance.connectedPlayers)
+                {
+                    CallPlayerLoadedServerRpc = new List<ulong>();
+                    AntiCheat.Core.AntiCheat.LogInfo($"PlayerLoadedServerRpc All Players Loaded");
                 }
             }
             return true;

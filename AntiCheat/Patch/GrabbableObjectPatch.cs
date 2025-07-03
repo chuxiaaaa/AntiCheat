@@ -46,6 +46,13 @@ namespace AntiCheat
             return true;
         }
 
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(GiftBoxItem), "ItemActivate")]
+        public static void ItemActivate(GiftBoxItem __instance)
+        {
+            AntiCheat.Core.AntiCheat.LogInfo($"GiftBoxItem.ItemActivate");
+            UnityEngine.Object.Destroy(__instance.gameObject);
+        }
 
         /// <summary>
         /// EquipItemServerRpc
