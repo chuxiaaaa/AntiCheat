@@ -225,7 +225,7 @@ namespace AntiCheat
                         {
                             if (Core.AntiCheat.Shovel3.Value && (damageAmount == 10 || damageAmount == 20 || damageAmount == 30 || damageAmount == 100))
                             {
-                                LogInfo(locale.Msg_GetString("Shovel3", new Dictionary<string, string>() {
+                                ShowMessage(locale.Msg_GetString("Shovel3", new Dictionary<string, string>() {
                                     { "{player}",p.playerUsername },
                                     { "{player2}",p2.playerUsername },
                                     { "{damageAmount}",damageAmount.ToString() }
@@ -429,7 +429,7 @@ namespace AntiCheat
                     }
                     if (levelID > StartOfRound.Instance.levels.Length)
                     {
-                        LogInfo($"{p.playerUsername}|ChangeLevelServerRpc|levelID > StartOfRound.Instance.levels.Length");
+                        LogInfo(p, "StartOfRound.ChangeLevelServerRpc", "levelID > StartOfRound.Instance.levels.Length");
                         return false;
                     }
                     var terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
@@ -448,7 +448,7 @@ namespace AntiCheat
                             }));
                             return false;
                         }
-                        LogInfo($"{p.playerUsername}|ChangeLevelServerRpc|levelID:{levelID}|itemCost:{itemCost}");
+                        LogInfo(p, "StartOfRound.ChangeLevelServerRpc", $"levelID:{levelID}",$"itemCost:{itemCost}");
                         if (itemCost != 0)
                         {
                             int newValue = Money - itemCost;
@@ -728,7 +728,7 @@ namespace AntiCheat
                 ByteUnpacker.ReadValueBitPacked(reader, out int damageNumber);
                 ByteUnpacker.ReadValueBitPacked(reader, out int newHealthAmount);
                 reader.Seek(0);
-                LogInfo($"{p.playerUsername} call PlayerControllerB.DamagePlayerServerRpc|damageNumber:{damageNumber}|newHealthAmount:{newHealthAmount}");
+                LogInfo(p, "PlayerControllerB.DamagePlayerServerRpc", $"damageNumber:{damageNumber}", $"newHealthAmount:{newHealthAmount}");
                 var p2 = (PlayerControllerB)target;
                 if (p2 == p)
                 {
@@ -794,7 +794,7 @@ namespace AntiCheat
                         }
                         else
                         {
-                            LogInfo($"{p.playerUsername} call ({e.enemyType.enemyName})EnemyAI.SwitchToBehaviourServerRpc||currentBehaviourStateIndex:{j.currentBehaviourStateIndex}|stateIndex:{stateIndex}|popUpTimer:{j.popUpTimer}");
+                            LogInfo(p,$"({e.enemyType.enemyName})EnemyAI.SwitchToBehaviourServerRpc", $"stateIndex:{stateIndex}",$"popUpTimer:{j.popUpTimer}");
                             //ShowMessage(locale.Msg_GetString("Enemy_SwitchToBehaviour", new Dictionary<string, string>() {
                             //    { "{player}", p.playerUsername }
                             //}));
@@ -933,10 +933,10 @@ namespace AntiCheat
                 var e = (EnemyAI)target;
                 ByteUnpacker.ReadValueBitPacked(reader, out int playerId);
                 reader.Seek(0);
-                LogInfo($"{p.playerUsername} call {e.GetType()}.KillPlayerServerRpc|playerId:{playerId}");
+                LogInfo(p, $"{e.GetType()}.KillPlayerServerRpc", $"playerId:{playerId}");
                 if (playerId <= StartOfRound.Instance.allPlayerScripts.Length && StartOfRound.Instance.allPlayerScripts[playerId] != p)
                 {
-                    LogInfo($"{p.playerUsername} call {e.GetType()}.KillPlayerServerRpc|playerUsername:{StartOfRound.Instance.allPlayerScripts[playerId].playerUsername}");
+                    LogInfo(p, $"{e.GetType()}.KillPlayerServerRpc", $"playerUsername:{StartOfRound.Instance.allPlayerScripts[playerId].playerUsername}");
                     return false;
                 }
                 if (!rpcs.ContainsKey("KillPlayer"))
@@ -945,7 +945,7 @@ namespace AntiCheat
                 }
                 if (p.AllowPlayerDeath())
                 {
-                    LogInfo($"StartCoroutine:CheckRpc|{p.playerUsername}|{call}");
+                    LogInfo(p, "StartCoroutine:CheckRpc(KillPlayer)", $"call:{call}");
                     rpcs["KillPlayer"].Add(p.playerClientId);
                     p.StartCoroutine(CheckRpc(p, "KillPlayer"));
                 }
@@ -1343,7 +1343,7 @@ namespace AntiCheat
                             }
                             else
                             {
-                                LogInfo(locale.Msg_GetString("Shovel6", new Dictionary<string, string>() {
+                                ShowMessage(locale.Msg_GetString("Shovel6", new Dictionary<string, string>() {
                                     { "{player}",p.playerUsername },
                                     { "{enemyName}",e.enemyType.enemyName },
                                     { "{damageAmount}",force.ToString() }
@@ -1955,7 +1955,7 @@ namespace AntiCheat
                     reader.ReadValueSafe(out chatMessage, false);
                 }
                 reader.Seek(0);
-                LogInfo($"HUDManager.AddTextMessageServerRpc|{p.playerUsername}|{chatMessage}");
+                LogInfo(p, "HUDManager.AddTextMessageServerRpc", $"chatMessage:{chatMessage}");
                 if (chatMessage.Contains("<color") || chatMessage.Contains("<size"))
                 {
                     if (Core.AntiCheat.Map.Value)
@@ -2023,7 +2023,7 @@ namespace AntiCheat
                         }
                         ByteUnpacker.ReadValueBitPacked(reader, out int playerId);
                         reader.Seek(0);
-                        LogInfo($"{p.playerUsername} call HUDManager.AddPlayerChatMessageServerRpc|chatMessage:{chatMessage}");
+                        LogInfo(p, $"HUDManager.AddPlayerChatMessageServerRpc", $"chatMessage:{chatMessage}");
                         if (playerId == -1)
                         {
                             return false;
@@ -2247,7 +2247,8 @@ namespace AntiCheat
                 {
                     reader.ReadValueSafe(out bool start, default);
                     reader.Seek(0);
-                    LogInfo($"{p.playerUsername} call ShotgunItem.ReloadGunEffectsServerRpc({start})");
+                    var shot = (ShotgunItem)target;
+                    LogInfo(p, $"ShotgunItem.ReloadGunEffectsServerRpc", $"start:{start}", $"shellsLoaded:{shot.shellsLoaded}");
                     if (!ReloadGun.ContainsKey(p.playerSteamId))
                     {
                         ReloadGun.Add(p.playerSteamId, start);
@@ -2258,7 +2259,6 @@ namespace AntiCheat
                     }
                     if (start)
                     {
-                        var shot = (ShotgunItem)target;
                         var ammo = shot.playerHeldBy.ItemSlots.FirstOrDefault(x => x is GunAmmo ga && ga.ammoType == shot.gunCompatibleAmmoID);
                         if (ammo != default)
                         {
@@ -2328,7 +2328,7 @@ namespace AntiCheat
                     }
                     else
                     {
-                        LogInfo($"{p.playerUsername} call ShotgunItem.ShootGunServerRpc|ShotgunItem.shellsLoaded:{s.shellsLoaded}");
+                        LogInfo(p, "ShotgunItem.ShootGunServerRpc", $"shellsLoaded:{s.shellsLoaded}");
                         if (s.shellsLoaded == 0)
                         {
                             ShowMessage(locale.Msg_GetString("InfiniteAmmo", new Dictionary<string, string>() {
@@ -2917,6 +2917,7 @@ namespace AntiCheat
                 {
                     var lm = (Landmine)target;
                     int id = lm.GetInstanceID();
+                    LogInfo(p, "Landmine.ExplodeMineServerRpc", $"LandMineId:{id}");
                     if (!landMines.Contains(id) && !lm.hasExploded)
                     {
                         ShowMessage(locale.Msg_GetString("Landmine", new Dictionary<string, string>() {
