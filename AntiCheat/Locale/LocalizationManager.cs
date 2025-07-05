@@ -42,9 +42,12 @@ namespace AntiCheat.Locale
                 Core.AntiCheat.LogInfo($"no current language set, automatic language selection based on current region");
                 Core.AntiCheat.LogInfo($"CurrentCulture:{lang},use language -> {cfg.current_language}");
             }
+            current_language = cfg.current_language;
             json = File.ReadAllText($"{Path.Combine(langPath, cfg.current_language)}.json");
             locale = JsonConvert.DeserializeObject<Locale>(json);
         }
+
+        public string current_language { get; set; }
         public Locale locale { get; set; }
 
         public string Prefix() => locale.Prefix;

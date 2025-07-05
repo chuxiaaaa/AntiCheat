@@ -1,4 +1,5 @@
-﻿using AntiCheat.Patch;
+﻿using AntiCheat.Core;
+using AntiCheat.Patch;
 
 using BepInEx;
 using BepInEx.Configuration;
@@ -11,6 +12,7 @@ using Netcode.Transports.Facepunch;
 
 using Steamworks;
 using Steamworks.Data;
+using Steamworks.ServerList;
 
 using System;
 using System.CodeDom;
@@ -55,6 +57,9 @@ namespace AntiCheat
         //public static Dictionary<int, Dictionary<ulong, List<DateTime>>> chcs = new Dictionary<int, Dictionary<ulong, List<DateTime>>>();
 
         public static List<long> mjs { get; set; } = new List<long>();
+
+        public const string InvalidCharactersRegex = @"[^\u4e00-\u9fa50-9a-zA-Z\s]";
+
 
         public static List<int> landMines { get; set; }
 
@@ -1161,10 +1166,10 @@ namespace AntiCheat
         {
             if (StartOfRound.Instance.localPlayerController.IsHost)
             {
-                if (bypassHit.Any(x => x.EnemyInstanceId == __instance.GetInstanceID()))
-                {
-                    return;
-                }
+                //if (bypassHit.Any(x => x.EnemyInstanceId == __instance.GetInstanceID()))
+                //{
+                //    return;
+                //}
                 //if (playerWhoHit == null)
                 //{
                 bypassHit.Add(new HitData()
@@ -1990,16 +1995,16 @@ namespace AntiCheat
             return true;
         }
 
-        /// <summary>
-        /// HUDManager.AddPlayerChatMessageClientRpc
-        /// </summary>
-        [HarmonyPatch(typeof(HUDManager), "__rpc_handler_168728662")]
-        [HarmonyPrefix]
-        [HarmonyWrapSafe]
-        public static bool __rpc_handler_168728662(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        {
-            return __rpc_handler_2930587515(target, reader, rpcParams);
-        }
+        ///// <summary>
+        ///// HUDManager.AddPlayerChatMessageClientRpc
+        ///// </summary>
+        //[HarmonyPatch(typeof(HUDManager), "__rpc_handler_168728662")]
+        //[HarmonyPrefix]
+        //[HarmonyWrapSafe]
+        //public static bool __rpc_handler_168728662(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        //{
+        //    return __rpc_handler_2930587515(target, reader, rpcParams);
+        //}
 
         /// <summary>
         /// HUDManager.AddPlayerChatMessageServerRpc
@@ -2044,7 +2049,19 @@ namespace AntiCheat
                             }
                             else
                             {
-                               return  CooldownManager.CheckCooldown("Chat", p);
+                                bool ret = CooldownManager.CheckCooldown("Chat", p);
+                                if (ret && locale.current_language == "zh_CN")
+                                {
+                                    if (Regex.IsMatch(chatMessage, InvalidCharactersRegex))
+                                    {
+                                        AccessTools.DeclaredMethod(typeof(HUDManager), "AddPlayerChatMessageClientRpc").Invoke(HUDManager.Instance,new object[] {
+                                            Regex.Replace(chatMessage, InvalidCharactersRegex, "?", RegexOptions.None, TimeSpan.FromSeconds(1f)),
+                                            playerId
+                                        });
+                                        return false;
+                                    }
+                                }
+                                return ret;
                             }
                         }
                         else
@@ -2718,9 +2735,14 @@ namespace AntiCheat
             return true;
         }
 
+
         public static void ShowMessageHostOnly(string msg)
         {
             LogInfo($"ShowMessageHostOnly -> {msg}");
+            if (locale.current_language == "zh_CN")
+            {
+                msg = Regex.Replace(msg, InvalidCharactersRegex, "?", RegexOptions.None, TimeSpan.FromSeconds(1f));
+            }
             AccessTools.DeclaredMethod(typeof(HUDManager), "AddChatMessage").Invoke(HUDManager.Instance, new object[] { msg, "", -1, false });
         }
 
