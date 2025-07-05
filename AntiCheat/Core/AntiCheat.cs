@@ -310,7 +310,7 @@ namespace AntiCheat.Core
 
         public static void LogInfo(PlayerControllerB p,string rpc, params object[] param)
         {
-            LogInfo($"{p.playerUsername} call {rpc};{string.Join("|", param)}");
+            LogInfo($"{p.playerUsername}({p.playerClientId}) call {rpc};{string.Join("|", param)}");
         }
 
         private void LoadConfig()
@@ -345,7 +345,7 @@ namespace AntiCheat.Core
             ItemCooldown2 = Config.Bind("ItemCooldownSetting", "Kick", false, localizationManager.Cfg_GetString("Kick"));
 
             ShipLight = Config.Bind("ShipLightSettings", "Enable", true, localizationManager.Cfg_GetString("ShipLight"));
-            ShipLight_Cooldown = Config.Bind("ShipLightSettings", "Cooldown", 1000, localizationManager.Cfg_GetString("Cooldown"));
+            ShipLight_Cooldown = Config.Bind("ShipLightSettings", "Cooldown", 2000, localizationManager.Cfg_GetString("Cooldown"));
 
             TerminalNoise = Config.Bind("TerminalNoiseSettings", "Enable", true, localizationManager.Cfg_GetString("ShipTerminal"));
             TerminalNoise_Cooldown = Config.Bind("TerminalNoiseSettings", "Cooldown", 1000, localizationManager.Cfg_GetString("Cooldown"));

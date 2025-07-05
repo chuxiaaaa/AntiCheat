@@ -2827,6 +2827,7 @@ namespace AntiCheat
                     if (objectRef.TryGet(out var networkObject, null))
                     {
                         PlaceableShipObject placingObject = networkObject.gameObject.GetComponentInChildren<PlaceableShipObject>();
+                        LogInfo(p, "ShipBuildModeManager.PlaceShipObjectServerRpc",$"object:{placingObject.parentObject.name}",$"newPosition:{newPosition.ToString()}", $"newRotation:{newRotation}");
                         //LogInfo($"newRotation:{newRotation}|mainMesh:{placingObject.mainMesh.transform.eulerAngles.ToString()}");
                         if (Math.Floor(newRotation.x) != Math.Floor(placingObject.mainMesh.transform.eulerAngles.x) || Math.Floor(newRotation.z) != Math.Floor(placingObject.mainMesh.transform.eulerAngles.z))
                         {
@@ -2846,8 +2847,8 @@ namespace AntiCheat
                         if (!StartOfRound.Instance.shipInnerRoomBounds.bounds.Contains(newPosition))
                         {
                             ShowMessage(locale.Msg_GetString("ShipBuild", new Dictionary<string, string>() {
-                                    { "{player}",p.playerUsername },
-                                    { "{position}",newPosition.ToString() }
+                                { "{player}",p.playerUsername },
+                                { "{position}",newPosition.ToString() }
                             }), locale.Msg_GetString("ShipBuild"));
                             if (Core.AntiCheat.ShipBuild2.Value)
                             {
