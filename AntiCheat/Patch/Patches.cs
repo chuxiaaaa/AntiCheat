@@ -220,6 +220,14 @@ namespace AntiCheat
                     }
                     else if (obj == null || (!isGun(obj) && !isShovel(obj) && !isKnife(obj)))
                     {
+                        if (ClingTime.ContainsKey(p.playerSteamId) && ClingTime[p.playerSteamId].AddSeconds(5) > DateTime.Now)
+                        {
+                            return true;
+                        }
+                        for (int i = 0; i < p.ItemSlots.Length; i++)
+                        {
+                            LogInfo($"p:{p.playerUsername}|i:{i}|itemName:{p.ItemSlots[i]?.itemProperties?.itemName}");
+                        }
                         LogInfo($"currentItemSlot:{p.currentItemSlot}");
                         LogInfo($"currentlyHeldObjectServer:{p.currentlyHeldObjectServer?.itemProperties?.itemName}");
                         LogInfo($"obj:{obj}");
@@ -903,16 +911,33 @@ namespace AntiCheat
         //    return KillPlayerServerRpc(target, reader, rpcParams, "BlobAI.SlimeKillPlayerEffectServerRpc");
         //}
 
-        ///// <summary>
-        ///// Prefix CentipedeAI.ClingToPlayerServerRpc
-        ///// </summary>
-        //[HarmonyPatch(typeof(CentipedeAI), "__rpc_handler_2791977891")]
-        //[HarmonyPrefix]
-        //[HarmonyWrapSafe]
-        //public static bool __rpc_handler_2791977891(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        //{
-        //    return KillPlayerServerRpc(target, reader, rpcParams, "CentipedeAI.ClingToPlayerServerRpc");
-        //}
+        public static Dictionary<ulong, DateTime> ClingTime { get; set; }
+
+        /// <summary>
+        /// Prefix CentipedeAI.ClingToPlayerServerRpc
+        /// </summary>
+        [HarmonyPatch(typeof(CentipedeAI), "__rpc_handler_2791977891")]
+        [HarmonyPrefix]
+        [HarmonyWrapSafe]
+        public static bool __rpc_handler_2791977891(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (!Patches.Check(rpcParams, out var p))
+                return p != null;
+            ByteUnpacker.ReadValueBitPacked(reader, out int num);
+            if ((int)p.playerClientId == num)
+            {
+                if (ClingTime.ContainsKey(p.playerSteamId))
+                {
+                    ClingTime[p.playerSteamId] = DateTime.Now;
+                }
+                else
+                {
+                    ClingTime.Add(p.playerSteamId, DateTime.Now);
+                }
+            }
+            return true;
+            //return KillPlayerServerRpc(target, reader, rpcParams, "CentipedeAI.ClingToPlayerServerRpc");
+        }
 
         /// <summary>
         /// Prefix RadMechAI.GrabPlayerServerRpc
@@ -1332,6 +1357,10 @@ namespace AntiCheat
                     }
                     else if (!p.isPlayerDead && obj == null)
                     {
+                        if (ClingTime.ContainsKey(p.playerSteamId) && ClingTime[p.playerSteamId].AddSeconds(5) > DateTime.Now)
+                        {
+                            return true;
+                        }
                         if (!jcs.Contains(p.playerSteamId))
                         {
                             for (int i = 0; i < p.ItemSlots.Length; i++)
@@ -2060,13 +2089,13 @@ namespace AntiCheat
                                 bool ret = CooldownManager.CheckCooldown("Chat", p);
                                 if (ret && locale.current_language == "zh_CN")
                                 {
-                                
+
                                     AccessTools.DeclaredMethod(typeof(HUDManager), "AddPlayerChatMessageClientRpc").Invoke(HUDManager.Instance, new object[] {
                                         ReplaceInvalidCharacters(chatMessage),
                                         playerId
                                     });
                                     return false;
-                                    
+
                                 }
                                 return ret;
                             }
@@ -2765,7 +2794,7 @@ namespace AntiCheat
             StringBuilder sb = new StringBuilder();
             foreach (var item in msg)
             {
-                if (TMP_Font.Any(x=> x.HasCharacter((int)item)))
+                if (TMP_Font.Any(x => x.HasCharacter((int)item)))
                 {
                     sb.Append(item);
                 }
