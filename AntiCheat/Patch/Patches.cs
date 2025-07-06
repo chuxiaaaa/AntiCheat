@@ -45,7 +45,7 @@ namespace AntiCheat
 {
     public static class Patches
     {
-        public static Locale.LocalizationManager locale { get => Core.AntiCheat.localizationManager; } 
+        public static Locale.LocalizationManager locale { get => Core.AntiCheat.localizationManager; }
 
         public static List<ulong> jcs = new List<ulong>();
 
@@ -57,9 +57,6 @@ namespace AntiCheat
         //public static Dictionary<int, Dictionary<ulong, List<DateTime>>> chcs = new Dictionary<int, Dictionary<ulong, List<DateTime>>>();
 
         public static List<long> mjs { get; set; } = new List<long>();
-
-        public const string InvalidCharactersRegex = @"[^\u4e00-\u9fa50-9a-zA-Z\s]";
-
 
         public static List<int> landMines { get; set; }
 
@@ -131,7 +128,7 @@ namespace AntiCheat
                 reader.ReadValueSafe(out Vector3 hitDirection);
                 ByteUnpacker.ReadValueBitPacked(reader, out int playerWhoHit);
                 reader.Seek(0);
-                LogInfo(p, "PlayerControllerB.DamagePlayerFromOtherClientServerRpc",$"damageAmount:{damageAmount}",$"hitDirection:{hitDirection}",$"playerWhoHit:{playerWhoHit}");
+                LogInfo(p, "PlayerControllerB.DamagePlayerFromOtherClientServerRpc", $"damageAmount:{damageAmount}", $"hitDirection:{hitDirection}", $"playerWhoHit:{playerWhoHit}");
                 var p2 = (PlayerControllerB)target;
                 return CheckDamage(p2, p, ref damageAmount);
             }
@@ -371,8 +368,21 @@ namespace AntiCheat
                 return;
             }
             LogInfo($"SetMoney:{Money}");
-            Money = UnityEngine.Object.FindObjectOfType<Terminal>().groupCredits;
+            Money = terminal.groupCredits;
         }
+        public static Terminal terminal
+        {
+            get
+            {
+                if (_terminal == null)
+                {
+                    _terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
+                }
+                return _terminal;
+            }
+        }
+
+        private static Terminal _terminal { get; set; }
 
         /// <summary>
         /// 游戏结束时重置所有变量
@@ -437,7 +447,6 @@ namespace AntiCheat
                         LogInfo(p, "StartOfRound.ChangeLevelServerRpc", "levelID > StartOfRound.Instance.levels.Length");
                         return false;
                     }
-                    var terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
                     var Route = terminal.terminalNodes.allKeywords.FirstOrDefault(x => x.word.ToLower() == "route");//Route
                     var level = StartOfRound.Instance.levels[levelID].PlanetName.Split(' ')[0];
                     var compatibleNoun = Route.compatibleNouns.Where(x => x.result.name == level + "route");
@@ -453,7 +462,7 @@ namespace AntiCheat
                             }));
                             return false;
                         }
-                        LogInfo(p, "StartOfRound.ChangeLevelServerRpc", $"levelID:{levelID}",$"itemCost:{itemCost}");
+                        LogInfo(p, "StartOfRound.ChangeLevelServerRpc", $"levelID:{levelID}", $"itemCost:{itemCost}");
                         if (itemCost != 0)
                         {
                             int newValue = Money - itemCost;
@@ -574,7 +583,7 @@ namespace AntiCheat
             return true;
         }
 
-       
+
 
         [HarmonyPatch(typeof(TimeOfDay), "SyncNewProfitQuotaClientRpc")]
         [HarmonyPrefix]
@@ -585,7 +594,6 @@ namespace AntiCheat
             {
                 return true;
             }
-            Terminal terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
             Money = Mathf.Clamp(terminal.groupCredits + overtimeBonus, terminal.groupCredits, 100000000);
             return true;
         }
@@ -799,7 +807,7 @@ namespace AntiCheat
                         }
                         else
                         {
-                            LogInfo(p,$"({e.enemyType.enemyName})EnemyAI.SwitchToBehaviourServerRpc", $"stateIndex:{stateIndex}",$"popUpTimer:{j.popUpTimer}");
+                            LogInfo(p, $"({e.enemyType.enemyName})EnemyAI.SwitchToBehaviourServerRpc", $"stateIndex:{stateIndex}", $"popUpTimer:{j.popUpTimer}");
                             //ShowMessage(locale.Msg_GetString("Enemy_SwitchToBehaviour", new Dictionary<string, string>() {
                             //    { "{player}", p.playerUsername }
                             //}));
@@ -931,7 +939,7 @@ namespace AntiCheat
 
 
 
-        private static bool KillPlayerServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams,string call)
+        private static bool KillPlayerServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams, string call)
         {
             if (Check(rpcParams, out var p))
             {
@@ -1285,7 +1293,7 @@ namespace AntiCheat
                     //}
                     var obj = p.ItemSlots[p.currentItemSlot];
                     string playerUsername = p.playerUsername;
-                    if(force == 6 && playerWhoHit == -1)
+                    if (force == 6 && playerWhoHit == -1)
                     {
                         LogInfo($"force = 6||enemyPostion:{e.transform.position}");
                         explosions = explosions.Where(x => x.CreateDateTime.AddSeconds(10) > DateTime.Now).ToList();
@@ -1691,7 +1699,7 @@ namespace AntiCheat
                                 {
                                     ban = true;
                                 }
-                                else if(hastwohand && jetpack)
+                                else if (hastwohand && jetpack)
                                 {
                                     ban = true;
                                 }
@@ -1941,7 +1949,7 @@ namespace AntiCheat
 
 
 
-      
+
 
         /// <summary>
         /// Prefix HUDManager.AddTextMessageServerRpc
@@ -2052,14 +2060,13 @@ namespace AntiCheat
                                 bool ret = CooldownManager.CheckCooldown("Chat", p);
                                 if (ret && locale.current_language == "zh_CN")
                                 {
-                                    if (Regex.IsMatch(chatMessage, InvalidCharactersRegex))
-                                    {
-                                        AccessTools.DeclaredMethod(typeof(HUDManager), "AddPlayerChatMessageClientRpc").Invoke(HUDManager.Instance,new object[] {
-                                            Regex.Replace(chatMessage, InvalidCharactersRegex, "?", RegexOptions.None, TimeSpan.FromSeconds(1f)),
-                                            playerId
-                                        });
-                                        return false;
-                                    }
+                                
+                                    AccessTools.DeclaredMethod(typeof(HUDManager), "AddPlayerChatMessageClientRpc").Invoke(HUDManager.Instance, new object[] {
+                                        ReplaceInvalidCharacters(chatMessage),
+                                        playerId
+                                    });
+                                    return false;
+                                    
                                 }
                                 return ret;
                             }
@@ -2084,7 +2091,7 @@ namespace AntiCheat
         }
 
 
-        public static bool CheckRemoteTerminal(PlayerControllerB p,string call)
+        public static bool CheckRemoteTerminal(PlayerControllerB p, string call)
         {
             LogInfo(p, "CheckRemoteTerminal", $"Call:{call}");
             if (whoUseTerminal == null && lastWhoUseTerminal.Value == p.playerSteamId)
@@ -2128,8 +2135,7 @@ namespace AntiCheat
                 reader.Seek(0);
                 if (playerNum == (int)p.playerClientId)
                 {
-             
-                    var terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
+
                     var terminalTrigger = (InteractTrigger)AccessTools.DeclaredField(typeof(Terminal), "terminalTrigger").GetValue(terminal);
                     if (terminalTrigger.GetInstanceID() == ((InteractTrigger)target).GetInstanceID())
                     {
@@ -2161,7 +2167,6 @@ namespace AntiCheat
                         LogInfo($"player {p.playerUsername} death can't use terminal");
                         return false;
                     }
-                    var terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
                     var terminalTrigger = (InteractTrigger)AccessTools.DeclaredField(typeof(Terminal), "terminalTrigger").GetValue(terminal);
                     if (terminalTrigger.GetInstanceID() == ((InteractTrigger)target).GetInstanceID())
                     {
@@ -2461,7 +2466,7 @@ namespace AntiCheat
             return true;
         }
 
-   
+
         /// <summary>
         /// 玩家拉杆事件
         /// Prefix StartOfRound.__rpc_handler_1089447320
@@ -2523,7 +2528,7 @@ namespace AntiCheat
             return;
         }
 
-        public static KeyValuePair<DateTime,ulong> lastWhoUseTerminal { get; set; }
+        public static KeyValuePair<DateTime, ulong> lastWhoUseTerminal { get; set; }
         public static PlayerControllerB whoUseTerminal { get; set; }
 
         /// <summary>
@@ -2574,7 +2579,7 @@ namespace AntiCheat
         [HarmonyWrapSafe]
         public static bool __rpc_handler_2406447821(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-          
+
             if (Check(rpcParams, out var p))
             {
                 if (UnityEngine.Object.FindAnyObjectByType<StartMatchLever>().leverHasBeenPulled && !StartOfRound.Instance.shipHasLanded)
@@ -2647,7 +2652,7 @@ namespace AntiCheat
         }
 
 
-   
+
 
         /// <summary>
         /// UI更新事件(房主死亡时加上一票起飞提示)
@@ -2702,6 +2707,7 @@ namespace AntiCheat
                     }
                 }
             }
+
         }
 
         /// <summary>
@@ -2735,15 +2741,47 @@ namespace AntiCheat
             return true;
         }
 
+        private static List<TMP_FontAsset> TMP_Font { get; set; }
+
+
+        public static string ReplaceInvalidCharacters(string msg)
+        {
+            if (TMP_Font == null)
+            {
+                TMP_Font = new List<TMP_FontAsset>();
+                var CurrentCreditsNum = GameObject.Find("/Environment/HangarShip/Terminal/Canvas/MainContainer/CurrentCreditsNum");
+                var TMP_SubMeshUI = CurrentCreditsNum.GetComponentInChildren<TMP_SubMeshUI>();
+                if (TMP_SubMeshUI == null)
+                {
+                    return msg;
+                }
+                TMP_Font.Add(CurrentCreditsNum.GetComponent<TMPro.TextMeshProUGUI>().font);
+                TMP_Font.Add(TMP_SubMeshUI.fontAsset);
+            }
+            else if (!TMP_Font.Any())
+            {
+                return msg;
+            }
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in msg)
+            {
+                if (TMP_Font.Any(x=> x.HasCharacter((int)item)))
+                {
+                    sb.Append(item);
+                }
+                else
+                {
+                    sb.Append("□");
+                }
+            }
+            msg = sb.ToString();
+            return msg;
+        }
 
         public static void ShowMessageHostOnly(string msg)
         {
             LogInfo($"ShowMessageHostOnly -> {msg}");
-            if (locale.current_language == "zh_CN")
-            {
-                msg = Regex.Replace(msg, InvalidCharactersRegex, "?", RegexOptions.None, TimeSpan.FromSeconds(1f));
-            }
-            AccessTools.DeclaredMethod(typeof(HUDManager), "AddChatMessage").Invoke(HUDManager.Instance, new object[] { msg, "", -1, false });
+            AccessTools.DeclaredMethod(typeof(HUDManager), "AddChatMessage").Invoke(HUDManager.Instance, new object[] { ReplaceInvalidCharacters(msg), "", -1, false });
         }
 
         /// <summary>
@@ -2849,7 +2887,7 @@ namespace AntiCheat
                     if (objectRef.TryGet(out var networkObject, null))
                     {
                         PlaceableShipObject placingObject = networkObject.gameObject.GetComponentInChildren<PlaceableShipObject>();
-                        LogInfo(p, "ShipBuildModeManager.PlaceShipObjectServerRpc",$"object:{placingObject.parentObject.name}",$"newPosition:{newPosition.ToString()}", $"newRotation:{newRotation}");
+                        LogInfo(p, "ShipBuildModeManager.PlaceShipObjectServerRpc", $"object:{placingObject.parentObject.name}", $"newPosition:{newPosition.ToString()}", $"newRotation:{newRotation}");
                         //LogInfo($"newRotation:{newRotation}|mainMesh:{placingObject.mainMesh.transform.eulerAngles.ToString()}");
                         if (Math.Floor(newRotation.x) != Math.Floor(placingObject.mainMesh.transform.eulerAngles.x) || Math.Floor(newRotation.z) != Math.Floor(placingObject.mainMesh.transform.eulerAngles.z))
                         {

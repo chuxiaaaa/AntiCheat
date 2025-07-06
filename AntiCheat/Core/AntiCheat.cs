@@ -304,13 +304,13 @@ namespace AntiCheat.Core
             if (Log == null || Log.Value)
             {
                 ManualLog.LogInfo($"{info}");
-                File.AppendAllLines("AntiCheat.log", new string[] { $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff")} {info}" });
+                File.AppendAllLines("AntiCheat.log", new string[] { $"[{DateTime.Now.ToString("MM-dd HH:mm:ss:ff")}] {info}" });
             }
         }
 
         public static void LogInfo(PlayerControllerB p,string rpc, params object[] param)
         {
-            LogInfo($"{p.playerUsername}({p.playerClientId}) call {rpc};{string.Join("|", param)}");
+            LogInfo($"{p.playerUsername}({p.playerClientId}) -> {rpc};{string.Join("|", param)}");
         }
 
         private void LoadConfig()
