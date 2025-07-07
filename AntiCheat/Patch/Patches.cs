@@ -642,6 +642,9 @@ namespace AntiCheat
             {
                 return true;
             }
+            ShowMessageHostOnly("测试消息1：初夏0 加入房间");
+            ShowMessageHostOnly("测试消息2：我叫王晓婷 加入房间");
+            ShowMessageHostOnly("测试消息3：이름 뭘로하지? 加入房间");
             Money = __instance.groupCredits;
             LogInfo($"SetMoney:{Money}");
             //if (__instance.terminalNodes != null && __instance.terminalNodes.allKeywords != null)
@@ -2091,7 +2094,7 @@ namespace AntiCheat
                                 {
 
                                     AccessTools.DeclaredMethod(typeof(HUDManager), "AddPlayerChatMessageClientRpc").Invoke(HUDManager.Instance, new object[] {
-                                        ReplaceInvalidCharacters(chatMessage),
+                                        chatMessage,
                                         playerId
                                     });
                                     return false;
@@ -2659,6 +2662,7 @@ namespace AntiCheat
             {
                 if (Core.AntiCheat.DespawnItem.Value)
                 {
+                    LogInfo(p, "PlayerControllerB.DespawnHeldObjectServerRpc", $"itemName:{p.currentlyHeldObjectServer.itemProperties.itemName}");
                     if (p.currentlyHeldObjectServer != null && !(p.currentlyHeldObjectServer is GiftBoxItem) && !(p.currentlyHeldObjectServer is KeyItem))
                     {
                         ShowMessage(locale.Msg_GetString("DespawnItem", new Dictionary<string, string>() {
@@ -2770,47 +2774,11 @@ namespace AntiCheat
             return true;
         }
 
-        private static List<TMP_FontAsset> TMP_Font { get; set; }
-
-
-        public static string ReplaceInvalidCharacters(string msg)
-        {
-            if (TMP_Font == null)
-            {
-                TMP_Font = new List<TMP_FontAsset>();
-                var CurrentCreditsNum = GameObject.Find("/Environment/HangarShip/Terminal/Canvas/MainContainer/CurrentCreditsNum");
-                var TMP_SubMeshUI = CurrentCreditsNum.GetComponentInChildren<TMP_SubMeshUI>();
-                if (TMP_SubMeshUI == null)
-                {
-                    return msg;
-                }
-                TMP_Font.Add(CurrentCreditsNum.GetComponent<TMPro.TextMeshProUGUI>().font);
-                TMP_Font.Add(TMP_SubMeshUI.fontAsset);
-            }
-            else if (!TMP_Font.Any())
-            {
-                return msg;
-            }
-            StringBuilder sb = new StringBuilder();
-            foreach (var item in msg)
-            {
-                if (TMP_Font.Any(x => x.HasCharacter((int)item)))
-                {
-                    sb.Append(item);
-                }
-                else
-                {
-                    sb.Append("□");
-                }
-            }
-            msg = sb.ToString();
-            return msg;
-        }
 
         public static void ShowMessageHostOnly(string msg)
         {
             LogInfo($"ShowMessageHostOnly -> {msg}");
-            AccessTools.DeclaredMethod(typeof(HUDManager), "AddChatMessage").Invoke(HUDManager.Instance, new object[] { ReplaceInvalidCharacters(msg), "", -1, false });
+            AccessTools.DeclaredMethod(typeof(HUDManager), "AddChatMessage").Invoke(HUDManager.Instance, new object[] { msg, "", -1, false });
         }
 
         /// <summary>
