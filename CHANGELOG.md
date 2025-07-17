@@ -1,12 +1,13 @@
 # Beta(公开测试版)
 
-## 重大更新，0.8.5
-
 ## Version 0.8.5
+
+### 中文(重大更新)
 
 * [+] 新增 AntiCheat.log 文件，你在游戏根目录可以找到它，反作弊所有的日志都会输出到该文件
 * [+] 零元购新增对卡车的检测
 * [+] 现在投票完成后，可以立即拉杆起飞（无论有没有满足起飞条件）
+* [+] 现在允许被抱脸虫报之后，短时间内空手造成伤害
 * [/] 新增部分RPC日志，优化大部分日志内容
 * [/] 修复重开房间未重置变量
 * [/] 修复因操作过快导致被检测远程终端
@@ -14,9 +15,22 @@
 * [/] 修复主机看不见客机使用部分物品
 * [-] 移除Hit RPC检测
 
+### English(Major Update)
 
+* [+] Added AntiCheat.log file – you can find it in the game's root directory, where all anti-cheat logs will be recorded.
+* [+] Zero-dollar purchases now include truck detection.
+* [+] After voting is completed, the aircraft can now take off immediately by pulling the lever (regardless of whether the usual conditions are met).
+* [+] Players can now deal melee damage briefly after being attacked by a facehugger.
+* [/] Added partial RPC logs and optimized most log content.
+* [/] Fixed an issue where room variables were not reset when reopening a room.
+* [/] Fixed false remote terminal detection caused by excessively fast inputs.
+* [/] Fixed abnormal damage detection caused by explosions.
+* [/] Fixed an issue where the host couldn't see clients using certain items.
+* [-] Removed Hit RPC detection.
 
 ## Version 0.8.4
+
+### 中文
 
 * [+] 加入传送器冷却限制
 * [+] 远程终端现在会检测关闭机枪

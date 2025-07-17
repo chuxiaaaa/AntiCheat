@@ -51,7 +51,8 @@
     "Item": {
         "Knife": "Kitchen Knife",
         "Shotgun": "Shotgun",
-        "Shovel": "Shovel"
+        "Shovel": "Shovel",
+        "Cruiser": "Cruiser"
     },
     "log": {
         "load": "AntiCheat mod is loaded!",
@@ -85,6 +86,7 @@
         "Map": "{player} was detected to have a mini-map mod!",
         "Mask": "{player} was detected to have spawned Masked enemies abnormally!",
         "Nameless": "{player} was detected to have an anomalous or invalid name!",
+        "KickReasonNameLess": "The host is unable to load your in-game name.\r\nPlease ensure your in-game name is not pure numbers/characters.",
         "PlayerCarryWeight": "{player} was detected abnormal carry weight!",
         "PlayerCarryWeight_Recovery": "Carry weights have been forcibly restored!",
         "RemoteTerminal": "{player} was detected using the terminal remotely!",
@@ -103,16 +105,18 @@
         "snc_player": "[{player}] New creature data sent to terminal! ({enemy})",
         "Turret": "{player} was detected causing a turret to go berserk! (distance: {Distance})",
         "Turret2": "{player} was detected causing a turret to go berserk without a weapon!",
+        "Kick_Nameless": "Your Steam name did not load correctly.",
         "vote": "You are the host, your vote can force the autopilot.",
         "vote_player": "{player} voted for the ship to leave early. ({now}/{max})",
         "wlc_player": "<color=green><color=yellow>[{player}]</color> joined the ship.</color>"
     },
-    "MessageFormat": "<color=red>{Prefix} {msg}</color>",
     "OperationLog": {
         "BuyItem": "[ActionLog] {player} purchased {items}",
         "BuyShipUnlockable": "[ActionLog] {player} purchased {unlockable}",
         "ChangeLevel": "[ActionLog] {player} routed to moon {planet}",
+        "GrabLungProp": "[ActionLog] {player} pull the apparatus",
         "JoinLobby": "{player} is joining..."
     },
+    "MessageFormat": "<color=red>{Prefix} {msg}</color>",
     "Prefix": "[AC]"
 }

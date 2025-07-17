@@ -1588,7 +1588,8 @@ namespace AntiCheat
                     return false;
                 }
                 ulong steamId = ConnectionIdtoSteamIdMap[clientId];
-                Friend f = new Friend(steamId);
+                Friend f = new Steamworks.Friend(steamId);
+                Steamworks.SteamFriends.RequestUserInformation((Steamworks.SteamId)76561198830282195, true);
                 NetworkManager.Singleton.DisconnectClient(rpcParams.Server.Receive.SenderClientId);
                 StartOfRound.Instance.KickedClientIds.Add(steamId);
                 LogInfo($"检测玩家 {f.Name}({steamId}) 使用AntiKick功能，已自动踢出！");

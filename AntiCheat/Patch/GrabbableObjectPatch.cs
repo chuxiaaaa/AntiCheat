@@ -38,7 +38,7 @@ namespace AntiCheat
                             bool canUse = CooldownManager.CheckCooldown("ShipLight", p);
                             if (!canUse)
                             {
-                                ((ShipLights)target).SetShipLightsClientRpc(true);
+                                UnityEngine.Object.FindFirstObjectByType<ShipLights>().SetShipLightsClientRpc(true);
                             }
                             return canUse;
                         }
@@ -60,30 +60,24 @@ namespace AntiCheat
         [HarmonyPatch(typeof(GiftBoxItem), "ItemActivate")]
         public static void ItemActivate(GiftBoxItem __instance)
         {
-            UnityEngine.Object.Destroy(__instance.gameObject);
+            if (StartOfRound.Instance.IsHost)
+            {
+                UnityEngine.Object.Destroy(__instance.gameObject);
+            }
         }
 
-
-        //[HarmonyPrefix]
-        //[HarmonyPatch("DiscardItemOnClient")]
-        //public static bool DiscardItemOnClient(GrabbableObject __instance)
-        //{
-        //    AntiCheat.Core.AntiCheat.LogInfo($"itemName:{__instance.itemProperties.itemName}|charge:{__instance.insertedBattery.charge}|syncDiscardFunction:{__instance.itemProperties.syncDiscardFunction}");
-        //    return true;
-        //}
-
-        //[HarmonyPrefix]
-        //[HarmonyPatch("__rpc_handler_4280509730")]
-        //public static bool SyncBatteryServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        //{
-        //    if (!Patches.Check(rpcParams, out var p) && false)
-        //        return p != null;
-        //    ByteUnpacker.ReadValueBitPacked(reader, out int num);
-        //    reader.Seek(0);
-        //    GrabbableObject target1 = ((GrabbableObject)target);
-        //    AntiCheat.Core.AntiCheat.LogInfo(p, $"({target1.itemProperties.itemName})GrabbableObject.SyncBatteryServerRpc", $"num:{num}",$"charge:{target1.insertedBattery.charge}");
-        //    return true;
-        //}
+        [HarmonyPrefix]
+        [HarmonyPatch("__rpc_handler_3484508350")]
+        public static bool SyncBatteryServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (!Patches.Check(rpcParams, out var p) && false)
+                return p != null;
+            ByteUnpacker.ReadValueBitPacked(reader, out int num);
+            reader.Seek(0);
+            GrabbableObject target1 = ((GrabbableObject)target);
+            AntiCheat.Core.AntiCheat.LogInfo(p, $"({target1.itemProperties.itemName})GrabbableObject.SyncBatteryServerRpc", $"num:{num}");
+            return true;
+        }
 
         /// <summary>
         /// EquipItemServerRpc
