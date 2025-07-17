@@ -27,17 +27,27 @@ namespace AntiCheat
         {
             if (Patches.Check(rpcParams, out var p))
             {
-                var grab = (GrabbableObject)target;
-                if (grab is RemoteProp)
+                if (target != null)
                 {
-                    bool canUse = CooldownManager.CheckCooldown("ShipLight", p);
-                    if (!canUse)
+                    var grab = (GrabbableObject)target;
+                    AntiCheat.Core.AntiCheat.LogInfo(p, $"({grab.itemProperties.itemName})GrabbableObject.ActivateItemServerRpc");
+                    if (grab != null)
                     {
-                        ((ShipLights)target).SetShipLightsClientRpc(true);
+                        if (grab is RemoteProp)
+                        {
+                            bool canUse = CooldownManager.CheckCooldown("ShipLight", p);
+                            if (!canUse)
+                            {
+                                ((ShipLights)target).SetShipLightsClientRpc(true);
+                            }
+                            return canUse;
+                        }
                     }
-                    return canUse;
                 }
-                return false;
+                else
+                {
+                    return false;
+                }
             }
             else if (p == null)
             {
@@ -52,6 +62,28 @@ namespace AntiCheat
         {
             UnityEngine.Object.Destroy(__instance.gameObject);
         }
+
+
+        //[HarmonyPrefix]
+        //[HarmonyPatch("DiscardItemOnClient")]
+        //public static bool DiscardItemOnClient(GrabbableObject __instance)
+        //{
+        //    AntiCheat.Core.AntiCheat.LogInfo($"itemName:{__instance.itemProperties.itemName}|charge:{__instance.insertedBattery.charge}|syncDiscardFunction:{__instance.itemProperties.syncDiscardFunction}");
+        //    return true;
+        //}
+
+        //[HarmonyPrefix]
+        //[HarmonyPatch("__rpc_handler_4280509730")]
+        //public static bool SyncBatteryServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        //{
+        //    if (!Patches.Check(rpcParams, out var p) && false)
+        //        return p != null;
+        //    ByteUnpacker.ReadValueBitPacked(reader, out int num);
+        //    reader.Seek(0);
+        //    GrabbableObject target1 = ((GrabbableObject)target);
+        //    AntiCheat.Core.AntiCheat.LogInfo(p, $"({target1.itemProperties.itemName})GrabbableObject.SyncBatteryServerRpc", $"num:{num}",$"charge:{target1.insertedBattery.charge}");
+        //    return true;
+        //}
 
         /// <summary>
         /// EquipItemServerRpc

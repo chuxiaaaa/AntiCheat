@@ -141,4 +141,11 @@
     <None Include="Lang\zh_CN.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>call "$(ProjectDir)Build\Build.bat" "$(ProjectDir)" "$(TargetDir)" "$(SolutionDir)" "$(ProjectName)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

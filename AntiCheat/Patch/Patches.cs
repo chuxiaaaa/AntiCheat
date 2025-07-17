@@ -34,6 +34,7 @@ using System.Threading.Tasks;
 
 using TMPro;
 
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Netcode;
 
 using UnityEngine;
@@ -128,7 +129,7 @@ namespace AntiCheat
                 reader.ReadValueSafe(out Vector3 hitDirection);
                 ByteUnpacker.ReadValueBitPacked(reader, out int playerWhoHit);
                 reader.Seek(0);
-                LogInfo(p, "PlayerControllerB.DamagePlayerFromOtherClientServerRpc", $"damageAmount:{damageAmount}", $"hitDirection:{hitDirection}", $"playerWhoHit:{playerWhoHit}");
+                LogInfo(p, "PlayerControllerB.DamagePlayerFromOtherClientServerRpc", $"damageAmount:{damageAmount}", $"hitDirection:{hitDirection}", $"playerWhoHit:{PlayerClientIdConvertName(playerWhoHit)}({playerWhoHit})");
                 var p2 = (PlayerControllerB)target;
                 return CheckDamage(p2, p, ref damageAmount);
             }
@@ -642,9 +643,6 @@ namespace AntiCheat
             {
                 return true;
             }
-            ShowMessageHostOnly("测试消息1：初夏0 加入房间");
-            ShowMessageHostOnly("测试消息2：我叫王晓婷 加入房间");
-            ShowMessageHostOnly("测试消息3：이름 뭘로하지? 加入房间");
             Money = __instance.groupCredits;
             LogInfo($"SetMoney:{Money}");
             //if (__instance.terminalNodes != null && __instance.terminalNodes.allKeywords != null)
@@ -914,7 +912,7 @@ namespace AntiCheat
         //    return KillPlayerServerRpc(target, reader, rpcParams, "BlobAI.SlimeKillPlayerEffectServerRpc");
         //}
 
-        public static Dictionary<ulong, DateTime> ClingTime { get; set; }
+        public static Dictionary<ulong, DateTime> ClingTime { get; set; } = new Dictionary<ulong, DateTime>();
 
         /// <summary>
         /// Prefix CentipedeAI.ClingToPlayerServerRpc
@@ -927,6 +925,8 @@ namespace AntiCheat
             if (!Patches.Check(rpcParams, out var p))
                 return p != null;
             ByteUnpacker.ReadValueBitPacked(reader, out int num);
+            reader.Seek(0);
+            LogInfo(p, "CentipedeAI.ClingToPlayerServerRpc", $"num:{num}");
             if ((int)p.playerClientId == num)
             {
                 if (ClingTime.ContainsKey(p.playerSteamId))
@@ -1030,7 +1030,7 @@ namespace AntiCheat
             if (Check(rpcParams, out var p))
             {
                 var e = (EnemyAI)target;
-                LogInfo(p, $"({e.enemyType.enemyName})EnemyAI.KillEnemyServerRpc");
+                LogInfo(p, $"({e.enemyType.enemyName})EnemyAI.KillEnemyServerRpc", $"EnemyId:{e.GetInstanceID()}", $"HP:{e.enemyHP}");
                 if (Core.AntiCheat.KillEnemy.Value)
                 {
                     foreach (var item in bypassKill)
@@ -1259,6 +1259,15 @@ namespace AntiCheat
         //    LogInfo($"force:{force}|playerWhoHit:{playerWhoHit?.playerUsername}|playHitSFX:{playHitSFX}|hitID:{hitID}");
         //}
 
+        public static string PlayerClientIdConvertName(int index)
+        {
+            if (index < 0 || index >= StartOfRound.Instance.allPlayerScripts.Length)
+            {
+                return "Unknown";
+            }
+            return StartOfRound.Instance.allPlayerScripts[index].playerUsername;
+        }
+
         [HarmonyPatch(typeof(EnemyAI), "__rpc_handler_3538577804")]
         [HarmonyPrefix]
         [HarmonyWrapSafe]
@@ -1275,7 +1284,8 @@ namespace AntiCheat
                 ByteUnpacker.ReadValueBitPacked(reader, out int playerWhoHit);
                 reader.ReadValueSafe(out bool playHitSFX, default);
                 reader.Seek(0);
-                LogInfo(p, $"({((EnemyAI)target).enemyType.enemyName})EnemyAI.HitEnemyServerRpc", $"force:{force}", $"playerWhoHit:{playerWhoHit}");
+                var e = (EnemyAI)target;
+                LogInfo(p, $"({e.enemyType.enemyName})EnemyAI.HitEnemyServerRpc", $"EnemyId:{e.GetInstanceID()}", $"HP:{e.enemyHP}", $"force:{force}", $"playerWhoHit:{PlayerClientIdConvertName(playerWhoHit)}({playerWhoHit})");
                 if (p.isHostPlayerObject)
                 {
                     return true;
@@ -1299,7 +1309,6 @@ namespace AntiCheat
                         return true;
                     }
                 }
-                var e = (EnemyAI)target;
                 //if (e.isEnemyDead)
                 //{
                 //    return true;
@@ -1325,8 +1334,9 @@ namespace AntiCheat
                     {
                         LogInfo($"force = 6||enemyPostion:{e.transform.position}");
                         explosions = explosions.Where(x => x.CreateDateTime.AddSeconds(10) > DateTime.Now).ToList();
-                        foreach (var item in explosions)
+                        for (int i = explosions.Count - 1; i > 0; i--)
                         {
+                            var item = explosions[i];
                             if (item.CalledClient.Contains(p.playerSteamId))
                             {
                                 continue;
@@ -1720,6 +1730,7 @@ namespace AntiCheat
                         var g = networkObject.GetComponentInChildren<GrabbableObject>();
                         if (g != null)
                         {
+                            LogInfo(p, "PlayerControllerB.GrabObjectServerRpc", $"itemName:{g.itemProperties.itemName}", $"Distance:{Vector3.Distance(p.transform.position, g.transform.position)}");
                             bool ban = false;
                             if (Core.AntiCheat.GrabObject_TwoHand.Value)
                             {
@@ -1920,12 +1931,10 @@ namespace AntiCheat
             }
             if (ConnectionIdtoSteamIdMap.ContainsKey(connection.Id))
             {
-                LogInfo($"1921:ConnectionIdtoSteamIdMap[{connection.Id}] = {identity.SteamId.Value}");
                 ConnectionIdtoSteamIdMap[connection.Id] = identity.SteamId.Value;
             }
             else
             {
-                LogInfo($"1926:ConnectionIdtoSteamIdMap[{connection.Id}] = {identity.SteamId.Value}");
                 ConnectionIdtoSteamIdMap.Add(connection.Id, identity.SteamId.Value);
             }
             if (Core.AntiCheat.OperationLog.Value)
