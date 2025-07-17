@@ -846,16 +846,16 @@ namespace AntiCheat
             return KillPlayerServerRpc(target, reader, rpcParams, "JesterAI.KillPlayerServerRpc");
         }
 
-        /// <summary>
-        /// Prefix MouthDogAI.KillPlayerServerRpc
-        /// </summary>
-        [HarmonyPatch(typeof(MouthDogAI), "__rpc_handler_998670557")]
-        [HarmonyPrefix]
-        [HarmonyWrapSafe]
-        public static bool __rpc_handler_998670557(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        {
-            return KillPlayerServerRpc(target, reader, rpcParams, "MouthDogAI.KillPlayerServerRpc");
-        }
+        ///// <summary>
+        ///// Prefix MouthDogAI.KillPlayerServerRpc
+        ///// </summary>
+        //[HarmonyPatch(typeof(MouthDogAI), "__rpc_handler_998670557")]
+        //[HarmonyPrefix]
+        //[HarmonyWrapSafe]
+        //public static bool __rpc_handler_998670557(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        //{
+        //    return KillPlayerServerRpc(target, reader, rpcParams, "MouthDogAI.KillPlayerServerRpc");
+        //}
 
         ///// <summary>
         ///// Prefix ForestGiantAI.GrabPlayerServerRpc
