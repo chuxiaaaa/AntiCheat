@@ -32,7 +32,7 @@
     "Prefix": "로비 이름 앞에 괄호로 텍스트를 넣습니다. 비활성화하려면 비워 두세요.",
     "RemoteTerminal": "플레이어가 원격으로 터미널을 사용할 때 이를 감지합니다.",
     "RPCReport_Delay": "RPC 보고 감지 지연, 플레이어가 이 시간 후에 RPC를 보고하는지 감지합니다 (밀리초 단위)",
-    "RPCReport_Hit": "히트 RPC 보고 감지, 플레이어가 공격을 받고 피를 흘리지 않는 경우 감지됩니다 (무적 감지)",
+    "RPCReport_Hit": "hit RPC 보고 감지, 플레이어가 공격을 받고 피를 흘리지 않는 경우 감지됩니다 (무적 감지)",
     "RPCReport_KillPlayer": "KillPlayer RPC 보고 감지, 플레이어가 죽었지만 죽음을 보고하지 않는 경우 감지됩니다 (무적 감지)",
     "ShipBuild": "비정상적으로 배치되는걸 감지합니다.",
     "ShipConfig2": "이 플레이어 수에 도달하면 클라이언트가 레버를 당길 수 있습니다. (StartGameOnlyHost가 false로 설정되어야 합니다.)",
@@ -49,7 +49,7 @@
     "Turret": "플레이어가 터렛을 폭주시키려고 할 때 이를 감지합니다."
   },
   "Item": {
-    "Knife": "부엌칼",
+    "Knife": "칼",
     "Shotgun": "샷건",
     "Shovel": "삽",
     "Cruiser": "크루저"
@@ -69,8 +69,8 @@
     "Enemy_SwitchToBehaviour": "{player}가 몬스터의 상태를 변경하려고 시도하는 것이 감지되었습니다!",
     "FreeBuy_Item": "{player}가 무료로 아이템을 구매하는 것이 감지되었습니다!",
     "FreeBuy_Level": "{player}가 유료 달로 무료로 이동하려고 시도하는 것이 감지되었습니다!",
-    "FreeBuy_SetMoney": "{player}가 함선의 크레딧을 수정하는 것이 감지되었습니다! ({Money})!",
-    "FreeBuy_unlockable": "{player} was detected buying a ship unlockable for free",
+    "FreeBuy_SetMoney": "{player}가 함선의 돈을 수정하는 것이 감지되었습니다! ({Money})!",
+    "FreeBuy_unlockable": "{player}가 부적절한 방법으로 물건을 구매했습니다",
     "game_start": "<color=green>이 로비에서 Anti-Cheat (v{ver})가 활성화되었습니다</color>",
     "Gift": "{player}가 선물 상자를 비정상적으로 작동시키는 것이 감지되었습니다!",
     "GrabObject": "{player}가 너무 멀리서 아이템을 집는 것이 감지되었습니다! (플레이어 좌표: {player_position}|아이템 좌표: {object_position})",
@@ -105,9 +105,9 @@
     "snc_player": "<color=yellow>[{player}] <color=green>터미널에 새로운 생물 데이터를 보냈습니다! </color></color>",
     "Turret": "{player}가 터렛을 폭주시키는 것이 감지되었습니다! (거리: {Distance})",
     "Turret2": "{player}가 무기 없이 터렛을 폭주시키는 것이 감지되었습니다!",
-    "vote": "당신은 호스트입니다, 당신의 투표는 자동 조종을 강제할 수 있습니다.",
+    "vote": "당신은 호스트입니다, 다른사람의 투표를 강제할수 있습니다.",
     "vote_player": "{player}가 함선의 조기 출발을 위해 투표했습니다. ({now}/{max})",
-    "wlc_player": "<color=green><color=yellow>{player}</color>이 함선에 합류하는 것을 환영합니다</color>"
+    "wlc_player": "<color=green><color=yellow>{player}</color>이/가 입장했습니다</color>"
   },
   "OperationLog": {
     "BuyItem": "[행동 로그] {player}가 {items}를 구매했습니다",
@@ -117,5 +117,5 @@
     "JoinLobby": "{player}가 참가 중..."
   },
   "MessageFormat": "<color=red>{Prefix} {msg}</color>",
-  "Prefix": "[AntiCheat]"
+  "Prefix": "[AC]"
 }
