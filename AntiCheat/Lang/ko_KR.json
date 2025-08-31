@@ -70,7 +70,7 @@
     "FreeBuy_Item": "{player}가 무료로 아이템을 구매하는 것이 감지되었습니다!",
     "FreeBuy_Level": "{player}가 유료 달로 무료로 이동하려고 시도하는 것이 감지되었습니다!",
     "FreeBuy_SetMoney": "{player}가 함선의 돈을 수정하는 것이 감지되었습니다! ({Money})!",
-    "FreeBuy_unlockable": "{player}가 부적절한 방법으로 물건을 구매했습니다",
+    "FreeBuy_unlockable": "{player}가 부적절한 물건을 구매하는것이 감지되었습니다",
     "game_start": "<color=green>이 로비에서 Anti-Cheat (v{ver})가 활성화되었습니다</color>",
     "Gift": "{player}가 선물 상자를 비정상적으로 작동시키는 것이 감지되었습니다!",
     "GrabObject": "{player}가 너무 멀리서 아이템을 집는 것이 감지되었습니다! (플레이어 좌표: {player_position}|아이템 좌표: {object_position})",
