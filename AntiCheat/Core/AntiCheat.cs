@@ -29,7 +29,7 @@ namespace AntiCheat.Core
     [BepInPlugin("AntiCheat", "AntiCheat", Version)]
     public class AntiCheat : BaseUnityPlugin
     {
-        public const string Version = "0.8.6";
+        public const string Version = "0.8.7";
         public static ManualLogSource ManualLog = null;
 
         public enum MessageType
@@ -291,6 +291,7 @@ namespace AntiCheat.Core
             Harmony.CreateAndPatchAll(typeof(DoorLockPatch));
             Harmony.CreateAndPatchAll(typeof(LandminePatch));
             Harmony.CreateAndPatchAll(typeof(RoundManagerPatch));
+            Harmony.CreateAndPatchAll(typeof(TerminalAccessibleObjectPatch));
         }
 
         private void Watcher_Changed(object sender, FileSystemEventArgs e)
@@ -301,10 +302,13 @@ namespace AntiCheat.Core
 
         public static void LogInfo(string info)
         {
-            if (Log == null || Log.Value)
+            if (StartOfRound.Instance == null || StartOfRound.Instance.IsHost)
             {
-                ManualLog.LogInfo($"{info}");
-                File.AppendAllLines("AntiCheat.log", new string[] { $"[{DateTime.Now.ToString("MM-dd HH:mm:ss:ff")}] {info}" });
+                if (Log == null || Log.Value)
+                {
+                    ManualLog.LogInfo($"{info}");
+                    File.AppendAllLines("AntiCheat.log", new string[] { $"[{DateTime.Now.ToString("MM-dd HH:mm:ss:ff")}] {info}" });
+                }
             }
         }
 

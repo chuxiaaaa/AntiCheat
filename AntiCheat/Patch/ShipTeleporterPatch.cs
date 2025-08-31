@@ -25,6 +25,10 @@ namespace AntiCheat.Patch
             {
                 var shiptp = (ShipTeleporter)target;
                 Core.AntiCheat.LogInfo(p, "ShipTeleporter.PressTeleportButtonServerRpc", $"isInverseTeleporter:{shiptp.isInverseTeleporter}");
+                if (shiptp.isInverseTeleporter && !(bool)AccessTools.DeclaredMethod(typeof(ShipTeleporter), "CanUseInverseTeleporter").Invoke(shiptp,null))
+                {
+                    return false;
+                }
                 var cooldownTime = (float)AccessTools.DeclaredField(typeof(ShipTeleporter), "cooldownTime").GetValue(shiptp);
                 if (cooldownTime > 0)
                 {

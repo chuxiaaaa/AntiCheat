@@ -30,5 +30,20 @@ namespace AntiCheat.Patch
             }
             return true;
         }
+
+        [HarmonyPatch("__rpc_handler_2046162111")]
+        [HarmonyPrefix]
+        public static bool OpenDoorAsEnemyServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (Patches.Check(rpcParams, out var p))
+            {
+                AntiCheat.Core.AntiCheat.LogInfo(p, "DoorLock.OpenDoorAsEnemyServerRpc");
+            }
+            else if (p == null)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

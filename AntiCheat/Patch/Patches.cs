@@ -63,6 +63,8 @@ namespace AntiCheat
 
         public static Dictionary<string, List<ulong>> rpcs { get; set; } = new Dictionary<string, List<ulong>>();
 
+        private static Dictionary<ulong, List<(Vector3 pos, float time)>> recentPlayerPositions = new Dictionary<ulong, List<(Vector3 pos, float time)>>();
+
         public static void LogInfo(string info) => Core.AntiCheat.LogInfo(info);
 
         public static void LogInfo(PlayerControllerB p, string rpc, params object[] param) => Core.AntiCheat.LogInfo(p, rpc, param);
@@ -219,45 +221,49 @@ namespace AntiCheat
                         }
                         damageAmount = 0;
                     }
-                    else if (obj == null || (!isGun(obj) && !isShovel(obj) && !isKnife(obj)))
+                    else
                     {
                         if (ClingTime.ContainsKey(p.playerSteamId) && ClingTime[p.playerSteamId].AddSeconds(5) > DateTime.Now)
                         {
                             return true;
                         }
-                        for (int i = 0; i < p.ItemSlots.Length; i++)
+                        if (p.ItemSlots.Any(x => isShovel(x)) && damageAmount == 10)
                         {
-                            LogInfo($"p:{p.playerUsername}|i:{i}|itemName:{p.ItemSlots[i]?.itemProperties?.itemName}");
+                            return true;
                         }
-                        LogInfo($"currentItemSlot:{p.currentItemSlot}");
-                        LogInfo($"currentlyHeldObjectServer:{p.currentlyHeldObjectServer?.itemProperties?.itemName}");
-                        LogInfo($"obj:{obj}");
-                        if (!jcs.Contains(p.playerSteamId))
-                        {
-                            if (Core.AntiCheat.Shovel3.Value && (damageAmount == 10 || damageAmount == 20 || damageAmount == 30 || damageAmount == 100))
-                            {
-                                ShowMessage(locale.Msg_GetString("Shovel3", new Dictionary<string, string>() {
-                                    { "{player}",p.playerUsername },
-                                    { "{player2}",p2.playerUsername },
-                                    { "{damageAmount}",damageAmount.ToString() }
-                                }));
-                                return true;
-                            }
-                            else
-                            {
-                                ShowMessage(locale.Msg_GetString("Shovel3", new Dictionary<string, string>() {
-                                    { "{player}",p.playerUsername },
-                                    { "{player2}",p2.playerUsername },
-                                    { "{damageAmount}",damageAmount.ToString() }
-                                }));
-                                jcs.Add(p.playerSteamId);
-                                if (Core.AntiCheat.Shovel2.Value)
-                                {
-                                    KickPlayer(p);
-                                }
-                                damageAmount = 0;
-                            }
-                        }
+                        //for (int i = 0; i <.Length; i++)
+                        //{
+                        //    LogInfo($"p:{p.playerUsername}|i:{i}|itemName:{p.ItemSlots[i]?.itemProperties?.itemName}");
+                        //}
+                        //LogInfo($"currentItemSlot:{p.currentItemSlot}");
+                        //LogInfo($"currentlyHeldObjectServer:{p.currentlyHeldObjectServer?.itemProperties?.itemName}");
+                        //LogInfo($"obj:{obj}");
+                        //if (!jcs.Contains(p.playerSteamId))
+                        //{
+                        //    if (Core.AntiCheat.Shovel3.Value && (damageAmount == 10 || damageAmount == 20 || damageAmount == 30 || damageAmount == 100))
+                        //    {
+                        //        ShowMessage(locale.Msg_GetString("Shovel3", new Dictionary<string, string>() {
+                        //            { "{player}",p.playerUsername },
+                        //            { "{player2}",p2.playerUsername },
+                        //            { "{damageAmount}",damageAmount.ToString() }
+                        //        }));
+                        //        return true;
+                        //    }
+                        //    else
+                        //    {
+                        //        ShowMessage(locale.Msg_GetString("Shovel3", new Dictionary<string, string>() {
+                        //            { "{player}",p.playerUsername },
+                        //            { "{player2}",p2.playerUsername },
+                        //            { "{damageAmount}",damageAmount.ToString() }
+                        //        }));
+                        //        jcs.Add(p.playerSteamId);
+                        //        if (Core.AntiCheat.Shovel2.Value)
+                        //        {
+                        //            KickPlayer(p);
+                        //        }
+                        //        damageAmount = 0;
+                        //    }
+                        //}
                     }
                     if (damageAmount == 0)
                     {
@@ -645,25 +651,6 @@ namespace AntiCheat
             }
             Money = __instance.groupCredits;
             LogInfo($"SetMoney:{Money}");
-            //if (__instance.terminalNodes != null && __instance.terminalNodes.allKeywords != null)
-            //{
-            //    for (int i = 0; i < __instance.terminalNodes.allKeywords.Length; i++)
-            //    {
-            //        var item = __instance.terminalNodes.allKeywords[i];
-            //        //LogInfo($"allKeywords:{i}|name:{item.name}|specialKeywordResult?:{item.specialKeywordResult?.name}");
-            //        foreach (var item2 in item.compatibleNouns)
-            //        {
-            //            LogInfo("item2.result.name:"+ item2.result.name);
-            //            if (item2.result.name.Trim() == "RadMechFile" || item2.result.name.Trim() == "TulipSnakeFile" || item2.result.name.Trim() == "ButlerFile" || item2.result.name.Trim() == "ArtificeInfo")
-            //            {
-            //                LogInfo($"displayText:{item2.result.displayText}");
-            //            }
-
-            //            //    LogInfo($"{item2.noun.}");
-            //            //LogInfo($"compatibleNouns|noun:{item2.noun.ToString()}|name:{item2.result.name}|buyItemIndex:{item2.result.buyItemIndex}|buyRerouteToMoon:{item2.result.buyRerouteToMoon}|itemCost:{item2.result.itemCost}");
-            //        }
-            //    }
-            //}
             return true;
         }
 
@@ -710,14 +697,20 @@ namespace AntiCheat
             {
                 yield break;
             }
+            LogInfo("700");
             yield return new WaitForSeconds(Core.AntiCheat.RPCReport_Delay.Value / 1000);
+            LogInfo("702");
             if (__instance.isPlayerDead)
             {
+            LogInfo("705");
                 yield break;
             }
+            LogInfo("708");
             if (rpcs[RPC].Contains(__instance.playerClientId))
             {
+                LogInfo("711");
                 rpcs[RPC].Remove(__instance.playerClientId);
+                LogInfo($"{__instance.playerUsername}:{__instance.isPlayerDead}");
                 ShowMessage(locale.Msg_GetString("RPCReport", new Dictionary<string, string>() {
                   { "{player}", __instance.playerUsername },
                   { "{RPC}", RPC },
@@ -1242,14 +1235,17 @@ namespace AntiCheat
         public static PlayerControllerB lastDriver { get; set; }
 
 
-        [HarmonyPatch(typeof(ButlerEnemyAI), "KillEnemy")]
+        [HarmonyPatch(typeof(EnemyAI), "KillEnemy")]
         [HarmonyPrefix]
         [HarmonyWrapSafe]
-        public static void ButlerBlowUpAndPop(ButlerEnemyAI __instance)
+        public static void ButlerEnemyAI_KillEnemy(EnemyAI __instance)
         {
             if (StartOfRound.Instance.localPlayerController.IsHost)
             {
-                LandminePatch.SpawnExplosion(__instance.transform.position + Vector3.up * 0.15f);
+                if (__instance is ButlerEnemyAI)
+                {
+                    LandminePatch.SpawnExplosion(__instance.transform.position + Vector3.up * 0.15f);
+                }
             }
         }
 
@@ -1267,6 +1263,14 @@ namespace AntiCheat
             }
             return StartOfRound.Instance.allPlayerScripts[index].playerUsername;
         }
+
+        //[HarmonyPatch(typeof(EnemyAI), "HitEnemy")]
+        //[HarmonyPrefix]
+        //[HarmonyWrapSafe]
+        //public static void HitEnemy(EnemyAI __instance, int force = 1, PlayerControllerB playerWhoHit = null, bool playHitSFX = false, int hitID = -1)
+        //{
+        //    AntiCheat.Core.AntiCheat.LogInfo($"({__instance.enemyType.enemyName})EnemyAI.HitEnemy;EnemyId:{__instance.GetInstanceID()}|HP:{__instance.enemyHP}|force:{force}|playerWhoHit:{playerWhoHit?.playerUsername}|playHitSFX:{playHitSFX}|hitID:{hitID}");
+        //}
 
         [HarmonyPatch(typeof(EnemyAI), "__rpc_handler_3538577804")]
         [HarmonyPrefix]
@@ -1371,6 +1375,10 @@ namespace AntiCheat
                     else if (!p.isPlayerDead && obj == null)
                     {
                         if (ClingTime.ContainsKey(p.playerSteamId) && ClingTime[p.playerSteamId].AddSeconds(5) > DateTime.Now)
+                        {
+                            return true;
+                        }
+                        if (p.ItemSlots.Any(x => isShovel(x)) && force == 1)
                         {
                             return true;
                         }
@@ -1589,7 +1597,6 @@ namespace AntiCheat
                 }
                 ulong steamId = ConnectionIdtoSteamIdMap[clientId];
                 Friend f = new Steamworks.Friend(steamId);
-                Steamworks.SteamFriends.RequestUserInformation((Steamworks.SteamId)76561198830282195, true);
                 NetworkManager.Singleton.DisconnectClient(rpcParams.Server.Receive.SenderClientId);
                 StartOfRound.Instance.KickedClientIds.Add(steamId);
                 LogInfo($"检测玩家 {f.Name}({steamId}) 使用AntiKick功能，已自动踢出！");
@@ -1731,7 +1738,7 @@ namespace AntiCheat
                         var g = networkObject.GetComponentInChildren<GrabbableObject>();
                         if (g != null)
                         {
-                            LogInfo(p, "PlayerControllerB.GrabObjectServerRpc", $"itemName:{g.itemProperties.itemName}", $"Distance:{Vector3.Distance(p.transform.position, g.transform.position)}");
+                            LogInfo(p, "PlayerControllerB.GrabObjectServerRpc", $"itemName:{g.itemProperties.itemName}", $"heldByPlayerOnServer:{(g.heldByPlayerOnServer ? g.playerHeldBy?.playerUsername : "false")}", $"Distance:{Vector3.Distance(p.transform.position, g.transform.position)}");
                             bool ban = false;
                             if (Core.AntiCheat.GrabObject_TwoHand.Value)
                             {
@@ -1840,6 +1847,8 @@ namespace AntiCheat
         //    PlayerJumping[p] = false;
         //}
 
+
+
         /// <summary>
         /// 玩家坐标变动事件(玩家如果隐身会将本体传送到一个很远的位置，例如当前坐标-100)
         /// Prefix PlayerControllerB.UpdatePlayerPositionServerRpc
@@ -1853,20 +1862,18 @@ namespace AntiCheat
             reader.Seek(0);
             if (Check(rpcParams, out var p))
             {
-                //var Jumping = PlayerJumping[p];
-                //LogInfo($"{p.playerUsername} call PlayerControllerB.UpdatePlayerPositionServerRpc|newPos:{newPos}|Jumping:{Jumping}");
-                //if (!Jumping)
-                //{
-                //    if (Physics.Raycast(p.transform.position, Vector3.down, out var raycastHit, 80f, 268437760, QueryTriggerInteraction.Ignore))
-                //    {
-                //        if (raycastHit.distance > 0.1)
-                //        {
-                //            ShowMessage($"检测到玩家 {p.playerUsername} 使用noclip！{raycastHit.distance}");
-                //        }
-                //    }
-                //}
                 if (Core.AntiCheat.Invisibility.Value)
                 {
+                    if (StartOfRound.Instance.currentLevel != null && StartOfRound.Instance.currentLevel.spawnEnemiesAndScrap)
+                    {
+                        if (!recentPlayerPositions.ContainsKey(p.playerSteamId))
+                            recentPlayerPositions[p.playerSteamId] = new List<(Vector3, float)>();
+                        float now = Time.time;
+                        recentPlayerPositions[p.playerSteamId] = recentPlayerPositions[p.playerSteamId]
+                            .Where(entry => now - entry.time <= 5f)
+                            .ToList();
+                        recentPlayerPositions[p.playerSteamId].Add((newPos, now));
+                    }
                     var oldpos = p.serverPlayerPosition;
                     if (p.teleportedLastFrame)
                     {
@@ -1918,13 +1925,13 @@ namespace AntiCheat
         public static bool FacepunchTransportOnConnecting(ref Connection connection, ref ConnectionInfo info)
         {
             NetIdentity identity = Traverse.Create(info).Field<NetIdentity>("identity").Value;
-            if (StartOfRound.Instance.KickedClientIds.Contains(identity.SteamId.Value))
-            {
-                LogInfo(locale.Log_GetString("refuse_connect", new Dictionary<string, string>() {
-                    {"{steamId}",identity.SteamId.Value.ToString() }
-                }));
-                return false;
-            }
+            //if (StartOfRound.Instance.KickedClientIds.Contains(identity.SteamId.Value))
+            //{
+            //    LogInfo(locale.Log_GetString("refuse_connect", new Dictionary<string, string>() {
+            //        {"{steamId}",identity.SteamId.Value.ToString() }
+            //    }));
+            //    return false;
+            //}
             if (StartOfRound.Instance.allPlayerScripts.Any(x => x.isPlayerControlled && x.playerSteamId == identity.SteamId.Value))
             {
                 LogInfo("{steamId} repeatedly joins the game.");
@@ -2985,17 +2992,22 @@ namespace AntiCheat
                 {
                     var lm = (Landmine)target;
                     int id = lm.GetInstanceID();
-                    LogInfo(p, "Landmine.ExplodeMineServerRpc", $"LandMineId:{id}");
+                    //LogInfo(p, "Landmine.ExplodeMineServerRpc", $"LandMineId:{id}");
                     if (!landMines.Contains(id) && !lm.hasExploded)
                     {
-                        ShowMessage(locale.Msg_GetString("Landmine", new Dictionary<string, string>() {
-                             { "{player}",p.playerUsername }
-                        }));
-                        if (Core.AntiCheat.Landmine2.Value)
-                        {
-                            KickPlayer(p);
+                        if(recentPlayerPositions.TryGetValue(p.playerSteamId,out var postions)) {
+                            if (!postions.Any(x => Vector3.Distance(x.pos, lm.transform.position) < 5))
+                            {
+                                ShowMessage(locale.Msg_GetString("Landmine", new Dictionary<string, string>() {
+                                     { "{player}",p.playerUsername }
+                                }));
+                                if (Core.AntiCheat.Landmine2.Value)
+                                {
+                                    KickPlayer(p);
+                                }
+                            }
                         }
-                        return false;
+                       
                     }
                 }
             }

@@ -23,6 +23,11 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>embedded</DebugType>
+    <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=./</PathMap>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
@@ -118,6 +123,7 @@
     <Compile Include="Patch\PlayerControllerBPatch.cs" />
     <Compile Include="Patch\RoundManagerPatch.cs" />
     <Compile Include="Patch\ShipTeleporterPatch.cs" />
+    <Compile Include="Patch\TerminalAccessibleObjectPatch.cs" />
     <Compile Include="Patch\TerminalPatch.cs" />
     <Compile Include="Patch\TurretPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

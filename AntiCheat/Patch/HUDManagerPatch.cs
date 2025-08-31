@@ -91,9 +91,9 @@ namespace AntiCheat
                     return false;
                 }
                 string msg = Core.AntiCheat.localizationManager.Msg_GetString("snc_player", new Dictionary<string, string>() {
-                        { "{player}",p.playerUsername },
-                        { "{enemy}",terminal.enemyFiles[enemyID].creatureName }
-                    });
+                    { "{player}",p.playerUsername },
+                    { "{enemy}",terminal.enemyFiles[enemyID].creatureName }
+                });
                 Patches.LogInfo(msg);
                 return true;
             }

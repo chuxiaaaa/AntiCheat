@@ -1,5 +1,17 @@
 # Beta(公开测试版)
 
+## Version 0.8.6
+
+### 中文
+
+* [/] 修复客机使用礼物盒会卡手的问题
+* [/] 修复遥控器冷却未正确生效
+
+### English
+
+* [/] Fixed an issue where using a gift box in the passenger aircraft would cause hands to get stuck
+* [/] Fixed the remote cooldown not taking effect properly
+
 ## Version 0.8.5
 
 ### 中文(重大更新)

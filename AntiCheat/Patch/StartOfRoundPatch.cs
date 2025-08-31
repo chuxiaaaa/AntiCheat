@@ -30,10 +30,13 @@ namespace AntiCheat
         public static bool SyncAlreadyHeldObjectsServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             var steamId = Patches.ConnectionIdtoSteamIdMap[Patches.ClientIdToTransportId(rpcParams.Server.Receive.SenderClientId)];
+            AntiCheat.Core.AntiCheat.LogInfo($"StartOfRound.SyncShipUnlockablesServerRpc:{steamId}|32");
             if (SyncAlreadyHeldObjectsServerRpcCalls.Contains(steamId))
             {
+                AntiCheat.Core.AntiCheat.LogInfo($"StartOfRound.SyncShipUnlockablesServerRpc:{steamId}|36");
                 return false;
             }
+            AntiCheat.Core.AntiCheat.LogInfo($"StartOfRound.SyncShipUnlockablesServerRpc:{steamId}|39");
             SyncAlreadyHeldObjectsServerRpcCalls.Add(steamId);
             return true;
         }
@@ -137,10 +140,13 @@ namespace AntiCheat
         {
             if (Patches.Check(rpcParams, out var p))
             {
+                AntiCheat.Core.AntiCheat.LogInfo(p, $"StartOfRound.SyncShipUnlockablesServerRpc", "140");
                 if (SyncShipUnlockablesServerRpcCalls.Contains(p.playerSteamId))
                 {
+                    AntiCheat.Core.AntiCheat.LogInfo(p, $"StartOfRound.SyncShipUnlockablesServerRpc", "144");
                     return false;
                 }
+                AntiCheat.Core.AntiCheat.LogInfo(p, $"StartOfRound.SyncShipUnlockablesServerRpc", "146");
                 SyncShipUnlockablesServerRpcCalls.Add(p.playerSteamId);
                 return true;
             }
