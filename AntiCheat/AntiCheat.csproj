@@ -23,6 +23,11 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>embedded</DebugType>
+    <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=./</PathMap>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
@@ -106,11 +111,6 @@
     <Compile Include="Patch\DoorLockPatch.cs" />
     <Compile Include="Patch\GrabbableObjectPatch.cs" />
     <Compile Include="Patch\HUDManagerPatch.cs" />
-    <Compile Include="Lang\ko.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ko.resx</DependentUpon>
-    </Compile>
     <Compile Include="Locale\Locale.cs" />
     <Compile Include="Locale\LocalizationManager.cs" />
     <Compile Include="Patch\LandminePatch.cs" />
@@ -118,17 +118,11 @@
     <Compile Include="Patch\PlayerControllerBPatch.cs" />
     <Compile Include="Patch\RoundManagerPatch.cs" />
     <Compile Include="Patch\ShipTeleporterPatch.cs" />
+    <Compile Include="Patch\TerminalAccessibleObjectPatch.cs" />
     <Compile Include="Patch\TerminalPatch.cs" />
     <Compile Include="Patch\TurretPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Patch\StartOfRoundPatch.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Lang\ko.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ko.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="bin\Debug\BepInEx\core\0Harmony.dll" />
@@ -137,6 +131,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Lang\en_US.json" />
+    <None Include="Lang\ko_KR.json" />
     <None Include="Lang\localization_cfg.json" />
     <None Include="Lang\zh_CN.json" />
   </ItemGroup>

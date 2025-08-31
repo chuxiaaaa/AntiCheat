@@ -30,11 +30,11 @@ namespace AntiCheat
                 if (target != null)
                 {
                     var grab = (GrabbableObject)target;
-                    AntiCheat.Core.AntiCheat.LogInfo(p, $"({grab.itemProperties.itemName})GrabbableObject.ActivateItemServerRpc");
                     if (grab != null)
                     {
                         if (grab is RemoteProp)
                         {
+                            AntiCheat.Core.AntiCheat.LogInfo(p, $"({grab.itemProperties.itemName})GrabbableObject.ActivateItemServerRpc");
                             bool canUse = CooldownManager.CheckCooldown("ShipLight", p);
                             if (!canUse)
                             {
@@ -75,7 +75,14 @@ namespace AntiCheat
             ByteUnpacker.ReadValueBitPacked(reader, out int num);
             reader.Seek(0);
             GrabbableObject target1 = ((GrabbableObject)target);
-            AntiCheat.Core.AntiCheat.LogInfo(p, $"({target1.itemProperties.itemName})GrabbableObject.SyncBatteryServerRpc", $"num:{num}");
+            if (target1.itemProperties.requiresBattery)
+            {
+                AntiCheat.Core.AntiCheat.LogInfo(p, $"({target1.itemProperties.itemName})GrabbableObject.SyncBatteryServerRpc", $"num:{num}");
+                if (num > 100)
+                {
+                    return false;
+                }
+            }
             return true;
         }
 
