@@ -11,7 +11,7 @@
 * [/] 允许玩家在物品栏中有铲子，但手上是空手的情况下造成伤害了
 * [/] 现在引爆地雷应该不会存在误报了!(如果是FairAI引爆的，不算误报)
 * [/] 修复击杀管家与其他模组的兼容性问题
-* [+] 新增韩文本地化 @P-Asta
+* [+] 新增韩文本地化 @P-Asta (如果你想固定语言至韩文，请手动设置 `locales\localization_cfg.json` 文件,将 `current_language` 改为 `ko_KR`)
 
 ### English
 
@@ -22,6 +22,7 @@
 * [/] Players can now deal damage while having a shovel in their inventory but empty hands
 * [/] LandMine detonations should no longer produce false positives! (If detonated by **FairAI**, it is not considered a false positive)
 * [/] Fixed the compatibility issue between Kill Butler and other mods
+* [+] New Korean localization @P-Asta (If you want to fix the language to Korean, please manually set the `locales\localization_cfg.json` file and change `current_language` to `ko_KR`)
 
 
 ## Version 0.8.6
