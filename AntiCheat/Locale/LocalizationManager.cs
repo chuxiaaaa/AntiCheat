@@ -1,5 +1,4 @@
-﻿using AntiCheat.Lang;
-
+﻿
 using Newtonsoft.Json;
 
 using System;

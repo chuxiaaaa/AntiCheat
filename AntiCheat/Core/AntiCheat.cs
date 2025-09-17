@@ -152,25 +152,25 @@ namespace AntiCheat.Core
         public static bool Gui;
 
 
-        public static void String(string text, GUIStyle style, float yPos)
-        {
-            float screenWidth = Screen.width;
-            Vector2 textSize = style.CalcSize(new GUIContent(text));
-            float xPos = (screenWidth - textSize.x) / 2;
-            GUI.Label(new Rect(xPos, yPos, textSize.x, textSize.y), text, style);
-        }
+        //public static void String(string text, GUIStyle style, float yPos)
+        //{
+        //    float screenWidth = Screen.width;
+        //    Vector2 textSize = style.CalcSize(new GUIContent(text));
+        //    float xPos = (screenWidth - textSize.x) / 2;
+        //    GUI.Label(new Rect(xPos, yPos, textSize.x, textSize.y), text, style);
+        //}
 
-        public void Update()
-        {
-            if (StartOfRound.Instance != null && !StartOfRound.Instance.IsHost)
-            {
-                return;
-            }
-            if (UnityInput.Current.GetKeyDown(KeyCode.F10))
-            {
-                Gui = !Gui;
-            }
-        }
+        //public void Update()
+        //{
+        //    if (StartOfRound.Instance != null && !StartOfRound.Instance.IsHost)
+        //    {
+        //        return;
+        //    }
+        //    if (UnityInput.Current.GetKeyDown(KeyCode.F10))
+        //    {
+        //        Gui = !Gui;
+        //    }
+        //}
 
         //public void OnGUI()
         //{
@@ -270,8 +270,8 @@ namespace AntiCheat.Core
         void Awake()
         {
             ManualLog = Logger;
-            Tabs = new Dictionary<string, bool>();
-            Tabs.Add("模组配置", false);
+            //Tabs = new Dictionary<string, bool>();
+            //Tabs.Add("模组配置", false);
             FileSystemWatcher watcher = new FileSystemWatcher();
             var fi = new FileInfo(Config.ConfigFilePath);
             watcher.Path = fi.DirectoryName;

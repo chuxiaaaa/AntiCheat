@@ -100,6 +100,22 @@ namespace AntiCheat
                 reader.ReadValueSafe(out Vector3 bodyVelocity);
                 ByteUnpacker.ReadValueBitPacked(reader, out int num);
                 reader.Seek(0);
+                LogInfo(p, "PlayerControllerB.KillPlayerServerRpc", $"playerId:{PlayerClientIdConvertName(playerId)}({playerId})", $"spawnBody:{spawnBody}", $"bodyVelocity:{bodyVelocity}", $"num:{(CauseOfDeath)num}({num})");
+                if (playerId < 0) 
+                {
+                    LogInfo($"KillPlayerServerRpc:Invalid PlayerId({playerId})");
+                    return false;
+                }
+                if (StartOfRound.Instance.allPlayerScripts[playerId] != p)
+                {
+                    LogInfo("KillPlayerServerRpc:Can't kill other player!");
+                    return false;
+                }
+                if (p.isPlayerDead)
+                {
+                    LogInfo("KillPlayerServerRpc:Player death can't kill!");
+                    return false;
+                }
                 if ((CauseOfDeath)num == CauseOfDeath.Abandoned)
                 {
                     string msg = locale.Msg_GetString("behind_player", new Dictionary<string, string>() {
