@@ -36,8 +36,8 @@ if exist "%langSourceDir%" (
 )
 
 :: 复制其他资源文件
-copy "%projectDir%icon.png" "%tempDir%\" >nul 2>&1
-copy "%projectDir%manifest.json" "%tempDir%\" >nul 2>&1
+copy "%solutionDir%icon.png" "%tempDir%\" >nul 2>&1
+copy "%solutionDir%manifest.json" "%tempDir%\" >nul 2>&1
 
 :: 创建ZIP文件
 set zipPath=%solutionDir%%projectName%.zip
