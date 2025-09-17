@@ -28,7 +28,7 @@ namespace AntiCheat.Locale
                 var lang = System.Globalization.CultureInfo.CurrentCulture.Name.ToLower();
                 if (lang.StartsWith("ko"))
                 {
-                    cfg.current_language = "ko";
+                    cfg.current_language = "ko_KR";
                 }
                 else if (lang.StartsWith("zh-"))
                 {

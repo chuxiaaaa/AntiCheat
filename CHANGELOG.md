@@ -1,5 +1,29 @@
 # Beta(公开测试版)
 
+## Version 0.8.7
+
+### 中文
+
+* [+] 新增了一些 RPC 调用日志(在AntiCheat.log中查看他们！)
+* [/] 修复了客户端使用反作弊也会生成日志内容的问题
+* [/] 客户端修改电量超过100时将会被拦截(目前没有做提醒，如果想检查是否有玩家使用了无限电量请查看日志文件)
+* [/] 修复传送器补丁的报错
+* [/] 允许玩家在物品栏中有铲子，但手上是空手的情况下造成伤害了
+* [/] 现在引爆地雷应该不会存在误报了!(如果是FairAI引爆的，不算误报)
+* [/] 修复击杀管家与其他模组的兼容性问题
+* [+] 新增韩文本地化 @P-Asta
+
+### English
+
+* [+] Added some RPC call logs (check them in AntiCheat.log!)
+* [/] Fixed an issue where the client would generate log content even when using anti-cheat
+* [/] Client modifications to battery level exceeding 100 will now be blocked (no notification is currently implemented; check log files to identify players using infinite battery)
+* [/] Fixed errors related to the teleporter patch
+* [/] Players can now deal damage while having a shovel in their inventory but empty hands
+* [/] LandMine detonations should no longer produce false positives! (If detonated by **FairAI**, it is not considered a false positive)
+* [/] Fixed the compatibility issue between Kill Butler and other mods
+
+
 ## Version 0.8.6
 
 ### 中文
