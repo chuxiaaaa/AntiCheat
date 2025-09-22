@@ -59,7 +59,7 @@
     "refuse_connect": "{steamId}가 게임에 접속을 시도했으나 거부되었습니다! (이미 킥됨)"
   },
   "Message": {
-    "behind_player": "<color=yellow>[{player}] <color=red>가 버려젔습니다.</color></color>",
+    "behind_player": "<color=yellow>[{player}] <color=red>가 버려졌습니다.</color></color>",
     "Boss": "{player} 님이 회사 몬스터를 강제로 공격하게 하려고 시도하는 것이 감지되었습니다!",
     "ChangeLevel": "{player} 님이 유료 달을 무료 달로 변경하려고 시도하는 것이 감지되었습니다! (이 행동은 호스트에게만 허용됩니다!)",
     "ChangeToFreeLevel": "{player} 님이 유료 달을 무료 달로 바꾸는 것이 감지되었습니다!",
