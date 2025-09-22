@@ -24,6 +24,18 @@
 * [/] Fixed the compatibility issue between Kill Butler and other mods
 * [+] New Korean localization @P-Asta (If you want to fix the language to Korean, please manually set the `locales\localization_cfg.json` file and change `current_language` to `ko_KR`)
 
+### 한국어
+
+* \[+] 일부 RPC 호출 로그 추가됨 (AntiCheat.log에서 확인하세요!)
+* \[/] 클라이언트가 안티치트를 사용할 때도 로그를 생성하던 문제 수정
+* \[/] 배터리 수치가 100을 초과하도록 수정하는 클라이언트는 차단됨 (현재 채팅알림은 구현되지 않았으며, 무한 배터리를 사용하는 플레이어는 위 로그 파일에서 확인 가능)
+* \[/] 순간이동 관련 오류 수정
+* \[/] 삽을 인벤토리에 가지고 있으면서 맨손일 때도 피해를 줄 수 있도록 수정
+* \[/] 지뢰 폭발 시 잘못된 탐지(false positive)가 발생하지 않음! (단, **FairAI**에 의해 폭발한 경우는 잘못된 탐지로 간주되지 않음)
+* \[/] Kill Butler와 다른 모드 간의 호환성 문제 수정
+* \[+] 새로운 한국어 현지화 추가 @P-Asta (언어를 한국어로 고정하고 싶다면 `locales\localization_cfg.json` 파일에서 `current_language`를 `ko_KR`로 직접 변경해야 함)
+
+
 
 ## Version 0.8.6
 
@@ -36,6 +48,11 @@
 
 * [/] Fixed an issue where using a gift box in the passenger aircraft would cause hands to get stuck
 * [/] Fixed the remote cooldown not taking effect properly
+
+### 한국어
+
+* \[/] 함선에서 선물 상자를 사용할 경우 손이 고정되던 문제 수정
+* \[/] 리모컨 쿨다운이 제대로 적용되지 않던 문제 수정
 
 ## Version 0.8.5
 
