@@ -7,7 +7,7 @@ using System.Text;
 
 using UnityEngine;
 
-namespace AntiCheat.Common
+namespace AntiCheat.Utils
 {
     public static class CooldownManager
     {
