@@ -1,356 +1,237 @@
-\# AntiCheat
+# AntiCheat
 
+[![Thunderstore Version](https://img.shields.io/thunderstore/v/chuxiaaaa/AntiCheat?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/chuxiaaaa/AntiCheat/versions/)
+[![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/chuxiaaaa/AntiCheat?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/chuxiaaaa/AntiCheat/)
 
+[**简体中文(Support)**](https://github.com/chuxiaaaa/AntiCheat/blob/main/README.md) | [**English(Support)**](https://github.com/chuxiaaaa/AntiCheat/blob/main/docs/README-en.md) | [**Русский**](https://github.com/chuxiaaaa/AntiCheat/blob/main/docs/README-ru.md) | **한국어(Support)**
 
-\[!\[Thunderstore Version](https://img.shields.io/thunderstore/v/chuxiaaaa/AntiCheat?style=for-the-badge\&logo=thunderstore\&logoColor=white)](https://thunderstore.io/c/lethal-company/p/chuxiaaaa/AntiCheat/versions/)
+리썰 컴퍼니 안티치트 호스트 모드
 
-\[!\[Thunderstore Downloads](https://img.shields.io/thunderstore/dt/chuxiaaaa/AntiCheat?style=for-the-badge\&logo=thunderstore\&logoColor=white)](https://thunderstore.io/c/lethal-company/p/chuxiaaaa/AntiCheat/)
+## i18 국제화
 
+0.8.2 버전 이후부터 안티치트는 메시지 내용의 완전한 사용자 정의를 지원합니다.
 
+### 언어 파일 지정 사용
 
-\[\*\*简体中文(Support)\*\*](https://github.com/chuxiaaaa/AntiCheat/blob/main/README.md) | \*\*English(Support)\*\* | \[\*\*Русский\*\*](https://github.com/chuxiaaaa/AntiCheat/blob/main/docs/README-ru.md) | \[\*\*한국어(Support)\*\*](https://github.com/chuxiaaaa/AntiCheat/blob/main/docs/README-ko.md)
+1. AntiCheat 파일 디렉토리에서 locales 폴더를 찾아 localization_cfg.json 파일을 엽니다
+2. `current_language` 값을 수정합니다
+   - 비어있으면 안티치트는 시스템 언어에 따라 자동으로 zh_CN/en_US로 설정됩니다
+   - 지정하려면 값을 en_US/zh_CN/ko_KR로 설정하세요
 
+### 새 언어 파일 생성
 
+1. en_US.json 파일을 복사합니다
+2. 파일명을 수정하여 원하는 언어 파일명으로 변경합니다 (예: en_US.json -> ko_KR.json)
+3. 파일 내용을 변경하고 완료 후 `localization_cfg.json`에서 `current_language` 값을 수정합니다
+4. (선택사항) Github에서 pull request를 제출하여 언어 파일을 설명하고 제출하세요
 
-A Lethal Company anti-cheat server-side mod.
+## 소개
 
+모드 교류 QQ 그룹: 263868521
 
+이 모드는 핵 사용으로 인한 방 파괴 문제를 해결하여 무작위 매칭 플레이어들의 게임 경험을 보장합니다.
 
-\## i18 globally
+모드를 사용할 때 "오탐지" 문제가 발생할 수 있지만, 이것이 반드시 AntiCheat 모드의 문제는 아닙니다. (BepInExPack, 한국어화, 안티치트, 멀티플레이) 이외의 모든 모드를 삭제하고 문제를 재현해보세요 (더 이상 오탐지가 발생하지 않으면 모드 호환성 문제입니다).
 
+## 사용 방법
 
+1. [BepInExPack](https://thunderstore.io/c/lethal-company/p/BepInEx/BepInExPack) 모드를 설치합니다
+2. AntiCheat.dll을 Lethal Company\BepInEx\plugins\ 디렉토리에 배치합니다
+3. 게임을 시작합니다
 
-After version 0.8.2，AntiCheat support fully customized prompt content.
+## 방 생성
 
+안티치트를 사용할 때는 방 이름에 [AC] 표시를 추가하여 다른 플레이어들에게 이것이 안티치트가 활성화된 방임을 알리는 것을 권장합니다!
+예시: [v69/AC] 전투 재밌다!
 
+## 기능
 
-\### Specify the language file to be used
+### 감지
 
-&nbsp; 1. In ``AntiCheat\\locales`` folder，open ``localization\_cfg.json`` file;
+- **킥 방지 감지**
 
-&nbsp; 2. Change ``current\_language`` value by following rule:
+  설명: 플레이어가 킥 방지 기능을 켜고 게임 방에 참가하는지 감지합니다
 
-&nbsp;     - If the value is empty, the mod will automatically set the value depends on the system language;
+- **레버 감지**
 
-&nbsp;     - If you want to specify，set the value to the corresponding language file name.
+  - 강제 레버 감지
 
+    설명: 새로 방에 들어온 플레이어가 레버를 당기는 것을 감지합니다
 
+  - 이륙 레버 감지
 
-\### Create a new language file
+    설명: 함선이 착륙한 후, 플레이어가 레버를 당기는 조건이 맞는지 감지합니다 (설정 파일에서 수정)
 
-&nbsp; 1. Make a copy of ``en\_US.json`` language file and rename it (to the language name you want to localize);
+  - 착륙 레버 감지
 
-&nbsp; 2. Localize the language file you made，and then change ``current\_language`` value from ``localization\_cfg.json``;
+    설명: 함선이 궤도에 있을 때, 플레이어가 레버를 당기는 조건이 맞는지 감지합니다 (설정 파일에서 수정)
 
-&nbsp; 3. (Optional) Submit your language file by using PR in Github to let other people enjoy your creation.
+- **함선 아이템 위치 이상 감지**
 
+  설명: 함선 아이템 좌표가 함선 범위 내에 있는지 감지합니다
 
+- **아이템 사용 쿨다운 이상 감지**
 
-\## Introduction
+  설명: 삽 휘두르는 속도와 샷건 발사 속도를 감지합니다
 
+- **조명 끄기 쇼 감지**
 
+  설명: 플레이어가 조명을 빈번히 전환하는지 감지합니다
 
-Discord: \[https://discord.gg/ZdWr2rKR](https://discord.gg/zem2eFFBHj)
+- **터미널 소음 감지**
 
+  설명: 플레이어가 터미널에서 대량의 소음을 발생시키는지 감지합니다
 
+- **아이템 파괴 감지**
 
-This mod is designed to prevent cheating when hosting public lobbies, ensuring a fair gaming experience for all players.
+  설명: 플레이어가 파괴되어서는 안 되는 아이템을 파괴하는지 감지합니다
 
+- **발언 위조 감지**
 
+  설명: 플레이어가 다른 플레이어의 신분으로 발언하는지 감지합니다
 
-While using this mod, you might encounter false positives, but this may not be an issue with the AntiCheat mod itself. To troubleshoot, please try uninstalling all mods except for BepInEx and AntiCheat, and attempt to reproduce the issue. If the issue no longer occurs, it's likely a compatibility problem with another mod.
+- **가짜 더미 생성 감지**
 
+  설명: 플레이어가 마스크를 통해 여러 번 가짜 더미를 생성하는지 감지합니다
 
+- **선물 상자 복제 감지**
 
-\## Installation
+  설명: 선물 상자 열기 횟수를 감지합니다
 
+- **거미줄 생성 감지**
 
+  설명: 플레이어가 거미를 호출하여 대량의 거미줄을 생성하는지 감지합니다
 
-1\. Install \[BepInExPack](https://thunderstore.io/c/lethal-company/p/BepInEx/BepInExPack);
+- **터렛 분노 감지**
 
-2\. Place AntiCheat.dll in the Lethal Company\\BepInEx\\plugins directory;
+  설명: 플레이어가 원거리에서 터렛을 분노시키는지 감지합니다
 
-3\. Launch the game. Once the game has started, you can find the configuration file AntiCheat.cfg in the Lethal Company\\BepInEx\\config directory.
+- **투명화 감지**
 
+  설명: 플레이어가 투명 상태인지 감지합니다
 
+- **제트팩 폭발 감지**
 
-\## Creating Lobby
+  설명: 플레이어가 다른 플레이어의 제트팩을 폭발시키는지 감지합니다
 
+- **지뢰 폭발 감지**
 
+  설명: 플레이어가 악의적으로 지뢰를 폭발시키는지 감지합니다
 
-By default, the "\[AC]" prefix will be added to the lobby name to indicate to other players that the anti-cheat is enabled in this lobby.
+- **몬스터 이상 감지**
 
-Example: \[AC] The battle is thrilling!
+  설명: 플레이어가 몬스터를 조종하거나 몬스터 메커니즘을 수정하는지 감지합니다
 
+- **미니맵 감지**
 
+  설명: 플레이어가 미니맵 모드를 설치했는지 감지합니다
 
-\## Features
+- **적 처치 감지**
 
+  설명: 플레이어가 원거리에서 적을 처치하는지 감지합니다
 
+- **원거리 아이템 수집 감지**
 
-\### Detection
+  설명: 플레이어가 원거리에서 아이템을 수집하는지 감지합니다
 
+- **삽 피해 이상 감지**
 
+  설명: 플레이어가 삽을 사용할 때의 피해를 감지합니다
 
-\- Anti-kick detection
+- **플레이어 이름 감지**
 
+  설명: 플레이어 이름이 이상할 때 알림 (예: Nameless 또는 Unknown)
 
+- **무료 구매 감지**
 
-&nbsp; - Detects if player join the lobby with Anti-kick
+  설명: 플레이어가 아이템을 무료로 구매하거나, 함선 장식을 무료로 해금하거나, 유료 행성으로 무료 이동하는지 감지합니다
 
+- **무한 탄약 감지**
 
+  설명: 플레이어가 샷건 사용 시 탄약이 있는지 감지합니다
 
-\- Lever pull detection
+- **보스 소환 감지**
 
+  설명: 플레이어가 보스 공격 함수를 호출하는지 감지합니다
 
+- **원격 터미널 감지**
 
-&nbsp; - Limited ship lever to landing and departure by checking how many player are in the ship and if current time are approved to do so or not
+  설명: 플레이어가 원격으로 터미널을 사용하는지 감지합니다
 
+- **몬스터 플레이어 처치 감지**
 
+  설명: 플레이어가 몬스터의 처치 함수를 호출하여 다른 플레이어를 처치하는지 감지합니다
 
-&nbsp; - Prevent malicious lever pull
+- **중복 게임 참가 감지**
 
+  설명: 플레이어가 이미 방에 있는데 계속 방에 참가하는지 감지합니다
 
+* [ ] **속도 감지**
 
-\- Abnormal furniture position detection
+  설명: 플레이어가 현재 비정상적인 속도로 걷거나 뛰는지 감지 (해결 대기 중, 현재 아이디어 없음)
 
+* [ ] **비행 감지**
 
+  설명: 플레이어가 아무 아이템의 도움 없이 비행하는지 감지 (해결 대기 중, 현재 아이디어 없음)
 
-\- Abnormal item interaction cooldown detection
+### 기타 기능
 
+- **방 이름 접두사**
 
+  설명: 기본값은 AC로, 방에서 안티치트를 사용함을 표시합니다. 설정을 수정하여 표시를 변경하거나 비워서 표시를 취소할 수 있습니다.
 
-&nbsp; - Detects item interaction cooldown, including switch slot to reduce shovel swing cooldown
+- **게임 참가 알림**
 
+  설명: 게임 원본의 참가 알림이 너무 혼란스러워서 안티치트에서 원본 참가 알림을 취소했습니다. 설정에서 플레이어 게임 참가 알림을 사용자 정의할 수 있습니다.
 
+- **플레이어 조작 정보**
 
-\- Spamming light switch detection
+  설명: 플레이어 조작 정보를 표시합니다 (방 참가/아이템 구매/행성 전환/전원 제거)
 
+- **클라이언트 설정 차이 허용**
 
+  설명: 클라이언트에 모드 차이가 있어도 허용하여 클라이언트가 방에 참가하지 못하는 문제를 완화하는 데 도움이 됩니다
 
-\- Spamming terminal noise detection
-
-
-
-\- Abnormal item despawn detection
-
-
-
-\- Fake chat message detection
-
-
-
-\- Abnormal masked enemy detection
-
-
-
-\- Abnormal gift box interaction detection
-
-
-
-\- Abnormal spiderweb spawning detection
-
-
-
-\- Abnormal turret berserk mode detection
-
-
-
-\- Invisible player detection
-
-
-
-\- Abnormal jetpack explosion detection
-
-
-
-\- Abnormal landmine triggering detection
-
-
-
-\- Abnormal monster detection
-
-
-
-\- Mini-map detection
-
-
-
-&nbsp; - Detects player who snooping, which detect snooping on loot, mines, turret, enemy locations and more
-
-
-
-\- Enemy kill detection
-
-
-
-&nbsp; - Detects if player kill an enemy from too far away
-
-
-
-\- Item pickup distance detection
-
-
-
-\- Abnormal shovel damage detection
-
-
-
-&nbsp; - No 99 shovel dmg!
-
-
-
-\- Player name detection
-
-
-
-&nbsp; - Notify if player have Nameless or Unknown name
-
-
-
-\- Abnormal purchases detection
-
-
-
-&nbsp; - Detects if player purchase items, unlockables or routing moon for free
-
-
-
-\- Infinite ammo detection
-
-
-
-&nbsp; - Detects if player load and firing the ammo that doesn't even exist
-
-
-
-&nbsp; - Normal player can trigger this, as long as the shotgun has the ammo that doesn't exist
-
-
-
-\- Boss attack spoofing detection
-
-
-
-\- Abnormal credits detection
-
-
-
-\- Remote terminal detection
-
-
-
-\- Prevention of client-side monster killing RPC to kill other players
-
-
-
-&nbsp; - Prevents instant-kills
-
-
-
-\- Prevent the player join the lobby twice if they already in the lobby
-
-
-
-\* \[ ]  Speed detection
-
-
-
-\* \[ ]  Stamina detection
-
-
-
-\### Other features
-
-
-
-\- Lobby name prefix
-
-
-
-\- Editable lobby welcome message
-
-
-
-\- Logging action made by the client
-
-
-
-\- Ignore network configuration differences
-
-
-
-&nbsp; - try to avoid 'an error occurred' dialog
-
-
-
-\## Contributions
-
-
+## 기여
 
 <a href="https://github.com/chuxiaaaa/AntiCheat/graphs/contributors">
-
-&nbsp; <img src="https://contrib.rocks/image?repo=chuxiaaaa/AntiCheat" />
-
+  <img src="https://contrib.rocks/image?repo=chuxiaaaa/AntiCheat" />
 </a>
 
+### 게임 언어
 
+- 중국어 (chuxiaaaa & CoolLKKPS)
+- 영어 (DeathWrench & CoolLKKPS & glyphical)
+- 한국어 (P-Asta)
 
-\### Localized translation contributor
+### README 언어
 
+- 중국어 (chuxiaaaa & CoolLKKPS)
+- 영어 (NilaierMusic & CoolLKKPS)
+- 러시아어 (NilaierMusic)
+- 한국어 (P-Asta)
 
+### 모드 테스터
 
-\- Chinese (chuxiaaaa \& CoolLKKPS)
+- 超级骇人鲸
+- Alan Backer
+- 沈阳最速傳說疾走の猛虎！貴物刀一郎
+- 柒小鸭 yz
+- 喜欢睡觉の极茶龙
+- 东南枝
+- Melissa
+- 我不吃牛肉
 
-\- English (DeathWrench \& CoolLKKPS)
+능력 있는 개발자 여러분의 모드 기여를 환영합니다~
 
-\- Korean (P-Asta)
+## 피드백
 
+오탐지가 발생하고 모드로 인한 것이 아님을 확신한다면, 문제 재현 방법을 설명하는 issue를 제출하여 문제 해결에 도움을 주세요!
 
+## 비호환성
 
-\### Readme file translation contributor
+클라이언트 플레이어가 다음 모드를 단독으로 사용하면 안티치트에서 맨손으로 피해를 입히는 것으로 감지됩니다:
 
-
-
-\- Simplified Chinese (chuxiaaaa \& CoolLKKPS)
-
-\- English (NilaierMusic \& CoolLKKPS)
-
-\- Russian (NilaierMusic)
-
-\- Korean (P-Asta)
-
-
-
-\### Mod Testers
-
-
-
-\- 超级骇人鲸
-
-\- Alan Backer
-
-\- 沈阳最速傳說疾走の猛虎！貴物刀一郎
-
-\- 柒小鸭 yz
-
-\- 喜欢睡觉の极茶龙
-
-\- 东南枝
-
-\- Melissa
-
-\- 我不吃牛肉
-
-
-
-We welcome contributions from capable developers to improve this mod.
-
-
-
-\## Feedback
-
-
-
-If you encounter a false positive and can confirm it's not caused by another mod, please report the issue on my GitHub, explaining how to reproduce the problem. This will help us fix it!
-
+- GeneralImprovements
+- ScrollFix
+- OrbitRecharge
