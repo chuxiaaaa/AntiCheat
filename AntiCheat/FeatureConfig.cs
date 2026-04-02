@@ -1,19 +1,15 @@
-﻿using BepInEx.Configuration;
-
-using System;
-using System.Collections.Generic;
-using System.Text;
+using BepInEx.Configuration;
 
 namespace AntiCheat
 {
     internal class FeatureConfig
     {
-        private ConfigEntry<bool> _Enable { get; }
-        private ConfigEntry<bool>? _Kick { get; }
+        public ConfigEntry<bool> EnableEntry { get; }
+        public ConfigEntry<bool> KickEntry { get; }
 
-        public bool Enable => _Enable.Value;
-
-        public bool Kick => _Kick?.Value ?? false;
+        public bool Enable => EnableEntry.Value;
+        public bool Value => EnableEntry.Value;
+        public bool Kick => KickEntry?.Value ?? false;
 
         public FeatureConfig(
             ConfigFile config,
@@ -22,17 +18,23 @@ namespace AntiCheat
             bool defaultEnable = true,
             bool hasKick = true)
         {
-            _Enable = config.Bind(section,
+            EnableEntry = config.Bind(
+                section,
                 "Enable",
                 defaultEnable,
                 enableDesc);
 
             if (hasKick)
             {
-                _Kick = config.Bind(section,
+                KickEntry = config.Bind(
+                    section,
                     "Kick",
                     false,
-                    localizationManager.Cfg_GetString("Kick"));
+                    AntiCheatPlugin.localizationManager.Cfg_GetString("Kick"));
+            }
+            else
+            {
+                KickEntry = null!;
             }
         }
     }

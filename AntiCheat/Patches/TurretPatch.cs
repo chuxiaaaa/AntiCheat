@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 
 using System;
 using System.Collections.Generic;
@@ -24,36 +24,36 @@ namespace AntiCheat.Patches
         [HarmonyWrapSafe]
         public static bool EnterBerserkModeServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Patches.Check(rpcParams, out var p))
+            if (PatchHelper.Check(rpcParams, out var p))
             {
                 if (PluginConfig.Turret.Enable)
                 {
                     var obj = p.ItemSlots[p.currentItemSlot];
-                    if (obj != null && (Patches.isShovel(obj) || Patches.isKnife(obj)))
+                    if (obj != null && (PatchHelper.isShovel(obj) || PatchHelper.isKnife(obj)))
                     {
                         var t = (Turret)target;
                         float v = Vector3.Distance(t.transform.position, p.transform.position);
                         if (v > 12)
                         {
-                            Patches.ShowMessage(Patches.locale.Msg_GetString("Turret", new Dictionary<string, string>() {
+                            PatchHelper.ShowMessage(PatchHelper.locale.Msg_GetString("Turret", new Dictionary<string, string>() {
                                 { "{player}",p.playerUsername },
                                 { "{Distance}",v.ToString() }
                             }));
                             if (PluginConfig.Turret.Kick)
                             {
-                                Patches.KickPlayer(p);
+                                PatchHelper.KickPlayer(p);
                             }
                             return false;
                         }
                     }
                     else
                     {
-                        Patches.ShowMessage(Patches.locale.Msg_GetString("Turret2", new Dictionary<string, string>() {
+                        PatchHelper.ShowMessage(PatchHelper.locale.Msg_GetString("Turret2", new Dictionary<string, string>() {
                              { "{player}",p.playerUsername }
                         }));
                         if (PluginConfig.Turret.Kick)
                         {
-                            Patches.KickPlayer(p);
+                            PatchHelper.KickPlayer(p);
                         }
                         return false;
                     }
@@ -71,11 +71,11 @@ namespace AntiCheat.Patches
         [HarmonyWrapSafe]
         public static bool ToggleTurretServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Patches.Check(rpcParams, out var p))
+            if (PatchHelper.Check(rpcParams, out var p))
             {
                 if (PluginConfig.RemoteTerminal.Enable)
                 {
-                    bool remote = Patches.CheckRemoteTerminal(p, "Turret.ToggleTurretServerRpc");
+                    bool remote = PatchHelper.CheckRemoteTerminal(p, "Turret.ToggleTurretServerRpc");
                     if (!remote)
                     {
                         return false;

@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace AntiCheat.Patches
         [HarmonyPatch("__rpc_handler_389447712")]
         public static bool PressTeleportButtonServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (AntiCheatPlugin.Check(rpcParams, out var p))
+            if (PatchHelper.Check(rpcParams, out var p))
             {
                 var shiptp = (ShipTeleporter)target;
                 AntiCheatPlugin.LogInfo(p, "ShipTeleporter.PressTeleportButtonServerRpc", $"isInverseTeleporter:{shiptp.isInverseTeleporter}");

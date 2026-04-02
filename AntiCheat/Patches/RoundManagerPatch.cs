@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ namespace AntiCheat.Patches
         [HarmonyPatch("__rpc_handler_192551691")]
         public static bool FinishedGeneratingLevelServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Patches.Check(rpcParams, out var p))
+            if (PatchHelper.Check(rpcParams, out var p))
             {
 
                 int playersFinishedGeneratingFloorCount = (RoundManager.Instance.playersFinishedGeneratingFloor.Count + 1);

@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 
 using System;
 using System.Collections.Generic;
@@ -23,7 +23,7 @@ namespace AntiCheat.Patches
         [HarmonyPatch("__rpc_handler_682230258")]
         public static bool SyncAlreadyHeldObjectsServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            var steamId = Patches.ConnectionIdtoSteamIdMap[Patches.ClientIdToTransportId(rpcParams.Server.Receive.SenderClientId)];
+            var steamId = PatchHelper.ConnectionIdtoSteamIdMap[PatchHelper.ClientIdToTransportId(rpcParams.Server.Receive.SenderClientId)];
             AntiCheatPlugin.LogInfo($"StartOfRound.SyncShipUnlockablesServerRpc:{steamId}|32");
             if (SyncAlreadyHeldObjectsServerRpcCalls.Contains(steamId))
             {
@@ -43,7 +43,7 @@ namespace AntiCheat.Patches
         [HarmonyPatch("__rpc_handler_3083945322")]
         public static bool PlayerHasRevivedServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Patches.Check(rpcParams, out var p))
+            if (PatchHelper.Check(rpcParams, out var p))
             {
                 int playersRevived = (int)AccessTools.DeclaredField(typeof(StartOfRound), "playersRevived").GetValue(StartOfRound.Instance);
                 AntiCheatPlugin.LogInfo(p, $"StartOfRound.PlayerHasRevivedServerRpc", $"playersRevived:{(playersRevived + 1)}", $"connectedPlayers:{GameNetworkManager.Instance.connectedPlayers}");
@@ -92,7 +92,7 @@ namespace AntiCheat.Patches
         [HarmonyPatch("__rpc_handler_4249638645")]
         public static bool PlayerLoadedServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Patches.Check(rpcParams, out var p))
+            if (PatchHelper.Check(rpcParams, out var p))
             {
                 int fullyLoadedPlayers = StartOfRound.Instance.fullyLoadedPlayers.Count;
                 AntiCheatPlugin.LogInfo(p, $"StartOfRound.PlayerLoadedServerRpc", $"fullyLoadedPlayers:{(fullyLoadedPlayers + 1)}", $"connectedPlayers:{GameNetworkManager.Instance.connectedPlayers}");
@@ -132,7 +132,7 @@ namespace AntiCheat.Patches
         [HarmonyPatch("__rpc_handler_744998938")]
         public static bool __rpc_handler_744998938(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Patches.Check(rpcParams, out var p))
+            if (PatchHelper.Check(rpcParams, out var p))
             {
                 AntiCheatPlugin.LogInfo(p, $"StartOfRound.SyncShipUnlockablesServerRpc", "140");
                 if (SyncShipUnlockablesServerRpcCalls.Contains(p.playerSteamId))

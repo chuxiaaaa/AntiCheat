@@ -1,117 +1,107 @@
-﻿using AntiCheat;
-
 using HarmonyLib;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Unity.Netcode;
 
 using UnityEngine;
 
-[HarmonyPatch(typeof(Landmine))]
-[HarmonyWrapSafe]
-public static class LandminePatch
+namespace AntiCheat.Patches
 {
-    private static readonly HashSet<int> _landMines = new HashSet<int>();
-    private static readonly List<ExplosionData> _explosions = new List<ExplosionData>();
-    private static readonly object _explosionsLock = new object();
-
-    private static readonly AccessTools.FieldRef<Landmine, bool> _mineActivatedField =
-        AccessTools.FieldRefAccess<Landmine, bool>("mineActivated");
-
-    private const int EXPLOSION_EXPIRE_SECONDS = 10;
-    private const float MINE_TRIGGER_DISTANCE = 5f;
-
-    [HarmonyPrefix]
-    [HarmonyPatch("SpawnExplosion")]
-    public static void SpawnExplosion(Vector3 explosionPosition)
-    {
-        AntiCheatPlugin.LogInfo($"Landmine.SpawnExplosion -> {explosionPosition}");
-
-        lock (_explosionsLock)
-        {
-            _explosions.RemoveAll(x => x.CreateDateTime.AddSeconds(EXPLOSION_EXPIRE_SECONDS) < DateTime.UtcNow);
-
-            _explosions.Add(new ExplosionData(explosionPosition));
-        }
-    }
-
-    [HarmonyPrefix]
-    [HarmonyPatch("OnTriggerExit")]
-    public static bool TriggerMineOnLocalClientByExiting(Landmine __instance, Collider other)
-    {
-        if (!StartOfRound.Instance.IsHost ||
-            __instance.hasExploded ||
-            !__instance.gameObject.activeSelf)
-        {
-            return true;
-        }
-
-        if (!_mineActivatedField(__instance))
-        {
-            return true;
-        }
-
-        lock (_landMines)
-        {
-            _landMines.Add(__instance.GetInstanceID());
-        }
-
-        return true;
-    }
-
-    [HarmonyPatch("__rpc_handler_3032666565")]
-    [HarmonyPrefix]
+    [HarmonyPatch(typeof(Landmine))]
     [HarmonyWrapSafe]
-    public static bool __rpc_handler_3032666565(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+    public static class LandminePatch
     {
-        if (!PluginConfig.Landmine.Enable || !Check(rpcParams, out var p) || p == null)
-        {
-            return p != null; // 如果 p 为 null 返回 false
-        }
+        private static readonly HashSet<int> LandMines = new HashSet<int>();
+        private static readonly AccessTools.FieldRef<Landmine, bool> MineActivatedField =
+            AccessTools.FieldRefAccess<Landmine, bool>("mineActivated");
 
-        var lm = (Landmine)target;
-        int id = lm.GetInstanceID();
+        private const float MineTriggerDistance = 5f;
 
-        lock (_landMines)
+        [HarmonyPrefix]
+        [HarmonyPatch("OnTriggerExit")]
+        public static bool TriggerMineOnLocalClientByExiting(Landmine __instance, Collider other)
         {
-            if (_landMines.Contains(id) || lm.hasExploded)
+            if (!StartOfRound.Instance.IsHost ||
+                __instance.hasExploded ||
+                !__instance.gameObject.activeSelf ||
+                !MineActivatedField(__instance))
             {
                 return true;
             }
-        }
 
-        // 使用距离平方比较，避免开方
-        const float triggerDistanceSq = MINE_TRIGGER_DISTANCE * MINE_TRIGGER_DISTANCE;
-
-        if (recentPlayerPositions.TryGetValue(p.playerSteamId, out var positions) &&
-            !positions.Any(x => (x.pos - lm.transform.position).sqrMagnitude < triggerDistanceSq))
-        {
-            AntiCheatPlugin.ShowMessage(locale.Msg_GetString("Landmine", new Dictionary<string, string>
+            lock (LandMines)
             {
-                ["{player}"] = p.playerUsername
-            }));
-
-            if (PluginConfig.Landmine.Kick)
-            {
-                KickPlayer(p);
+                LandMines.Add(__instance.GetInstanceID());
             }
+
+            return true;
         }
 
-        return true;
-    }
-}
+        [HarmonyPrefix]
+        [HarmonyPatch("SpawnExplosion")]
+        public static void SpawnExplosion(Vector3 explosionPosition)
+        {
+            AntiCheatPlugin.LogInfo($"Landmine.SpawnExplosion -> {explosionPosition}");
 
-public class ExplosionData
-{
-    public List<ulong> CalledClient { get; } = new List<ulong>();
-    public Vector3 ExplosionPostion { get; set; }
-    public DateTime CreateDateTime { get; set; }
+            PatchHelper.explosions = PatchHelper.explosions
+                .Where(x => x.CreateDateTime.AddSeconds(10) > DateTime.Now)
+                .ToList();
 
-    public ExplosionData(Vector3 position)
-    {
-        ExplosionPostion = position;
-        CreateDateTime = DateTime.UtcNow;
+            PatchHelper.explosions.Add(new PatchHelper.ExplosionData
+            {
+                ExplosionPostion = explosionPosition,
+                CalledClient = new List<ulong>(),
+                CreateDateTime = DateTime.Now,
+            });
+        }
+
+        [HarmonyPatch("__rpc_handler_3032666565")]
+        [HarmonyPrefix]
+        public static bool ExplodeMineServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        {
+            if (!PluginConfig.Landmine.Enable)
+            {
+                return true;
+            }
+
+            if (!PatchHelper.Check(rpcParams, out var player))
+            {
+                return player != null;
+            }
+
+            var landmine = (Landmine)target;
+            var instanceId = landmine.GetInstanceID();
+
+            lock (LandMines)
+            {
+                if (LandMines.Contains(instanceId) || landmine.hasExploded)
+                {
+                    return true;
+                }
+            }
+
+            const float triggerDistanceSq = MineTriggerDistance * MineTriggerDistance;
+            if (PatchHelper.recentPlayerPositions.TryGetValue(player.playerSteamId, out var positions) &&
+                !positions.Any(x => (x.pos - landmine.transform.position).sqrMagnitude < triggerDistanceSq))
+            {
+                AntiCheatPlugin.ShowMessage(
+                    PatchHelper.locale.Msg_GetString(
+                        "Landmine",
+                        new Dictionary<string, string>
+                        {
+                            ["{player}"] = player.playerUsername,
+                        }));
+
+                if (PluginConfig.Landmine.Kick)
+                {
+                    PatchHelper.KickPlayer(player);
+                }
+            }
+
+            return true;
+        }
     }
 }

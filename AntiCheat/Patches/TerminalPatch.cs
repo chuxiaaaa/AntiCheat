@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 
 using System;
 using System.Collections.Generic;
@@ -22,11 +22,11 @@ namespace AntiCheat.Patches
         [HarmonyPrefix]
         public static bool BuyItemsServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Patches.Check(rpcParams, out var p))
+            if (PatchHelper.Check(rpcParams, out var p))
             {
                 if (PluginConfig.RemoteTerminal.Value)
                 {
-                    if (!Patches.CheckRemoteTerminal(p, "Terminal.BuyItemsServerRpc"))
+                    if (!PatchHelper.CheckRemoteTerminal(p, "Terminal.BuyItemsServerRpc"))
                     {
                         return false;
                     }
@@ -42,28 +42,28 @@ namespace AntiCheat.Patches
                 if (PluginConfig.FreeBuy.Value)
                 {
                     //LogInfo("__rpc_handler_4003509079|boughtItems:" + string.Join(",", boughtItems) + "|newGroupCredits:" + newGroupCredits + "|Money:" + Money);
-                    if (Patches.Money == newGroupCredits || Patches.Money == 0)
+                    if (PatchHelper.Money == newGroupCredits || PatchHelper.Money == 0)
                     {
                         var terminal = (Terminal)target;
-                        Patches.ShowMessage(Patches.locale.Msg_GetString("FreeBuy_Item", new Dictionary<string, string>() {
+                        PatchHelper.ShowMessage(PatchHelper.locale.Msg_GetString("FreeBuy_Item", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername },
                             { "{items}", string.Join(",", boughtItems.GroupBy(x => terminal.buyableItemsList[x].itemName).Select(g => g.Count() == 1 ? g.Key : $"{g.Key}*{g.Count()}")) }
                         }));
                         if (PluginConfig.FreeBuy_Kick.Value)
                         {
-                            Patches.KickPlayer(p);
+                            PatchHelper.KickPlayer(p);
                         }
                         return false;
                     }
-                    else if (newGroupCredits > Patches.Money || Patches.Money < 0)
+                    else if (newGroupCredits > PatchHelper.Money || PatchHelper.Money < 0)
                     {
-                        Patches.ShowMessage(Patches.locale.Msg_GetString("FreeBuy_SetMoney", new Dictionary<string, string>() {
+                        PatchHelper.ShowMessage(PatchHelper.locale.Msg_GetString("FreeBuy_SetMoney", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername },
-                            { "{Money}",(newGroupCredits - Patches.Money).ToString() }
+                            { "{Money}",(newGroupCredits - PatchHelper.Money).ToString() }
                         }));
                         if (PluginConfig.FreeBuy_Kick.Value)
                         {
-                            Patches.KickPlayer(p);
+                            PatchHelper.KickPlayer(p);
                         }
                         return false;
                     }
@@ -73,7 +73,7 @@ namespace AntiCheat.Patches
                     var terminal = (Terminal)target;
                     if (boughtItems.Count(x => x < terminal.buyableItemsList.Length) == boughtItems.Count())
                     {
-                        Patches.ShowMessageHostOnly(Patches.locale.OperationLog_GetString("BuyItem", new Dictionary<string, string>() {
+                        PatchHelper.ShowMessageHostOnly(PatchHelper.locale.OperationLog_GetString("BuyItem", new Dictionary<string, string>() {
                             { "{player}", p.playerUsername },
                             { "{items}", string.Join(",", boughtItems.GroupBy(x => terminal.buyableItemsList[x].itemName).Select(g => g.Count() == 1 ? g.Key : $"{g.Key}*{g.Count()}")) }
                         }));
@@ -91,11 +91,11 @@ namespace AntiCheat.Patches
         [HarmonyPatch("__rpc_handler_2452398197")]
         public static bool BuyVehicleServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
-            if (Patches.Check(rpcParams, out var p) || true)
+            if (PatchHelper.Check(rpcParams, out var p) || true)
             {
                 if (PluginConfig.RemoteTerminal.Value)
                 {
-                    if (!Patches.CheckRemoteTerminal(p, "Terminal.BuyVehicleServerRpc"))
+                    if (!PatchHelper.CheckRemoteTerminal(p, "Terminal.BuyVehicleServerRpc"))
                     {
                         return false;
                     }
@@ -110,27 +110,27 @@ namespace AntiCheat.Patches
                     {
                         //可以免费购买
                     }
-                    else if (Patches.Money == newGroupCredits || Patches.Money == 0)
+                    else if (PatchHelper.Money == newGroupCredits || PatchHelper.Money == 0)
                     {
-                        Patches.ShowMessage(Patches.locale.Msg_GetString("FreeBuy_Item", new Dictionary<string, string>() {
+                        PatchHelper.ShowMessage(PatchHelper.locale.Msg_GetString("FreeBuy_Item", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername },
-                            { "{items}", Patches.locale.Item_GetString("Cruiser") }
+                            { "{items}", PatchHelper.locale.Item_GetString("Cruiser") }
                         }));
                         if (PluginConfig.FreeBuy_Kick.Value)
                         {
-                            Patches.KickPlayer(p);
+                            PatchHelper.KickPlayer(p);
                         }
                         return false;
                     }
-                    else if (newGroupCredits > Patches.Money || Patches.Money < 0)
+                    else if (newGroupCredits > PatchHelper.Money || PatchHelper.Money < 0)
                     {
-                        Patches.ShowMessage(Patches.locale.Msg_GetString("FreeBuy_SetMoney", new Dictionary<string, string>() {
+                        PatchHelper.ShowMessage(PatchHelper.locale.Msg_GetString("FreeBuy_SetMoney", new Dictionary<string, string>() {
                             { "{player}",p.playerUsername },
-                            { "{Money}",(newGroupCredits - Patches.Money).ToString() }
+                            { "{Money}",(newGroupCredits - PatchHelper.Money).ToString() }
                         }));
                         if (PluginConfig.FreeBuy_Kick.Value)
                         {
-                            Patches.KickPlayer(p);
+                            PatchHelper.KickPlayer(p);
                         }
                         return false;
                     }
@@ -138,9 +138,9 @@ namespace AntiCheat.Patches
                 if (PluginConfig.OperationLog.Value)
                 {
                     var terminal = (Terminal)target;
-                    Patches.ShowMessageHostOnly(Patches.locale.OperationLog_GetString("BuyItem", new Dictionary<string, string>() {
+                    PatchHelper.ShowMessageHostOnly(PatchHelper.locale.OperationLog_GetString("BuyItem", new Dictionary<string, string>() {
                         { "{player}", p.playerUsername },
-                        { "{items}", Patches.locale.Item_GetString("Cruiser") }
+                        { "{items}", PatchHelper.locale.Item_GetString("Cruiser") }
                     }));
                 }
             }
