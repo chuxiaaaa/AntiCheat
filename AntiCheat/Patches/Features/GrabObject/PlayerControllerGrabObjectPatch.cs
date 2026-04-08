@@ -47,11 +47,11 @@ namespace AntiCheat.Patches
                 {
                     reader.ReadValueSafe(out NetworkObjectReference grabbedObject, default);
                     reader.Seek(0);
-                    var hasJetpack = false;
                     if (grabbedObject.TryGet(out var networkObject, null))
                     {
                         var allSlotsFull = true;
-                        bool hasTwoHanded = false;
+                        var hasJetpack = false;
+                        var hasTwoHanded = false;
                         foreach (var item in player.ItemSlots)
                         {
                             if (item == null)
@@ -72,30 +72,76 @@ namespace AntiCheat.Patches
                         {
                             LogInfo(player, "PlayerControllerB.GrabObjectServerRpc", $"itemName:{grabbable.itemProperties.itemName}", $"heldByPlayerOnServer:{(grabbable.heldByPlayerOnServer ? grabbable.playerHeldBy?.playerUsername : "false")}", $"Distance:{Vector3.Distance(player.transform.position, grabbable.transform.position)}");
                             bool ban = false;
-                            if (PluginConfig.GrabObject_TwoHand.Value)
+
+                            GrabbableObject currentSlotItem = null;
+                            if (player.currentItemSlot >= 0 && player.currentItemSlot < player.ItemSlots.Length)
                             {
-                                if (grabbable.itemProperties.twoHanded && hasTwoHanded)
+                                currentSlotItem = player.ItemSlots[player.currentItemSlot];
+                            }
+
+                            var holdingTwoHanded =
+                                (player.currentlyHeldObjectServer != null && player.currentlyHeldObjectServer.itemProperties.twoHanded) ||
+                                (currentSlotItem != null && currentSlotItem.itemProperties.twoHanded);
+                            var holdingJetpack =
+                                player.currentlyHeldObjectServer is JetpackItem ||
+                                currentSlotItem is JetpackItem;
+                            var holdingOneHandedWhileTwoHandedEquipped = holdingTwoHanded && !grabbable.itemProperties.twoHanded;
+                            var heldItemName = player.currentlyHeldObjectServer != null
+                                ? player.currentlyHeldObjectServer.itemProperties.itemName
+                                : (currentSlotItem != null ? currentSlotItem.itemProperties.itemName : "unknown");
+                            var jetpackTwoHandGrabSuppressed = holdingJetpack && grabbable.itemProperties.twoHanded && !hasTwoHanded;
+                            var twoHandDetected =
+                                holdingOneHandedWhileTwoHandedEquipped ||
+                                (grabbable.itemProperties.twoHanded && hasTwoHanded) ||
+                                (grabbable.itemProperties.twoHanded && hasJetpack) ||
+                                (hasTwoHanded && hasJetpack);
+
+                            if (twoHandDetected)
+                            {
+                                if (PluginConfig.GrabObject_SendLog.Value && !jetpackTwoHandGrabSuppressed)
                                 {
-                                    ban = true;
+                                    ShowMessage(locale.Msg_GetString("GrabObject_TwoHand", new System.Collections.Generic.Dictionary<string, string>()
+                                    {
+                                        { "{player}", player.playerUsername },
+                                        { "{heldItemName}", heldItemName },
+                                        { "{itemName}", grabbable.itemProperties.itemName },
+                                        { "{hasTwoHand}", hasTwoHanded.ToString() },
+                                        { "{jetpack}", hasJetpack.ToString() }
+                                    }));
                                 }
-                                else if (grabbable.itemProperties.twoHanded && hasJetpack)
-                                {
-                                    ban = true;
-                                }
-                                else if (hasTwoHanded && hasJetpack)
+
+                                if (PluginConfig.GrabObject_TwoHand.Value)
                                 {
                                     ban = true;
                                 }
                             }
+
+                            var moreSlotDetected = allSlotsFull && !ban;
+                            if (moreSlotDetected && PluginConfig.GrabObject_SendLog.Value)
+                            {
+                                ShowMessage(locale.Msg_GetString("GrabObject_MoreSlot", new System.Collections.Generic.Dictionary<string, string>()
+                                {
+                                    { "{player}", player.playerUsername },
+                                    { "{itemName}", grabbable.itemProperties.itemName }
+                                }));
+                            }
+
                             if (PluginConfig.GrabObject_MoreSlot.Value && !ban)
                             {
                                 ban = allSlotsFull;
                             }
+
                             if (ban)
                             {
+                                if (PluginConfig.GrabObject_Kick.Value)
+                                {
+                                    KickPlayer(player);
+                                }
+
                                 ForceCancelGrab(target);
                                 return false;
                             }
+
                             if (Vector3.Distance(grabbable.transform.position, player.serverPlayerPosition) > 100 &&
                                 !StartOfRound.Instance.shipIsLeaving &&
                                 StartOfRound.Instance.shipHasLanded)
@@ -104,16 +150,22 @@ namespace AntiCheat.Patches
                                 {
                                     return true;
                                 }
-                                ShowMessage(locale.Msg_GetString("GrabObject", new System.Collections.Generic.Dictionary<string, string>()
+
+                                if (PluginConfig.GrabObject_SendLog.Value)
                                 {
-                                    { "{player}", player.playerUsername },
-                                    { "{object_position}", grabbable.transform.position.ToString() },
-                                    { "{player_position}", player.serverPlayerPosition.ToString() }
-                                }));
-                                if (PluginConfig.GrabObject_MoreSlot.Value)
+                                    ShowMessage(locale.Msg_GetString("GrabObject", new System.Collections.Generic.Dictionary<string, string>()
+                                    {
+                                        { "{player}", player.playerUsername },
+                                        { "{object_position}", grabbable.transform.position.ToString() },
+                                        { "{player_position}", player.serverPlayerPosition.ToString() }
+                                    }));
+                                }
+
+                                if (PluginConfig.GrabObject_Kick.Value)
                                 {
                                     KickPlayer(player);
                                 }
+
                                 ForceCancelGrab(target);
                                 return false;
                             }
