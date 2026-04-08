@@ -100,7 +100,7 @@ namespace AntiCheat.Patches
             if (NetworkManager.Singleton?.IsListening == true)
             {
                 NetIdentity identity = Traverse.Create(info).Field<NetIdentity>("identity").Value;
-                HUDManagerPatch.SyncAllPlayerLevelsServerRpcCalls.Remove(ConnectionIdtoSteamIdMap[connection.Id]);
+                HUDManagerRoundSyncPatch.SyncAllPlayerLevelsServerRpcCalls.Remove(ConnectionIdtoSteamIdMap[connection.Id]);
                 StartOfRoundPatch.SyncShipUnlockablesServerRpcCalls.Remove(ConnectionIdtoSteamIdMap[connection.Id]);
                 StartOfRoundPatch.SyncAlreadyHeldObjectsServerRpcCalls.Remove(ConnectionIdtoSteamIdMap[connection.Id]);
                 ConnectionIdtoSteamIdMap.Remove(connection.Id);

@@ -8,13 +8,8 @@ namespace AntiCheat.Patches
 {
     [HarmonyPatch(typeof(HUDManager))]
     [HarmonyWrapSafe]
-    public static class HUDManagerPatch
+    public static class HUDManagerTerminalValidationPatch
     {
-        public static List<ulong> SyncAllPlayerLevelsServerRpcCalls { get; set; } = new List<ulong>();
-
-        /// <summary>
-        /// GetNewStoryLogServerRpc
-        /// </summary>
         [HarmonyPrefix]
         [HarmonyPatch("__rpc_handler_3153465849")]
         public static bool GetNewStoryLogServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -31,9 +26,6 @@ namespace AntiCheat.Patches
             return logId < terminal.logEntryFiles.Count && logId > 0;
         }
 
-        /// <summary>
-        /// SendErrorMessageServerRpc
-        /// </summary>
         [HarmonyPrefix]
         [HarmonyPatch("__rpc_handler_1043384750")]
         public static bool SendErrorMessageServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
@@ -41,42 +33,8 @@ namespace AntiCheat.Patches
             return !PatchHelper.Check(rpcParams, out _);
         }
 
-        /// <summary>
-        /// SyncAllPlayerLevelsServerRpc
-        /// </summary>
-        [HarmonyPrefix]
-        [HarmonyPatch("__rpc_handler_4217433937")]
-        public static bool SyncAllPlayerLevelsServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        {
-            if (!PatchHelper.Check(rpcParams, out var player))
-            {
-                return player != null;
-            }
-
-            if (SyncAllPlayerLevelsServerRpcCalls.Contains(player.playerSteamId))
-            {
-                return false;
-            }
-
-            ByteUnpacker.ReadValueBitPacked(reader, out int _);
-            ByteUnpacker.ReadValueBitPacked(reader, out int playerClientId);
-            reader.Seek(0);
-
-            if (playerClientId != (int)player.playerClientId)
-            {
-                return false;
-            }
-
-            SyncAllPlayerLevelsServerRpcCalls.Add(player.playerSteamId);
-            return true;
-        }
-
-        /// <summary>
-        /// ScanNewCreatureServerRpc
-        /// </summary>
         [HarmonyPatch("__rpc_handler_1944155956")]
         [HarmonyPrefix]
-        [HarmonyWrapSafe]
         public static bool ScanNewCreatureServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (!PatchHelper.Check(rpcParams, out var player))
@@ -107,27 +65,6 @@ namespace AntiCheat.Patches
                 });
 
             PatchHelper.LogInfo(msg);
-            return true;
-        }
-
-        /// <summary>
-        /// UseSignalTranslatorServerRpc
-        /// </summary>
-        [HarmonyPatch("__rpc_handler_2436660286")]
-        [HarmonyPrefix]
-        public static bool UseSignalTranslatorServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
-        {
-            if (!PatchHelper.Check(rpcParams, out var player))
-            {
-                return player != null;
-            }
-
-            if (PluginConfig.RemoteTerminal.Enable &&
-                !PatchHelper.CheckRemoteTerminal(player, "HUDManager.UseSignalTranslatorServerRpc"))
-            {
-                return false;
-            }
-
             return true;
         }
     }
