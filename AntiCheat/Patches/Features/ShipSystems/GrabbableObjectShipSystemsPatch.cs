@@ -11,14 +11,14 @@ namespace AntiCheat.Patches
     public static class GrabbableObjectShipSystemsPatch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("__rpc_handler_4280509730")]
-        public static bool ActivateItemServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
+        [HarmonyPatch("__rpc_handler_319375719")]
+        public static bool ActivateItemRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
             if (PatchHelper.Check(rpcParams, out var player))
             {
                 if (target is RemoteProp remoteProp)
                 {
-                    AntiCheatPlugin.LogInfo(player, $"({remoteProp.itemProperties.itemName})GrabbableObject.ActivateItemServerRpc");
+                    AntiCheatPlugin.LogInfo(player, $"({remoteProp.itemProperties.itemName})GrabbableObject.ActivateItemRpc");
 
                     var canUse = CooldownManager.CheckCooldown("ShipLight", player);
                     if (!canUse)

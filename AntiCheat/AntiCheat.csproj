@@ -6,7 +6,7 @@
 		<Authors>chuxiaaaa</Authors>
 		<Description>AntiCheat</Description>
 		<Product>AntiCheat</Product>
-		<Version>1.0.0</Version>
+		<Version>0.8.8</Version>
 		<ProjectDepsFileName>$(Product).deps.json</ProjectDepsFileName>
 		<RootNamespace>$(Product)</RootNamespace>
 		<TargetName>$(Product)</TargetName>

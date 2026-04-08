@@ -10,7 +10,7 @@ namespace AntiCheat.Patches
     [HarmonyWrapSafe]
     public static class PlayerControllerOperationLogPatch
     {
-        [HarmonyPatch("__rpc_handler_760742013")]
+        [HarmonyPatch("__rpc_handler_1748753755")]
         [HarmonyPrefix]
         public static bool DropAllHeldItemsServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
         {
@@ -18,8 +18,7 @@ namespace AntiCheat.Patches
             {
                 return player != null;
             }
-
-            AntiCheatPlugin.LogInfo(player, "PlayerControllerB.DropAllHeldItemsServerRpc");
+            AntiCheatPlugin.LogInfo(player, "PlayerControllerB.DropAllHeldItemsRpc");
             return true;
         }
     }

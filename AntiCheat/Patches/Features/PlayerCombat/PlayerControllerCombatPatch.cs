@@ -15,7 +15,7 @@ namespace AntiCheat.Patches
     [HarmonyWrapSafe]
     public static class PlayerControllerCombatPatch
     {
-        [HarmonyPatch("__rpc_handler_4121569671")]
+        [HarmonyPatch("__rpc_handler_1583426973")]
         [HarmonyPrefix]
         [HarmonyWrapSafe]
         public static bool KillPlayerServerRpc(NetworkBehaviour target, FastBufferReader reader, __RpcParams rpcParams)
