@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<AssemblyName>AntiCheat</AssemblyName>
+		<Authors>chuxiaaaa</Authors>
+		<Description>AntiCheat</Description>
+		<Product>AntiCheat</Product>
+		<Version>1.0.0</Version>
+		<ProjectDepsFileName>$(Product).deps.json</ProjectDepsFileName>
+		<RootNamespace>$(Product)</RootNamespace>
+		<TargetName>$(Product)</TargetName>
+	</PropertyGroup>
+	<PropertyGroup>
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>embedded</DebugType>
+		<PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=./</PathMap>
+	</PropertyGroup>
+	<Target Name="AddGeneratedFile" BeforeTargets="BeforeCompile;CoreCompile" Inputs="$(MSBuildAllProjects)" Outputs="$(IntermediateOutputPath)LCMPluginInfo.cs">
+
+		<PropertyGroup>
+			<LCMPluginGuid Condition="'$(LCMPluginGuid)' == ''">$(AssemblyName)</LCMPluginGuid>
+			<LCMPluginName Condition="'$(LCMPluginName)' == ''">$(Product)</LCMPluginName>
+			<LCMPluginVersion Condition="'$(LCMPluginVersion)' == ''">$(Version)</LCMPluginVersion>
+			<GeneratedText>
+				<![CDATA[
+internal static class LCMPluginInfo
+{
+  public const string PLUGIN_GUID = "$(LCMPluginGuid)"%3B
+  public const string PLUGIN_NAME = "$(LCMPluginName)"%3B
+  public const string PLUGIN_VERSION = "$(LCMPluginVersion)"%3B
+}
+]]>
+			</GeneratedText>
+			<GeneratedFilePath>$(IntermediateOutputPath)LCMPluginInfo.cs</GeneratedFilePath>
+		</PropertyGroup>
+
+		<ItemGroup>
+			<Compile Include="$(GeneratedFilePath)" />
+			<FileWrites Include="$(GeneratedFilePath)" />
+		</ItemGroup>
+
+		<WriteLinesToFile Lines="$(GeneratedText)" File="$(GeneratedFilePath)" WriteOnlyWhenDifferent="true" Overwrite="true" />
+
+	</Target>
+	<ItemGroup>
+		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="BepInEx.Analyzers" PrivateAssets="all" Version="1.*" />
+		<PackageReference Include="BepInEx.Core" Version="5.4.*" />
+		<PackageReference Include="LethalCompany.GameLibs.Steam" Publicize="true" Version="73.0.0-ngd.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="locales\**\*.*" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+</Project>

@@ -1,9 +1,0 @@
-{
-    "name": "AntiCheat",
-    "version_number": "0.8.7",
-    "website_url": "https://github.com/chuxiaaaa/AntiCheat",
-    "description": "A Lethal Company AntiCheat Mod.",
-    "dependencies": [
-        "BepInEx-BepInExPack-5.4.2100"
-    ]
-}

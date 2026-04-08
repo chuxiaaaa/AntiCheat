@@ -1,16 +1,10 @@
-﻿
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Resources;
 using System.Text;
-using System.Threading.Tasks;
-
-using static AntiCheat.Core.AntiCheat;
 
 namespace AntiCheat.Locale
 {
@@ -38,8 +32,8 @@ namespace AntiCheat.Locale
                 {
                     cfg.current_language = "en_US";
                 }
-                Core.AntiCheat.LogInfo($"no current language set, automatic language selection based on current region");
-                Core.AntiCheat.LogInfo($"CurrentCulture:{lang},use language -> {cfg.current_language}");
+                AntiCheatPlugin.LogInfo($"no current language set, automatic language selection based on current region");
+                AntiCheatPlugin.LogInfo($"CurrentCulture:{lang},use language -> {cfg.current_language}");
             }
             current_language = cfg.current_language;
             json = File.ReadAllText($"{Path.Combine(langPath, cfg.current_language)}.json");
@@ -83,7 +77,12 @@ namespace AntiCheat.Locale
         {
             if (pairs == null || string.IsNullOrEmpty(input))
                 return input;
-            return pairs.Aggregate(input, (current, item) => current.Replace(item.Key, item.Value));
+            var result = new StringBuilder(input);
+            foreach (var pair in pairs)
+            {
+                result.Replace(pair.Key, pair.Value);
+            }
+            return result.ToString();
         }
     }
 }
