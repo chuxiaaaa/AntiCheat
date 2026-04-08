@@ -59,7 +59,7 @@ namespace AntiCheat.Patches
         {
             if (Check(rpcParams, out var p))
             {
-                if (PluginConfig.GrabObject.Value && PluginConfig.GrabObject_BeltBag.Value)
+                if (PluginConfig.GrabObject.Value)
                 {
                     reader.ReadValueSafe(out NetworkObjectReference netObjectRef, default);
                     ByteUnpacker.ReadValueBitPacked(reader, out int playerWhoAdded);
@@ -71,8 +71,20 @@ namespace AntiCheat.Patches
                         {
                             return true;
                         }
-                        ((BeltBagItem)target).CancelAddObjectToBagClientRpc(playerWhoAdded);
-                        return false;
+                        if (PluginConfig.GrabObject_SendLog.Value)
+                        {
+                            ShowMessage(locale.Msg_GetString("GrabObject_BeltBag", new Dictionary<string, string>()
+                            {
+                                { "{player}", p.playerUsername },
+                                { "{itemName}", component.itemProperties.itemName }
+                            }));
+                        }
+
+                        if (PluginConfig.GrabObject_BeltBag.Value)
+                        {
+                            ((BeltBagItem)target).CancelAddObjectToBagClientRpc(playerWhoAdded);
+                            return false;
+                        }
                     }
                 }
             }

@@ -59,6 +59,7 @@ namespace AntiCheat
         public static ConfigEntry<bool> RPCReport_Hit = null!;
         public static ConfigEntry<bool> RPCReport_KillPlayer = null!;
         public static ConfigEntry<bool> Shovel3 = null!;
+        public static ConfigEntry<bool> GrabObject_SendLog = null!;
         public static ConfigEntry<bool> GrabObject_MoreSlot = null!;
         public static ConfigEntry<bool> GrabObject_TwoHand = null!;
         public static ConfigEntry<bool> GrabObject_BeltBag = null!;
@@ -239,6 +240,12 @@ namespace AntiCheat
                 "EmptyHand",
                 false,
                 localizationManager.Cfg_GetString("Shovel2"));
+
+            GrabObject_SendLog = config.Bind(
+                "GrabObjectSetting",
+                "SendLog",
+                true,
+                localizationManager.Cfg_GetString("GrabObject_SendLog"));
 
             GrabObject_MoreSlot = config.Bind(
                 "GrabObjectSetting",
