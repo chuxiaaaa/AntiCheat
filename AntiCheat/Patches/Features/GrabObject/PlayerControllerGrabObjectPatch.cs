@@ -49,27 +49,33 @@ namespace AntiCheat.Patches
                     reader.Seek(0);
                     if (grabbedObject.TryGet(out var networkObject, null))
                     {
-                        var allSlotsFull = true;
-                        var hasJetpack = false;
-                        var hasTwoHanded = false;
-                        foreach (var item in player.ItemSlots)
-                        {
-                            if (item == null)
-                            {
-                                allSlotsFull = false;
-                            }
-                            else if (item.itemProperties.twoHanded)
-                            {
-                                hasTwoHanded = true;
-                            }
-                            else if (item is JetpackItem)
-                            {
-                                hasJetpack = true;
-                            }
-                        }
+                      
                         var grabbable = networkObject.GetComponentInChildren<GrabbableObject>();
                         if (grabbable != null)
                         {
+                        
+                            var allSlotsFull = true;
+                            var hasJetpack = false;
+                            var hasTwoHanded = false;
+                            foreach (var item in player.ItemSlots)
+                            {
+                                if (item == null)
+                                {
+                                    allSlotsFull = false;
+                                }
+                                else if (item.itemProperties.twoHanded)
+                                {
+                                    hasTwoHanded = true;
+                                }
+                                else if (item is JetpackItem)
+                                {
+                                    hasJetpack = true;
+                                }
+                            }
+                            if (player.ItemOnlySlot == null && grabbable != null && !grabbable.itemProperties.isScrap && !grabbable.itemProperties.twoHanded && !grabbable.itemProperties.disallowUtilitySlot)
+                            {
+                                allSlotsFull = false;
+                            }
                             LogInfo(player, "PlayerControllerB.GrabObjectServerRpc", $"itemName:{grabbable.itemProperties.itemName}", $"heldByPlayerOnServer:{(grabbable.heldByPlayerOnServer ? grabbable.playerHeldBy?.playerUsername : "false")}", $"Distance:{Vector3.Distance(player.transform.position, grabbable.transform.position)}");
                             bool ban = false;
 

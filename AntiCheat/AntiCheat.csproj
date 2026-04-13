@@ -50,7 +50,7 @@ internal static class LCMPluginInfo
 		</PackageReference>
 		<PackageReference Include="BepInEx.Analyzers" PrivateAssets="all" Version="1.*" />
 		<PackageReference Include="BepInEx.Core" Version="5.4.*" />
-		<PackageReference Include="LethalCompany.GameLibs.Steam" Publicize="true" Version="73.0.0-ngd.0" />
+		<PackageReference Include="LethalCompany.GameLibs.Steam" Publicize="true" Version="81.0.0-ngd.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Update="locales\**\*.*" CopyToOutputDirectory="PreserveNewest" />

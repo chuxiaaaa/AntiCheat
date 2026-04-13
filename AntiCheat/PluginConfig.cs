@@ -39,6 +39,7 @@ namespace AntiCheat
         public static FeatureConfig GrabObject = null!;
         public static FeatureConfig Jetpack = null!;
         public static FeatureConfig Enemy = null!;
+        public static FeatureConfig KeepItemTp = null!;
 
         public static ConfigEntry<bool> IgnoreClientConfig = null!;
         public static ConfigEntry<string> Prefix = null!;
@@ -177,6 +178,7 @@ namespace AntiCheat
             Landmine = new FeatureConfig(config, "LandmineSetting", localizationManager.Cfg_GetString("Landmine"));
             SpawnWebTrap = new FeatureConfig(config, "SpawnWebTrapSetting", localizationManager.Cfg_GetString("SpawnWebTrap"));
             Enemy = new FeatureConfig(config, "EnemySetting", localizationManager.Cfg_GetString("Enemy"), hasKick: false);
+            KeepItemTp = new FeatureConfig(config, "KeepItemTpSetting", localizationManager.Cfg_GetString("KeepItemTp"), hasKick: true);
             KillEnemy = new FeatureConfig(config, "KillEnemySetting", localizationManager.Cfg_GetString("KillEnemy"));
             Map = new FeatureConfig(config, "MapSetting", localizationManager.Cfg_GetString("Map"));
             FreeBuy = new FeatureConfig(config, "FreeBuySettings", localizationManager.Cfg_GetString("FreeBuy"));
@@ -264,6 +266,8 @@ namespace AntiCheat
                 "BeltBag",
                 true,
                 localizationManager.Cfg_GetString("GrabObject_BeltBag"));
+
+         
 
             CooldownManager.Reset();
             RegisterCooldown("TerminalNoise", TerminalNoise.EnableEntry, TerminalNoise_Cooldown);

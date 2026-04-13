@@ -420,6 +420,7 @@ namespace AntiCheat.Patches
             ulong transportId = Traverse.Create(networkConnectionManager).Method("ClientIdToTransportId", new object[] { SenderClientId }).GetValue<ulong>();
             return (uint)transportId;
         }
+
         public static bool CheckRemoteTerminal(PlayerControllerB p, string call)
         {
             LogInfo(p, "CheckRemoteTerminal", $"Call:{call}");
