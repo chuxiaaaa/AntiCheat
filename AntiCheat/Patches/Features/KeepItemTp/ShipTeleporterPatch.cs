@@ -24,7 +24,6 @@ namespace AntiCheat.Patches.Features.KeepItemTp
 
         private static void CachePlayerItems(PlayerControllerB player)
         {
-            AntiCheatPlugin.LogInfo($"CachePlayerItems:{player?.playerUsername}");
             if (player == null)
             {
                 return;
@@ -40,14 +39,12 @@ namespace AntiCheat.Patches.Features.KeepItemTp
             {
                 if (item != null)
                 {
-                    AntiCheatPlugin.LogInfo($"Add:{item.itemProperties.itemName}");
                     playerObjToItemIdsMap[player.OwnerClientId].Add(item.NetworkObjectId);
                 }
             }
 
             if (player.ItemOnlySlot != null)
             {
-                AntiCheatPlugin.LogInfo($"Add:{player.ItemOnlySlot.itemProperties.itemName}");
                 playerObjToItemIdsMap[player.OwnerClientId].Add(player.ItemOnlySlot.NetworkObjectId);
             }
         }
@@ -70,14 +67,12 @@ namespace AntiCheat.Patches.Features.KeepItemTp
             {
                 if (item != null && cachedIds.Contains(item.NetworkObjectId))
                 {
-                    AntiCheatPlugin.LogInfo($"Get:{item.itemProperties.itemName}");
                     items.Add(item);
                 }
             }
 
             if (player.ItemOnlySlot != null && cachedIds.Contains(player.ItemOnlySlot.NetworkObjectId))
             {
-                AntiCheatPlugin.LogInfo($"Get:{player.ItemOnlySlot.itemProperties.itemName}");
                 items.Add(player.ItemOnlySlot);
             }
 
@@ -88,13 +83,10 @@ namespace AntiCheat.Patches.Features.KeepItemTp
         [HarmonyPrefix]
         public static void TeleportPlayerOutClientRpc(PlayerControllerB playerScript, int teleporterId)
         {
-            AntiCheatPlugin.LogInfo("86");
             if (!StartOfRound.Instance.IsHost)
             {
                 return;
             }
-            AntiCheatPlugin.LogInfo($"91:{playerScript.playerUsername},{teleporterId}");
-            AntiCheatPlugin.LogInfo($"91:{playerScript.isPlayerControlled},{playerScript.isPlayerDead}");
             if (playerScript.isPlayerControlled && !playerScript.isPlayerDead)
             {
                 if (teleporterId == 1 || teleporterId == 2)
